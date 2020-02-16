@@ -1,0 +1,51 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.logo {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.logo-img {
+  height: 70px;
+}
+.container .mat-drawer {
+  padding-left: 20px;
+  padding-right: 20px;
+
+  min-width: 250px;
+}
+.container .mat-drawer .mat-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+.mat-list-base .mat-list-item .mat-list-item-content {
+  padding: 0px !important;
+}
+
+.mat-button {
+  padding: 0;
+}
+.mat-toolbar {
+  background-color: #73879c;
+  color: #fff;
+}
+
+.btn-color {
+  color: #73879c;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.spacer a {
+  text-decoration: none;
+  color: #fff;
+}
