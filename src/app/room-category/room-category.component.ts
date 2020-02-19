@@ -3,7 +3,6 @@ import { NewRoomCategoryComponent } from "./new-room-category/new-room-category.
 import { RoomCategoryService } from "./room-category.service";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-room-category",
@@ -13,8 +12,7 @@ import { ToastrService } from "ngx-toastr";
 export class RoomCategoryComponent implements OnInit {
   constructor(
     public roomCategoryService: RoomCategoryService,
-    private dialog: MatDialog,
-    private toastr: ToastrService
+    private dialog: MatDialog
   ) {}
   displayedColumns: string[] = [
     "id",
@@ -49,10 +47,6 @@ export class RoomCategoryComponent implements OnInit {
         // const newArray = [...this.dataSource];
         // newArray.push(result);
         // this.dataSource = newArray;
-        this.toastr.success(
-          "Successfully Created!!",
-          "New Room Category Added"
-        );
 
         this.getRoomCategory();
       }
