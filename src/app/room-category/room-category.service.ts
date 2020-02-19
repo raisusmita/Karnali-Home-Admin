@@ -29,11 +29,16 @@ export class RoomCategoryService {
   }
 
   editRoomCategory(roomCategory: any): Observable<any> {
+    console.log(roomCategory.id);
     const httpHeaders = new HttpHeaders().set(
       "Content-Type",
       "application/json"
     );
     const options = { headers: httpHeaders };
-    return this.http.put(this.baseURL, roomCategory, options);
+    return this.http.put(
+      this.baseURL + "/" + roomCategory.id,
+      roomCategory,
+      options
+    );
   }
 }

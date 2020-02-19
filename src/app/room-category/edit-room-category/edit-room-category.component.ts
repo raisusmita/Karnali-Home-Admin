@@ -25,7 +25,6 @@ export class EditRoomCategoryComponent implements OnInit {
 
   onSubmit() {
     this.roomCategoryService.editRoomCategory(this.category).subscribe(data => {
-      console.log(data);
       // const hotel = this.hotels.find(e => e.hotelId === this.forObject.hotelId);
       // // );
       // this.forObject.hotel = hotel.hotel;

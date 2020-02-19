@@ -61,6 +61,16 @@ export class RoomCategoryComponent implements OnInit {
       width: "50%",
       data: index
     });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        // const newArray = [...this.dataSource];
+        // newArray.push(result);
+        // this.dataSource = newArray;
+
+        this.getRoomCategory();
+      }
+    });
     // console.log(index);
   }
 }
