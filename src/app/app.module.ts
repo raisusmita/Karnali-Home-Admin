@@ -7,6 +7,7 @@ import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./header/header.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { RouterModule } from "@angular/router";
+import { HttpClientModule } from "@angular/common/http";
 
 import { MatIconModule } from "@angular/material/icon";
 import { MatSidenavModule } from "@angular/material/sidenav";
@@ -14,6 +15,11 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatListModule } from "@angular/material/list";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatMenuModule } from "@angular/material/menu";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatTableModule } from "@angular/material/table";
+
 import { RoomCategoryComponent } from "./room-category/room-category.component";
 import { ReservationComponent } from "./reservation/reservation.component";
 import { BookingComponent } from "./booking/booking.component";
@@ -22,6 +28,11 @@ import { RoomTransactionComponent } from "./room-transaction/room-transaction.co
 import { FoodComponent } from "./food/food.component";
 import { FoodOrderComponent } from "./food-order/food-order.component";
 import { InvoiceComponent } from "./invoice/invoice.component";
+import { NewRoomCategoryComponent } from "./room-category/new-room-category/new-room-category.component";
+
+import { ToastrModule } from "ngx-toastr";
+import { FormsModule } from "@angular/forms";
+import { EditRoomCategoryComponent } from "./room-category/edit-room-category/edit-room-category.component";
 
 @NgModule({
   declarations: [
@@ -35,21 +46,31 @@ import { InvoiceComponent } from "./invoice/invoice.component";
     RoomTransactionComponent,
     FoodComponent,
     FoodOrderComponent,
-    InvoiceComponent
+    InvoiceComponent,
+    NewRoomCategoryComponent,
+    EditRoomCategoryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     RouterModule,
+    HttpClientModule,
     MatIconModule,
     MatSidenavModule,
     MatButtonModule,
     MatListModule,
     MatToolbarModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTableModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
+  entryComponents: [NewRoomCategoryComponent, EditRoomCategoryComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

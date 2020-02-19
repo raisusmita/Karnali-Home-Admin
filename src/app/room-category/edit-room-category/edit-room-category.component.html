@@ -1,0 +1,44 @@
+<h2>Edit Room Category</h2>
+<form #formHotel="ngForm" (ngSubmit)="onSubmit()">
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Room Category</mat-label>
+    <input
+      matInput
+      name="room_Category"
+      placeholder="Enter Room Category"
+      [(ngModel)]="category.room_category"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Number of Room</mat-label>
+    <input
+      matInput
+      name="number_of_room"
+      placeholder="Enter Number of Room"
+      [(ngModel)]="category.number_of_room"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Room Price</mat-label>
+    <input
+      matInput
+      name="room_price"
+      placeholder="Enter Room Price"
+      [(ngModel)]="category.room_price"
+      required
+    />
+  </mat-form-field>
+
+  <button
+    [disabled]="!formHotel.valid"
+    mat-raised-button
+    type="submit"
+    color="primary"
+  >
+    CREATE
+  </button>
+</form>
