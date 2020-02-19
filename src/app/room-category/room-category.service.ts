@@ -41,4 +41,10 @@ export class RoomCategoryService {
       options
     );
   }
+
+  deleteRoomCategory(id: any): Observable<any> {
+    const httpParams = new HttpParams().set("id", id);
+    const options = { params: httpParams };
+    return this.http.delete(this.baseURL + "/" + id, options);
+  }
 }
