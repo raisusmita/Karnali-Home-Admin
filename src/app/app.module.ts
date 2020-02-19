@@ -30,7 +30,6 @@ import { FoodOrderComponent } from "./food-order/food-order.component";
 import { InvoiceComponent } from "./invoice/invoice.component";
 import { NewRoomCategoryComponent } from "./room-category/new-room-category/new-room-category.component";
 
-import { ToastrModule } from "ngx-toastr";
 import { FormsModule } from "@angular/forms";
 import { EditRoomCategoryComponent } from "./room-category/edit-room-category/edit-room-category.component";
 
@@ -66,8 +65,7 @@ import { EditRoomCategoryComponent } from "./room-category/edit-room-category/ed
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule,
-    ToastrModule.forRoot()
+    FormsModule
   ],
   providers: [],
   entryComponents: [NewRoomCategoryComponent, EditRoomCategoryComponent],
