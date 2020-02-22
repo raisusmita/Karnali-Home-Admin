@@ -19,6 +19,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
+import { MatSelectModule } from "@angular/material/select";
 
 import { RoomCategoryComponent } from "./room-category/room-category.component";
 import { ReservationComponent } from "./reservation/reservation.component";
@@ -67,6 +68,7 @@ import { AddRoomComponent } from "./room/add-room/add-room.component";
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     FormsModule
   ],
   providers: [],
