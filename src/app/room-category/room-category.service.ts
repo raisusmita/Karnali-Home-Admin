@@ -29,7 +29,6 @@ export class RoomCategoryService {
   }
 
   editRoomCategory(roomCategory: any): Observable<any> {
-    console.log(roomCategory.id);
     const httpHeaders = new HttpHeaders().set(
       "Content-Type",
       "application/json"

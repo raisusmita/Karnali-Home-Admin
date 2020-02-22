@@ -9,7 +9,7 @@ export class HeaderComponent implements OnInit {
   components: any[] = [
     { name: "Dashboard", path: "dashboard", icon: "dashboard" },
     { name: "Room Category", path: "room-category", icon: "category" },
-
+    { name: "Customer", path: "customer", icon: "perm_identity" },
     { name: "Food", path: "food", icon: "fastfood" },
     { name: "Room", path: "room", icon: "meeting_room" },
     { name: "Reservation", path: "reservation", icon: "check_circle" },

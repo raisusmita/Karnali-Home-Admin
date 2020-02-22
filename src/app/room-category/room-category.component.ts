@@ -12,11 +12,10 @@ import { ConfirmDeleteComponent } from "../shared/confirm-delete/confirm-delete.
 })
 export class RoomCategoryComponent implements OnInit {
   constructor(
-    public roomCategoryService: RoomCategoryService,
+    private roomCategoryService: RoomCategoryService,
     private dialog: MatDialog
   ) {}
   displayedColumns: string[] = [
-    "id",
     "room_category",
     "number_of_room",
     "room_price",
@@ -48,7 +47,6 @@ export class RoomCategoryComponent implements OnInit {
         // const newArray = [...this.dataSource];
         // newArray.push(result);
         // this.dataSource = newArray;
-
         this.getRoomCategory();
       }
     });
