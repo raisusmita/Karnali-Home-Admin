@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Inject } from "@angular/core";
 import { RoomService } from "./../room.service";
 
 import { MvRoom } from "./../room-model";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { RoomCategoryService } from "src/app/room-category/room-category.service";
 
 @Component({
@@ -14,8 +14,10 @@ export class AddRoomComponent implements OnInit {
   room: MvRoom = {} as MvRoom;
   roomCategories;
   selectedImage: File = null;
+  isEdit = false;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private roomCategoryService: RoomCategoryService,
     private roomService: RoomService,
     private dialogRef: MatDialogRef<AddRoomComponent>
@@ -24,6 +26,12 @@ export class AddRoomComponent implements OnInit {
   ngOnInit() {
     this.roomCategoryService.getRoomCategory().subscribe(rc => {
       console.log(rc.data);
+      if (this.data) {
+        this.isEdit = true;
+        this.room = this.data;
+        this.room.image = null;
+      }
+      console.log(this.data, this.room);
       this.roomCategories = rc.data;
     });
   }
@@ -35,8 +43,15 @@ export class AddRoomComponent implements OnInit {
 
   submitRoomForm() {
     console.log(this.room);
-    this.roomService.addRoom(this.room).subscribe(e => {
-      this.dialogRef.close(this.room);
-    });
+    if (this.isEdit) {
+      console.log(this.room);
+      this.roomService.editRoom(this.room).subscribe(e => {
+        this.dialogRef.close(this.room);
+      });
+    } else {
+      this.roomService.addRoom(this.room).subscribe(e => {
+        this.dialogRef.close(this.room);
+      });
+    }
   }
 }

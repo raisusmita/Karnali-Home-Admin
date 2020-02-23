@@ -55,7 +55,7 @@
     placeholder="Room image"
     [(ngModel)]="room.image"
     (click)="onSelectedFiles(imageFile)"
-    required
+    [required]="!isEdit"
   />
   <!-- </mat-form-field> -->
 
