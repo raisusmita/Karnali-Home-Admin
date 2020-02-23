@@ -59,7 +59,11 @@
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Customer Type</mat-label>
 
-    <mat-select [(ngModel)]="customer.customer_type" name="customer_type">
+    <mat-select
+      [(ngModel)]="customer.customer_type"
+      name="customer_type"
+      required
+    >
       <mat-option
         *ngFor="let customer_type of customerType | keyvalue"
         [value]="customer_type.value"
