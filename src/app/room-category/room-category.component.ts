@@ -22,6 +22,7 @@ export class RoomCategoryComponent implements OnInit {
     "room_category",
     "room_type",
     "room_price",
+    "number_of_rooms",
     "action"
   ];
   selectedRowIndex: number;
