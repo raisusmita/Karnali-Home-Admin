@@ -37,6 +37,11 @@
       <td mat-cell *matCellDef="let element">{{ element.room_type }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="number_of_rooms">
+      <th mat-header-cell *matHeaderCellDef>number of rooms</th>
+      <td mat-cell *matCellDef="let element">{{ element.number_of_rooms }}</td>
+    </ng-container>
+
     <!-- Weight Column -->
     <ng-container matColumnDef="number_of_room">
       <th mat-header-cell *matHeaderCellDef>Number of Room</th>

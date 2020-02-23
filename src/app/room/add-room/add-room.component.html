@@ -1,6 +1,6 @@
 <h2>Add New Room</h2>
 <form #formHotel="ngForm" (ngSubmit)="submitRoomForm()">
-  <mat-form-field>
+  <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Room Category</mat-label>
     <mat-select [(ngModel)]="room.room_category_id" name="room">
       <mat-option
