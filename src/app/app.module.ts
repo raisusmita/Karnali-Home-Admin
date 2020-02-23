@@ -38,7 +38,6 @@ import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.c
 import { FoodFormComponent } from "./food/food-form/food-form.component";
 import { CustomerComponent } from "./customer/customer.component";
 import { CustomerFormComponent } from "./customer/customer-form/customer-form.component";
-import { AddCustomerComponent } from "./customer/add-customer/add-customer.component";
 
 @NgModule({
   declarations: [
@@ -59,8 +58,7 @@ import { AddCustomerComponent } from "./customer/add-customer/add-customer.compo
     ConfirmDeleteComponent,
     FoodFormComponent,
     CustomerComponent,
-    CustomerFormComponent,
-    AddCustomerComponent
+    CustomerFormComponent
   ],
   imports: [
     BrowserModule,
@@ -88,8 +86,7 @@ import { AddCustomerComponent } from "./customer/add-customer/add-customer.compo
     AddRoomComponent,
     FoodFormComponent,
     CustomerFormComponent,
-    ConfirmDeleteComponent,
-    AddCustomerComponent
+    ConfirmDeleteComponent
   ],
   bootstrap: [AppComponent]
 })
