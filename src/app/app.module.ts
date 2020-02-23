@@ -19,6 +19,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
+import { MatSelectModule } from "@angular/material/select";
 
 import { RoomCategoryComponent } from "./room-category/room-category.component";
 import { ReservationComponent } from "./reservation/reservation.component";
@@ -32,6 +33,7 @@ import { NewRoomCategoryComponent } from "./room-category/new-room-category/new-
 
 import { FormsModule } from "@angular/forms";
 import { EditRoomCategoryComponent } from "./room-category/edit-room-category/edit-room-category.component";
+import { AddRoomComponent } from "./room/add-room/add-room.component";
 import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.component";
 
 @NgModule({
@@ -49,6 +51,7 @@ import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.c
     InvoiceComponent,
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,
+    AddRoomComponent,
     ConfirmDeleteComponent
   ],
   imports: [
@@ -67,12 +70,14 @@ import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.c
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     FormsModule
   ],
   providers: [],
   entryComponents: [
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,
+    AddRoomComponent,
     ConfirmDeleteComponent
   ],
   bootstrap: [AppComponent]

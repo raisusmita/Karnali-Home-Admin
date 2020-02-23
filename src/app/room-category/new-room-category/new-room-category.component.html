@@ -4,20 +4,20 @@
     <mat-label>Room Category</mat-label>
     <input
       matInput
-      name="room_Category"
+      name="category.room_category"
       placeholder="Enter Room Category"
-      [(ngModel)]="room_category"
+      [(ngModel)]="category.room_category"
       required
     />
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Number of Room</mat-label>
+    <mat-label>Room Type</mat-label>
     <input
       matInput
-      name="number_of_room"
-      placeholder="Enter Number of Room"
-      [(ngModel)]="number_of_room"
+      name="category.room_type"
+      placeholder="Enter Single, Double or Triple Bed"
+      [(ngModel)]="category.room_type"
       required
     />
   </mat-form-field>
@@ -26,12 +26,22 @@
     <mat-label>Room Price</mat-label>
     <input
       matInput
-      name="room_price"
+      name="category.room_price"
       placeholder="Enter Room Price"
-      [(ngModel)]="room_price"
+      [(ngModel)]="category.room_price"
       required
     />
   </mat-form-field>
+
+  <input
+    #imageFile
+    type="file"
+    accept="image/*"
+    name="image"
+    placeholder="Room image"
+    [(ngModel)]="category.image"
+    (select)="onSelectedFiles(imageFile)"
+  />
 
   <button
     [disabled]="!formHotel.valid"
