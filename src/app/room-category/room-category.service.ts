@@ -29,11 +29,22 @@ export class RoomCategoryService {
   }
 
   editRoomCategory(roomCategory: any): Observable<any> {
+    console.log(roomCategory.id);
     const httpHeaders = new HttpHeaders().set(
       "Content-Type",
       "application/json"
     );
     const options = { headers: httpHeaders };
-    return this.http.put(this.baseURL, roomCategory, options);
+    return this.http.put(
+      this.baseURL + "/" + roomCategory.id,
+      roomCategory,
+      options
+    );
+  }
+
+  deleteRoomCategory(id: any): Observable<any> {
+    const httpParams = new HttpParams().set("id", id);
+    const options = { params: httpParams };
+    return this.http.delete(this.baseURL + "/" + id, options);
   }
 }
