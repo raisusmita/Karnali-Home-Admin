@@ -11,7 +11,8 @@ import { RoomComponent } from "./room/room.component";
 import { RoomCategoryComponent } from "./room-category/room-category.component";
 
 const routes: Routes = [
-  { path: "dashboard", component: DashboardComponent },
+  { path: "", component: DashboardComponent },
+  { path: "dashboard", pathMatch: "full", redirectTo: "" },
   { path: "room-category", component: RoomCategoryComponent },
   { path: "room-transaction", component: RoomTransactionComponent },
   { path: "food", component: FoodComponent },
