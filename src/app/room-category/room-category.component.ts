@@ -13,7 +13,7 @@ import { ConfirmDeleteComponent } from "../shared/confirm-delete/confirm-delete.
 })
 export class RoomCategoryComponent implements OnInit {
   constructor(
-    public roomCategoryService: RoomCategoryService,
+    private roomCategoryService: RoomCategoryService,
     private dialog: MatDialog
   ) {}
   displayedColumns: string[] = [

@@ -1,16 +1,16 @@
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
-export class RoomCategoryService {
+export class CustomerService {
+  private readonly baseURL = "http://localhost:8000/api/customer";
+
   constructor(private http: HttpClient) {}
 
-  private readonly baseURL = "http://localhost:8000/api/room_categories";
-
-  getRoomCategory(): Observable<any> {
+  getCustomer(): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
       "Content-Type",
       "application/json"
@@ -19,30 +19,26 @@ export class RoomCategoryService {
     return this.http.get(this.baseURL, options);
   }
 
-  addRoomCategory(roomCategory: any): Observable<any> {
+  addCustomer(customer: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
       "Content-Type",
       "application/json"
     );
     const options = { headers: httpHeaders };
-    return this.http.post(this.baseURL, roomCategory, options);
+    return this.http.post(this.baseURL, customer, options);
   }
 
-  editRoomCategory(roomCategory: any): Observable<any> {
+  editCustomer(customer: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
       "Content-Type",
       "application/json"
     );
     const options = { headers: httpHeaders };
-    return this.http.put(
-      this.baseURL + "/" + roomCategory.id,
-      roomCategory,
-      options
-    );
+    return this.http.put(this.baseURL + "/" + customer.id, customer, options);
   }
 
-  deleteRoomCategory(id: any): Observable<any> {
-    const httpParams = new HttpParams().set("id", id);
+  deleteCustomer(id: any): Observable<any> {
+    const httpParams = new HttpParams();
     const options = { params: httpParams };
     return this.http.delete(this.baseURL + "/" + id, options);
   }
