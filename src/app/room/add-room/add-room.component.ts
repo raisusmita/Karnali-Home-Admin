@@ -38,7 +38,7 @@ export class AddRoomComponent implements OnInit {
 
   onSelectedFiles(imageFile) {
     this.selectedImage = <File>imageFile.target.files;
-    this.room.image = this.selectedImage.name;
+    this.room.image = this.selectedImage;
   }
 
   submitRoomForm() {

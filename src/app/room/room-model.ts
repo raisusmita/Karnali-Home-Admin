@@ -4,6 +4,6 @@ export interface MvRoom {
   room_number: number;
   number_of_bed: number;
   phone_number: string;
-  image: any;
+  image: File;
   // created_at: Date;
 }
