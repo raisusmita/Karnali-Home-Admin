@@ -9,6 +9,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { RoomComponent } from "./room/room.component";
 import { RoomCategoryComponent } from "./room-category/room-category.component";
+import { CustomerComponent } from "./customer/customer.component";
 
 const routes: Routes = [
   { path: "", component: DashboardComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: "reservation", component: ReservationComponent },
   { path: "booking", component: BookingComponent },
   { path: "invoice", component: InvoiceComponent },
-  { path: "room", component: RoomComponent }
+  { path: "room", component: RoomComponent },
+  { path: "customer", component: CustomerComponent }
 ];
 
 @NgModule({

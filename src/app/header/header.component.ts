@@ -16,7 +16,8 @@ export class HeaderComponent implements OnInit {
     { name: "Booking", path: "booking", icon: "book" },
     { name: "Room Transaction", path: "room-transaction", icon: "description" },
     { name: "Food Order", path: "food-order", icon: "room_service" },
-    { name: "Invoice", path: "invoice", icon: "payment" }
+    { name: "Invoice", path: "invoice", icon: "payment" },
+    { name: "Customer", path: "customer", icon: "perm_identity" }
   ];
 
   constructor() {}

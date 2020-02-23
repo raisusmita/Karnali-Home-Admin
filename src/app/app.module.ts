@@ -36,6 +36,7 @@ import { EditRoomCategoryComponent } from "./room-category/edit-room-category/ed
 import { AddRoomComponent } from "./room/add-room/add-room.component";
 import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.component";
 import { FoodFormComponent } from "./food/food-form/food-form.component";
+import { CustomerComponent } from './customer/customer.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { FoodFormComponent } from "./food/food-form/food-form.component";
     EditRoomCategoryComponent,
     AddRoomComponent,
     ConfirmDeleteComponent,
-    FoodFormComponent
+    FoodFormComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,
