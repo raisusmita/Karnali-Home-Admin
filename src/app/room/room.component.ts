@@ -10,9 +10,6 @@ import { AddRoomComponent } from "./add-room/add-room.component";
 })
 export class RoomComponent implements OnInit {
   displayedColumns: string[] = [
-    "image",
-    // "id",
-    // "room_category_id",
     "room_number",
     "number_of_bed",
     "phone_number",

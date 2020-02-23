@@ -3,6 +3,7 @@ import { NewRoomCategoryComponent } from "./new-room-category/new-room-category.
 import { RoomCategoryService } from "./room-category.service";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+import { AddRoomComponent } from "../room/add-room/add-room.component";
 
 @Component({
   selector: "app-room-category",
@@ -16,8 +17,8 @@ export class RoomCategoryComponent implements OnInit {
   ) {}
   displayedColumns: string[] = [
     "id",
+    "image",
     "room_category",
-    "number_of_room",
     "room_price",
     "created_at",
     "action"
@@ -42,7 +43,6 @@ export class RoomCategoryComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (result) {
         // const newArray = [...this.dataSource];
         // newArray.push(result);
@@ -53,14 +53,13 @@ export class RoomCategoryComponent implements OnInit {
     });
   }
 
-  onEditClick(index) {
-    this.selectedRowIndex = index;
-    this.selectedRoomCategoryId = this.dataSource[index].id;
+  onEditClick(element) {
+    // this.selectedRowelement = element;
+    // this.selectedRoomCategoryId = this.dataSource[element].id;
 
-    const dialogRef = this.dialog.open(EditRoomCategoryComponent, {
+    const dialogRef = this.dialog.open(NewRoomCategoryComponent, {
       width: "50%",
-      data: index
+      data: element
     });
-    // console.log(index);
   }
 }

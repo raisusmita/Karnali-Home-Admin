@@ -25,13 +25,10 @@ export class AddRoomComponent implements OnInit {
 
   ngOnInit() {
     this.roomCategoryService.getRoomCategory().subscribe(rc => {
-      console.log(rc.data);
       if (this.data) {
         this.isEdit = true;
         this.room = this.data;
-        this.room.image = null;
       }
-      console.log(this.data, this.room);
       this.roomCategories = rc.data;
     });
   }
@@ -42,9 +39,10 @@ export class AddRoomComponent implements OnInit {
   }
 
   submitRoomForm() {
-    console.log(this.room);
     if (this.isEdit) {
-      console.log(this.room);
+      if (!this.room.image) {
+        delete this.room.image;
+      }
       this.roomService.editRoom(this.room).subscribe(e => {
         this.dialogRef.close(this.room);
       });
