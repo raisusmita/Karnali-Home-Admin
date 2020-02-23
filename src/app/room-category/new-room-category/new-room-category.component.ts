@@ -22,6 +22,7 @@ export class NewRoomCategoryComponent implements OnInit {
     if (this.data) {
       this.isEdit = true;
       this.category = this.data;
+      this.category.image = null;
     }
   }
 
@@ -34,6 +35,7 @@ export class NewRoomCategoryComponent implements OnInit {
       if (!this.category.image) {
         delete this.category.image;
       }
+      console.log(this.category);
       this.roomCategoryService
         .editRoomCategory(this.category)
         .subscribe(data => {

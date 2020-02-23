@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { RoomService } from "./room.service";
 import { MatDialog } from "@angular/material/dialog";
 import { AddRoomComponent } from "./add-room/add-room.component";
+import { ConfirmDeleteComponent } from "../shared/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-room",
@@ -40,28 +41,28 @@ export class RoomComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // const newArray = [...this.dataSource];
-        // newArray.push(result);
-        // this.dataSource = newArray;
-
         this.getRoom();
       }
     });
   }
   editRoom(roomEditData) {
-    // this.selectedRowIndex = index;
-    // this.selectedRoomId = this.dataSource[index].id;
-
-    console.log(roomEditData);
-
     const dialogRef = this.dialog.open(AddRoomComponent, {
       width: "50%",
       data: roomEditData
     });
+  }
 
-    //   const dialogRef = this.dialog.open(EditRoomCategoryComponent, {
-    //     width: "50%",
-    //     data: index
-    // }
+  deleteRoom(index) {
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+      width: "50%"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.roomService.deleteRoom(index).subscribe(data => {
+          this.getRoom();
+        });
+      }
+    });
   }
 }

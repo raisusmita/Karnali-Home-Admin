@@ -13,7 +13,6 @@ import { RoomCategoryService } from "src/app/room-category/room-category.service
 export class AddRoomComponent implements OnInit {
   room: MvRoom = {} as MvRoom;
   roomCategories;
-  selectedImage: File = null;
   isEdit = false;
 
   constructor(
@@ -33,16 +32,8 @@ export class AddRoomComponent implements OnInit {
     });
   }
 
-  onSelectedFiles(imageFile) {
-    this.selectedImage = <File>imageFile.target.files;
-    this.room.image = this.selectedImage;
-  }
-
   submitRoomForm() {
     if (this.isEdit) {
-      if (!this.room.image) {
-        delete this.room.image;
-      }
       this.roomService.editRoom(this.room).subscribe(e => {
         this.dialogRef.close(this.room);
       });
