@@ -24,12 +24,9 @@ export class EditRoomCategoryComponent implements OnInit {
   }
 
   onSubmit() {
-    this.roomCategoryService.editRoomCategory(this.category).subscribe(data => {
-      // const hotel = this.hotels.find(e => e.hotelId === this.forObject.hotelId);
-      // // );
-      // this.forObject.hotel = hotel.hotel;
-      // });
-    });
+    this.roomCategoryService
+      .editRoomCategory(this.category)
+      .subscribe(data => {});
     this.dialogRef.close(this.category);
     // this.forObject.hotel
     // }
