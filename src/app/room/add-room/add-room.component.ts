@@ -13,6 +13,7 @@ import { RoomCategoryService } from "src/app/room-category/room-category.service
 export class AddRoomComponent implements OnInit {
   room: MvRoom = {} as MvRoom;
   roomCategories;
+  selectedImage: File = null;
 
   constructor(
     private roomCategoryService: RoomCategoryService,
@@ -27,8 +28,15 @@ export class AddRoomComponent implements OnInit {
     });
   }
 
+  onSelectedFiles(imageFile) {
+    this.selectedImage = <File>imageFile.target.files;
+    this.room.image = this.selectedImage.name;
+  }
+
   submitRoomForm() {
-    this.roomService.addRoom(this.room);
-    this.dialogRef.close(this.room);
+    console.log(this.room);
+    this.roomService.addRoom(this.room).subscribe(e => {
+      this.dialogRef.close(this.room);
+    });
   }
 }

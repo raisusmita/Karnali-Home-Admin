@@ -37,7 +37,8 @@ export class RoomComponent implements OnInit {
 
   addRoom() {
     const dialogRef = this.dialog.open(AddRoomComponent, {
-      width: "50%"
+      width: "50%",
+      data: null
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -50,9 +51,16 @@ export class RoomComponent implements OnInit {
       }
     });
   }
-  editRoom(index) {
-    this.selectedRowIndex = index;
-    this.selectedRoomId = this.dataSource[index].id;
+  editRoom(roomEditData) {
+    // this.selectedRowIndex = index;
+    // this.selectedRoomId = this.dataSource[index].id;
+
+    console.log(roomEditData);
+
+    const dialogRef = this.dialog.open(AddRoomComponent, {
+      width: "50%",
+      data: roomEditData
+    });
 
     //   const dialogRef = this.dialog.open(EditRoomCategoryComponent, {
     //     width: "50%",
