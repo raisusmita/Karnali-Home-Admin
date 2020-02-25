@@ -1,0 +1,22 @@
+<h2>Add New Table</h2>
+<form #formTable="ngForm" (ngSubmit)="submitTableForm()">
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Table Number</mat-label>
+    <input
+      matInput
+      name="table_number"
+      placeholder="Enter Table Number"
+      [(ngModel)]="table.table_number"
+      required
+    />
+  </mat-form-field>
+
+  <button
+    [disabled]="!formTable.valid"
+    mat-raised-button
+    type="submit"
+    color="primary"
+  >
+    CREATE
+  </button>
+</form>

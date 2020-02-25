@@ -35,9 +35,8 @@ import { FormsModule } from "@angular/forms";
 import { EditRoomCategoryComponent } from "./room-category/edit-room-category/edit-room-category.component";
 import { AddRoomComponent } from "./room/add-room/add-room.component";
 import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.component";
+import { CustomerComponent } from "./customer/customer/customer.component";
 import { FoodFormComponent } from "./food/food-form/food-form.component";
-import { CustomerComponent } from "./customer/customer.component";
-import { CustomerFormComponent } from "./customer/customer-form/customer-form.component";
 
 @NgModule({
   declarations: [
@@ -54,11 +53,11 @@ import { CustomerFormComponent } from "./customer/customer-form/customer-form.co
     InvoiceComponent,
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,
+    ConfirmDeleteComponent,
+    CustomerComponent,
     AddRoomComponent,
     ConfirmDeleteComponent,
-    FoodFormComponent,
-    CustomerComponent,
-    CustomerFormComponent
+    FoodFormComponent
   ],
   imports: [
     BrowserModule,
@@ -76,8 +75,8 @@ import { CustomerFormComponent } from "./customer/customer-form/customer-form.co
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
   providers: [],
   entryComponents: [
@@ -85,7 +84,6 @@ import { CustomerFormComponent } from "./customer/customer-form/customer-form.co
     EditRoomCategoryComponent,
     AddRoomComponent,
     FoodFormComponent,
-    CustomerFormComponent,
     ConfirmDeleteComponent
   ],
   bootstrap: [AppComponent]
