@@ -38,6 +38,8 @@ import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.c
 import { CustomerComponent } from "./customer/customer/customer.component";
 import { AddCustomerComponent } from "./customer/add-customer/add-customer.component";
 import { FoodFormComponent } from "./food/food-form/food-form.component";
+import { TableComponent } from "./table/table.component";
+import { AddTableComponent } from "./table/add-table/add-table.component";
 
 @NgModule({
   declarations: [
@@ -56,9 +58,11 @@ import { FoodFormComponent } from "./food/food-form/food-form.component";
     EditRoomCategoryComponent,
     ConfirmDeleteComponent,
     CustomerComponent,
-    AddCustomerComponent
+    AddCustomerComponent,
     AddRoomComponent,
-    FoodFormComponent
+    FoodFormComponent,
+    TableComponent,
+    AddTableComponent
   ],
   imports: [
     BrowserModule,
@@ -83,9 +87,10 @@ import { FoodFormComponent } from "./food/food-form/food-form.component";
   entryComponents: [
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,
-    AddCustomerComponent
+    AddCustomerComponent,
     AddRoomComponent,
     FoodFormComponent,
+    AddTableComponent,
     ConfirmDeleteComponent
   ],
   bootstrap: [AppComponent]

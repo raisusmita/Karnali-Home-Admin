@@ -1,3 +1,4 @@
+import { TableComponent } from "./table/table.component";
 import { CustomerComponent } from "./customer/customer/customer.component";
 import { InvoiceComponent } from "./invoice/invoice.component";
 import { BookingComponent } from "./booking/booking.component";
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: "booking", component: BookingComponent },
   { path: "invoice", component: InvoiceComponent },
   { path: "room", component: RoomComponent },
-  { path: "customer", component: CustomerComponent }
+  { path: "customer", component: CustomerComponent },
+  { path: "table", component: TableComponent }
 ];
 
 @NgModule({
