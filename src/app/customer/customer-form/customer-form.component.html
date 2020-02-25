@@ -1,64 +1,74 @@
-<h2>Add New Room Category</h2>
-<form #formHotel="ngForm" (ngSubmit)="onSubmit()">
+<h2>Add New Customer</h2>
+<form #formHotel="ngForm" (ngSubmit)="submitCustomerForm()">
   <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>First Name</mat-label>
+    <mat-label>Customer First Name</mat-label>
     <input
       matInput
       name="first_name"
-      placeholder="Enter First Name"
-      [(ngModel)]="first_name"
+      placeholder="Enter Customer First Name"
+      [(ngModel)]="customer.first_name"
       required
     />
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Middle Name</mat-label>
+    <mat-label>Customer Middle Name</mat-label>
     <input
       matInput
       name="middle_name"
-      placeholder="Enter Middle Name"
-      [(ngModel)]="middle_name"
+      placeholder="Enter Customer Middle Name"
+      [(ngModel)]="customer.middle_name"
     />
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Last Name</mat-label>
+    <mat-label>Customer Last Name</mat-label>
     <input
       matInput
       name="last_name"
-      placeholder="Enter Last Name"
-      [(ngModel)]="last_name"
+      placeholder="Enter Customer Last Name"
+      [(ngModel)]="customer.last_name"
       required
     />
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Email</mat-label>
+    <mat-label>Customer Email</mat-label>
     <input
       matInput
-      name="email"
-      placeholder="Enter Email"
-      [(ngModel)]="email"
+      type="email"
+      name="price"
+      placeholder="Enter Customer Email"
+      [(ngModel)]="customer.email"
       required
     />
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Phone</mat-label>
+    <mat-label>Customer Phone</mat-label>
     <input
       matInput
+      type="telephone"
       name="phone"
-      placeholder="Enter Phone"
-      [(ngModel)]="phone"
+      placeholder="Enter Customer Phone"
+      [(ngModel)]="customer.phone"
       required
     />
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Customer Type</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let customer of customers" [value]="customer.value">
-        {{ customer.viewValue }}
+
+    <mat-select
+      [(ngModel)]="customer.customer_type"
+      name="customer_type"
+      required
+    >
+      <mat-option
+        *ngFor="let customer_type of customerType | keyvalue"
+        [value]="customer_type.value"
+      >
+        {{ customer_type.key }}
       </mat-option>
     </mat-select>
   </mat-form-field>

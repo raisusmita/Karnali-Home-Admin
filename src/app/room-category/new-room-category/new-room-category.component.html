@@ -23,6 +23,17 @@
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Room Number</mat-label>
+    <input
+      matInput
+      name="category.room_type"
+      placeholder="Number of Rooms"
+      [(ngModel)]="category.number_of_rooms"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Room Price</mat-label>
     <input
       matInput
