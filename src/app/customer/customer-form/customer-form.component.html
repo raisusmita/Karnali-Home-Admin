@@ -33,6 +33,28 @@
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Country</mat-label>
+    <input
+      matInput
+      name="country"
+      placeholder="Enter Your Country Name"
+      [(ngModel)]="customer.country"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Address</mat-label>
+    <input
+      matInput
+      name="address"
+      placeholder="Enter Your Address"
+      [(ngModel)]="customer.address"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Customer Email</mat-label>
     <input
       matInput

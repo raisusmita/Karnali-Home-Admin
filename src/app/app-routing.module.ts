@@ -1,3 +1,4 @@
+import { TableComponent } from "./table/table.component";
 import { CustomerComponent } from "./customer/customer.component";
 import { InvoiceComponent } from "./invoice/invoice.component";
 import { BookingComponent } from "./booking/booking.component";
@@ -10,7 +11,6 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { RoomComponent } from "./room/room.component";
 import { RoomCategoryComponent } from "./room-category/room-category.component";
-import { TableComponent } from "./table/table.component";
 
 const routes: Routes = [
   { path: "", component: DashboardComponent },
