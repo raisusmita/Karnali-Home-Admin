@@ -4,4 +4,5 @@ export interface MvRoomCategory {
   room_type: number;
   room_price: number;
   image: File;
+  number_of_rooms: number;
 }
