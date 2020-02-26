@@ -12,10 +12,10 @@ import { ConfirmDeleteComponent } from "../shared/confirm-delete/confirm-delete.
 export class CustomerComponent implements OnInit {
   displayedColumns: string[] = [
     "first_name",
-    "middle_name",
-    "last_name",
     "email",
     "phone",
+    "country",
+    "address",
     "customer_type",
     "action"
   ];

@@ -1,4 +1,3 @@
-import { CustomerComponent } from "./customer/customer/customer.component";
 import { InvoiceComponent } from "./invoice/invoice.component";
 import { BookingComponent } from "./booking/booking.component";
 import { ReservationComponent } from "./reservation/reservation.component";

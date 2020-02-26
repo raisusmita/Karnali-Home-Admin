@@ -17,7 +17,6 @@ export class RoomCategoryComponent implements OnInit {
     private dialog: MatDialog
   ) {}
   displayedColumns: string[] = [
-    "id",
     "image",
     "room_category",
     "room_type",

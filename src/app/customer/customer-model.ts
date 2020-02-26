@@ -5,5 +5,7 @@ export interface MvCustomer {
   last_name: string;
   email: string;
   phone: string;
+  country: string;
+  address: string;
   customer_type: string;
 }
