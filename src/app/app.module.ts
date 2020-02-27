@@ -1,3 +1,4 @@
+import { AddTableComponent } from "./table/add-table/add-table.component";
 import { CustomerFormComponent } from "./customer/customer-form/customer-form.component";
 import { TableComponent } from "./table/table.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -60,7 +61,8 @@ import { FoodFormComponent } from "./food/food-form/food-form.component";
     AddRoomComponent,
     CustomerFormComponent,
     FoodFormComponent,
-    TableComponent
+    TableComponent,
+    AddTableComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +90,8 @@ import { FoodFormComponent } from "./food/food-form/food-form.component";
     AddRoomComponent,
     FoodFormComponent,
     ConfirmDeleteComponent,
-    CustomerFormComponent
+    CustomerFormComponent,
+    AddTableComponent
   ],
   bootstrap: [AppComponent]
 })
