@@ -1,0 +1,51 @@
+<h2>Add New Reservation</h2>
+<form #formHotel="ngForm" (ngSubmit)="submitReservationForm()">
+  <!-- <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Select Customer</mat-label>
+    <input
+      matInput
+      name="name"
+      placeholder="Enter Food Name"
+      [(ngModel)]="reservation.booking_id"
+      required
+    />
+  </mat-form-field> -->
+
+  <!-- <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Food Price</mat-label>
+    <input
+      matInput
+      type="number"
+      name="price"
+      placeholder="Enter Food Price"
+      [(ngModel)]="food.price"
+      required
+    />
+  </mat-form-field> -->
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Customer Name</mat-label>
+
+    <mat-select
+      [(ngModel)]="reservation.customer_id"
+      name="customer_id"
+      required
+    >
+      <mat-option
+        *ngFor="let data of reservationData | keyvalue"
+        [value]="data"
+      >
+        {{ data.id }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    [disabled]="!formHotel.valid"
+    mat-raised-button
+    type="submit"
+    color="primary"
+  >
+    CREATE
+  </button>
+</form>
