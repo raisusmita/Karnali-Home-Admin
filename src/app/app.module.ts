@@ -1,3 +1,6 @@
+import { AddTableComponent } from "./table/add-table/add-table.component";
+import { CustomerFormComponent } from "./customer/customer-form/customer-form.component";
+import { TableComponent } from "./table/table.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RoomComponent } from "./room/room.component";
 import { BrowserModule } from "@angular/platform-browser";
@@ -37,7 +40,6 @@ import { AddRoomComponent } from "./room/add-room/add-room.component";
 import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.component";
 import { CustomerComponent } from "./customer/customer.component";
 import { FoodFormComponent } from "./food/food-form/food-form.component";
-import { TableComponent } from "./table/table.component";
 
 @NgModule({
   declarations: [
@@ -57,9 +59,10 @@ import { TableComponent } from "./table/table.component";
     ConfirmDeleteComponent,
     CustomerComponent,
     AddRoomComponent,
-    ConfirmDeleteComponent,
+    CustomerFormComponent,
     FoodFormComponent,
-    TableComponent
+    TableComponent,
+    AddTableComponent
   ],
   imports: [
     BrowserModule,
@@ -86,7 +89,9 @@ import { TableComponent } from "./table/table.component";
     EditRoomCategoryComponent,
     AddRoomComponent,
     FoodFormComponent,
-    ConfirmDeleteComponent
+    ConfirmDeleteComponent,
+    CustomerFormComponent,
+    AddTableComponent
   ],
   bootstrap: [AppComponent]
 })
