@@ -13,8 +13,7 @@ export class RoomComponent implements OnInit {
   displayedColumns: string[] = [
     "room_number",
     "number_of_bed",
-    "phone_number",
-    "created_at",
+    "telephone_number",
     "action"
   ];
   dataSource: any[];
