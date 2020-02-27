@@ -6,4 +6,6 @@ export interface MvCustomer {
   email: string;
   phone: string;
   customer_type: string;
+  address: string;
+  country: string;
 }
