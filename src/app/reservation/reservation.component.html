@@ -5,6 +5,14 @@
   </button>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="room_category_id">
+      <th mat-header-cell *matHeaderCellDef>Room Category</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.room.room_category.room_category }}
+        ({{ element.room.room_category.room_type }})
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="room_id">
       <th mat-header-cell *matHeaderCellDef>Room Number</th>
       <td mat-cell *matCellDef="let element">{{ element.room.room_number }}</td>

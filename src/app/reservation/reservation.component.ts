@@ -12,6 +12,7 @@ import { ReservationFormComponent } from "./reservation-form/reservation-form.co
 export class ReservationComponent implements OnInit {
   displayedColumns: string[] = [
     "room_id",
+    "room_category_id",
     "customer_id",
     // "booking_id",
     "check_in_date",
@@ -47,11 +48,14 @@ export class ReservationComponent implements OnInit {
     });
   }
 
-  editFood(FoodEditData) {
-    // const dialogRef = this.dialog.open(FoodFormComponent, {
-    //   width: "50%",
-    //   data: FoodEditData
-    // });
+  editFood(reservationData) {
+    const dialogRef = this.dialog.open(ReservationFormComponent, {
+      width: "50%",
+      data: reservationData
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.getReservation();
+    });
   }
 
   deleteFood(index) {
