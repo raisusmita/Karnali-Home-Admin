@@ -1,0 +1,31 @@
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
+
+@Injectable({
+  providedIn: "root"
+})
+export class RoomAvailabilityService {
+  private readonly baseURL = "http://localhost:8000/api/";
+  constructor(private http: HttpClient) {}
+
+  getAvailableRooms(): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.get(this.baseURL + "available", options);
+  }
+
+  getAvailableRoomsByDate(startDate, endDate): Observable<any> {
+    if (startDate < endDate) {
+      const httpHeaders = new HttpHeaders().set(
+        "Content-Type",
+        "application/json"
+      );
+      const options = { headers: httpHeaders };
+      return this.http.post(this.baseURL + "availableRoomByDate", options);
+    }
+  }
+}

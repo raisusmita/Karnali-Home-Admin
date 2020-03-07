@@ -6,6 +6,7 @@ import { CustomerService } from "src/app/customer/customer.service";
 import { MvCustomer } from "src/app/customer/customer-model";
 import { MvRoom } from "src/app/room/room-model";
 import { RoomService } from "src/app/room/room.service";
+import { RoomAvailabilityService } from "src/app/shared/services/room-availability.service";
 
 @Component({
   selector: "app-reservation-form",
@@ -24,6 +25,7 @@ export class ReservationFormComponent implements OnInit {
     private reservationService: ReservationService,
     private roomService: RoomService,
     private customerService: CustomerService,
+    private availableRoom: RoomAvailabilityService,
     private dialogRef: MatDialogRef<ReservationFormComponent>
   ) {}
 
@@ -41,6 +43,12 @@ export class ReservationFormComponent implements OnInit {
       });
       this.reservationData = data.data;
     });
+
+    this.availableRoom
+      .getAvailableRoomsByDate(Date.now(), Date.now())
+      .subscribe(e => {
+        console.log(e);
+      });
   }
 
   submitReservationForm() {

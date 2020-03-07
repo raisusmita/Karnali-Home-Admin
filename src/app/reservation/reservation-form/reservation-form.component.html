@@ -10,7 +10,9 @@
     >
       <mat-option *ngFor="let customer of customer" [value]="customer.id">
         {{ customer.first_name }} {{ customer.middle_name }}
-        {{ customer.last_name }}
+        {{ customer.last_name }} ({{
+          customer.customer_type === "1" ? "Reserved" : "Booking"
+        }})
       </mat-option>
     </mat-select>
   </mat-form-field>
