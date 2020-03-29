@@ -40,6 +40,7 @@ import { AddRoomComponent } from "./room/add-room/add-room.component";
 import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.component";
 import { CustomerComponent } from "./customer/customer.component";
 import { FoodFormComponent } from "./food/food-form/food-form.component";
+import { BookingFormComponent } from './booking/booking-form/booking-form.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { FoodFormComponent } from "./food/food-form/food-form.component";
     CustomerFormComponent,
     FoodFormComponent,
     TableComponent,
-    AddTableComponent
+    AddTableComponent,
+    BookingFormComponent
   ],
   imports: [
     BrowserModule,
