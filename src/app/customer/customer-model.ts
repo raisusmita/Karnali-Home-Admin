@@ -8,6 +8,4 @@ export interface MvCustomer {
   country: string;
   address: string;
   customer_type: string;
-  address: string;
-  country: string;
 }
