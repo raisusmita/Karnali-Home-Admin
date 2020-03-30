@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.welcome-content {
+  background-color: #1abb9c;
+  height: 100%;
+}
+.loginForm {
+  text-align: center;
+  margin-top: 150px;
+}
+
+.row {
+  height: 100%;
+}
+
+.form-content {
+  height: 100%;
+}
+
+.welcome-img-container {
+  margin-right: 180px;
+  margin-bottom: 40px;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  display: inline-block;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+button.mat-primary {
+  background-color: #1abb9c;
+  height: 50px;
+  width: 120px;
+  font-size: 18px;
+}
+h2 {
+  text-align: left;
+  color: #1abb9c;
+}

@@ -1,3 +1,6 @@
+import { AuthGuard } from "./auth.guard";
+import { AppComponent } from "./app.component";
+import { LoginComponent } from "./login/login.component";
 import { TableComponent } from "./table/table.component";
 import { CustomerComponent } from "./customer/customer.component";
 import { InvoiceComponent } from "./invoice/invoice.component";
@@ -13,8 +16,11 @@ import { RoomComponent } from "./room/room.component";
 import { RoomCategoryComponent } from "./room-category/room-category.component";
 
 const routes: Routes = [
-  { path: "", component: DashboardComponent },
-  { path: "dashboard", pathMatch: "full", redirectTo: "" },
+  { path: "", component: LoginComponent },
+  { path: "dashboard", component: DashboardComponent },
+  { path: "home", component: AppComponent, canActivate: [AuthGuard] },
+
+  // { path: "dashboard", pathMatch: "full", redirectTo: "" },
   { path: "room-category", component: RoomCategoryComponent },
   { path: "room-transaction", component: RoomTransactionComponent },
   { path: "food", component: FoodComponent },

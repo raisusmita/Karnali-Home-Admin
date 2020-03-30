@@ -1,3 +1,5 @@
+import { AuthGuard } from "./auth.guard";
+import { UserService } from "./user.service";
 import { AddTableComponent } from "./table/add-table/add-table.component";
 import { CustomerFormComponent } from "./customer/customer-form/customer-form.component";
 import { TableComponent } from "./table/table.component";
@@ -40,7 +42,9 @@ import { AddRoomComponent } from "./room/add-room/add-room.component";
 import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.component";
 import { CustomerComponent } from "./customer/customer.component";
 import { FoodFormComponent } from "./food/food-form/food-form.component";
-import { BookingFormComponent } from './booking/booking-form/booking-form.component';
+import { BookingFormComponent } from "./booking/booking-form/booking-form.component";
+import { LoginComponent } from "./login/login.component";
+import { StorageServiceModule } from "angular-webstorage-service";
 
 @NgModule({
   declarations: [
@@ -64,7 +68,8 @@ import { BookingFormComponent } from './booking/booking-form/booking-form.compon
     FoodFormComponent,
     TableComponent,
     AddTableComponent,
-    BookingFormComponent
+    BookingFormComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -83,9 +88,10 @@ import { BookingFormComponent } from './booking/booking-form/booking-form.compon
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    MatSelectModule
+    MatSelectModule,
+    StorageServiceModule
   ],
-  providers: [],
+  providers: [UserService, AuthGuard],
   entryComponents: [
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,
@@ -95,6 +101,6 @@ import { BookingFormComponent } from './booking/booking-form/booking-form.compon
     CustomerFormComponent,
     AddTableComponent
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [LoginComponent]
 })
 export class AppModule {}
