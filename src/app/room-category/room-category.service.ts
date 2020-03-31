@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
   providedIn: "root"
 })
 export class RoomCategoryService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private readonly baseURL = "http://localhost:8000/api/room_categories";
 
@@ -20,24 +20,25 @@ export class RoomCategoryService {
   }
 
   addRoomCategory(roomCategory: any): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.post(this.baseURL, roomCategory, options);
+    const formData = new FormData();
+    formData.append('room_category', roomCategory.room_category);
+    formData.append('room_type', roomCategory.room_type);
+    formData.append('room_price', roomCategory.room_price);
+    formData.append('number_of_rooms', roomCategory.number_of_rooms);
+    formData.append('image', roomCategory.image);
+    return this.http.post(this.baseURL, formData);
   }
 
   editRoomCategory(roomCategory: any): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
+    const formData = new FormData();
+    formData.append('room_category', roomCategory.room_category);
+    formData.append('room_type', roomCategory.room_type);
+    formData.append('room_price', roomCategory.room_price);
+    formData.append('number_of_rooms', roomCategory.number_of_rooms);
+    formData.append('image', roomCategory.image);
     return this.http.put(
       this.baseURL + "/" + roomCategory.id,
-      roomCategory,
-      options
+      formData
     );
   }
 
