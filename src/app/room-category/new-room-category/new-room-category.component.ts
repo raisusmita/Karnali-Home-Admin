@@ -3,6 +3,11 @@ import { MvRoomCategory } from "./../room-category-model";
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
+
+class ImageSnippet {
+  constructor(public src: string, public file: File) { }
+}
+
 @Component({
   selector: "app-new-room-category",
   templateUrl: "./new-room-category.component.html",
@@ -12,11 +17,13 @@ export class NewRoomCategoryComponent implements OnInit {
   category: MvRoomCategory = {} as MvRoomCategory;
   isEdit = false;
 
+  selectedImageFile: ImageSnippet;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private roomCategoryService: RoomCategoryService,
     private dialogRef: MatDialogRef<NewRoomCategoryComponent>
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.data) {
@@ -26,16 +33,22 @@ export class NewRoomCategoryComponent implements OnInit {
     }
   }
 
-  onSelectedFiles(imageFile) {
-    console.log(imageFile.files);
+  onSelectedFiles(imageFile: any) {
+    const file: File = imageFile.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', (event: any) => {
+      this.selectedImageFile = new ImageSnippet(event.target.result, file);
+    });
+    reader.readAsDataURL(file);   // this line triggers addEventListener (from readAsDataURL documentation)
   }
 
   onSubmit() {
+    this.category.image = this.selectedImageFile.file;
     if (this.isEdit) {
       if (!this.category.image) {
         delete this.category.image;
       }
-      console.log(this.category);
       this.roomCategoryService
         .editRoomCategory(this.category)
         .subscribe(data => {
