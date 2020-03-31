@@ -101,6 +101,6 @@ import { StorageServiceModule } from "angular-webstorage-service";
     CustomerFormComponent,
     AddTableComponent
   ],
-  bootstrap: [LoginComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

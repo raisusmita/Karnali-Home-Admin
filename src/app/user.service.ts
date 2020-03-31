@@ -13,7 +13,7 @@ export class UserService {
 
   setUserValid() {
     const getObj = JSON.parse(localStorage.getItem("user"));
-    if (getObj.username == "admin@gmail.com") {
+    if (getObj.username == "admin@gmail.com" && getObj.password == "admin") {
       this.isUserValid = true;
     }
   }
