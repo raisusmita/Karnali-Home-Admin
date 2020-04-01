@@ -1,6 +1,4 @@
 import { MvBooking } from "./booking.model";
-import { RoomCategoryService } from "./../room-category/room-category.service";
-import { CustomerService } from "./../customer/customer.service";
 import { BookingService } from "./booking.service";
 import { Component, OnInit } from "@angular/core";
 

@@ -3,7 +3,7 @@ import { RoomService } from "./../room.service";
 
 import { MvRoom } from "./../room-model";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { RoomCategoryService } from "src/app/room-category/room-category.service";
+import { RoomCategoryService } from "../../room-category/room-category.service";
 
 @Component({
   selector: "app-add-room",
