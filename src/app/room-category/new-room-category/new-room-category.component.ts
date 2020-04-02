@@ -44,7 +44,9 @@ export class NewRoomCategoryComponent implements OnInit {
   }
 
   onSubmit() {
-    this.category.image = this.selectedImageFile.file;
+    if (this.selectedImageFile) {
+      this.category.image = this.selectedImageFile.file;
+    }
     if (this.isEdit) {
       if (!this.category.image) {
         delete this.category.image;
