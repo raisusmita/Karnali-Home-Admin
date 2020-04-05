@@ -30,15 +30,18 @@ export class RoomCategoryService {
   }
 
   editRoomCategory(roomCategory: any): Observable<any> {
-    const formData = new FormData();
-    formData.append('room_category', roomCategory.room_category);
-    formData.append('room_type', roomCategory.room_type);
-    formData.append('room_price', roomCategory.room_price);
-    formData.append('number_of_rooms', roomCategory.number_of_rooms);
-    formData.append('image', roomCategory.image);
+    // Except image other fields are updatable
+
+    // This code allows passing image
+    // const formData = new FormData();
+    // formData.append('room_category', roomCategory.room_category);
+    // formData.append('room_type', roomCategory.room_type);
+    // formData.append('room_price', roomCategory.room_price);
+    // formData.append('number_of_rooms', roomCategory.number_of_rooms);
+    // formData.append('image', roomCategory.image);
     return this.http.put(
       this.baseURL + "/" + roomCategory.id,
-      formData
+      roomCategory
     );
   }
 
