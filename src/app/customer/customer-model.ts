@@ -9,3 +9,11 @@ export interface MvCustomer {
   address: string;
   country: string;
 }
+
+export interface MvUser {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}

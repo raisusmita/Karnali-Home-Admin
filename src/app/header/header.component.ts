@@ -17,10 +17,11 @@ export class HeaderComponent implements OnInit {
     { name: "Reservation", path: "reservation", icon: "check_circle" },
     { name: "Food Order", path: "food-order", icon: "room_service" },
     { name: "Room Transaction", path: "room-transaction", icon: "description" },
-    { name: "Invoice", path: "invoice", icon: "payment" }
+    { name: "Invoice", path: "invoice", icon: "payment" },
+    { name: "User", path: "user", icon: "perm_identity" },
   ];
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

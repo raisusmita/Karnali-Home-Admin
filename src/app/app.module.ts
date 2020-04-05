@@ -45,6 +45,8 @@ import { FoodFormComponent } from "./food/food-form/food-form.component";
 import { BookingFormComponent } from "./booking/booking-form/booking-form.component";
 import { LoginComponent } from "./login/login.component";
 import { StorageServiceModule } from "angular-webstorage-service";
+import { UserComponent } from './user/user.component';
+import { UserFormComponent } from './user/user-form/user-form.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +71,9 @@ import { StorageServiceModule } from "angular-webstorage-service";
     TableComponent,
     AddTableComponent,
     BookingFormComponent,
-    LoginComponent
+    LoginComponent,
+    UserComponent,
+    UserFormComponent
   ],
   imports: [
     BrowserModule,
@@ -99,8 +103,9 @@ import { StorageServiceModule } from "angular-webstorage-service";
     FoodFormComponent,
     ConfirmDeleteComponent,
     CustomerFormComponent,
-    AddTableComponent
+    AddTableComponent,
+    UserFormComponent,
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

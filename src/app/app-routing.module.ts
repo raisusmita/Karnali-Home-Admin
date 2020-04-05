@@ -14,6 +14,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { RoomComponent } from "./room/room.component";
 import { RoomCategoryComponent } from "./room-category/room-category.component";
+import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
@@ -30,11 +31,12 @@ const routes: Routes = [
   { path: "invoice", component: InvoiceComponent },
   { path: "room", component: RoomComponent },
   { path: "customer", component: CustomerComponent },
-  { path: "table", component: TableComponent }
+  { path: "table", component: TableComponent },
+  { path: 'user', component: UserComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
