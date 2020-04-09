@@ -3,8 +3,7 @@ import { NewRoomCategoryComponent } from "./new-room-category/new-room-category.
 import { RoomCategoryService } from "./room-category.service";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { AddRoomComponent } from "../room/add-room/add-room.component";
-import { ConfirmDeleteComponent } from "../shared/confirm-delete/confirm-delete.component";
+import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-room-category",

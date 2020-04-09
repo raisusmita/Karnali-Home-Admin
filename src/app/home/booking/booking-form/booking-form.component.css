@@ -1,0 +1,60 @@
+.example-full-width {
+  width: 100%;
+}
+input {
+  width: 100%;
+}
+
+h2 {
+  color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.mat-radio-button {
+  width: 50%;
+}
+
+.mat-raised-button {
+  margin-top: 10px;
+}
+
+.mat-mini-fab {
+  background-color: #1abb9c;
+  color: #fff;
+}
+.room-category {
+  font-size: 18px;
+}
+
+.remove {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.remove-room-category {
+  float: right;
+  margin-right: 0;
+  min-width: 0px !important;
+  width: 35px;
+  padding: 0px;
+}
+
+table.mat-table {
+  width: 100%;
+}
+
+.ng-tns-c4-9 {
+  transform-origin: 50% 23.8889px 0px;
+  font-size: 16px;
+  opacity: 1;
+  min-width: calc(100% + 200px);
+  transform: scaleY(1);
+}
+/* .footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+} */
