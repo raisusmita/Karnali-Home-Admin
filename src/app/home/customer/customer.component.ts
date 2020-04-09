@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { CustomerService } from "./customer.service";
 import { MatDialog } from "@angular/material/dialog";
 import { CustomerFormComponent } from "./customer-form/customer-form.component";
-import { ConfirmDeleteComponent } from "../shared/confirm-delete/confirm-delete.component";
+import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-customer",
@@ -43,6 +43,7 @@ export class CustomerComponent implements OnInit {
   addCustomer() {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       width: "50%",
+      height: "700px",
       data: null
     });
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FoodService } from "./food.service";
 import { MatDialog } from "@angular/material/dialog";
+import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
 import { FoodFormComponent } from "./food-form/food-form.component";
-import { ConfirmDeleteComponent } from "../shared/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-food",

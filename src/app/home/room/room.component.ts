@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { RoomService } from "./room.service";
 import { MatDialog } from "@angular/material/dialog";
 import { AddRoomComponent } from "./add-room/add-room.component";
-import { ConfirmDeleteComponent } from "../shared/confirm-delete/confirm-delete.component";
+import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-room",
