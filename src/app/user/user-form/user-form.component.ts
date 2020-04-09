@@ -24,18 +24,18 @@ export class UserFormComponent implements OnInit {
     this.userService.getUser().subscribe(() => {
       if (this.data) {
         this.isEdit = true;
-        this.customer = this.data;
+        this.user = this.data;
       }
     });
   }
   submitUserForm() {
     if (this.isEdit) {
-      this.userService.editUser(this.customer).subscribe(() => {
-        this.dialogRef.close(this.customer);
+      this.userService.editUser(this.user).subscribe(() => {
+        this.dialogRef.close(this.user);
       });
     } else {
-      this.userService.addUser(this.customer).subscribe(() => {
-        this.dialogRef.close(this.customer);
+      this.userService.addUser(this.user).subscribe(() => {
+        this.dialogRef.close(this.user);
       });
     }
   }
