@@ -42,6 +42,8 @@ import { FoodFormComponent } from "./food/food-form/food-form.component";
 import { TableComponent } from "./table/table.component";
 import { AddTableComponent } from "./table/add-table/add-table.component";
 import { BookingFormComponent } from "./booking/booking-form/booking-form.component";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -86,6 +88,8 @@ import { BookingFormComponent } from "./booking/booking-form/booking-form.compon
     MatInputModule,
     FormsModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     StorageServiceModule
   ],
   providers: [UserService, AuthGuard],
@@ -96,7 +100,8 @@ import { BookingFormComponent } from "./booking/booking-form/booking-form.compon
     FoodFormComponent,
     ConfirmDeleteComponent,
     CustomerFormComponent,
-    AddTableComponent
+    AddTableComponent,
+    BookingFormComponent
   ]
 })
 export class HomeModule {}

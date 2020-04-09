@@ -17,11 +17,11 @@ import { TableComponent } from "./home/table/table.component";
 import { HomeComponent } from "./home/home.component";
 
 const routes: Routes = [
-  { path: "", component: LoginComponent },
+  { path: "", component: BookingComponent },
   {
     path: "home",
     component: HomeComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       { path: "dashboard", component: DashboardComponent },
 
