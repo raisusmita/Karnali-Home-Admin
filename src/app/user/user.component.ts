@@ -48,11 +48,11 @@ export class UserComponent implements OnInit {
       }
     });
   }
-  editUser(customerEditData) {
-    // const dialogRef = this.dialog.open(UserFormComponent, {
-    //   width: "50%",
-    //   data: customerEditData
-    // });
+  editUser(userEditData) {
+    const dialogRef = this.dialog.open(UserFormComponent, {
+      width: "50%",
+      data: userEditData
+    });
   }
 
   deleteUser(index) {
