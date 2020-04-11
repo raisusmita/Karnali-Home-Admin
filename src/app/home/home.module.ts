@@ -1,4 +1,3 @@
-import { AppModule } from "./../app.module";
 import { NgModule } from "@angular/core";
 import { HeaderComponent } from "./header/header.component";
 import { ReservationComponent } from "./reservation/reservation.component";
@@ -12,6 +11,8 @@ import { HomeComponent } from "./home.component";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
+
+//  These imports has to be shifted to app module since it could be used in other than home module sections
 import { HttpClientModule } from "@angular/common/http";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSidenavModule } from "@angular/material/sidenav";
@@ -23,6 +24,8 @@ import { MatTableModule } from "@angular/material/table";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+//  ---------------------------------------------------------------------
+
 import { FormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
 import { StorageServiceModule } from "angular-webstorage-service";
@@ -44,6 +47,8 @@ import { AddTableComponent } from "./table/add-table/add-table.component";
 import { BookingFormComponent } from "./booking/booking-form/booking-form.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
+import { UserComponent } from '../user/user.component';
+import { UserFormComponent } from '../user/user-form/user-form.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +73,9 @@ import { MatNativeDateModule } from "@angular/material/core";
     AddTableComponent,
     BookingFormComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    UserComponent,
+    UserFormComponent
   ],
   imports: [
     BrowserModule,
@@ -104,4 +111,4 @@ import { MatNativeDateModule } from "@angular/material/core";
     BookingFormComponent
   ]
 })
-export class HomeModule {}
+export class HomeModule { }
