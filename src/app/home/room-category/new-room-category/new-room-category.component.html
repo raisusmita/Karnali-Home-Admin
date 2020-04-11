@@ -1,0 +1,33 @@
+<h2>Add New Room Category</h2>
+<form #formHotel="ngForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Room Category</mat-label>
+    <input matInput name="category.room_category" placeholder="Enter Room Category" [(ngModel)]="category.room_category"
+      required />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Room Type</mat-label>
+    <input matInput name="category.room_type" placeholder="Enter Single, Double or Triple Bed"
+      [(ngModel)]="category.room_type" required />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Number of rooms</mat-label>
+    <input matInput name="category.number_of_rooms" placeholder="Number of Rooms" [(ngModel)]="category.number_of_rooms"
+      required />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Room Price</mat-label>
+    <input matInput name="category.room_price" placeholder="Enter Room Price" [(ngModel)]="category.room_price"
+      required />
+  </mat-form-field>
+
+  <input #imageFile type="file" accept="image/*" name="image" placeholder="Room image"
+    (change)="onSelectedFiles(imageFile)" />
+
+  <button [disabled]="!formHotel.valid" mat-raised-button type="submit" color="primary">
+    CREATE
+  </button>
+</form>

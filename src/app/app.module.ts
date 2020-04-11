@@ -1,15 +1,8 @@
-import { AuthGuard } from "./auth.guard";
-import { UserService } from "./user.service";
-import { AddTableComponent } from "./table/add-table/add-table.component";
-import { CustomerFormComponent } from "./customer/customer-form/customer-form.component";
-import { TableComponent } from "./table/table.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { RoomComponent } from "./room/room.component";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 
 import { AppComponent } from "./app.component";
-import { HeaderComponent } from "./header/header.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
@@ -26,27 +19,35 @@ import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
 import { MatSelectModule } from "@angular/material/select";
 
-import { RoomCategoryComponent } from "./room-category/room-category.component";
-import { ReservationComponent } from "./reservation/reservation.component";
-import { BookingComponent } from "./booking/booking.component";
-import { DashboardComponent } from "./dashboard/dashboard.component";
-import { RoomTransactionComponent } from "./room-transaction/room-transaction.component";
-import { FoodComponent } from "./food/food.component";
-import { FoodOrderComponent } from "./food-order/food-order.component";
-import { InvoiceComponent } from "./invoice/invoice.component";
-import { NewRoomCategoryComponent } from "./room-category/new-room-category/new-room-category.component";
-
 import { FormsModule } from "@angular/forms";
-import { EditRoomCategoryComponent } from "./room-category/edit-room-category/edit-room-category.component";
-import { AddRoomComponent } from "./room/add-room/add-room.component";
+import { EditRoomCategoryComponent } from "./home/room-category/edit-room-category/edit-room-category.component";
 import { ConfirmDeleteComponent } from "./shared/confirm-delete/confirm-delete.component";
-import { CustomerComponent } from "./customer/customer.component";
-import { FoodFormComponent } from "./food/food-form/food-form.component";
-import { BookingFormComponent } from "./booking/booking-form/booking-form.component";
+import { CustomerComponent } from "./home/customer/customer.component";
+import { AddRoomComponent } from "./home/room/add-room/add-room.component";
+import { FoodFormComponent } from "./home/food/food-form/food-form.component";
 import { LoginComponent } from "./login/login.component";
+import { BookingFormComponent } from "./home/booking/booking-form/booking-form.component";
 import { StorageServiceModule } from "angular-webstorage-service";
+import { RoomCategoryComponent } from "./home/room-category/room-category.component";
+import { ReservationComponent } from "./home/reservation/reservation.component";
+import { BookingComponent } from "./home/booking/booking.component";
+import { DashboardComponent } from "./home/dashboard/dashboard.component";
+import { RoomTransactionComponent } from "./home/room-transaction/room-transaction.component";
+import { FoodComponent } from "./home/food/food.component";
+import { FoodOrderComponent } from "./home/food-order/food-order.component";
+import { InvoiceComponent } from "./home/invoice/invoice.component";
+import { NewRoomCategoryComponent } from "./home/room-category/new-room-category/new-room-category.component";
+import { HeaderComponent } from "./home/header/header.component";
+import { RoomComponent } from "./home/room/room.component";
+import { HomeModule } from "./home/home.module";
+import { UserService } from "./user.service";
+import { AuthGuard } from "./auth.guard";
+
 import { UserComponent } from './user/user.component';
 import { UserFormComponent } from './user/user-form/user-form.component';
+import { CustomerFormComponent } from './home/customer/customer-form/customer-form.component';
+import { TableComponent } from './home/table/table.component';
+import { AddTableComponent } from './home/table/add-table/add-table.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { UserFormComponent } from './user/user-form/user-form.component';
     MatInputModule,
     FormsModule,
     MatSelectModule,
-    StorageServiceModule
+    StorageServiceModule,
+    HomeModule
   ],
   providers: [UserService, AuthGuard],
   entryComponents: [
