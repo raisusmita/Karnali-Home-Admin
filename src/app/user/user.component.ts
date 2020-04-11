@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CustomerService } from '../customer/customer.service';
-import { CustomerFormComponent } from '../customer/customer-form/customer-form.component';
+// import { CustomerService } from '../customer/customer.service';
+// import { CustomerFormComponent } from '../customer/customer-form/customer-form.component';
 import { ConfirmDeleteComponent } from '../shared/confirm-delete/confirm-delete.component';
 import { UserService } from '../user.service';
 import { UserFormComponent } from './user-form/user-form.component';

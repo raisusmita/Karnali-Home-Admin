@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MvUser } from 'src/app/customer/customer-model';
+import { MvUser } from 'src/app/home/customer/customer-model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from 'src/app/user.service';
 
