@@ -29,7 +29,6 @@ import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
 import { StorageServiceModule } from "angular-webstorage-service";
-import { UserService } from "../user.service";
 import { AuthGuard } from "../auth.guard";
 import { AppRoutingModule } from "../app-routing.module";
 import { RoomComponent } from "./room/room.component";
@@ -47,8 +46,10 @@ import { AddTableComponent } from "./table/add-table/add-table.component";
 import { BookingFormComponent } from "./booking/booking-form/booking-form.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
-import { UserComponent } from '../user/user.component';
-import { UserFormComponent } from '../user/user-form/user-form.component';
+import { UserComponent } from "./user/user.component";
+import { UserFormComponent } from "./user/user-form/user-form.component";
+import { UserAuthService } from "../user-auth.service";
+import { UserService } from "./user/user.service";
 
 @NgModule({
   declarations: [
@@ -75,7 +76,7 @@ import { UserFormComponent } from '../user/user-form/user-form.component';
     LoginComponent,
     HomeComponent,
     UserComponent,
-    UserFormComponent
+    UserFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,9 +98,9 @@ import { UserFormComponent } from '../user/user-form/user-form.component';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    StorageServiceModule
+    StorageServiceModule,
   ],
-  providers: [UserService, AuthGuard],
+  providers: [UserAuthService, AuthGuard, UserService],
   entryComponents: [
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,
@@ -108,7 +109,8 @@ import { UserFormComponent } from '../user/user-form/user-form.component';
     ConfirmDeleteComponent,
     CustomerFormComponent,
     AddTableComponent,
-    BookingFormComponent
-  ]
+    BookingFormComponent,
+    UserFormComponent,
+  ],
 })
-export class HomeModule { }
+export class HomeModule {}

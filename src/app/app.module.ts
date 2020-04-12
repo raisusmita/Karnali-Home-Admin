@@ -22,14 +22,14 @@ import { RouterModule } from "@angular/router";
 // import { MatSelectModule } from "@angular/material/select";
 
 import { HomeModule } from "./home/home.module";
-import { UserService } from "./user.service";
 import { AuthGuard } from "./auth.guard";
+import { UserAuthService } from "./user-auth.service";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, RouterModule, HomeModule],
-  providers: [UserService, AuthGuard],
+  providers: [UserAuthService, AuthGuard],
   entryComponents: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

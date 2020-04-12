@@ -1,5 +1,4 @@
 import { AuthGuard } from "./auth.guard";
-import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
@@ -15,7 +14,7 @@ import { RoomComponent } from "./home/room/room.component";
 import { CustomerComponent } from "./home/customer/customer.component";
 import { TableComponent } from "./home/table/table.component";
 import { HomeComponent } from "./home/home.component";
-import { UserComponent } from './user/user.component';
+import { UserComponent } from "./home/user/user.component";
 const routes: Routes = [
   { path: "", component: LoginComponent },
   {
@@ -24,7 +23,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: "dashboard", component: DashboardComponent },
-
       { path: "room-category", component: RoomCategoryComponent },
       { path: "room-transaction", component: RoomTransactionComponent },
       { path: "food", component: FoodComponent },
@@ -35,11 +33,9 @@ const routes: Routes = [
       { path: "room", component: RoomComponent },
       { path: "customer", component: CustomerComponent },
       { path: "table", component: TableComponent },
-      { path: 'user', component: UserComponent },
-
+      { path: "user", component: UserComponent },
     ],
   },
-
   // { path: "dashboard", pathMatch: "full", redirectTo: "" },
 ];
 
@@ -47,4 +43,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
