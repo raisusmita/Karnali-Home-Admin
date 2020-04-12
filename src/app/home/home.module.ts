@@ -46,6 +46,12 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatCardModule } from "@angular/material/card";
 
+import {
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MatMomentDateModule,
+} from "@angular/material-moment-adapter";
+import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -93,8 +99,15 @@ import { MatCardModule } from "@angular/material/card";
     MatNativeDateModule,
     MatCardModule,
     StorageServiceModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
   ],
-  providers: [UserService, AuthGuard],
+  providers: [
+    UserService,
+    AuthGuard,
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+    // { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+  ],
   entryComponents: [
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,
