@@ -1,3 +1,4 @@
+import { BookingService } from "./../booking.service";
 import { RoomCategoryService } from "./../../room-category/room-category.service";
 import { CustomerService } from "./../../customer/customer.service";
 import { Component, OnInit, Inject } from "@angular/core";
@@ -37,7 +38,8 @@ export class BookingFormComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private customerService: CustomerService,
-    private roomCategoryService: RoomCategoryService
+    private roomCategoryService: RoomCategoryService,
+    private bookingService: BookingService
   ) {}
 
   ngOnInit() {
@@ -78,6 +80,9 @@ export class BookingFormComponent implements OnInit {
 
   submitCustomerForm() {
     console.log(this.booking);
+    this.bookingService.addBooking(this.booking).subscribe((result) => {
+      console.log(result);
+    });
   }
 
   test(e, i) {

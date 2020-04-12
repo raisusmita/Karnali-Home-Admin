@@ -44,6 +44,7 @@ import { AddTableComponent } from "./table/add-table/add-table.component";
 import { BookingFormComponent } from "./booking/booking-form/booking-form.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -68,7 +69,7 @@ import { MatNativeDateModule } from "@angular/material/core";
     AddTableComponent,
     BookingFormComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,7 +91,8 @@ import { MatNativeDateModule } from "@angular/material/core";
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    StorageServiceModule
+    MatCardModule,
+    StorageServiceModule,
   ],
   providers: [UserService, AuthGuard],
   entryComponents: [
@@ -101,7 +103,7 @@ import { MatNativeDateModule } from "@angular/material/core";
     ConfirmDeleteComponent,
     CustomerFormComponent,
     AddTableComponent,
-    BookingFormComponent
-  ]
+    BookingFormComponent,
+  ],
 })
 export class HomeModule {}

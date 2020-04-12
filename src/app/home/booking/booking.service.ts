@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class BookingService {
   private readonly baseURL = "http://localhost:8000/api/";
@@ -28,14 +28,14 @@ export class BookingService {
     return this.http.get(this.baseURL + "booked_rooms", options);
   }
 
-  // addCustomer(customer: any): Observable<any> {
-  //   const httpHeaders = new HttpHeaders().set(
-  //     "Content-Type",
-  //     "application/json"
-  //   );
-  //   const options = { headers: httpHeaders };
-  //   return this.http.post(this.baseURL, customer, options);
-  // }
+  addBooking(booking: any): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.post(this.baseURL + "booking", booking, options);
+  }
 
   // editCustomer(customer: any): Observable<any> {
   //   const httpHeaders = new HttpHeaders().set(

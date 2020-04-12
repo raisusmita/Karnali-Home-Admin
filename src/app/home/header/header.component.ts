@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.css"]
+  styleUrls: ["./header.component.css"],
 })
 export class HeaderComponent implements OnInit {
   components: any[] = [
@@ -20,9 +20,10 @@ export class HeaderComponent implements OnInit {
     {
       name: "Room Transaction",
       path: "home/room-transaction",
-      icon: "description"
+      icon: "description",
     },
-    { name: "Invoice", path: "home/invoice", icon: "payment" }
+    { name: "Invoice", path: "home/invoice", icon: "payment" },
+    { name: "User", path: "home/user", icon: "delete" },
   ];
 
   constructor(private router: Router) {}
