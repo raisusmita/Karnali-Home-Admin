@@ -2,7 +2,7 @@ import { BookingService } from "./../booking.service";
 import { RoomCategoryService } from "./../../room-category/room-category.service";
 import { CustomerService } from "./../../customer/customer.service";
 import { Component, OnInit, Inject } from "@angular/core";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MvBooking } from "../booking.model";
 
 @Component({
@@ -39,7 +39,8 @@ export class BookingFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private customerService: CustomerService,
     private roomCategoryService: RoomCategoryService,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private dialogRef: MatDialogRef<BookingFormComponent>
   ) {}
 
   ngOnInit() {
@@ -79,10 +80,15 @@ export class BookingFormComponent implements OnInit {
   }
 
   submitCustomerForm() {
-    console.log(this.booking);
-    this.bookingService.addBooking(this.booking).subscribe((result) => {
-      console.log(result);
-    });
+    if (this.editForm) {
+      // this.bookingService.ed(this.booking).subscribe((result) => {
+      //   this.dialogRef.close(this.customer);
+      // });
+    } else {
+      this.bookingService.addBooking(this.booking).subscribe((result) => {
+        this.dialogRef.close();
+      });
+    }
   }
 
   test(e, i) {
