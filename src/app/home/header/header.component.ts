@@ -26,12 +26,12 @@ export class HeaderComponent implements OnInit {
     { name: "User", path: "home/user", icon: "group" },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   logout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');
     this.router.navigate(["/"]);
   }
 }

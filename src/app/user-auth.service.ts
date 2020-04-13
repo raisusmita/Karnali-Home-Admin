@@ -1,25 +1,26 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: "root",
 })
 export class UserAuthService {
-  private isUserValid: boolean;
-  private username;
+
+  private readonly baseURL = "http://localhost:8000/api/";
 
   constructor(private http: HttpClient) {
-    this.isUserValid = false;
   }
 
-  setUserValid() {
-    const getObj = JSON.parse(localStorage.getItem("user"));
-    if (getObj.username === "admin@gmail.com" && getObj.password === "admin") {
-      this.isUserValid = true;
+  getUserValidity() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return true;
     }
+    return false;
   }
 
-  getUserValid() {
-    return this.isUserValid;
+  loginUser(user: any): Observable<any> {
+    return this.http.post(this.baseURL + "login", user);
   }
 }

@@ -16,16 +16,15 @@ export class AuthGuard implements CanActivate {
   constructor(
     private userAuthService: UserAuthService,
     private router: Router
-  ) {}
+  ) { }
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (this.userAuthService.getUserValid()) {
+    if (this.userAuthService.getUserValidity()) {
       return true;
     }
-
-    this.router.navigate(["/"]);
+    // this.router.navigate(["/"]);
     return false;
   }
 }
