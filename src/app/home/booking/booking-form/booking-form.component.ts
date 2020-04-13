@@ -1,7 +1,8 @@
+import { BookingService } from "./../booking.service";
 import { RoomCategoryService } from "./../../room-category/room-category.service";
 import { CustomerService } from "./../../customer/customer.service";
 import { Component, OnInit, Inject } from "@angular/core";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MvBooking } from "../booking.model";
 
 @Component({
@@ -37,7 +38,9 @@ export class BookingFormComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private customerService: CustomerService,
-    private roomCategoryService: RoomCategoryService
+    private roomCategoryService: RoomCategoryService,
+    private bookingService: BookingService,
+    private dialogRef: MatDialogRef<BookingFormComponent>
   ) {}
 
   ngOnInit() {
@@ -46,6 +49,11 @@ export class BookingFormComponent implements OnInit {
     } else {
       this.editForm = true;
     }
+    this.bookingService.getBookedRoom().subscribe(() => {
+      if (this.data.gridData) {
+        this.booking = this.data.gridData;
+      }
+    });
 
     this.getCustomers();
     this.getRoomCategories();
@@ -77,11 +85,14 @@ export class BookingFormComponent implements OnInit {
   }
 
   submitCustomerForm() {
-    console.log(this.booking);
-  }
-
-  test(e, i) {
-    console.log(e);
-    console.log(i);
+    if (this.editForm) {
+      this.bookingService.editBooking(this.booking).subscribe((result) => {
+        this.dialogRef.close(this.booking);
+      });
+    } else {
+      this.bookingService.addBooking(this.booking).subscribe((result) => {
+        this.dialogRef.close(this.booking);
+      });
+    }
   }
 }
