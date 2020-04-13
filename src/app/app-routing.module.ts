@@ -17,11 +17,11 @@ import { TableComponent } from "./home/table/table.component";
 import { HomeComponent } from "./home/home.component";
 
 const routes: Routes = [
-  { path: "", component: BookingComponent },
+  { path: "", component: LoginComponent },
   {
     path: "home",
     component: HomeComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       { path: "dashboard", component: DashboardComponent },
 
@@ -34,15 +34,15 @@ const routes: Routes = [
       { path: "invoice", component: InvoiceComponent },
       { path: "room", component: RoomComponent },
       { path: "customer", component: CustomerComponent },
-      { path: "table", component: TableComponent }
-    ]
-  }
+      { path: "table", component: TableComponent },
+    ],
+  },
 
   // { path: "dashboard", pathMatch: "full", redirectTo: "" },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
