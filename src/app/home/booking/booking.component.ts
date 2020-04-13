@@ -3,6 +3,7 @@ import { BookingFormComponent } from "./booking-form/booking-form.component";
 import { MvBooking } from "./booking.model";
 import { BookingService } from "./booking.service";
 import { Component, OnInit } from "@angular/core";
+import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-booking",
@@ -65,6 +66,20 @@ export class BookingComponent implements OnInit {
         gridData: bookingEditData,
         formType: "Edit",
       },
+    });
+  }
+
+  deleteBooking(index) {
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+      width: "50%",
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.bookingService.deleteBooking(index).subscribe((data) => {
+          this.getBookedRoom();
+        });
+      }
     });
   }
 }

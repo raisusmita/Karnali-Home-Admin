@@ -49,6 +49,11 @@ export class BookingFormComponent implements OnInit {
     } else {
       this.editForm = true;
     }
+    this.bookingService.getBookedRoom().subscribe(() => {
+      if (this.data.gridData) {
+        this.booking = this.data.gridData;
+      }
+    });
 
     this.getCustomers();
     this.getRoomCategories();
@@ -81,18 +86,13 @@ export class BookingFormComponent implements OnInit {
 
   submitCustomerForm() {
     if (this.editForm) {
-      // this.bookingService.ed(this.booking).subscribe((result) => {
-      //   this.dialogRef.close(this.customer);
-      // });
+      this.bookingService.editBooking(this.booking).subscribe((result) => {
+        this.dialogRef.close(this.booking);
+      });
     } else {
       this.bookingService.addBooking(this.booking).subscribe((result) => {
-        this.dialogRef.close();
+        this.dialogRef.close(this.booking);
       });
     }
-  }
-
-  test(e, i) {
-    console.log(e);
-    console.log(i);
   }
 }

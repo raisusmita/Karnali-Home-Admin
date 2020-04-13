@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -37,18 +37,22 @@ export class BookingService {
     return this.http.post(this.baseURL + "booking", booking, options);
   }
 
-  // editCustomer(customer: any): Observable<any> {
-  //   const httpHeaders = new HttpHeaders().set(
-  //     "Content-Type",
-  //     "application/json"
-  //   );
-  //   const options = { headers: httpHeaders };
-  //   return this.http.put(this.baseURL + "/" + customer.id, customer, options);
-  // }
+  editBooking(booking: any): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.put(
+      this.baseURL + "booking/" + booking.id,
+      booking,
+      options
+    );
+  }
 
-  // deleteCustomer(id: any): Observable<any> {
-  //   const httpParams = new HttpParams();
-  //   const options = { params: httpParams };
-  //   return this.http.delete(this.baseURL + "/" + id, options);
-  // }
+  deleteBooking(id: any): Observable<any> {
+    const httpParams = new HttpParams();
+    const options = { params: httpParams };
+    return this.http.delete(this.baseURL + "booking/" + id, options);
+  }
 }
