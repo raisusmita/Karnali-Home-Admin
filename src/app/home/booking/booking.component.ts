@@ -3,11 +3,12 @@ import { BookingFormComponent } from "./booking-form/booking-form.component";
 import { MvBooking } from "./booking.model";
 import { BookingService } from "./booking.service";
 import { Component, OnInit } from "@angular/core";
+import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-booking",
   templateUrl: "./booking.component.html",
-  styleUrls: ["./booking.component.css"]
+  styleUrls: ["./booking.component.css"],
 })
 export class BookingComponent implements OnInit {
   booking: MvBooking = {} as MvBooking;
@@ -21,7 +22,7 @@ export class BookingComponent implements OnInit {
     "check_in_date",
     "check_out_date",
     "created_at",
-    "action"
+    "action",
   ];
   dataSource: any[];
 
@@ -35,7 +36,7 @@ export class BookingComponent implements OnInit {
   }
 
   getBookedRoom() {
-    this.bookingService.getBookedRoom().subscribe(result => {
+    this.bookingService.getBookedRoom().subscribe((result) => {
       this.dataSource = result.data;
       console.log(result);
     });
@@ -47,11 +48,11 @@ export class BookingComponent implements OnInit {
       height: "700px",
       data: {
         gridData: null,
-        formType: "Add"
-      }
+        formType: "Add",
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getBookedRoom();
       }
@@ -63,7 +64,21 @@ export class BookingComponent implements OnInit {
       width: "50%",
       data: {
         gridData: bookingEditData,
-        formType: "Edit"
+        formType: "Edit",
+      },
+    });
+  }
+
+  deleteBooking(index) {
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+      width: "50%",
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.bookingService.deleteBooking(index).subscribe((data) => {
+          this.getBookedRoom();
+        });
       }
     });
   }

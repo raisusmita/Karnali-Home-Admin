@@ -1,10 +1,14 @@
 import { Injectable } from "@angular/core";
+<<<<<<< HEAD
 import { HttpClient } from "@angular/common/http";
+=======
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+>>>>>>> d9ddcf0289a0fa3d23ef25387b1d37cf9c5abbc4
 import { Observable } from "rxjs";
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class BookingService {
   private readonly baseURL = environment.apiURL;
@@ -19,15 +23,18 @@ export class BookingService {
     return this.http.get(this.baseURL + "booked_rooms");
   }
 
-  // addCustomer(customer: any): Observable<any> {
-  //   return this.http.post(this.baseURL, customer);
-  // }
+  addBooking(booking: any): Observable<any> {
+    return this.http.post(this.baseURL + "booking", booking);
+  }
 
-  // editCustomer(customer: any): Observable<any> {
-  //   return this.http.put(this.baseURL + "/" + customer.id, customer);
-  // }
+  editBooking(booking: any): Observable<any> {
+    return this.http.put(
+      this.baseURL + "booking/" + booking.id,
+      booking
+    );
+  }
 
-  // deleteCustomer(id: any): Observable<any> {
-  //   return this.http.delete(this.baseURL + "/" + id);
-  // }
+  deleteBooking(id: any): Observable<any> {
+    return this.http.delete(this.baseURL + "booking/" + id);
+  }
 }

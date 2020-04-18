@@ -51,6 +51,12 @@ import { UserFormComponent } from "./user/user-form/user-form.component";
 import { UserAuthService } from "../user-auth.service";
 import { UserService } from "./user/user.service";
 
+import {
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MatMomentDateModule,
+} from "@angular/material-moment-adapter";
+import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
 @NgModule({
   declarations: [
     HeaderComponent,
