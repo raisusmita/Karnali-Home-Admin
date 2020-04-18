@@ -1,46 +1,31 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: "root"
 })
 export class TableService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  private readonly baseURL = "http://localhost:8000/api/tables";
+  private readonly baseURL = environment.apiURL + 'tables';
 
   getTable(): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.get(this.baseURL, options);
+    return this.http.get(this.baseURL);
   }
 
   addTable(table: any): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.post(this.baseURL, table, options);
+    return this.http.post(this.baseURL, table);
   }
 
   editTable(table: any): Observable<any> {
     console.log(table.id);
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.put(this.baseURL + "/" + table.id, table, options);
+    return this.http.put(this.baseURL + "/" + table.id, table);
   }
 
   deleteTable(id: any): Observable<any> {
-    const httpParams = new HttpParams();
-    const options = { params: httpParams };
-    return this.http.delete(this.baseURL + "/" + id, options);
+    return this.http.delete(this.baseURL + "/" + id);
   }
 }

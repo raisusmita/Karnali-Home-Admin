@@ -3,10 +3,8 @@ import {
   CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
-  UrlTree,
   Router,
 } from "@angular/router";
-import { Observable } from "rxjs";
 import { UserAuthService } from "./user-auth.service";
 
 @Injectable({
@@ -21,6 +19,8 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
+    console.log(next);
+    console.log(state);
     if (this.userAuthService.getUserValidity()) {
       return true;
     }

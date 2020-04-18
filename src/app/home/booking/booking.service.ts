@@ -1,54 +1,33 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root"
 })
 export class BookingService {
-  private readonly baseURL = "http://localhost:8000/api/";
+  private readonly baseURL = environment.apiURL;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getBooking(): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.get(this.baseURL + "booking", options);
+    return this.http.get(this.baseURL + "booking");
   }
 
   getBookedRoom(): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.get(this.baseURL + "booked_rooms", options);
+    return this.http.get(this.baseURL + "booked_rooms");
   }
 
   // addCustomer(customer: any): Observable<any> {
-  //   const httpHeaders = new HttpHeaders().set(
-  //     "Content-Type",
-  //     "application/json"
-  //   );
-  //   const options = { headers: httpHeaders };
-  //   return this.http.post(this.baseURL, customer, options);
+  //   return this.http.post(this.baseURL, customer);
   // }
 
   // editCustomer(customer: any): Observable<any> {
-  //   const httpHeaders = new HttpHeaders().set(
-  //     "Content-Type",
-  //     "application/json"
-  //   );
-  //   const options = { headers: httpHeaders };
-  //   return this.http.put(this.baseURL + "/" + customer.id, customer, options);
+  //   return this.http.put(this.baseURL + "/" + customer.id, customer);
   // }
 
   // deleteCustomer(id: any): Observable<any> {
-  //   const httpParams = new HttpParams();
-  //   const options = { params: httpParams };
-  //   return this.http.delete(this.baseURL + "/" + id, options);
+  //   return this.http.delete(this.baseURL + "/" + id);
   // }
 }

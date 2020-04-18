@@ -1,45 +1,30 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: "root"
 })
 export class CustomerService {
-  private readonly baseURL = "http://localhost:8000/api/customer";
+  private readonly baseURL = environment.apiURL + 'customer';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCustomer(): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.get(this.baseURL, options);
+    return this.http.get(this.baseURL);
   }
 
   addCustomer(customer: any): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.post(this.baseURL, customer, options);
+    return this.http.post(this.baseURL, customer);
   }
 
   editCustomer(customer: any): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.put(this.baseURL + "/" + customer.id, customer, options);
+    return this.http.put(this.baseURL + "/" + customer.id, customer);
   }
 
   deleteCustomer(id: any): Observable<any> {
-    const httpParams = new HttpParams();
-    const options = { params: httpParams };
-    return this.http.delete(this.baseURL + "/" + id, options);
+    return this.http.delete(this.baseURL + "/" + id);
   }
 }
