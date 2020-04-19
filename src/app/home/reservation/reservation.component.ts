@@ -41,7 +41,6 @@ export class ReservationComponent implements OnInit {
   getReservation() {
     this.reservationService.getReservation().subscribe((data) => {
       this.dataSource = data.data;
-      console.log(data);
     });
   }
 
@@ -61,15 +60,14 @@ export class ReservationComponent implements OnInit {
   }
 
   editReservation(reservationData) {
-    reservationData.check_in_date = this.datepipe.transform(
-      reservationData.check_in_date,
-      "MM/dd/yyyy"
-    );
-    reservationData.check_out_date = this.datepipe.transform(
-      reservationData.check_out_date,
-      "MM/dd/yyyy"
-    );
-    console.log(this.reservation);
+    // reservationData.check_in_date = this.datepipe.transform(
+    //   reservationData.check_in_date,
+    //   "M/d/y"
+    // );
+    // reservationData.check_out_date = this.datepipe.transform(
+    //   reservationData.check_out_date,
+    //   "M/d/y"
+    // );
 
     const dialogRef = this.dialog.open(ReservationFormComponent, {
       width: "50%",
