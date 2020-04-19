@@ -1,0 +1,67 @@
+<h2 *ngIf="addForm">Add New Reservation</h2>
+<h2 *ngIf="editForm">Edit Reservation</h2>
+<form #formReservation="ngForm" (ngSubmit)="submitReservationForm()">
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Customer Full Name</mat-label>
+    <mat-select name="customer" [(ngModel)]="reservation.customer_id">
+      <mat-option *ngFor="let customer of customers" [value]="customer.id">
+        {{ customer.first_name }}
+        {{ customer.middle_name }}
+        {{ customer.last_name + "  ( " + customer.phone + " )" }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Room Number</mat-label>
+    <mat-select name="room_id" [(ngModel)]="reservation.room_id">
+      <mat-option *ngFor="let room of rooms" [value]="room.id">
+        {{ room.room_number }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Booking Id</mat-label>
+    <mat-select name="booking_id" [(ngModel)]="reservation.booking_id">
+      <mat-option *ngFor="let booking of bookings" [value]="booking.id">
+        {{ booking.id }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>CheckIn Date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker1"
+      name="checkIn_date"
+      required
+      [(ngModel)]="reservation.check_in_date"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>CheckOut Date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker2"
+      name="checkOut_date"
+      required
+      [(ngModel)]="reservation.check_out_date"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field>
+
+  <button
+    [disabled]="!formReservation.valid"
+    mat-raised-button
+    type="submit"
+    color="primary"
+  >
+    CREATE
+  </button>
+</form>

@@ -17,15 +17,6 @@ export class BookingFormComponent implements OnInit {
   editForm: boolean;
   customers: any[] = [];
   roomCategories: any[] = [];
-  displayedColumns: string[] = [
-    "id",
-    "customer_name",
-    "address",
-    "country",
-    "phone",
-    "email",
-  ];
-  dataSource: any;
   public newRoomCategories: any[] = [
     {
       room_category: "",

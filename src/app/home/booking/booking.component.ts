@@ -60,6 +60,7 @@ export class BookingComponent implements OnInit {
   }
 
   editBooking(bookingEditData) {
+    console.log(bookingEditData);
     const dialogRef = this.dialog.open(BookingFormComponent, {
       width: "50%",
       data: {
