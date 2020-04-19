@@ -16,13 +16,13 @@ import { TableComponent } from "./home/table/table.component";
 import { HomeComponent } from "./home/home.component";
 import { UserComponent } from "./home/user/user.component";
 const routes: Routes = [
-  { path: "", component: ReservationComponent },
+  { path: "login", component: LoginComponent, canActivate: [AuthGuard] },
   {
-    path: "home",
+    path: "",
     component: HomeComponent,
-    // canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
-      { path: "dashboard", component: DashboardComponent },
+      { path: "", component: DashboardComponent },
       { path: "room-category", component: RoomCategoryComponent },
       { path: "room-transaction", component: RoomTransactionComponent },
       { path: "food", component: FoodComponent },
@@ -36,11 +36,12 @@ const routes: Routes = [
       { path: "user", component: UserComponent },
     ],
   },
-  // { path: "dashboard", pathMatch: "full", redirectTo: "" },
+  { path: "dashboard", pathMatch: "full", redirectTo: "" },
+  { path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
