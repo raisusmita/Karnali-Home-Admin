@@ -8,22 +8,22 @@ import { Router } from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
   components: any[] = [
-    { name: "Dashboard", path: "home/dashboard", icon: "dashboard" },
-    { name: "Room Category", path: "home/room-category", icon: "category" },
-    { name: "Room", path: "home/room", icon: "meeting_room" },
-    { name: "Table", path: "home/table", icon: "weekend" },
-    { name: "Food", path: "home/food", icon: "fastfood" },
-    { name: "Customer", path: "home/customer", icon: "perm_identity" },
-    { name: "Booking", path: "home/booking", icon: "book" },
-    { name: "Reservation", path: "home/reservation", icon: "check_circle" },
-    { name: "Food Order", path: "home/food-order", icon: "room_service" },
+    { name: "Dashboard", path: "", icon: "dashboard" },
+    { name: "Room Category", path: "room-category", icon: "category" },
+    { name: "Room", path: "room", icon: "meeting_room" },
+    { name: "Table", path: "table", icon: "weekend" },
+    { name: "Food", path: "food", icon: "fastfood" },
+    { name: "Customer", path: "customer", icon: "perm_identity" },
+    { name: "Booking", path: "booking", icon: "book" },
+    { name: "Reservation", path: "reservation", icon: "check_circle" },
+    { name: "Food Order", path: "food-order", icon: "room_service" },
     {
       name: "Room Transaction",
-      path: "home/room-transaction",
+      path: "room-transaction",
       icon: "description",
     },
-    { name: "Invoice", path: "home/invoice", icon: "payment" },
-    { name: "User", path: "home/user", icon: "group" },
+    { name: "Invoice", path: "invoice", icon: "payment" },
+    { name: "User", path: "user", icon: "group" },
   ];
 
   constructor(private router: Router) { }
@@ -32,6 +32,6 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     localStorage.removeItem('token');
-    this.router.navigate(["/"]);
+    this.router.navigate(["/login"]);
   }
 }
