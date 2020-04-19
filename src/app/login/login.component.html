@@ -13,32 +13,15 @@
         <h2>SIGN UP</h2>
         <mat-form-field class="example-full-width">
           <mat-label>Username</mat-label>
-          <input
-            matInput
-            name="username"
-            placeholder="Enter Username"
-            [(ngModel)]="user.username"
-            required
-          />
+          <input matInput name="email" placeholder="Enter Username" [(ngModel)]="user.email" required />
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
           <mat-label>Password</mat-label>
-          <input
-            matInput
-            name="password"
-            placeholder="Enter Password"
-            [(ngModel)]="user.password"
-            required
-          />
+          <input matInput name="password" placeholder="Enter Password" [(ngModel)]="user.password" required />
         </mat-form-field>
 
-        <button
-          [disabled]="!loginForm.valid"
-          mat-raised-button
-          type="submit"
-          color="primary"
-        >
+        <button [disabled]="!loginForm.valid" mat-raised-button type="submit" color="primary">
           LOGIN
         </button>
       </form>

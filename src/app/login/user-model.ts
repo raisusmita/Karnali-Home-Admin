@@ -1,4 +1,4 @@
 export interface MvUser {
-  username: string;
+  email: string;
   password: string;
 }

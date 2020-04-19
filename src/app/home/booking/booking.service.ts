@@ -1,58 +1,36 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root",
 })
 export class BookingService {
-  private readonly baseURL = "http://localhost:8000/api/";
+  private readonly baseURL = environment.apiURL;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getBooking(): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.get(this.baseURL + "booking", options);
+    return this.http.get(this.baseURL + "booking");
   }
 
   getBookedRoom(): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.get(this.baseURL + "booked_rooms", options);
+    return this.http.get(this.baseURL + "booked_rooms");
   }
 
   addBooking(booking: any): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.post(this.baseURL + "booking", booking, options);
+    return this.http.post(this.baseURL + "booking", booking);
   }
 
   editBooking(booking: any): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
     return this.http.put(
       this.baseURL + "booking/" + booking.id,
-      booking,
-      options
+      booking
     );
   }
 
   deleteBooking(id: any): Observable<any> {
-    const httpParams = new HttpParams();
-    const options = { params: httpParams };
-    return this.http.delete(this.baseURL + "booking/" + id, options);
+    return this.http.delete(this.baseURL + "booking/" + id);
   }
 }
