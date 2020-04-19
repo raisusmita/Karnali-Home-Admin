@@ -16,11 +16,11 @@ import { TableComponent } from "./home/table/table.component";
 import { HomeComponent } from "./home/home.component";
 import { UserComponent } from "./home/user/user.component";
 const routes: Routes = [
-  { path: "", component: LoginComponent },
+  { path: "", component: ReservationComponent },
   {
     path: "home",
     component: HomeComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       { path: "dashboard", component: DashboardComponent },
       { path: "room-category", component: RoomCategoryComponent },

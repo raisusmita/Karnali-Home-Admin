@@ -1,3 +1,4 @@
+import { RoomService } from "./../../room/room.service";
 import { BookingService } from "./../booking.service";
 import { RoomCategoryService } from "./../../room-category/room-category.service";
 import { CustomerService } from "./../../customer/customer.service";
@@ -17,15 +18,8 @@ export class BookingFormComponent implements OnInit {
   editForm: boolean;
   customers: any[] = [];
   roomCategories: any[] = [];
-  displayedColumns: string[] = [
-    "id",
-    "customer_name",
-    "address",
-    "country",
-    "phone",
-    "email",
-  ];
-  dataSource: any;
+  rooms: any[] = [];
+
   public newRoomCategories: any[] = [
     {
       room_category: "",
@@ -40,6 +34,7 @@ export class BookingFormComponent implements OnInit {
     private customerService: CustomerService,
     private roomCategoryService: RoomCategoryService,
     private bookingService: BookingService,
+    private roomService: RoomService,
     private dialogRef: MatDialogRef<BookingFormComponent>
   ) {}
 
@@ -48,17 +43,23 @@ export class BookingFormComponent implements OnInit {
       this.addForm = true;
     } else {
       this.editForm = true;
+      this.getRooms();
     }
-    this.bookingService.getBookedRoom().subscribe(() => {
-      if (this.data.gridData) {
-        this.booking = this.data.gridData;
-      }
-    });
+    // this.bookingService.getBookedRoom().subscribe(() => {
+    if (this.data.gridData) {
+      this.booking = this.data.gridData;
+    }
+    // });
 
     this.getCustomers();
     this.getRoomCategories();
   }
 
+  getRooms() {
+    this.roomService.getRoom().subscribe((result) => {
+      this.rooms = result.data;
+    });
+  }
   getCustomers() {
     this.customerService.getCustomer().subscribe((result) => {
       this.customers = result.data;
@@ -85,12 +86,33 @@ export class BookingFormComponent implements OnInit {
   }
 
   submitCustomerForm() {
+    //Removing the timeZone
+    let offsetCIn = this.booking.check_in_date.getTimezoneOffset() * 60000;
+    let offsetCOut = this.booking.check_out_date.getTimezoneOffset() * 60000;
+
+    // console.log(offsetMs);
+
+    // this.booking.check_in_date =
+    this.booking.check_in_date = new Date(
+      this.booking.check_in_date.getTime() - offsetCIn
+    );
+    this.booking.check_out_date = new Date(
+      this.booking.check_out_date.getTime() - offsetCOut
+    );
+
+    console.log(this.booking);
     if (this.editForm) {
       this.bookingService.editBooking(this.booking).subscribe((result) => {
         this.dialogRef.close(this.booking);
       });
     } else {
       this.bookingService.addBooking(this.booking).subscribe((result) => {
+        // if (this.booking) {
+        //  const test = this.rooms.filter(x=>x.room_category_id = this.booking.room_category_id)
+        //   // this.booking.room_category_id
+        //   // console.log(test);
+
+        // }
         this.dialogRef.close(this.booking);
       });
     }

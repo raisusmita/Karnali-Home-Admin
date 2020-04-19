@@ -57,6 +57,8 @@ import {
   MatMomentDateModule,
 } from "@angular/material-moment-adapter";
 import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
+import { ReservationFormComponent } from "./reservation/reservation-form/reservation-form.component";
+import { DatePipe } from "@angular/common";
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -83,6 +85,8 @@ import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
     HomeComponent,
     UserComponent,
     UserFormComponent,
+    ReservationFormComponent,
+    ReservationComponent,
   ],
   imports: [
     BrowserModule,
@@ -106,7 +110,13 @@ import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
     MatNativeDateModule,
     StorageServiceModule,
   ],
-  providers: [UserAuthService, AuthGuard, UserService],
+  providers: [
+    UserAuthService,
+    AuthGuard,
+    UserService,
+    DatePipe,
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { strict: true } },
+  ],
   entryComponents: [
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,
@@ -117,6 +127,7 @@ import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
     AddTableComponent,
     BookingFormComponent,
     UserFormComponent,
+    ReservationFormComponent,
   ],
 })
 export class HomeModule {}
