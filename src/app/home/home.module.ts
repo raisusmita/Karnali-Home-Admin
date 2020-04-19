@@ -58,6 +58,7 @@ import {
 } from "@angular/material-moment-adapter";
 import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
 import { ReservationFormComponent } from "./reservation/reservation-form/reservation-form.component";
+import { DatePipe } from "@angular/common";
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -109,7 +110,7 @@ import { ReservationFormComponent } from "./reservation/reservation-form/reserva
     MatNativeDateModule,
     StorageServiceModule,
   ],
-  providers: [UserAuthService, AuthGuard, UserService],
+  providers: [UserAuthService, AuthGuard, UserService, DatePipe],
   entryComponents: [
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,

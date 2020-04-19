@@ -6,6 +6,7 @@ import { CustomerService } from "./../../customer/customer.service";
 import { Component, OnInit, Inject } from "@angular/core";
 import { MvReservation } from "../reservation.model";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-reservation-form",
@@ -26,6 +27,7 @@ export class ReservationFormComponent implements OnInit {
     private bookingService: BookingService,
     private roomService: RoomService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public datepipe: DatePipe,
     private dialogRef: MatDialogRef<ReservationFormComponent>
   ) {}
 

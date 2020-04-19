@@ -1,3 +1,4 @@
+import { DatePipe } from "@angular/common";
 import { MvReservation } from "./reservation.model";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
@@ -29,7 +30,8 @@ export class ReservationComponent implements OnInit {
 
   constructor(
     private reservationService: ReservationService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public datepipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -59,6 +61,16 @@ export class ReservationComponent implements OnInit {
   }
 
   editReservation(reservationData) {
+    reservationData.check_in_date = this.datepipe.transform(
+      reservationData.check_in_date,
+      "MM/dd/yyyy"
+    );
+    reservationData.check_out_date = this.datepipe.transform(
+      reservationData.check_out_date,
+      "MM/dd/yyyy"
+    );
+    console.log(this.reservation);
+
     const dialogRef = this.dialog.open(ReservationFormComponent, {
       width: "50%",
       data: {
