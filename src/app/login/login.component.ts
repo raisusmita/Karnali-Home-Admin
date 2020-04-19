@@ -16,19 +16,22 @@ export class LoginComponent implements OnInit {
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
     private userAuthService: UserAuthService,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   submitLogin() {
-    this.saveInLocal(this.user);
-    this.userAuthService.setUserValid();
-    if (this.user) {
-      this.router.navigate(["/home"]);
-    }
-  }
-
-  saveInLocal(user): void {
-    localStorage.setItem("user", JSON.stringify(user));
+    this.userAuthService.loginUser(this.user).subscribe(e => {
+      if (e.token) {
+        localStorage.setItem('token', e.token.token);
+        this.router.navigate(['/home']);
+      } else {
+        localStorage.setItem('token', '');
+      }
+    },
+      error => {
+        localStorage.setItem('token', '');
+      }
+    );
   }
 }

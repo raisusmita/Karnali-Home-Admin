@@ -1,6 +1,7 @@
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root"
@@ -8,15 +9,10 @@ import { Observable } from "rxjs";
 export class RoomCategoryService {
   constructor(private http: HttpClient) { }
 
-  private readonly baseURL = "http://localhost:8000/api/room_categories";
+  private readonly baseURL = environment.apiURL + 'room_categories';
 
   getRoomCategory(): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.get(this.baseURL, options);
+    return this.http.get(this.baseURL);
   }
 
   addRoomCategory(roomCategory: any): Observable<any> {
@@ -30,15 +26,14 @@ export class RoomCategoryService {
   }
 
   editRoomCategory(roomCategory: any): Observable<any> {
-    // Except image other fields are updatable
+    // Image has to be passed from form data. Need to fix issue on image put
 
-    // This code allows passing image
-    // const formData = new FormData();
-    // formData.append('room_category', roomCategory.room_category);
-    // formData.append('room_type', roomCategory.room_type);
-    // formData.append('room_price', roomCategory.room_price);
-    // formData.append('number_of_rooms', roomCategory.number_of_rooms);
-    // formData.append('image', roomCategory.image);
+    const formData = new FormData();
+    formData.append('room_category', roomCategory.room_category);
+    formData.append('room_type', roomCategory.room_type);
+    formData.append('room_price', roomCategory.room_price);
+    formData.append('number_of_rooms', roomCategory.number_of_rooms);
+    formData.append('image', roomCategory.image);
     return this.http.put(
       this.baseURL + "/" + roomCategory.id,
       roomCategory
@@ -46,8 +41,6 @@ export class RoomCategoryService {
   }
 
   deleteRoomCategory(id: any): Observable<any> {
-    const httpParams = new HttpParams().set("id", id);
-    const options = { params: httpParams };
-    return this.http.delete(this.baseURL + "/" + id, options);
+    return this.http.delete(this.baseURL + "/" + id);
   }
 }
