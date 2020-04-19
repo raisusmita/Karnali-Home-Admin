@@ -76,6 +76,21 @@ export class BookingFormComponent implements OnInit {
   }
 
   submitCustomerForm() {
+    //Removing the timeZone
+    let offsetCIn = this.booking.check_in_date.getTimezoneOffset() * 60000;
+    let offsetCOut = this.booking.check_out_date.getTimezoneOffset() * 60000;
+
+    // console.log(offsetMs);
+
+    // this.booking.check_in_date =
+    this.booking.check_in_date = new Date(
+      this.booking.check_in_date.getTime() - offsetCIn
+    );
+    this.booking.check_out_date = new Date(
+      this.booking.check_out_date.getTime() - offsetCOut
+    );
+
+    console.log(this.booking);
     if (this.editForm) {
       this.bookingService.editBooking(this.booking).subscribe((result) => {
         this.dialogRef.close(this.booking);

@@ -110,7 +110,13 @@ import { DatePipe } from "@angular/common";
     MatNativeDateModule,
     StorageServiceModule,
   ],
-  providers: [UserAuthService, AuthGuard, UserService, DatePipe],
+  providers: [
+    UserAuthService,
+    AuthGuard,
+    UserService,
+    DatePipe,
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { strict: true } },
+  ],
   entryComponents: [
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,

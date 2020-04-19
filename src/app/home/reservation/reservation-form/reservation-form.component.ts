@@ -66,6 +66,17 @@ export class ReservationFormComponent implements OnInit {
   }
 
   submitReservationForm() {
+    //Removing the timeZone
+    let offsetCIn = this.reservation.check_in_date.getTimezoneOffset() * 60000;
+    let offsetCOut =
+      this.reservation.check_out_date.getTimezoneOffset() * 60000;
+
+    this.reservation.check_in_date = new Date(
+      this.reservation.check_in_date.getTime() - offsetCIn
+    );
+    this.reservation.check_out_date = new Date(
+      this.reservation.check_out_date.getTime() - offsetCOut
+    );
     if (this.editForm) {
       this.reservationService
         .editReservation(this.reservation)
