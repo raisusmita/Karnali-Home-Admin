@@ -48,7 +48,6 @@ export class BookingComponent implements OnInit {
 
   ngOnInit() {
     this.getBookedRoom();
-    this.toastr.warning("Hello world!", "Toastr fun!");
   }
 
   getBookedRoom() {

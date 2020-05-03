@@ -92,7 +92,7 @@ import { DatePipe } from "@angular/common";
     ReservationComponent,
   ],
   imports: [
-    // BrowserModule,
+    BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),

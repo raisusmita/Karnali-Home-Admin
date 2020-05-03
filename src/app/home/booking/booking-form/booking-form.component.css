@@ -47,9 +47,16 @@ table.mat-table {
   width: 100%;
 }
 
+.customToast {
+  width: 500px;
+}
 /* .footer {
   bottom: 100px;
   position: fixed;
   width: 46%;
   background-color: #fff;
 } */
+
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin-right: 10px !important;
+}

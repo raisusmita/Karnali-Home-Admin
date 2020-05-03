@@ -48,7 +48,11 @@
     <div class="col-md-6">
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Room Category</mat-label>
-        <mat-select name="room_category" [(ngModel)]="booking.room_category_id">
+        <mat-select
+          name="room_category"
+          [(ngModel)]="booking.room_category_id"
+          (ngModelChange)="getRoomCategory($event)"
+        >
           <mat-option
             *ngFor="let roomCategory of roomCategories"
             [value]="roomCategory.id"
@@ -146,7 +150,7 @@
   </mat-form-field>
 
   <button
-    [disabled]="!formHotel.valid"
+    [disabled]="!formHotel.valid || disableButton == true"
     mat-raised-button
     type="submit"
     color="primary"

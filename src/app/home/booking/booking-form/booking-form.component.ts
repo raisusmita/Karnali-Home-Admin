@@ -51,8 +51,8 @@ export class BookingFormComponent implements OnInit {
   availableRoomsByDate: any[];
   paramsDate: {};
 
-  available: any[];
-
+  available: any[] = [];
+  disableButton: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private customerService: CustomerService,
@@ -118,6 +118,7 @@ export class BookingFormComponent implements OnInit {
     this.paramsDate = {
       check_in_date: this.checkInDate,
       check_out_date: this.checkOutDate,
+      room_category_id: this.booking.room_category_id,
     };
     this.getRoomAvailabilityByDate(this.paramsDate);
   }
@@ -127,32 +128,60 @@ export class BookingFormComponent implements OnInit {
     this.paramsDate = {
       check_in_date: this.checkInDate,
       check_out_date: this.checkOutDate,
+      room_category_id: this.booking.room_category_id,
     };
 
     this.getRoomAvailabilityByDate(this.paramsDate);
   }
 
+  getRoomCategory($category) {
+    this.paramsDate = {
+      check_in_date: this.checkInDate,
+      check_out_date: this.checkOutDate,
+      room_category_id: $category,
+    };
+    this.getRoomAvailabilityByDate(this.paramsDate);
+  }
+
   getRoomAvailabilityByDate(dates) {
-    console.log(this.booking);
-    if (dates.check_in_date != null && dates.check_out_date != null) {
+    this.disableButton = false;
+
+    if (
+      dates.check_in_date != null &&
+      dates.check_out_date != null &&
+      dates.room_category_id != null
+    ) {
       this.roomAvailableByDates
         .getRoomAvailabilityByDate(dates)
         .subscribe((result) => {
           this.availableRoomsByDate = result;
 
-          Object.values(result).map((x) => {
+          // if (Object.values(result).length > 1) {
+          Object.values(result).map((x: any) => {
             x.map((y) => {
               if (y.room_category_id == this.booking.room_category_id) {
-                this.available = y;
+                this.available.push(true);
+              } else {
+                this.available.push(false);
               }
             });
           });
 
-          if (this.available != null && this.available !== undefined) {
-            this.toastr.warning("Hello world!", "Toastr fun!");
-          } else {
-            this.toastr.warning("Hello world!", "Toastr fun!");
+          console.log(this.available);
+          if (!this.available.includes(true)) {
+            this.disableButton = true;
+            this.toastr.warning(
+              "The room category is not available between these date!",
+              "Warning!",
+              {
+                closeButton: true,
+                positionClass: "toast-top-center",
+                toastClass: "customToast ngx-toastr",
+              }
+            );
           }
+
+          this.available = [];
         });
     }
   }
