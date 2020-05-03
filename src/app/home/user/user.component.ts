@@ -3,7 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 // import { CustomerService } from '../customer/customer.service';
 // import { CustomerFormComponent } from '../customer/customer-form/customer-form.component';
 import { UserFormComponent } from "./user-form/user-form.component";
-import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
+import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
 import { UserService } from "src/app/home/user/user.service";
 
 @Component({

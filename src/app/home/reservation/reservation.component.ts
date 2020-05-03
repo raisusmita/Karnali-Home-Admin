@@ -2,9 +2,9 @@ import { DatePipe } from "@angular/common";
 import { MvReservation } from "./reservation.model";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
 import { ReservationService } from "./reservation.service";
 import { ReservationFormComponent } from "./reservation-form/reservation-form.component";
+import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-reservation",
@@ -41,6 +41,7 @@ export class ReservationComponent implements OnInit {
   getReservation() {
     this.reservationService.getReservation().subscribe((data) => {
       this.dataSource = data.data;
+      console.log(JSON.stringify(data.data) + "test");
     });
   }
 

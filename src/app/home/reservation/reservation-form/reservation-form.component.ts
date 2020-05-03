@@ -1,7 +1,8 @@
+import { RoomAvailabilityService } from "./../../../shared/services/room-availability/room-availability.service";
+import { MvRoomUnavailable } from "./room-unavailable.model";
 import { RoomService } from "./../../room/room.service";
 import { ReservationService } from "./../reservation.service";
 import { BookingService } from "./../../booking/booking.service";
-import { RoomCategoryService } from "./../../room-category/room-category.service";
 import { CustomerService } from "./../../customer/customer.service";
 import { Component, OnInit, Inject } from "@angular/core";
 import { MvReservation } from "../reservation.model";
@@ -15,17 +16,38 @@ import { DatePipe } from "@angular/common";
 })
 export class ReservationFormComponent implements OnInit {
   reservation: MvReservation = {} as MvReservation;
+  // unavailableRoom: MvRoomUnavailable = {} as MvRoomUnavailable;
+
   addForm: boolean;
   editForm: boolean;
   customers: any[] = [];
   rooms: any[] = [];
   bookings: any[] = [];
 
+  // For Room Availability
+  checkInDate: Date;
+  checkOutDate: Date;
+  availableRoomsByDate: any[];
+  paramsDate: {};
+
+  public unavailableRoom: any[] = [
+    {
+      reservation_id: 0,
+      room_id: 0,
+      check_in_date: "",
+      check_out_date: "",
+      availability: false,
+      status: "",
+      booking_id: 0,
+    },
+  ];
+
   constructor(
     private customerService: CustomerService,
     private reservationService: ReservationService,
     private bookingService: BookingService,
     private roomService: RoomService,
+    private roomAvailableService: RoomAvailabilityService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public datepipe: DatePipe,
     private dialogRef: MatDialogRef<ReservationFormComponent>
@@ -44,6 +66,7 @@ export class ReservationFormComponent implements OnInit {
     });
     this.getCustomers();
     this.getRoomCategories();
+    this.getAvailableRoom();
     this.getBookings();
   }
 
@@ -56,6 +79,21 @@ export class ReservationFormComponent implements OnInit {
   getRoomCategories() {
     this.roomService.getRoom().subscribe((result) => {
       this.rooms = result.data;
+      console.log(this.rooms);
+    });
+  }
+
+  getAvailableRoom() {
+    this.roomAvailableService.getAvailableRooms().subscribe((result) => {
+      // this.rooms = result.data;
+      const arr = [];
+
+      // result.map(x.data =>{
+      // arr.push(Object.values(result.data[1]));
+
+      // })
+      console.log(result);
+      console.log(arr);
     });
   }
 
@@ -63,6 +101,36 @@ export class ReservationFormComponent implements OnInit {
     this.bookingService.getBookedRoom().subscribe((result) => {
       this.bookings = result.data;
     });
+  }
+
+  getCheckInDate($checkInDate) {
+    this.checkInDate = $checkInDate;
+    this.paramsDate = {
+      check_in_date: this.checkInDate,
+      check_out_date: this.checkOutDate,
+    };
+    this.getRoomAvailabilityByDate(this.paramsDate);
+  }
+
+  getCheckOutDate($checkOutDate) {
+    this.checkOutDate = $checkOutDate;
+    this.paramsDate = {
+      check_in_date: this.checkInDate,
+      check_out_date: this.checkOutDate,
+    };
+
+    this.getRoomAvailabilityByDate(this.paramsDate);
+  }
+
+  getRoomAvailabilityByDate(dates) {
+    if (dates.check_in_date != null && dates.check_out_date != null) {
+      this.reservationService
+        .getRoomAvailabilityByDate(dates)
+        .subscribe((result) => {
+          this.availableRoomsByDate = result;
+          console.log(this.availableRoomsByDate);
+        });
+    }
   }
 
   submitReservationForm() {
@@ -77,6 +145,7 @@ export class ReservationFormComponent implements OnInit {
     this.reservation.check_out_date = new Date(
       this.reservation.check_out_date.getTime() - offsetCOut
     );
+
     if (this.editForm) {
       this.reservationService
         .editReservation(this.reservation)
@@ -86,7 +155,38 @@ export class ReservationFormComponent implements OnInit {
     } else {
       this.reservationService
         .addReservation(this.reservation)
-        .subscribe((result) => {
+        .subscribe((reservationResult) => {
+          if (reservationResult) {
+            // this.unavailableRoom.reservation_id = reservationResult.data.id;
+            // this.unavailableRoom.room_id = reservationResult.data.room_id;
+            // this.unavailableRoom.check_in_date =
+            //   reservationResult.data.check_in_date;
+            // this.unavailableRoom.check_out_date =
+            //   reservationResult.data.check_out_date;
+            // this.unavailableRoom.availability = false;
+            // this.unavailableRoom.status = "reserved";
+            // this.unavailableRoom.booking_id = reservationResult.data.booking_id;
+
+            this.unavailableRoom.push({
+              reservation_id: reservationResult.data.id,
+              room_id: reservationResult.data.room_id,
+              check_in_date: reservationResult.data.check_in_date,
+              check_out_date: reservationResult.data.check_out_date,
+              availability: false,
+              status: "reserved",
+              booking_id: reservationResult.data.booking_id,
+            });
+
+            this.unavailableRoom.splice(0, 1);
+
+            console.log(this.unavailableRoom);
+
+            this.reservationService
+              .addRoomUnavailable(this.unavailableRoom)
+              .subscribe((data) => {
+                console.log(data);
+              });
+          }
           this.dialogRef.close(this.reservation);
         });
     }

@@ -19,6 +19,15 @@ export class ReservationService {
     return this.http.get(this.baseURL, options);
   }
 
+  getAvailableRoom(): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.get("http://localhost:8000/api/available", options);
+  }
+
   addReservation(reservation: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
       "Content-Type",
@@ -26,6 +35,32 @@ export class ReservationService {
     );
     const options = { headers: httpHeaders };
     return this.http.post(this.baseURL, reservation, options);
+  }
+
+  addRoomUnavailable(unavailableRoom: any): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.post(
+      "http://localhost:8000/api/availableRoomByBooking",
+      JSON.stringify(unavailableRoom),
+      options
+    );
+  }
+
+  getRoomAvailabilityByDate(dates: any): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.post(
+      "http://localhost:8000/api/availableRoomByDate",
+      dates,
+      options
+    );
   }
 
   editReservation(reservation: any): Observable<any> {

@@ -1,13 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { FoodService } from "./food.service";
 import { MatDialog } from "@angular/material/dialog";
-import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
 import { FoodFormComponent } from "./food-form/food-form.component";
+import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-food",
   templateUrl: "./food.component.html",
-  styleUrls: ["./food.component.css"]
+  styleUrls: ["./food.component.css"],
 })
 export class FoodComponent implements OnInit {
   displayedColumns: string[] = ["name", "price", "food_type", "action"];
@@ -20,7 +20,7 @@ export class FoodComponent implements OnInit {
   }
 
   getFood() {
-    this.foodService.getFood().subscribe(data => {
+    this.foodService.getFood().subscribe((data) => {
       this.dataSource = data.data;
     });
   }
@@ -28,10 +28,10 @@ export class FoodComponent implements OnInit {
   addFood() {
     const dialogRef = this.dialog.open(FoodFormComponent, {
       width: "50%",
-      data: null
+      data: null,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getFood();
       }
@@ -40,18 +40,18 @@ export class FoodComponent implements OnInit {
   editFood(FoodEditData) {
     const dialogRef = this.dialog.open(FoodFormComponent, {
       width: "50%",
-      data: FoodEditData
+      data: FoodEditData,
     });
   }
 
   deleteFood(index) {
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
-      width: "50%"
+      width: "50%",
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.foodService.deleteFood(index).subscribe(data => {
+        this.foodService.deleteFood(index).subscribe((data) => {
           this.getFood();
         });
       }

@@ -3,12 +3,12 @@ import { NewRoomCategoryComponent } from "./new-room-category/new-room-category.
 import { RoomCategoryService } from "./room-category.service";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
+import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-room-category",
   templateUrl: "./room-category.component.html",
-  styleUrls: ["./room-category.component.css"]
+  styleUrls: ["./room-category.component.css"],
 })
 export class RoomCategoryComponent implements OnInit {
   constructor(
@@ -21,14 +21,14 @@ export class RoomCategoryComponent implements OnInit {
     "room_type",
     "room_price",
     "number_of_rooms",
-    "action"
+    "action",
   ];
   selectedRowIndex: number;
   dataSource: any[];
   selectedRoomCategoryId: any;
 
   getRoomCategory() {
-    this.roomCategoryService.getRoomCategory().subscribe(data => {
+    this.roomCategoryService.getRoomCategory().subscribe((data) => {
       this.dataSource = data.data;
     });
   }
@@ -39,10 +39,10 @@ export class RoomCategoryComponent implements OnInit {
 
   onAddClick() {
     const dialogRef = this.dialog.open(NewRoomCategoryComponent, {
-      width: "50%"
+      width: "50%",
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getRoomCategory();
       }
@@ -52,7 +52,7 @@ export class RoomCategoryComponent implements OnInit {
   onEditClick(element) {
     const dialogRef = this.dialog.open(NewRoomCategoryComponent, {
       width: "50%",
-      data: element
+      data: element,
     });
   }
 
@@ -61,15 +61,15 @@ export class RoomCategoryComponent implements OnInit {
     this.selectedRoomCategoryId = this.dataSource[index].id;
 
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
-      width: "50%"
+      width: "50%",
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
         this.roomCategoryService
           .deleteRoomCategory(this.selectedRoomCategoryId)
           .subscribe(
-            data => {
+            (data) => {
               this.getRoomCategory();
               // console.log(result);
               // const newArray = [...this.dataSource];

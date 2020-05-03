@@ -2,12 +2,12 @@ import { Component, OnInit } from "@angular/core";
 import { CustomerService } from "./customer.service";
 import { MatDialog } from "@angular/material/dialog";
 import { CustomerFormComponent } from "./customer-form/customer-form.component";
-import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
+import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-customer",
   templateUrl: "./customer.component.html",
-  styleUrls: ["./customer.component.css"]
+  styleUrls: ["./customer.component.css"],
 })
 export class CustomerComponent implements OnInit {
   displayedColumns: string[] = [
@@ -17,12 +17,12 @@ export class CustomerComponent implements OnInit {
     "country",
     "address",
     "customer_type",
-    "action"
+    "action",
   ];
   dataSource: any[];
   customerType = {
     "0": "Booking",
-    "1": "Reserved"
+    "1": "Reserved",
   };
 
   constructor(
@@ -35,7 +35,7 @@ export class CustomerComponent implements OnInit {
   }
 
   getCustomer() {
-    this.customerService.getCustomer().subscribe(data => {
+    this.customerService.getCustomer().subscribe((data) => {
       this.dataSource = data.data;
     });
   }
@@ -44,10 +44,10 @@ export class CustomerComponent implements OnInit {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       width: "50%",
       height: "700px",
-      data: null
+      data: null,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getCustomer();
       }
@@ -56,18 +56,18 @@ export class CustomerComponent implements OnInit {
   editCustomer(customerEditData) {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       width: "50%",
-      data: customerEditData
+      data: customerEditData,
     });
   }
 
   deleteCustomer(index) {
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
-      width: "50%"
+      width: "50%",
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.customerService.deleteCustomer(index).subscribe(data => {
+        this.customerService.deleteCustomer(index).subscribe((data) => {
           this.getCustomer();
         });
       }

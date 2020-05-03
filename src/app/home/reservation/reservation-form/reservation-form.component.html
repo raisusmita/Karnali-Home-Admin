@@ -38,6 +38,7 @@
       name="check_in_date"
       required
       [(ngModel)]="reservation.check_in_date"
+      (ngModelChange)="getCheckInDate($event)"
     />
     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
     <mat-datepicker #picker1></mat-datepicker>
@@ -51,6 +52,7 @@
       name="check_out_date"
       required
       [(ngModel)]="reservation.check_out_date"
+      (ngModelChange)="getCheckOutDate($event)"
     />
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker #picker2></mat-datepicker>
