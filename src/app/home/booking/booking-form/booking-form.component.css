@@ -60,3 +60,7 @@ table.mat-table {
 .mat-form-field-appearance-outline .mat-form-field-wrapper {
   margin-right: 10px !important;
 }
+
+.toast-container .ngx-toastr {
+  width: 500px !important;
+}

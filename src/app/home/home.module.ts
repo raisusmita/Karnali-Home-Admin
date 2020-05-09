@@ -53,7 +53,7 @@ import { UserService } from "./user/user.service";
 
 //Toast
 import { ToastrModule } from "ngx-toastr";
-
+import { MatCardModule } from "@angular/material/card";
 import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
@@ -113,6 +113,7 @@ import { DatePipe } from "@angular/common";
     MatDatepickerModule,
     MatNativeDateModule,
     StorageServiceModule,
+    MatCardModule,
   ],
   providers: [
     UserAuthService,

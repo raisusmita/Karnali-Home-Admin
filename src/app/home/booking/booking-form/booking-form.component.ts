@@ -48,11 +48,14 @@ export class BookingFormComponent implements OnInit {
   // For Room Availability
   checkInDate: Date;
   checkOutDate: Date;
+  roomCategoryId: Number;
+  numberOfRooms: number;
   availableRoomsByDate: any[];
   paramsDate: {};
 
   available: any[] = [];
   disableButton: boolean;
+  totalAvailableRoomCategory: number;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private customerService: CustomerService,
@@ -118,7 +121,8 @@ export class BookingFormComponent implements OnInit {
     this.paramsDate = {
       check_in_date: this.checkInDate,
       check_out_date: this.checkOutDate,
-      room_category_id: this.booking.room_category_id,
+      room_category_id: this.roomCategoryId,
+      number_of_rooms: this.numberOfRooms,
     };
     this.getRoomAvailabilityByDate(this.paramsDate);
   }
@@ -128,17 +132,31 @@ export class BookingFormComponent implements OnInit {
     this.paramsDate = {
       check_in_date: this.checkInDate,
       check_out_date: this.checkOutDate,
-      room_category_id: this.booking.room_category_id,
+      room_category_id: this.roomCategoryId,
+      number_of_rooms: this.numberOfRooms,
     };
 
     this.getRoomAvailabilityByDate(this.paramsDate);
   }
 
   getRoomCategory($category) {
+    this.roomCategoryId = $category;
     this.paramsDate = {
       check_in_date: this.checkInDate,
       check_out_date: this.checkOutDate,
-      room_category_id: $category,
+      room_category_id: this.roomCategoryId,
+      number_of_rooms: this.numberOfRooms,
+    };
+    this.getRoomAvailabilityByDate(this.paramsDate);
+  }
+
+  getNumberOfRoom($numberOfRooms) {
+    this.numberOfRooms = $numberOfRooms;
+    this.paramsDate = {
+      check_in_date: this.checkInDate,
+      check_out_date: this.checkOutDate,
+      room_category_id: this.roomCategoryId,
+      number_of_rooms: this.numberOfRooms,
     };
     this.getRoomAvailabilityByDate(this.paramsDate);
   }
@@ -149,12 +167,28 @@ export class BookingFormComponent implements OnInit {
     if (
       dates.check_in_date != null &&
       dates.check_out_date != null &&
-      dates.room_category_id != null
+      dates.room_category_id != null &&
+      dates.number_of_rooms != null
     ) {
       this.roomAvailableByDates
         .getRoomAvailabilityByDate(dates)
         .subscribe((result) => {
           this.availableRoomsByDate = result;
+
+          const arr = [];
+          const test = Object.values(this.availableRoomsByDate).map((x) => {
+            arr.push({
+              id: x[0].room_category.id,
+              category: x[0].room_category.room_category,
+              totalNumber: x.length,
+            });
+          });
+
+          arr.map((x) => {
+            if (x.id == this.booking.room_category_id) {
+              this.totalAvailableRoomCategory = x.totalNumber;
+            }
+          });
 
           // if (Object.values(result).length > 1) {
           Object.values(result).map((x: any) => {
@@ -167,16 +201,29 @@ export class BookingFormComponent implements OnInit {
             });
           });
 
-          console.log(this.available);
-          if (!this.available.includes(true)) {
+          if (this.totalAvailableRoomCategory < this.booking.number_of_rooms) {
             this.disableButton = true;
-            this.toastr.warning(
-              "The room category is not available between these date!",
+            this.toastr.error(
+              "The number of room is greater than available room number",
               "Warning!",
               {
                 closeButton: true,
-                positionClass: "toast-top-center",
-                toastClass: "customToast ngx-toastr",
+                positionClass: "toast-top-right",
+                disableTimeOut: true,
+              }
+            );
+          }
+
+          console.log(this.available);
+          if (!this.available.includes(true)) {
+            this.disableButton = true;
+            this.toastr.error(
+              "The room category is not available!",
+              "Warning!",
+              {
+                closeButton: true,
+                positionClass: "toast-top-right",
+                disableTimeOut: true,
               }
             );
           }
