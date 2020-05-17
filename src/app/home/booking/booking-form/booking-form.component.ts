@@ -13,7 +13,7 @@ import { MvRoomUnavailable } from "../../reservation/reservation-form/room-unava
 @Component({
   selector: "app-booking-form",
   templateUrl: "./booking-form.component.html",
-  styleUrls: ["./booking-form.component.css"],
+  styleUrls: ["./booking-form.component.scss"],
 })
 export class BookingFormComponent implements OnInit {
   booking: MvBooking = {} as MvBooking;

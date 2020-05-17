@@ -6,13 +6,13 @@ import { FoodService } from "../food.service";
 @Component({
   selector: "app-food-form",
   templateUrl: "./food-form.component.html",
-  styleUrls: ["./food-form.component.css"]
+  styleUrls: ["./food-form.component.scss"],
 })
 export class FoodFormComponent implements OnInit {
   food: MvFood = {} as MvFood;
   foodType = {
     Kitchen: "kitchen",
-    Bar: "bar"
+    Bar: "bar",
   };
   isEdit = false;
 
@@ -23,7 +23,7 @@ export class FoodFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.foodService.getFood().subscribe(data => {
+    this.foodService.getFood().subscribe((data) => {
       if (this.data) {
         this.isEdit = true;
         this.food = this.data;
@@ -33,11 +33,11 @@ export class FoodFormComponent implements OnInit {
 
   submitFoodForm() {
     if (this.isEdit) {
-      this.foodService.editFood(this.food).subscribe(e => {
+      this.foodService.editFood(this.food).subscribe((e) => {
         this.dialogRef.close(this.food);
       });
     } else {
-      this.foodService.addFood(this.food).subscribe(e => {
+      this.foodService.addFood(this.food).subscribe((e) => {
         this.dialogRef.close(this.food);
       });
     }

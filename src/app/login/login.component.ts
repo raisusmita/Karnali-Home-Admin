@@ -7,7 +7,7 @@ import { UserAuthService } from "../user-auth.service";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"],
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit {
   user: MvUser = {} as MvUser;
@@ -16,21 +16,22 @@ export class LoginComponent implements OnInit {
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
     private userAuthService: UserAuthService,
     private router: Router
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   submitLogin() {
-    this.userAuthService.loginUser(this.user).subscribe(e => {
-      if (e.token) {
-        localStorage.setItem('token', e.token.token);
-        this.router.navigate(['/dashboard']);
-      } else {
-        localStorage.setItem('token', '');
-      }
-    },
-      error => {
-        localStorage.setItem('token', '');
+    this.userAuthService.loginUser(this.user).subscribe(
+      (e) => {
+        if (e.token) {
+          localStorage.setItem("token", e.token.token);
+          this.router.navigate(["/dashboard"]);
+        } else {
+          localStorage.setItem("token", "");
+        }
+      },
+      (error) => {
+        localStorage.setItem("token", "");
       }
     );
   }

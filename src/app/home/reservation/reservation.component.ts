@@ -12,7 +12,7 @@ import { MatTableDataSource } from "@angular/material/table";
 @Component({
   selector: "app-reservation",
   templateUrl: "./reservation.component.html",
-  styleUrls: ["./reservation.component.css"],
+  styleUrls: ["./reservation.component.scss"],
 })
 export class ReservationComponent implements OnInit {
   displayedColumns: string[] = [
@@ -58,8 +58,6 @@ export class ReservationComponent implements OnInit {
 
   getReservation() {
     this.reservationService.getReservation().subscribe((result) => {
-      console.log(JSON.stringify(result.data) + "test");
-
       const arr = [];
       result.data.map((x) => {
         arr.push({
@@ -135,7 +133,6 @@ export class ReservationComponent implements OnInit {
       .getRoomAvailabilityByDate(this.roomAvailable)
       .subscribe((result) => {
         this.availableRoomsByDate = result;
-        console.log(this.availableRoomsByDate);
         const arr = [];
 
         const test = Object.values(this.availableRoomsByDate).map((x) => {
@@ -156,7 +153,5 @@ export class ReservationComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    console.log(this.dataSource.filter);
   }
 }

@@ -8,7 +8,7 @@ import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete
 @Component({
   selector: "app-room-category",
   templateUrl: "./room-category.component.html",
-  styleUrls: ["./room-category.component.css"],
+  styleUrls: ["./room-category.component.scss"],
 })
 export class RoomCategoryComponent implements OnInit {
   constructor(

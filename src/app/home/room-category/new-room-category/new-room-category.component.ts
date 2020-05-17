@@ -3,15 +3,14 @@ import { MvRoomCategory } from "./../room-category-model";
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
-
 class ImageSnippet {
-  constructor(public src: string, public file: File) { }
+  constructor(public src: string, public file: File) {}
 }
 
 @Component({
   selector: "app-new-room-category",
   templateUrl: "./new-room-category.component.html",
-  styleUrls: ["./new-room-category.component.css"]
+  styleUrls: ["./new-room-category.component.scss"],
 })
 export class NewRoomCategoryComponent implements OnInit {
   category: MvRoomCategory = {} as MvRoomCategory;
@@ -23,7 +22,7 @@ export class NewRoomCategoryComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private roomCategoryService: RoomCategoryService,
     private dialogRef: MatDialogRef<NewRoomCategoryComponent>
-  ) { }
+  ) {}
 
   ngOnInit() {
     if (this.data) {
@@ -37,10 +36,10 @@ export class NewRoomCategoryComponent implements OnInit {
     const file: File = imageFile.files[0];
     const reader = new FileReader();
 
-    reader.addEventListener('load', (event: any) => {
+    reader.addEventListener("load", (event: any) => {
       this.selectedImageFile = new ImageSnippet(event.target.result, file);
     });
-    reader.readAsDataURL(file);   // this line triggers addEventListener (from readAsDataURL documentation)
+    reader.readAsDataURL(file); // this line triggers addEventListener (from readAsDataURL documentation)
   }
 
   onSubmit() {
@@ -53,13 +52,13 @@ export class NewRoomCategoryComponent implements OnInit {
       }
       this.roomCategoryService
         .editRoomCategory(this.category)
-        .subscribe(data => {
+        .subscribe((data) => {
           this.dialogRef.close(this.category);
         });
     } else {
       this.roomCategoryService
         .addRoomCategory(this.category)
-        .subscribe(data => {
+        .subscribe((data) => {
           this.dialogRef.close(this.category);
         });
     }

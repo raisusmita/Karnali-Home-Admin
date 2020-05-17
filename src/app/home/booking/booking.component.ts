@@ -12,7 +12,7 @@ import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 @Component({
   selector: "app-booking",
   templateUrl: "./booking.component.html",
-  styleUrls: ["./booking.component.css"],
+  styleUrls: ["./booking.component.scss"],
 })
 export class BookingComponent implements OnInit {
   booking: MvBooking = {} as MvBooking;
@@ -75,7 +75,6 @@ export class BookingComponent implements OnInit {
         });
       });
       this.dataSource = new MatTableDataSource(arr);
-      console.log(this.dataSource);
 
       // Define filter function to look for 'premiseId'matches
       // tslint:disable-next-line: only-arrow-functions
@@ -103,7 +102,6 @@ export class BookingComponent implements OnInit {
   }
 
   editBooking(bookingEditData) {
-    console.log(bookingEditData);
     const dialogRef = this.dialog.open(BookingFormComponent, {
       width: "50%",
       data: {
@@ -151,7 +149,6 @@ export class BookingComponent implements OnInit {
     this.roomAvailableByDates
       .getRoomAvailabilityByDate(this.roomAvailable)
       .subscribe((result) => {
-        console.log(result);
         this.availableRoomsByDate = result;
         const arr = [];
 
@@ -171,7 +168,5 @@ export class BookingComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    console.log(this.dataSource.filter);
   }
 }

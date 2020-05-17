@@ -8,7 +8,7 @@ import { RoomCategoryService } from "../../room-category/room-category.service";
 @Component({
   selector: "app-add-room",
   templateUrl: "./add-room.component.html",
-  styleUrls: ["./add-room.component.css"]
+  styleUrls: ["./add-room.component.scss"],
 })
 export class AddRoomComponent implements OnInit {
   room: MvRoom = {} as MvRoom;
@@ -23,7 +23,7 @@ export class AddRoomComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.roomCategoryService.getRoomCategory().subscribe(rc => {
+    this.roomCategoryService.getRoomCategory().subscribe((rc) => {
       if (this.data) {
         this.isEdit = true;
         this.room = this.data;
@@ -34,11 +34,11 @@ export class AddRoomComponent implements OnInit {
 
   submitRoomForm() {
     if (this.isEdit) {
-      this.roomService.editRoom(this.room).subscribe(e => {
+      this.roomService.editRoom(this.room).subscribe((e) => {
         this.dialogRef.close(this.room);
       });
     } else {
-      this.roomService.addRoom(this.room).subscribe(e => {
+      this.roomService.addRoom(this.room).subscribe((e) => {
         this.dialogRef.close(this.room);
       });
     }

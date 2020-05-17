@@ -62,6 +62,8 @@ import {
 import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
 import { ReservationFormComponent } from "./reservation/reservation-form/reservation-form.component";
 import { DatePipe } from "@angular/common";
+import { RoomAvailabilityComponent } from "./room-availability/room-availability.component";
+import { RoomAvailabilityFormComponent } from "./room-availability/room-availability-form/room-availability-form.component";
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -90,6 +92,8 @@ import { DatePipe } from "@angular/common";
     UserFormComponent,
     ReservationFormComponent,
     ReservationComponent,
+    RoomAvailabilityComponent,
+    RoomAvailabilityFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -133,6 +137,7 @@ import { DatePipe } from "@angular/common";
     BookingFormComponent,
     UserFormComponent,
     ReservationFormComponent,
+    RoomAvailabilityFormComponent,
   ],
 })
 export class HomeModule {}

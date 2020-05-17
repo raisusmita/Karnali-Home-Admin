@@ -7,7 +7,7 @@ import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete
 @Component({
   selector: "app-table",
   templateUrl: "./table.component.html",
-  styleUrls: ["./table.component.css"],
+  styleUrls: ["./table.component.scss"],
 })
 export class TableComponent implements OnInit {
   displayedColumns: string[] = ["table_number", "created_at", "action"];
