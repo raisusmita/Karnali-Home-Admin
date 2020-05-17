@@ -6,7 +6,8 @@ import { BookingService } from "./booking.service";
 import { Component, OnInit } from "@angular/core";
 import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
 import { RoomAvailabilityService } from "src/app/shared/services/room-availability/room-availability.service";
-import { ToastrService } from "ngx-toastr";
+import { MatTableDataSource } from "@angular/material/table";
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 
 @Component({
   selector: "app-booking",
@@ -29,9 +30,16 @@ export class BookingComponent implements OnInit {
     "action",
   ];
 
-  roomAvailableColumns: string[] = ["room_category", "number_of_rooms"];
+  roomAvailableColumns: string[] = [
+    "room_category",
+    "number_of_rooms",
+    "type",
+    "price",
+  ];
 
-  dataSource: any[];
+  // dataSource: any[];
+  public dataSource: MatTableDataSource<Element>;
+
   roomAvailableDataSource: any[];
 
   // For Room Availability
@@ -42,7 +50,6 @@ export class BookingComponent implements OnInit {
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
-    private toastr: ToastrService,
     private roomAvailableByDates: RoomAvailabilityService
   ) {}
 
@@ -52,8 +59,29 @@ export class BookingComponent implements OnInit {
 
   getBookedRoom() {
     this.bookingService.getBookedRoom().subscribe((result) => {
-      this.dataSource = result.data;
+      const arr = [];
+      result.data.map((x) => {
+        arr.push({
+          first_name: x.customer.first_name,
+          middle_name: x.customer_middle_name,
+          last_name: x.customer.last_name,
+          room_category: x.room_category.room_category,
+          number_of_adult: x.number_of_adult,
+          number_of_child: x.number_of_child,
+          number_of_rooms: x.number_of_rooms,
+          check_in_date: x.check_in_date,
+          check_out_date: x.check_out_date,
+          created_at: x.created_at,
+        });
+      });
+      this.dataSource = new MatTableDataSource(arr);
       console.log(this.dataSource);
+
+      // Define filter function to look for 'premiseId'matches
+      // tslint:disable-next-line: only-arrow-functions
+      // this.dataSource.filterPredicate = function (data, filter): boolean {
+      //   return data.id.toLowerCase().includes(filter);
+      // };
     });
   }
 
@@ -123,17 +151,27 @@ export class BookingComponent implements OnInit {
     this.roomAvailableByDates
       .getRoomAvailabilityByDate(this.roomAvailable)
       .subscribe((result) => {
+        console.log(result);
         this.availableRoomsByDate = result;
         const arr = [];
 
         const test = Object.values(this.availableRoomsByDate).map((x) => {
           arr.push({
             category: x[0].room_category.room_category,
+            type: x[0].room_category.room_type,
+            price: x[0].room_category.room_price,
             totalNumber: x.length,
           });
         });
 
         this.roomAvailableDataSource = arr;
       });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    console.log(this.dataSource.filter);
   }
 }

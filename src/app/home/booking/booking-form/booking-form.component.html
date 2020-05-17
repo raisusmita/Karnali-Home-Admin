@@ -1,6 +1,6 @@
 <h2 *ngIf="addForm">Add New Booking</h2>
 <h2 *ngIf="editForm">Edit Booking</h2>
-<form #formHotel="ngForm" (ngSubmit)="submitCustomerForm()">
+<form #formBooking="ngForm" (ngSubmit)="submitCustomerForm()">
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Customer Full Name</mat-label>
     <mat-select name="room" [(ngModel)]="booking.customer_id">
@@ -151,7 +151,7 @@
   </mat-form-field>
 
   <button
-    [disabled]="!formHotel.valid || disableButton == true"
+    [disabled]="!formBooking.valid || disableButton == true"
     mat-raised-button
     type="submit"
     color="primary"

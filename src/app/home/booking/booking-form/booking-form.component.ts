@@ -70,17 +70,9 @@ export class BookingFormComponent implements OnInit {
 
   ngOnInit() {
     this.getRooms();
-
-    // if (this.data.formType == "Add") {
-    //   this.addForm = true;
-    // } else {
-    //   this.editForm = true;
-    // }
-    // this.bookingService.getBookedRoom().subscribe(() => {
     if (this.data.gridData) {
       this.booking = this.data.gridData;
     }
-    // });
 
     this.getCustomers();
     this.getRoomCategories();
@@ -190,7 +182,6 @@ export class BookingFormComponent implements OnInit {
             }
           });
 
-          // if (Object.values(result).length > 1) {
           Object.values(result).map((x: any) => {
             x.map((y) => {
               if (y.room_category_id == this.booking.room_category_id) {
@@ -214,7 +205,6 @@ export class BookingFormComponent implements OnInit {
             );
           }
 
-          console.log(this.available);
           if (!this.available.includes(true)) {
             this.disableButton = true;
             this.toastr.error(
@@ -238,9 +228,6 @@ export class BookingFormComponent implements OnInit {
     let offsetCIn = this.booking.check_in_date.getTimezoneOffset() * 60000;
     let offsetCOut = this.booking.check_out_date.getTimezoneOffset() * 60000;
 
-    // console.log(offsetMs);
-
-    // this.booking.check_in_date =
     this.booking.check_in_date = new Date(
       this.booking.check_in_date.getTime() - offsetCIn
     );
@@ -248,7 +235,6 @@ export class BookingFormComponent implements OnInit {
       this.booking.check_out_date.getTime() - offsetCOut
     );
 
-    console.log(this.booking);
     if (this.editForm) {
       this.bookingService.editBooking(this.booking).subscribe((result) => {
         this.dialogRef.close(this.booking);
@@ -271,23 +257,19 @@ export class BookingFormComponent implements OnInit {
             check_out_date: result.data.check_out_date,
             status: "booked",
             booking_id: result.data.id,
+            created_at: result.data.created_at,
+            updated_at: result.data.updated_at,
           });
         }
 
         this.unavailableRoom.splice(0, 1);
 
-        console.log(JSON.stringify(this.unavailableRoom + "stringing"));
-        console.log(this.roomBasedOnBookingCategory);
-
         if (result) {
           this.reservationService
             .addRoomUnavailable(this.unavailableRoom)
-            .subscribe((data) => {
-              // console.log(data);
-            });
+            .subscribe((data) => {});
         }
         this.dialogRef.close(this.booking);
-        this.toastr.warning("Hello world!", "Toastr fun!");
       });
     }
   }

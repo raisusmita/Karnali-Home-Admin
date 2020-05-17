@@ -1,6 +1,7 @@
 .container {
-  padding: 0 20px;
-  min-width: 100%;
+  padding: 0 5px;
+  min-width: 98%;
+  margin: 12px;
 }
 
 /* .main-container {
@@ -13,6 +14,10 @@
   margin-left: 10px;
 }
 
+.mat-form-field {
+  width: 100%;
+}
+
 .button-blue {
   color: #fff;
   background-color: #1abb9c;
@@ -21,6 +26,14 @@
 
 table.mat-table {
   width: 100%;
+}
+
+.available-room {
+  margin-top: 20px;
+}
+
+table td {
+  padding: 0 10px;
 }
 
 /* 

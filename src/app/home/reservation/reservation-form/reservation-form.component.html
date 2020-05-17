@@ -14,7 +14,11 @@
 
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Room Number</mat-label>
-    <mat-select name="room_id" [(ngModel)]="reservation.room_id">
+    <mat-select
+      name="room_id"
+      [(ngModel)]="reservation.room_id"
+      (ngModelChange)="getRoomNumber($event)"
+    >
       <mat-option *ngFor="let room of rooms" [value]="room.id">
         {{ room.room_number }}
       </mat-option>
@@ -59,7 +63,7 @@
   </mat-form-field>
 
   <button
-    [disabled]="!formReservation.valid"
+    [disabled]="!formReservation.valid || disableButton == true"
     mat-raised-button
     type="submit"
     color="primary"

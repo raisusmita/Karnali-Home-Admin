@@ -5,6 +5,9 @@ import { MatDialog } from "@angular/material/dialog";
 import { ReservationService } from "./reservation.service";
 import { ReservationFormComponent } from "./reservation-form/reservation-form.component";
 import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
+import { RoomAvailabilityService } from "src/app/shared/services/room-availability/room-availability.service";
+import { MvRoomAvailable } from "../booking/room-available.model";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: "app-reservation",
@@ -25,13 +28,28 @@ export class ReservationComponent implements OnInit {
   ];
   addForm: boolean;
   editForm: boolean;
-  dataSource: any[];
   reservation: MvReservation = {} as MvReservation;
+  roomAvailableColumns: string[] = [
+    "room_category",
+    "room_type",
+    "room_number",
+    "room_price",
+  ];
+  roomAvailableDataSource: any[];
+  public dataSource: MatTableDataSource<Element>;
 
+  roomAvailable: MvRoomAvailable = {} as MvRoomAvailable;
+
+  // For Room Availability
+  checkInDate: Date;
+  checkOutDate: Date;
+  availableRoomsByDate: any[];
+  paramsDate: {};
   constructor(
     private reservationService: ReservationService,
     private dialog: MatDialog,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+    private roomAvailableByDates: RoomAvailabilityService
   ) {}
 
   ngOnInit() {
@@ -39,9 +57,26 @@ export class ReservationComponent implements OnInit {
   }
 
   getReservation() {
-    this.reservationService.getReservation().subscribe((data) => {
-      this.dataSource = data.data;
-      console.log(JSON.stringify(data.data) + "test");
+    this.reservationService.getReservation().subscribe((result) => {
+      console.log(JSON.stringify(result.data) + "test");
+
+      const arr = [];
+      result.data.map((x) => {
+        arr.push({
+          booking_id: x.booking_id,
+          room_number: x.room.room_number,
+          room_category: x.room.room_category.room_category,
+          room_type: x.room.room_category.room_type,
+          first_name: x.customer.first_name,
+          middle_name: x.customer.middle_name,
+          last_name: x.customer.last_name,
+          email: x.customer.email,
+          phone: x.customer.phone,
+          check_in_date: x.check_in_date,
+          check_out_date: x.check_out_date,
+        });
+      });
+      this.dataSource = new MatTableDataSource(arr);
     });
   }
 
@@ -93,5 +128,35 @@ export class ReservationComponent implements OnInit {
         });
       }
     });
+  }
+
+  submitRoomAvailableForm() {
+    this.roomAvailableByDates
+      .getRoomAvailabilityByDate(this.roomAvailable)
+      .subscribe((result) => {
+        this.availableRoomsByDate = result;
+        console.log(this.availableRoomsByDate);
+        const arr = [];
+
+        const test = Object.values(this.availableRoomsByDate).map((x) => {
+          x.map((y) => {
+            arr.push({
+              category: y.room_category.room_category,
+              type: y.room_category.room_type,
+              room_number: y.room_number,
+              price: y.room_category.room_price,
+            });
+          });
+        });
+
+        this.roomAvailableDataSource = arr;
+      });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    console.log(this.dataSource.filter);
   }
 }
