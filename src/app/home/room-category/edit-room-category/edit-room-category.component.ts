@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 @Component({
   selector: "app-edit-room-category",
   templateUrl: "./edit-room-category.component.html",
-  styleUrls: ["./edit-room-category.component.css"]
+  styleUrls: ["./edit-room-category.component.scss"]
 })
 export class EditRoomCategoryComponent implements OnInit {
   category: MvRoomCategory = {} as MvRoomCategory;
@@ -14,7 +14,7 @@ export class EditRoomCategoryComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private roomCategoryService: RoomCategoryService,
     private dialogRef: MatDialogRef<EditRoomCategoryComponent>
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.roomCategoryService.getRoomCategory().subscribe(result => {
@@ -26,7 +26,7 @@ export class EditRoomCategoryComponent implements OnInit {
   onSubmit() {
     this.roomCategoryService
       .editRoomCategory(this.category)
-      .subscribe(data => {});
+      .subscribe(data => { });
     this.dialogRef.close(this.category);
     // this.forObject.hotel
     // }

@@ -6,7 +6,7 @@ import { FoodService } from "../food.service";
 @Component({
   selector: "app-food-form",
   templateUrl: "./food-form.component.html",
-  styleUrls: ["./food-form.component.css"]
+  styleUrls: ["./food-form.component.scss"]
 })
 export class FoodFormComponent implements OnInit {
   food: MvFood = {} as MvFood;
@@ -20,7 +20,7 @@ export class FoodFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private foodService: FoodService,
     private dialogRef: MatDialogRef<FoodFormComponent>
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.foodService.getFood().subscribe(data => {

@@ -7,13 +7,13 @@ import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete
 @Component({
   selector: "app-food",
   templateUrl: "./food.component.html",
-  styleUrls: ["./food.component.css"],
+  styleUrls: ["./food.component.scss"],
 })
 export class FoodComponent implements OnInit {
   displayedColumns: string[] = ["name", "price", "food_type", "action"];
   dataSource: any[];
 
-  constructor(private foodService: FoodService, private dialog: MatDialog) {}
+  constructor(private foodService: FoodService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getFood();

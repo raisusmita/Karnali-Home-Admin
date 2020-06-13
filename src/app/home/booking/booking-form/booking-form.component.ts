@@ -13,7 +13,7 @@ import { MvRoomUnavailable } from "../../reservation/reservation-form/room-unava
 @Component({
   selector: "app-booking-form",
   templateUrl: "./booking-form.component.html",
-  styleUrls: ["./booking-form.component.css"],
+  styleUrls: ["./booking-form.component.scss"],
 })
 export class BookingFormComponent implements OnInit {
   booking: MvBooking = {} as MvBooking;
@@ -66,7 +66,7 @@ export class BookingFormComponent implements OnInit {
     private reservationService: ReservationService,
     private toastr: ToastrService,
     private dialogRef: MatDialogRef<BookingFormComponent>
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getRooms();
@@ -267,7 +267,7 @@ export class BookingFormComponent implements OnInit {
         if (result) {
           this.reservationService
             .addRoomUnavailable(this.unavailableRoom)
-            .subscribe((data) => {});
+            .subscribe((data) => { });
         }
         this.dialogRef.close(this.booking);
       });

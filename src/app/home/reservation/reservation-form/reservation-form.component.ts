@@ -13,7 +13,7 @@ import { ToastrService } from "ngx-toastr";
 @Component({
   selector: "app-reservation-form",
   templateUrl: "./reservation-form.component.html",
-  styleUrls: ["./reservation-form.component.css"],
+  styleUrls: ["./reservation-form.component.scss"],
 })
 export class ReservationFormComponent implements OnInit {
   reservation: MvReservation = {} as MvReservation;
@@ -57,7 +57,7 @@ export class ReservationFormComponent implements OnInit {
     public datepipe: DatePipe,
     private toastr: ToastrService,
     private dialogRef: MatDialogRef<ReservationFormComponent>
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.data.formType == "Add") {

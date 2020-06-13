@@ -6,7 +6,7 @@ import { CustomerService } from "../customer.service";
 @Component({
   selector: "app-customer-form",
   templateUrl: "./customer-form.component.html",
-  styleUrls: ["./customer-form.component.css"]
+  styleUrls: ["./customer-form.component.scss"]
 })
 export class CustomerFormComponent implements OnInit {
   customer: MvCustomer = {} as MvCustomer;
@@ -20,7 +20,7 @@ export class CustomerFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private customerService: CustomerService,
     private dialogRef: MatDialogRef<CustomerFormComponent>
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.customerService.getCustomer().subscribe(() => {

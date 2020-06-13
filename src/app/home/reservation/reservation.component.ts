@@ -12,7 +12,7 @@ import { MatTableDataSource } from "@angular/material/table";
 @Component({
   selector: "app-reservation",
   templateUrl: "./reservation.component.html",
-  styleUrls: ["./reservation.component.css"],
+  styleUrls: ["./reservation.component.scss"],
 })
 export class ReservationComponent implements OnInit {
   displayedColumns: string[] = [
@@ -50,7 +50,7 @@ export class ReservationComponent implements OnInit {
     private dialog: MatDialog,
     public datepipe: DatePipe,
     private roomAvailableByDates: RoomAvailabilityService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getReservation();

@@ -7,7 +7,7 @@ import { UserAuthService } from "../user-auth.service";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"],
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit {
   user: MvUser = {} as MvUser;

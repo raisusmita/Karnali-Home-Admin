@@ -11,7 +11,7 @@ class ImageSnippet {
 @Component({
   selector: "app-new-room-category",
   templateUrl: "./new-room-category.component.html",
-  styleUrls: ["./new-room-category.component.css"]
+  styleUrls: ["./new-room-category.component.scss"]
 })
 export class NewRoomCategoryComponent implements OnInit {
   category: MvRoomCategory = {} as MvRoomCategory;

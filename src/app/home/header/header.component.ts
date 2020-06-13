@@ -4,18 +4,18 @@ import { Router } from "@angular/router";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.css"],
+  styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements OnInit {
   components: any[] = [
     { name: "Dashboard", path: "", icon: "dashboard" },
     { name: "Room Category", path: "room-category", icon: "category" },
     { name: "Room", path: "room", icon: "meeting_room" },
-    { name: "Table", path: "table", icon: "weekend" },
-    { name: "Food", path: "food", icon: "fastfood" },
     { name: "Customer", path: "customer", icon: "perm_identity" },
     { name: "Booking", path: "booking", icon: "book" },
     { name: "Reservation", path: "reservation", icon: "check_circle" },
+    { name: "Table", path: "table", icon: "weekend" },
+    { name: "Food", path: "food", icon: "fastfood" },
     { name: "Food Order", path: "food-order", icon: "room_service" },
     {
       name: "Room Transaction",

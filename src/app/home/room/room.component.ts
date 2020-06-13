@@ -7,7 +7,7 @@ import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete
 @Component({
   selector: "app-room",
   templateUrl: "./room.component.html",
-  styleUrls: ["./room.component.css"],
+  styleUrls: ["./room.component.scss"],
 })
 export class RoomComponent implements OnInit {
   displayedColumns: string[] = [
@@ -20,7 +20,7 @@ export class RoomComponent implements OnInit {
   selectedRowIndex: number;
   selectedRoomId: any;
 
-  constructor(private roomService: RoomService, private dialog: MatDialog) {}
+  constructor(private roomService: RoomService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getRoom();

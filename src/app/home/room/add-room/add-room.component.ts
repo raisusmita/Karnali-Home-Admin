@@ -8,7 +8,7 @@ import { RoomCategoryService } from "../../room-category/room-category.service";
 @Component({
   selector: "app-add-room",
   templateUrl: "./add-room.component.html",
-  styleUrls: ["./add-room.component.css"]
+  styleUrls: ["./add-room.component.scss"]
 })
 export class AddRoomComponent implements OnInit {
   room: MvRoom = {} as MvRoom;
@@ -20,7 +20,7 @@ export class AddRoomComponent implements OnInit {
     private roomCategoryService: RoomCategoryService,
     private roomService: RoomService,
     private dialogRef: MatDialogRef<AddRoomComponent>
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.roomCategoryService.getRoomCategory().subscribe(rc => {

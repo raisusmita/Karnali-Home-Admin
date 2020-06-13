@@ -12,7 +12,7 @@ import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 @Component({
   selector: "app-booking",
   templateUrl: "./booking.component.html",
-  styleUrls: ["./booking.component.css"],
+  styleUrls: ["./booking.component.scss"],
 })
 export class BookingComponent implements OnInit {
   booking: MvBooking = {} as MvBooking;
@@ -51,7 +51,7 @@ export class BookingComponent implements OnInit {
     private bookingService: BookingService,
     private dialog: MatDialog,
     private roomAvailableByDates: RoomAvailabilityService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getBookedRoom();
