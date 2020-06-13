@@ -15,6 +15,7 @@ import { CustomerComponent } from "./home/customer/customer.component";
 import { TableComponent } from "./home/table/table.component";
 import { HomeComponent } from "./home/home.component";
 import { UserComponent } from "./home/user/user.component";
+import { RoomAvailabilityComponent } from "./home/room-availability/room-availability.component";
 const routes: Routes = [
   { path: "login", component: LoginComponent, canActivate: [AuthGuard] },
   {
@@ -34,14 +35,15 @@ const routes: Routes = [
       { path: "customer", component: CustomerComponent },
       { path: "table", component: TableComponent },
       { path: "user", component: UserComponent },
+      { path: "room-availability", component: RoomAvailabilityComponent },
     ],
   },
   { path: "dashboard", pathMatch: "full", redirectTo: "" },
-  { path: '**', redirectTo: '/login' }
+  { path: "**", redirectTo: "/login" },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

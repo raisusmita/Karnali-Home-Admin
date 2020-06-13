@@ -1,6 +1,6 @@
 <h2 *ngIf="addForm">Add New Booking</h2>
 <h2 *ngIf="editForm">Edit Booking</h2>
-<form #formHotel="ngForm" (ngSubmit)="submitCustomerForm()">
+<form #formBooking="ngForm" (ngSubmit)="submitCustomerForm()">
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Customer Full Name</mat-label>
     <mat-select name="room" [(ngModel)]="booking.customer_id">
@@ -48,7 +48,11 @@
     <div class="col-md-6">
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Room Category</mat-label>
-        <mat-select name="room_category" [(ngModel)]="booking.room_category_id">
+        <mat-select
+          name="room_category"
+          [(ngModel)]="booking.room_category_id"
+          (ngModelChange)="getRoomCategory($event)"
+        >
           <mat-option
             *ngFor="let roomCategory of roomCategories"
             [value]="roomCategory.id"
@@ -73,6 +77,7 @@
           placeholder="Number of Room"
           required
           [(ngModel)]="booking.number_of_rooms"
+          (ngModelChange)="getNumberOfRoom($event)"
         />
       </mat-form-field>
     </div>
@@ -125,6 +130,7 @@
       name="checkIn_date"
       required
       [(ngModel)]="booking.check_in_date"
+      (ngModelChange)="getCheckInDate($event)"
     />
     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
     <mat-datepicker #picker1></mat-datepicker>
@@ -138,13 +144,14 @@
       name="checkOut_date"
       required
       [(ngModel)]="booking.check_out_date"
+      (ngModelChange)="getCheckOutDate($event)"
     />
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker #picker2></mat-datepicker>
   </mat-form-field>
 
   <button
-    [disabled]="!formHotel.valid"
+    [disabled]="!formBooking.valid || disableButton == true"
     mat-raised-button
     type="submit"
     color="primary"

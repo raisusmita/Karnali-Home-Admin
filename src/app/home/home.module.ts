@@ -5,7 +5,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { RoomTransactionComponent } from "./room-transaction/room-transaction.component";
 import { FoodOrderComponent } from "../home/food-order/food-order.component";
 import { InvoiceComponent } from "./invoice/invoice.component";
-import { ConfirmDeleteComponent } from "../shared/confirm-delete/confirm-delete.component";
+import { ConfirmDeleteComponent } from "../shared/components/confirm-delete/confirm-delete.component";
 import { LoginComponent } from "../login/login.component";
 import { HomeComponent } from "./home.component";
 import { BrowserModule } from "@angular/platform-browser";
@@ -51,6 +51,9 @@ import { UserFormComponent } from "./user/user-form/user-form.component";
 import { UserAuthService } from "../user-auth.service";
 import { UserService } from "./user/user.service";
 
+//Toast
+import { ToastrModule } from "ngx-toastr";
+import { MatCardModule } from "@angular/material/card";
 import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
@@ -59,6 +62,8 @@ import {
 import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
 import { ReservationFormComponent } from "./reservation/reservation-form/reservation-form.component";
 import { DatePipe } from "@angular/common";
+import { RoomAvailabilityComponent } from "./room-availability/room-availability.component";
+import { RoomAvailabilityFormComponent } from "./room-availability/room-availability-form/room-availability-form.component";
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -87,11 +92,14 @@ import { DatePipe } from "@angular/common";
     UserFormComponent,
     ReservationFormComponent,
     ReservationComponent,
+    RoomAvailabilityComponent,
+    RoomAvailabilityFormComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     RouterModule,
     HttpClientModule,
     MatIconModule,
@@ -109,6 +117,7 @@ import { DatePipe } from "@angular/common";
     MatDatepickerModule,
     MatNativeDateModule,
     StorageServiceModule,
+    MatCardModule,
   ],
   providers: [
     UserAuthService,
@@ -128,6 +137,7 @@ import { DatePipe } from "@angular/common";
     BookingFormComponent,
     UserFormComponent,
     ReservationFormComponent,
+    RoomAvailabilityFormComponent,
   ],
 })
 export class HomeModule {}

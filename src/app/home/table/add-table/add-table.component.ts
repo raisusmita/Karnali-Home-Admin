@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 @Component({
   selector: "app-add-table",
   templateUrl: "./add-table.component.html",
-  styleUrls: ["./add-table.component.css"]
+  styleUrls: ["./add-table.component.scss"],
 })
 export class AddTableComponent implements OnInit {
   table: MvTable = {} as MvTable;
@@ -26,11 +26,11 @@ export class AddTableComponent implements OnInit {
 
   submitTableForm() {
     if (this.isEdit) {
-      this.tableService.editTable(this.table).subscribe(e => {
+      this.tableService.editTable(this.table).subscribe((e) => {
         this.dialogRef.close(this.table);
       });
     } else {
-      this.tableService.addTable(this.table).subscribe(e => {
+      this.tableService.addTable(this.table).subscribe((e) => {
         this.dialogRef.close(this.table);
       });
     }

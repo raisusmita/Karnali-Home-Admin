@@ -2,12 +2,12 @@ import { AddTableComponent } from "./add-table/add-table.component";
 import { MatDialog } from "@angular/material/dialog";
 import { TableService } from "./table.service";
 import { Component, OnInit } from "@angular/core";
-import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
+import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-table",
   templateUrl: "./table.component.html",
-  styleUrls: ["./table.component.css"]
+  styleUrls: ["./table.component.scss"],
 })
 export class TableComponent implements OnInit {
   displayedColumns: string[] = ["table_number", "created_at", "action"];
@@ -21,7 +21,7 @@ export class TableComponent implements OnInit {
   }
 
   getTable() {
-    this.tableService.getTable().subscribe(result => {
+    this.tableService.getTable().subscribe((result) => {
       this.dataSource = result.data;
     });
   }
@@ -29,10 +29,10 @@ export class TableComponent implements OnInit {
   addTable() {
     const dialogRef = this.dialog.open(AddTableComponent, {
       width: "50%",
-      data: null
+      data: null,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getTable();
       }
@@ -41,18 +41,18 @@ export class TableComponent implements OnInit {
   editTable(tableEditData) {
     const dialogRef = this.dialog.open(AddTableComponent, {
       width: "50%",
-      data: tableEditData
+      data: tableEditData,
     });
   }
 
   deleteTable(index) {
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
-      width: "50%"
+      width: "50%",
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.tableService.deleteTable(index).subscribe(data => {
+        this.tableService.deleteTable(index).subscribe((data) => {
           this.getTable();
         });
       }

@@ -2,19 +2,19 @@ import { Component, OnInit } from "@angular/core";
 import { RoomService } from "./room.service";
 import { MatDialog } from "@angular/material/dialog";
 import { AddRoomComponent } from "./add-room/add-room.component";
-import { ConfirmDeleteComponent } from "src/app/shared/confirm-delete/confirm-delete.component";
+import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-room",
   templateUrl: "./room.component.html",
-  styleUrls: ["./room.component.css"]
+  styleUrls: ["./room.component.scss"],
 })
 export class RoomComponent implements OnInit {
   displayedColumns: string[] = [
     "room_number",
     "number_of_bed",
     "telephone_number",
-    "action"
+    "action",
   ];
   dataSource: any[];
   selectedRowIndex: number;
@@ -27,7 +27,7 @@ export class RoomComponent implements OnInit {
   }
 
   getRoom() {
-    this.roomService.getRoom().subscribe(data => {
+    this.roomService.getRoom().subscribe((data) => {
       this.dataSource = data.data;
     });
   }
@@ -35,10 +35,10 @@ export class RoomComponent implements OnInit {
   addRoom() {
     const dialogRef = this.dialog.open(AddRoomComponent, {
       width: "50%",
-      data: null
+      data: null,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getRoom();
       }
@@ -47,18 +47,18 @@ export class RoomComponent implements OnInit {
   editRoom(roomEditData) {
     const dialogRef = this.dialog.open(AddRoomComponent, {
       width: "50%",
-      data: roomEditData
+      data: roomEditData,
     });
   }
 
   deleteRoom(index) {
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
-      width: "50%"
+      width: "50%",
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.roomService.deleteRoom(index).subscribe(data => {
+        this.roomService.deleteRoom(index).subscribe((data) => {
           this.getRoom();
         });
       }

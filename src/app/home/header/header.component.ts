@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.css"],
+  styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements OnInit {
   components: any[] = [
@@ -18,6 +18,11 @@ export class HeaderComponent implements OnInit {
     { name: "Reservation", path: "reservation", icon: "check_circle" },
     { name: "Food Order", path: "food-order", icon: "room_service" },
     {
+      name: "Room Availability",
+      path: "room-availability",
+      icon: "event_available",
+    },
+    {
       name: "Room Transaction",
       path: "room-transaction",
       icon: "description",
@@ -26,12 +31,12 @@ export class HeaderComponent implements OnInit {
     { name: "User", path: "user", icon: "group" },
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     this.router.navigate(["/login"]);
   }
 }
