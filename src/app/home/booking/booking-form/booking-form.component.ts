@@ -56,11 +56,14 @@ export class BookingFormComponent implements OnInit {
   available: any[] = [];
   disableButton: boolean;
   totalAvailableRoomCategory: number;
+
+  //Prepopulated value from griddata
+  customerName: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private customerService: CustomerService,
     private roomCategoryService: RoomCategoryService,
-    private roomAvailableByDates: RoomAvailabilityService,
+    private roomAvailableService: RoomAvailabilityService,
     private bookingService: BookingService,
     private roomService: RoomService,
     private reservationService: ReservationService,
@@ -72,6 +75,8 @@ export class BookingFormComponent implements OnInit {
     this.getRooms();
     if (this.data.gridData) {
       this.booking = this.data.gridData;
+      this.booking.check_in_date = new Date(this.data.gridData.check_in_date);
+      this.booking.check_out_date = new Date(this.data.gridData.check_out_date);
     }
 
     this.getCustomers();
@@ -79,8 +84,8 @@ export class BookingFormComponent implements OnInit {
   }
 
   getRooms() {
-    this.roomService.getRoom().subscribe((result) => {
-      this.rooms = result.data;
+    this.roomAvailableService.getAvailableRooms().subscribe((result) => {
+      this.rooms = result;
     });
   }
   getCustomers() {
@@ -162,7 +167,7 @@ export class BookingFormComponent implements OnInit {
       dates.room_category_id != null &&
       dates.number_of_rooms != null
     ) {
-      this.roomAvailableByDates
+      this.roomAvailableService
         .getRoomAvailabilityByDate(dates)
         .subscribe((result) => {
           this.availableRoomsByDate = result;
@@ -242,11 +247,13 @@ export class BookingFormComponent implements OnInit {
     } else {
       this.bookingService.addBooking(this.booking).subscribe((result) => {
         if (this.booking) {
-          this.rooms.map((x) => {
-            if (x.room_category_id == this.booking.room_category_id) {
-              this.roomBasedOnBookingCategory.push(x);
-            }
-          });
+          if (this.rooms) {
+            this.rooms.map((x) => {
+              if (x.room_category_id == this.booking.room_category_id) {
+                this.roomBasedOnBookingCategory.push(x);
+              }
+            });
+          }
         }
 
         for (let index = 0; index < result.data.number_of_rooms; index++) {

@@ -18,6 +18,19 @@ export class RoomAvailabilityService {
     return this.http.get(this.baseURL + "available", options);
   }
 
+  getRoomByBooking(bookingId: any): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.post(
+      this.baseURL + "availableRoomByBookingId",
+      bookingId,
+      options
+    );
+  }
+
   addRoomUnavailable(unavailableRoom: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
       "Content-Type",

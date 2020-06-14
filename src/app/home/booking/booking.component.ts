@@ -62,10 +62,12 @@ export class BookingComponent implements OnInit {
       const arr = [];
       result.data.map((x) => {
         arr.push({
+          customer_id: x.customer.id,
           first_name: x.customer.first_name,
           middle_name: x.customer_middle_name,
           last_name: x.customer.last_name,
           room_category: x.room_category.room_category,
+          room_category_id: x.room_category.id,
           number_of_adult: x.number_of_adult,
           number_of_child: x.number_of_child,
           number_of_rooms: x.number_of_rooms,
@@ -146,6 +148,18 @@ export class BookingComponent implements OnInit {
   // }
 
   submitRoomAvailableForm() {
+    let offsetCIn =
+      this.roomAvailable.check_in_date.getTimezoneOffset() * 60000;
+    let offsetCOut =
+      this.roomAvailable.check_out_date.getTimezoneOffset() * 60000;
+
+    this.roomAvailable.check_in_date = new Date(
+      this.roomAvailable.check_in_date.getTime() - offsetCIn
+    );
+    this.roomAvailable.check_out_date = new Date(
+      this.roomAvailable.check_out_date.getTime() - offsetCOut
+    );
+
     this.roomAvailableByDates
       .getRoomAvailabilityByDate(this.roomAvailable)
       .subscribe((result) => {
