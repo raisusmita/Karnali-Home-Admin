@@ -50,6 +50,19 @@ export class ReservationService {
     );
   }
 
+  bookingToReservation(reservation: any): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.post(
+      "http://localhost:8000/api/bookingToReservation",
+      JSON.stringify(reservation),
+      options
+    );
+  }
+
   getRoomAvailabilityByDate(dates: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
       "Content-Type",

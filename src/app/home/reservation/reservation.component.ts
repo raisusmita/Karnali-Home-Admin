@@ -8,6 +8,7 @@ import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete
 import { RoomAvailabilityService } from "src/app/shared/services/room-availability/room-availability.service";
 import { MvRoomAvailable } from "../booking/room-available.model";
 import { MatTableDataSource } from "@angular/material/table";
+import { identifierModuleUrl } from "@angular/compiler";
 
 @Component({
   selector: "app-reservation",
@@ -61,10 +62,13 @@ export class ReservationComponent implements OnInit {
       const arr = [];
       result.data.map((x) => {
         arr.push({
-          booking_id: x.booking_id,
+          id: x.id,
+          booking_id: x.booking_id ? x.booking_id : "No Booking",
+          room_id: x.room.id,
           room_number: x.room.room_number,
           room_category: x.room.room_category.room_category,
           room_type: x.room.room_category.room_type,
+          customer_id: x.customer.id,
           first_name: x.customer.first_name,
           middle_name: x.customer.middle_name,
           last_name: x.customer.last_name,
@@ -129,6 +133,17 @@ export class ReservationComponent implements OnInit {
   }
 
   submitRoomAvailableForm() {
+    let offsetCIn =
+      this.roomAvailable.check_in_date.getTimezoneOffset() * 60000;
+    let offsetCOut =
+      this.roomAvailable.check_out_date.getTimezoneOffset() * 60000;
+
+    this.roomAvailable.check_in_date = new Date(
+      this.roomAvailable.check_in_date.getTime() - offsetCIn
+    );
+    this.roomAvailable.check_out_date = new Date(
+      this.roomAvailable.check_out_date.getTime() - offsetCOut
+    );
     this.roomAvailableByDates
       .getRoomAvailabilityByDate(this.roomAvailable)
       .subscribe((result) => {

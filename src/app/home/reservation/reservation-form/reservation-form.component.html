@@ -13,24 +13,35 @@
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Booking Id</mat-label>
+    <mat-select
+      name="booking_id"
+      [(ngModel)]="reservation.booking_id"
+      (ngModelChange)="getAssigedRoomForBooking($event)"
+    >
+      <mat-option *ngFor="let booking of bookings" [value]="booking.id">
+        {{ booking.id }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Room Number</mat-label>
     <mat-select
       name="room_id"
       [(ngModel)]="reservation.room_id"
       (ngModelChange)="getRoomNumber($event)"
     >
-      <mat-option *ngFor="let room of rooms" [value]="room.id">
-        {{ room.room_number }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Booking Id</mat-label>
-    <mat-select name="booking_id" [(ngModel)]="reservation.booking_id">
-      <mat-option *ngFor="let booking of bookings" [value]="booking.id">
-        {{ booking.id }}
-      </mat-option>
+      <div *ngIf="byAvailable">
+        <mat-option *ngFor="let room of availableRoom" [value]="room.id">
+          {{ room.room_number }}
+        </mat-option>
+      </div>
+      <div *ngIf="byBooking">
+        <mat-option *ngFor="let room of roomsByBooking" [value]="room.room.id">
+          {{ room.room.room_number }}
+        </mat-option>
+      </div>
     </mat-select>
   </mat-form-field>
 

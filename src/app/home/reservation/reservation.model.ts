@@ -1,4 +1,5 @@
 export interface MvReservation {
+  reservation_id: number;
   customer_id: number;
   room_id: number;
   room_category_id: number;

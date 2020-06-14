@@ -34,6 +34,10 @@ export class ReservationFormComponent implements OnInit {
 
   available: any[] = [];
   disableButton: boolean;
+  roomsByBooking: any[] = [];
+  availableRoom: any[] = [];
+  byAvailable: boolean;
+  byBooking: boolean;
 
   public unavailableRoom: any[] = [
     {
@@ -47,6 +51,9 @@ export class ReservationFormComponent implements OnInit {
     },
   ];
 
+  //Checkin and CHeckOut date from BookingId
+  bookedCheckIn: Date;
+  bookedCheckOut: Date;
   constructor(
     private customerService: CustomerService,
     private reservationService: ReservationService,
@@ -68,11 +75,18 @@ export class ReservationFormComponent implements OnInit {
     this.reservationService.getReservation().subscribe(() => {
       if (this.data.gridData) {
         this.reservation = this.data.gridData;
+        this.getAssigedRoomForBooking(this.reservation.booking_id);
+
+        this.reservation.check_in_date = new Date(
+          this.reservation.check_in_date
+        );
+        this.reservation.check_out_date = new Date(
+          this.reservation.check_out_date
+        );
       }
     });
     this.getCustomers();
     this.getRoomCategories();
-    this.getAvailableRoom();
     this.getBookings();
   }
 
@@ -91,22 +105,41 @@ export class ReservationFormComponent implements OnInit {
 
   getAvailableRoom() {
     this.roomAvailableService.getAvailableRooms().subscribe((result) => {
-      // this.rooms = result.data;
-      const arr = [];
-
-      // result.map(x.data =>{
-      // arr.push(Object.values(result.data[1]));
-
-      // })
-      console.log(result);
-      console.log(arr);
+      this.availableRoom = result;
     });
   }
 
   getBookings() {
     this.bookingService.getBookedRoom().subscribe((result) => {
       this.bookings = result.data;
+      this.bookings.unshift({ id: "No Booking" });
     });
+  }
+
+  getAssigedRoomForBooking(booking) {
+    if (booking == "No Booking") {
+      this.getAvailableRoom();
+      this.byAvailable = true;
+      this.byBooking = false;
+      this.reservation.check_in_date = null;
+      this.reservation.check_out_date = null;
+    } else {
+      const paramsBookingId = {
+        bookingId: booking,
+      };
+
+      this.byAvailable = false;
+      this.byBooking = true;
+      this.roomAvailableService
+        .getRoomByBooking(paramsBookingId)
+        .subscribe((result) => {
+          this.roomsByBooking = result.data;
+          this.bookedCheckIn = result.data[0].check_in_date;
+          this.bookedCheckOut = result.data[0].check_out_date;
+          this.reservation.check_in_date = new Date(this.bookedCheckIn);
+          this.reservation.check_out_date = new Date(this.bookedCheckOut);
+        });
+    }
   }
 
   getCheckInDate($checkInDate) {
@@ -213,26 +246,32 @@ export class ReservationFormComponent implements OnInit {
         .addReservation(this.reservation)
         .subscribe((reservationResult) => {
           if (reservationResult) {
-            this.unavailableRoom.push({
-              reservation_id: reservationResult.data.id,
-              room_id: reservationResult.data.room_id,
-              check_in_date: reservationResult.data.check_in_date,
-              check_out_date: reservationResult.data.check_out_date,
-              status: "reserved",
-              booking_id: null,
-              created_at: reservationResult.data.created_at,
-              updated_at: reservationResult.data.updated_at,
-            });
-
-            this.unavailableRoom.splice(0, 1);
-
-            console.log(this.unavailableRoom);
-
-            this.reservationService
-              .addRoomUnavailable(this.unavailableRoom)
-              .subscribe((data) => {
-                console.log(data);
+            if (this.byBooking) {
+              this.reservation.reservation_id = reservationResult.data.id;
+              this.reservationService
+                .bookingToReservation(this.reservation)
+                .subscribe((result) => {
+                  const test = result;
+                });
+            } else {
+              this.unavailableRoom.push({
+                reservation_id: reservationResult.data.id,
+                room_id: reservationResult.data.room_id,
+                check_in_date: reservationResult.data.check_in_date,
+                check_out_date: reservationResult.data.check_out_date,
+                status: "reserved",
+                booking_id: null,
+                created_at: reservationResult.data.created_at,
+                updated_at: reservationResult.data.updated_at,
               });
+
+              this.unavailableRoom.splice(0, 1);
+              this.reservationService
+                .addRoomUnavailable(this.unavailableRoom)
+                .subscribe((data) => {
+                  console.log(data);
+                });
+            }
           }
           this.dialogRef.close(this.reservation);
         });
