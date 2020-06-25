@@ -28,15 +28,15 @@ export class RoomAvailabilityComponent implements OnInit {
   availableRoomsByDate: any[];
   paramsDate: {};
 
-  constructor(private roomAvailableByDates: RoomAvailabilityService) {}
+  constructor(private roomAvailableByDates: RoomAvailabilityService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   submitRoomAvailableForm() {
     this.roomAvailableByDates
       .getRoomAvailabilityByDate(this.roomAvailable)
       .subscribe((result) => {
-        this.availableRoomsByDate = result;
+        this.availableRoomsByDate = result.data;
         const arr = [];
 
         const test = Object.values(this.availableRoomsByDate).map((x) => {
