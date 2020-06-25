@@ -69,7 +69,7 @@ export class BookingFormComponent implements OnInit {
     private reservationService: ReservationService,
     private toastr: ToastrService,
     private dialogRef: MatDialogRef<BookingFormComponent>
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getRooms();
@@ -257,6 +257,7 @@ export class BookingFormComponent implements OnInit {
         }
 
         for (let index = 0; index < result.data.number_of_rooms; index++) {
+          debugger;
           this.unavailableRoom.push({
             reservation_id: null,
             room_id: this.roomBasedOnBookingCategory[index].id,
@@ -274,7 +275,7 @@ export class BookingFormComponent implements OnInit {
         if (result) {
           this.reservationService
             .addRoomUnavailable(this.unavailableRoom)
-            .subscribe((data) => {});
+            .subscribe((data) => { });
         }
         this.dialogRef.close(this.booking);
       });

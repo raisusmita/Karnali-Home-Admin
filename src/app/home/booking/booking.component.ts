@@ -51,7 +51,7 @@ export class BookingComponent implements OnInit {
     private bookingService: BookingService,
     private dialog: MatDialog,
     private roomAvailableByDates: RoomAvailabilityService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getBookedRoom();
@@ -60,22 +60,25 @@ export class BookingComponent implements OnInit {
   getBookedRoom() {
     this.bookingService.getBookedRoom().subscribe((result) => {
       const arr = [];
-      result.data.map((x) => {
-        arr.push({
-          customer_id: x.customer.id,
-          first_name: x.customer.first_name,
-          middle_name: x.customer_middle_name,
-          last_name: x.customer.last_name,
-          room_category: x.room_category.room_category,
-          room_category_id: x.room_category.id,
-          number_of_adult: x.number_of_adult,
-          number_of_child: x.number_of_child,
-          number_of_rooms: x.number_of_rooms,
-          check_in_date: x.check_in_date,
-          check_out_date: x.check_out_date,
-          created_at: x.created_at,
+      if (result && result.data) {
+        result.data.map((x) => {
+          arr.push({
+            id: x.id,
+            customer_id: x.customer.id,
+            first_name: x.customer.first_name,
+            middle_name: x.customer_middle_name,
+            last_name: x.customer.last_name,
+            room_category: x.room_category.room_category,
+            room_category_id: x.room_category.id,
+            number_of_adult: x.number_of_adult,
+            number_of_child: x.number_of_child,
+            number_of_rooms: x.number_of_rooms,
+            check_in_date: x.check_in_date,
+            check_out_date: x.check_out_date,
+            created_at: x.created_at,
+          });
         });
-      });
+      }
       this.dataSource = new MatTableDataSource(arr);
 
       // Define filter function to look for 'premiseId'matches
@@ -163,7 +166,7 @@ export class BookingComponent implements OnInit {
     this.roomAvailableByDates
       .getRoomAvailabilityByDate(this.roomAvailable)
       .subscribe((result) => {
-        this.availableRoomsByDate = result;
+        this.availableRoomsByDate = result.data;
         const arr = [];
 
         const test = Object.values(this.availableRoomsByDate).map((x) => {

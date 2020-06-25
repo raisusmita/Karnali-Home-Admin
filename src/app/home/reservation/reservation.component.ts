@@ -51,7 +51,7 @@ export class ReservationComponent implements OnInit {
     private dialog: MatDialog,
     public datepipe: DatePipe,
     private roomAvailableByDates: RoomAvailabilityService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getReservation();
@@ -60,25 +60,27 @@ export class ReservationComponent implements OnInit {
   getReservation() {
     this.reservationService.getReservation().subscribe((result) => {
       const arr = [];
-      result.data.map((x) => {
-        arr.push({
-          id: x.id,
-          booking_id: x.booking_id ? x.booking_id : "No Booking",
-          room_id: x.room.id,
-          room_number: x.room.room_number,
-          room_category: x.room.room_category.room_category,
-          room_type: x.room.room_category.room_type,
-          customer_id: x.customer.id,
-          first_name: x.customer.first_name,
-          middle_name: x.customer.middle_name,
-          last_name: x.customer.last_name,
-          email: x.customer.email,
-          phone: x.customer.phone,
-          check_in_date: x.check_in_date,
-          check_out_date: x.check_out_date,
+      if (result && result.data) {
+        result.data.map((x) => {
+          arr.push({
+            id: x.id,
+            booking_id: x.booking_id ? x.booking_id : "No Booking",
+            room_id: x.room.id,
+            room_number: x.room.room_number,
+            room_category: x.room.room_category.room_category,
+            room_type: x.room.room_category.room_type,
+            customer_id: x.customer.id,
+            first_name: x.customer.first_name,
+            middle_name: x.customer.middle_name,
+            last_name: x.customer.last_name,
+            email: x.customer.email,
+            phone: x.customer.phone,
+            check_in_date: x.check_in_date,
+            check_out_date: x.check_out_date,
+          });
         });
-      });
-      this.dataSource = new MatTableDataSource(arr);
+        this.dataSource = new MatTableDataSource(arr);
+      }
     });
   }
 
