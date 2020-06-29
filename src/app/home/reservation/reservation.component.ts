@@ -149,7 +149,7 @@ export class ReservationComponent implements OnInit {
     this.roomAvailableByDates
       .getRoomAvailabilityByDate(this.roomAvailable)
       .subscribe((result) => {
-        this.availableRoomsByDate = result;
+        this.availableRoomsByDate = result.data;
         const arr = [];
 
         const test = Object.values(this.availableRoomsByDate).map((x) => {
