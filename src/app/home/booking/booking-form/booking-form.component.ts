@@ -69,7 +69,7 @@ export class BookingFormComponent implements OnInit {
     private reservationService: ReservationService,
     private toastr: ToastrService,
     private dialogRef: MatDialogRef<BookingFormComponent>
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getRooms();
@@ -85,7 +85,7 @@ export class BookingFormComponent implements OnInit {
 
   getRooms() {
     this.roomAvailableService.getAvailableRooms().subscribe((result) => {
-      this.rooms = result;
+      this.rooms = result.data;
     });
   }
   getCustomers() {
@@ -170,7 +170,7 @@ export class BookingFormComponent implements OnInit {
       this.roomAvailableService
         .getRoomAvailabilityByDate(dates)
         .subscribe((result) => {
-          this.availableRoomsByDate = result;
+          this.availableRoomsByDate = result.data;
 
           const arr = [];
           const test = Object.values(this.availableRoomsByDate).map((x) => {
@@ -187,7 +187,7 @@ export class BookingFormComponent implements OnInit {
             }
           });
 
-          Object.values(result).map((x: any) => {
+          Object.values(result.data).map((x: any) => {
             x.map((y) => {
               if (y.room_category_id == this.booking.room_category_id) {
                 this.available.push(true);
@@ -246,37 +246,6 @@ export class BookingFormComponent implements OnInit {
       });
     } else {
       this.bookingService.addBooking(this.booking).subscribe((result) => {
-        if (this.booking) {
-          if (this.rooms) {
-            this.rooms.map((x) => {
-              if (x.room_category_id == this.booking.room_category_id) {
-                this.roomBasedOnBookingCategory.push(x);
-              }
-            });
-          }
-        }
-
-        for (let index = 0; index < result.data.number_of_rooms; index++) {
-          debugger;
-          this.unavailableRoom.push({
-            reservation_id: null,
-            room_id: this.roomBasedOnBookingCategory[index].id,
-            check_in_date: result.data.check_in_date,
-            check_out_date: result.data.check_out_date,
-            status: "booked",
-            booking_id: result.data.id,
-            created_at: result.data.created_at,
-            updated_at: result.data.updated_at,
-          });
-        }
-
-        this.unavailableRoom.splice(0, 1);
-
-        if (result) {
-          this.reservationService
-            .addRoomUnavailable(this.unavailableRoom)
-            .subscribe((data) => { });
-        }
         this.dialogRef.close(this.booking);
       });
     }
