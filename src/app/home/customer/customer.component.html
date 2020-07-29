@@ -45,11 +45,41 @@
         <td mat-cell *matCellDef="let element">{{ element.address }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="customer_type">
+      <!-- <ng-container matColumnDef="customer_type">
         <th mat-header-cell *matHeaderCellDef>Customer Type</th>
         <td mat-cell *matCellDef="let element">
           {{ customerType[element.customer_type] }}
         </td>
+      </ng-container> -->
+
+      <ng-container matColumnDef="date_of_birth">
+        <th mat-header-cell *matHeaderCellDef>Date of Birth</th>
+        <td mat-cell *matCellDef="let element">{{ element.date_of_birth }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="profession">
+        <th mat-header-cell *matHeaderCellDef>Profession</th>
+        <td mat-cell *matCellDef="let element">{{ element.profession }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="identity_type">
+        <th mat-header-cell *matHeaderCellDef>Identity Type</th>
+        <td mat-cell *matCellDef="let element">{{ element.identity_type }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="identity_number">
+        <th mat-header-cell *matHeaderCellDef>Identity Number</th>
+        <td mat-cell *matCellDef="let element">{{ element.identity_number }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="identity_image_first">
+        <th mat-header-cell *matHeaderCellDef>Identity Image First</th>
+        <td mat-cell *matCellDef="let element">{{ element.identity_image_first }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="identity_image_second">
+        <th mat-header-cell *matHeaderCellDef>Identity Image Second</th>
+        <td mat-cell *matCellDef="let element">{{ element.identity_image_second }}</td>
       </ng-container>
 
       <ng-container matColumnDef="action">

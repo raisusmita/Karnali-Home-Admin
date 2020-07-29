@@ -16,7 +16,12 @@ export class CustomerComponent implements OnInit {
     "phone",
     "country",
     "address",
-    "customer_type",
+    "date_of_birth",
+    "profession",
+    "identity_type",
+    "identity_number",
+    "identity_image_first",
+    "identity_image_second",
     "action",
   ];
   dataSource: any[];
@@ -28,7 +33,7 @@ export class CustomerComponent implements OnInit {
   constructor(
     private customerService: CustomerService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getCustomer();
