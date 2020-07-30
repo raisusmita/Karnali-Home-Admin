@@ -17,11 +17,50 @@ export class CustomerService {
   }
 
   addCustomer(customer: any): Observable<any> {
-    return this.http.post(this.baseURL, customer);
+    const formData = new FormData();
+    formData.append('first_name', customer.first_name);
+    if (customer.middle_name) {
+      formData.append('middle_name', customer.middle_name);
+    }
+    formData.append('last_name', customer.last_name);
+    if (customer.email) {
+      formData.append('email', customer.email);
+    }
+    formData.append('phone', customer.phone);
+    formData.append('country', customer.country);
+    formData.append('address', customer.address);
+    formData.append('date_of_birth', customer.date_of_birth);
+    formData.append('profession', customer.profession);
+    formData.append('identity_type', customer.identity_type);
+    formData.append('identity_number', customer.identity_number);
+    formData.append('identity_image_first', customer.identity_image_first);
+    formData.append('identity_image_second', customer.identity_image_second);
+    return this.http.post(this.baseURL, formData);
   }
 
   editCustomer(customer: any): Observable<any> {
-    return this.http.put(this.baseURL + "/" + customer.id, customer);
+    const formData = new FormData();
+    formData.append('id', customer.id);
+    formData.append('first_name', customer.first_name);
+    if (customer.middle_name) {
+      formData.append('middle_name', customer.middle_name);
+    }
+    formData.append('last_name', customer.last_name);
+    if (customer.email) {
+      formData.append('email', customer.email);
+    }
+    formData.append('phone', customer.phone);
+    formData.append('country', customer.country);
+    formData.append('address', customer.address);
+    formData.append('date_of_birth', customer.date_of_birth);
+    formData.append('profession', customer.profession);
+    formData.append('identity_type', customer.identity_type);
+    formData.append('identity_number', customer.identity_number);
+    if (customer.identity_image_first) {
+      formData.append('identity_image_first', customer.identity_image_first);
+      formData.append('identity_image_second', customer.identity_image_second);
+    }
+    return this.http.post(environment.apiURL + "editCustomer", formData);
   }
 
   deleteCustomer(id: any): Observable<any> {

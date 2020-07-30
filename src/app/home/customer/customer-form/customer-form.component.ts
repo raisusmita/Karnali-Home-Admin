@@ -21,10 +21,6 @@ export class CustomerFormComponent implements OnInit {
   otherValidation = false;
 
   customer: MvCustomer = {} as MvCustomer;
-  customerType = {
-    Booking: "0",
-    Reserved: "1",
-  };
   identityType = {
     Passport: "passport",
     Citizenship: "citizenship",
@@ -45,6 +41,7 @@ export class CustomerFormComponent implements OnInit {
       if (this.data) {
         this.isEdit = true;
         this.customer = this.data;
+        this.otherValidation = true;
       }
     });
   }
@@ -71,17 +68,24 @@ export class CustomerFormComponent implements OnInit {
           disableTimeOut: true,
         }
       );
+      this.otherValidation = false;
     }
   }
 
   submitCustomerForm() {
+    if (this.selectedFirstImage) {
+      this.customer.identity_image_first = this.selectedFirstImage.file;
+      this.customer.identity_image_second = this.selectedSecondImage.file;
+    }
     if (this.isEdit) {
+      if (!this.selectedFirstImage) {
+        this.customer.identity_image_first = null;
+        this.customer.identity_image_second = null;
+      }
       this.customerService.editCustomer(this.customer).subscribe(() => {
         this.dialogRef.close(this.customer);
       });
     } else {
-      this.customer.identity_image_first = this.selectedFirstImage.file;
-      this.customer.identity_image_second = this.selectedSecondImage.file;
       this.customerService.addCustomer(this.customer).subscribe(() => {
         this.dialogRef.close(this.customer);
       });

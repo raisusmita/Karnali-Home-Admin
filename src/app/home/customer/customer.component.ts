@@ -21,14 +21,9 @@ export class CustomerComponent implements OnInit {
     "identity_type",
     "identity_number",
     "identity_image_first",
-    "identity_image_second",
     "action",
   ];
   dataSource: any[];
-  customerType = {
-    "0": "Booking",
-    "1": "Reserved",
-  };
 
   constructor(
     private customerService: CustomerService,
@@ -61,6 +56,7 @@ export class CustomerComponent implements OnInit {
   editCustomer(customerEditData) {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       width: "50%",
+      height: "700px",
       data: customerEditData,
     });
   }

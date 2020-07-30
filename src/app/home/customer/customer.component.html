@@ -9,22 +9,11 @@
       <ng-container matColumnDef="first_name">
         <th mat-header-cell *matHeaderCellDef>Customer Name</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.first_name }} {{ element.middle_name }}
+          {{ element.first_name }} {{ element.middle_name ? element.middle_name : ''  }}
           {{ element.last_name }}
         </td>
       </ng-container>
 
-      <!-- <ng-container matColumnDef="middle_name">
-          <th mat-header-cell *matHeaderCellDef>Middle_name</th>
-          <td mat-cell *matCellDef="let element">{{ element.middle_name }}</td>
-        </ng-container>
-    
-        <ng-container matColumnDef="last_name">
-          <th mat-header-cell *matHeaderCellDef>Last_name</th>
-          <td mat-cell *matCellDef="let element">{{ element.last_name }}</td>
-        </ng-container> -->
-
-      <!-- Symbol Column -->
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef>Email</th>
         <td mat-cell *matCellDef="let element">{{ element.email }}</td>
@@ -44,13 +33,6 @@
         <th mat-header-cell *matHeaderCellDef>Address</th>
         <td mat-cell *matCellDef="let element">{{ element.address }}</td>
       </ng-container>
-
-      <!-- <ng-container matColumnDef="customer_type">
-        <th mat-header-cell *matHeaderCellDef>Customer Type</th>
-        <td mat-cell *matCellDef="let element">
-          {{ customerType[element.customer_type] }}
-        </td>
-      </ng-container> -->
 
       <ng-container matColumnDef="date_of_birth">
         <th mat-header-cell *matHeaderCellDef>Date of Birth</th>
@@ -74,12 +56,11 @@
 
       <ng-container matColumnDef="identity_image_first">
         <th mat-header-cell *matHeaderCellDef>Identity Image First</th>
-        <td mat-cell *matCellDef="let element">{{ element.identity_image_first }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="identity_image_second">
-        <th mat-header-cell *matHeaderCellDef>Identity Image Second</th>
-        <td mat-cell *matCellDef="let element">{{ element.identity_image_second }}</td>
+        <td mat-cell *matCellDef="let element">
+          <img src="{{ element.identity_image_first }}" alt="identity image first" height="50px" width="50px">
+          &nbsp;
+          <img src="{{ element.identity_image_second }}" alt="identity image second" height="50px" width="50px">
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="action">
