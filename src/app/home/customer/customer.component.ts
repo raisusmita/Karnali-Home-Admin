@@ -59,6 +59,12 @@ export class CustomerComponent implements OnInit {
       height: "700px",
       data: customerEditData,
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getCustomer();
+      }
+    });
   }
 
   deleteCustomer(index) {
