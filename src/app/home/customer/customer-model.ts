@@ -7,7 +7,13 @@ export interface MvCustomer {
   phone: string;
   country: string;
   address: string;
-  customer_type: string;
+  // customer_type: string;
+  date_of_birth: string;
+  profession: string;
+  identity_type: string;
+  identity_number: string;
+  identity_image_first: File;
+  identity_image_second: File;
 }
 
 export interface MvUser {
