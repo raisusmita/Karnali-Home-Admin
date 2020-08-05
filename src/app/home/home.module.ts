@@ -24,6 +24,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import { MatTreeModule } from "@angular/material/tree";
 //  ---------------------------------------------------------------------
 
 import { FormsModule } from "@angular/forms";
@@ -64,6 +65,7 @@ import { ReservationFormComponent } from "./reservation/reservation-form/reserva
 import { DatePipe } from "@angular/common";
 import { RoomAvailabilityComponent } from "./room-availability/room-availability.component";
 import { RoomAvailabilityFormComponent } from "./room-availability/room-availability-form/room-availability-form.component";
+import { MatExpansionModule } from "@angular/material/expansion";
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -118,6 +120,8 @@ import { RoomAvailabilityFormComponent } from "./room-availability/room-availabi
     MatNativeDateModule,
     StorageServiceModule,
     MatCardModule,
+    MatExpansionModule,
+    MatTreeModule,
   ],
   providers: [
     UserAuthService,

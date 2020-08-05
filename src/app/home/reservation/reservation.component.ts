@@ -9,6 +9,8 @@ import { RoomAvailabilityService } from "src/app/shared/services/room-availabili
 import { MvRoomAvailable } from "../booking/room-available.model";
 import { MatTableDataSource } from "@angular/material/table";
 import { identifierModuleUrl } from "@angular/compiler";
+import { CustomerFormComponent } from "../customer/customer-form/customer-form.component";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-reservation",
@@ -50,8 +52,9 @@ export class ReservationComponent implements OnInit {
     private reservationService: ReservationService,
     private dialog: MatDialog,
     public datepipe: DatePipe,
+    private toastr: ToastrService,
     private roomAvailableByDates: RoomAvailabilityService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getReservation();
@@ -87,6 +90,7 @@ export class ReservationComponent implements OnInit {
   addReservation() {
     const dialogRef = this.dialog.open(ReservationFormComponent, {
       width: "50%",
+      height: "700px",
       data: {
         gridData: null,
         formType: "Add",
@@ -111,6 +115,7 @@ export class ReservationComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ReservationFormComponent, {
       width: "50%",
+      height: "700px",
       data: {
         gridData: reservationData,
         formType: "Edit",
@@ -129,6 +134,24 @@ export class ReservationComponent implements OnInit {
       if (result === true) {
         this.reservationService.deleteReservation(index).subscribe((data) => {
           this.getReservation();
+        });
+      }
+    });
+  }
+
+  addCustomer() {
+    const dialogRef = this.dialog.open(CustomerFormComponent, {
+      width: "50%",
+      height: "700px",
+      data: null,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.toastr.success("Customer is created successfully", "Success!!", {
+          closeButton: true,
+          positionClass: "toast-top-right",
+          disableTimeOut: true,
         });
       }
     });

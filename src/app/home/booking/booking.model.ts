@@ -7,4 +7,6 @@ export interface MvBooking {
   check_in_date: Date;
   check_out_date: Date;
   created_at: Date;
+  room_id: number;
+  booking_id: number;
 }

@@ -8,7 +8,7 @@ import { CustomerService } from "./../../customer/customer.service";
 import { Component, OnInit, Inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MvBooking } from "../booking.model";
-import { MvRoomUnavailable } from "../../reservation/reservation-form/room-unavailable.model";
+import { FormControl } from "@angular/forms";
 
 @Component({
   selector: "app-booking-form",
@@ -35,6 +35,7 @@ export class BookingFormComponent implements OnInit {
   roomCategories: any[] = [];
   rooms: any[] = [];
   roomBasedOnBookingCategory: any[] = [];
+  showRoomNumber: boolean;
 
   public newRoomCategories: any[] = [
     {
@@ -54,11 +55,18 @@ export class BookingFormComponent implements OnInit {
   paramsDate: {};
 
   available: any[] = [];
+  roomList: any[] = [];
+  paramsRoomCategory: any;
+
   disableButton: boolean;
   totalAvailableRoomCategory: number;
 
   //Prepopulated value from griddata
   customerName: string;
+  selectedRoom: any[] = [];
+  cloneSelectedRoom: any[] = [];
+  editParams: any[] = [];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private customerService: CustomerService,
@@ -72,6 +80,15 @@ export class BookingFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    if (this.data.formType == "Add") {
+      this.addForm = true;
+      this.showRoomNumber = false;
+    } else {
+      this.editForm = true;
+      this.showRoomNumber = true;
+      this.getRoomByCategory();
+    }
+
     this.getRooms();
     if (this.data.gridData) {
       this.booking = this.data.gridData;
@@ -87,6 +104,55 @@ export class BookingFormComponent implements OnInit {
     this.roomAvailableService.getAvailableRooms().subscribe((result) => {
       this.rooms = result.data;
     });
+  }
+  getRoomByCategory(roomCategoryId?) {
+    if (roomCategoryId) {
+      this.paramsRoomCategory = {
+        room_category_id: roomCategoryId,
+      };
+    } else {
+      this.paramsRoomCategory = {
+        room_category_id: this.data.gridData.room_category_id,
+      };
+    }
+    this.roomService
+      .getRoomByCategory(this.paramsRoomCategory)
+      .subscribe((result) => {
+        this.selectedRoom.length = 0;
+        this.roomList = result.data;
+
+        if (this.data.formType == "Edit") {
+          this.roomList.map((room) => {
+            this.data.gridData.room_number.map((selectRoom) => {
+              if (room.room_number == selectRoom) {
+                this.selectedRoom.push(room.id);
+                this.cloneSelectedRoom.push(selectRoom);
+              }
+            });
+          });
+        }
+
+        // let newRoomList = this.roomList.map((room) => room.room_number);
+
+        // let data = [];
+        // if (this.roomList) {
+        //   this.selectedRoom = this.data.gridData.room_number.filter((o) =>
+        //     this.roomList.some(({ room_number }) => o === room_number)
+        //   );
+        //   // this.selectedRoom = this.data.gridData.room_number.filter(function (
+        //   //   room
+        //   // ) {
+        //   //   if ((newRoomList.includes(room) ? true : false) == true) {
+        //   //     return this.data.gridData.id;
+        //   //   }
+        //   // });
+        //   return this.selectedRoom;
+        // }
+      });
+  }
+
+  getRoomNumber(e) {
+    let test = e;
   }
   getCustomers() {
     this.customerService.getCustomer().subscribe((result) => {
@@ -145,6 +211,7 @@ export class BookingFormComponent implements OnInit {
       number_of_rooms: this.numberOfRooms,
     };
     this.getRoomAvailabilityByDate(this.paramsDate);
+    this.getRoomByCategory(this.roomCategoryId);
   }
 
   getNumberOfRoom($numberOfRooms) {
@@ -187,7 +254,7 @@ export class BookingFormComponent implements OnInit {
             }
           });
 
-          Object.values(result.data).map((x: any) => {
+          Object.values(this.availableRoomsByDate).map((x: any) => {
             x.map((y) => {
               if (y.room_category_id == this.booking.room_category_id) {
                 this.available.push(true);
@@ -228,7 +295,7 @@ export class BookingFormComponent implements OnInit {
     }
   }
 
-  submitCustomerForm() {
+  submitBookingForm() {
     //Removing the timeZone
     let offsetCIn = this.booking.check_in_date.getTimezoneOffset() * 60000;
     let offsetCOut = this.booking.check_out_date.getTimezoneOffset() * 60000;
@@ -239,14 +306,37 @@ export class BookingFormComponent implements OnInit {
     this.booking.check_out_date = new Date(
       this.booking.check_out_date.getTime() - offsetCOut
     );
-
     if (this.editForm) {
-      this.bookingService.editBooking(this.booking).subscribe((result) => {
+      // First index is for updating booking
+      this.editParams.push(this.booking);
+
+      // Remaining are rows for roomAvailabilities
+      this.selectedRoom.map((roomId) => {
+        this.editParams.push({
+          reservation_id: null,
+          booking_id: this.data.gridData.id,
+          status: "booked",
+          check_in_date: this.booking.check_in_date,
+          check_out_date: this.booking.check_out_date,
+          created_at: this.booking.created_at,
+          updated_at: this.booking.created_at,
+          room_id: roomId,
+        });
+      });
+
+      this.bookingService.editBooking(this.editParams).subscribe((result) => {
         this.dialogRef.close(this.booking);
+        this.editParams.length = 0;
+        this.toastr.success("Booking updated successfully", "Success!", {
+          positionClass: "toast-top-right",
+        });
       });
     } else {
       this.bookingService.addBooking(this.booking).subscribe((result) => {
         this.dialogRef.close(this.booking);
+        this.toastr.success("Booking added successfully", "Success!", {
+          positionClass: "toast-top-right",
+        });
       });
     }
   }

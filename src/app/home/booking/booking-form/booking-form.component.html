@@ -1,13 +1,13 @@
 <h2 *ngIf="addForm">Add New Booking</h2>
 <h2 *ngIf="editForm">Edit Booking</h2>
-<form #formBooking="ngForm" (ngSubmit)="submitCustomerForm()">
+<form #formBooking="ngForm" (ngSubmit)="submitBookingForm()">
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Customer Full Name</mat-label>
     <mat-select name="room" [(ngModel)]="booking.customer_id">
       <mat-option
         *ngFor="let customer of customers"
         [value]="customer.id"
-        [(ngModel)]="customerName"
+        name="room"
       >
         {{ customer.first_name }}
         {{ customer.middle_name }}
@@ -39,7 +39,41 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="col-md-6">
+
+    <div class="col-md-6" *ngIf="showRoomNumber">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Room Number</mat-label>
+        <mat-select
+          name="room_number"
+          [(ngModel)]="selectedRoom"
+          (ngModelChange)="getRoomNumber($event)"
+          multiple
+        >
+          <mat-select-trigger>
+            {{ cloneSelectedRoom ? cloneSelectedRoom[0] : "" }}
+            <span
+              *ngIf="selectedRoom?.length > 1"
+              class="example-additional-selection"
+            >
+              and {{ selectedRoom.length - 1 }} more
+            </span>
+            <!-- <span
+              *ngIf="selectedRoom?.length > 1"
+              class="example-additional-selection"
+            >
+              (+{{ selectedRoom.length - 1 }}
+              {{ selectedRoom?.length === 2 ? "other" : "others" }})
+            </span> -->
+          </mat-select-trigger>
+          <mat-option *ngFor="let room of roomList" [value]="room.id">{{
+            room.room_number
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </section>
+  <section class="row">
+    <div class="col-md-4">
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Number of Room</mat-label>
         <input
@@ -54,7 +88,7 @@
       </mat-form-field>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Number of Adult</mat-label>
         <input
@@ -67,7 +101,7 @@
         />
       </mat-form-field>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Number of Child</mat-label>
         <input

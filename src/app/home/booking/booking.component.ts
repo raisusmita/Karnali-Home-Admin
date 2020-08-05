@@ -24,6 +24,7 @@ export class BookingComponent implements OnInit {
     "number_of_adult",
     "number_of_child",
     "number_of_rooms",
+    "room_number",
     "check_in_date",
     "check_out_date",
     "created_at",
@@ -51,7 +52,7 @@ export class BookingComponent implements OnInit {
     private bookingService: BookingService,
     private dialog: MatDialog,
     private roomAvailableByDates: RoomAvailabilityService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getBookedRoom();
@@ -73,10 +74,16 @@ export class BookingComponent implements OnInit {
             number_of_adult: x.number_of_adult,
             number_of_child: x.number_of_child,
             number_of_rooms: x.number_of_rooms,
+            room_number: x.rooms.map((room) => {
+              return room.room_number;
+            }),
             check_in_date: x.check_in_date,
             check_out_date: x.check_out_date,
             created_at: x.created_at,
           });
+          // x.rooms.map((room) => {
+          //     room_number: room.room_number,
+          // });
         });
       }
       this.dataSource = new MatTableDataSource(arr);
@@ -113,6 +120,12 @@ export class BookingComponent implements OnInit {
         gridData: bookingEditData,
         formType: "Edit",
       },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getBookedRoom();
+      }
     });
   }
 

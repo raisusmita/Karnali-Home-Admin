@@ -16,3 +16,11 @@ h2 {
 .mat-raised-button {
   margin-top: 10px;
 }
+
+.mat-accordion .mat-expansion-panel:last-of-type {
+  margin-bottom: 7px !important;
+}
+
+.check-icon {
+  color: green;
+}

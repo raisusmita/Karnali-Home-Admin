@@ -56,6 +56,7 @@ export class CustomerComponent implements OnInit {
   editCustomer(customerEditData) {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       width: "50%",
+      height: "700px",
       data: customerEditData,
     });
   }
