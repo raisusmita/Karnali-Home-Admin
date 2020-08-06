@@ -327,16 +327,10 @@ export class BookingFormComponent implements OnInit {
       this.bookingService.editBooking(this.editParams).subscribe((result) => {
         this.dialogRef.close(this.booking);
         this.editParams.length = 0;
-        this.toastr.success("Booking updated successfully", "Success!", {
-          positionClass: "toast-top-right",
-        });
       });
     } else {
       this.bookingService.addBooking(this.booking).subscribe((result) => {
         this.dialogRef.close(this.booking);
-        this.toastr.success("Booking added successfully", "Success!", {
-          positionClass: "toast-top-right",
-        });
       });
     }
   }

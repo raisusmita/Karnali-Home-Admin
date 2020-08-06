@@ -8,6 +8,7 @@ import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete
 import { RoomAvailabilityService } from "src/app/shared/services/room-availability/room-availability.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-booking",
@@ -51,7 +52,8 @@ export class BookingComponent implements OnInit {
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
-    private roomAvailableByDates: RoomAvailabilityService
+    private roomAvailableByDates: RoomAvailabilityService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -109,6 +111,9 @@ export class BookingComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getBookedRoom();
+        this.toastr.success("Booking added successfully", "Success!", {
+          positionClass: "toast-top-right",
+        });
       }
     });
   }
@@ -125,6 +130,9 @@ export class BookingComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getBookedRoom();
+        this.toastr.success("Booking updated successfully", "Success!", {
+          positionClass: "toast-top-right",
+        });
       }
     });
   }
@@ -138,6 +146,9 @@ export class BookingComponent implements OnInit {
       if (result === true) {
         this.bookingService.deleteBooking(index).subscribe((data) => {
           this.getBookedRoom();
+        });
+        this.toastr.success("Booking deleted successfully", "Success!", {
+          positionClass: "toast-top-right",
         });
       }
     });
