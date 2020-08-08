@@ -43,12 +43,7 @@
     <div class="col-md-6" *ngIf="showRoomNumber">
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Room Number</mat-label>
-        <mat-select
-          name="room_number"
-          [(ngModel)]="selectedRoom"
-          (ngModelChange)="getRoomNumber($event)"
-          multiple
-        >
+        <mat-select name="room_number" [(ngModel)]="selectedRoom" multiple>
           <mat-select-trigger>
             {{ cloneSelectedRoom ? cloneSelectedRoom[0] : "" }}
             <span

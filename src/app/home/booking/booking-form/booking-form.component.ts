@@ -131,29 +131,9 @@ export class BookingFormComponent implements OnInit {
             });
           });
         }
-
-        // let newRoomList = this.roomList.map((room) => room.room_number);
-
-        // let data = [];
-        // if (this.roomList) {
-        //   this.selectedRoom = this.data.gridData.room_number.filter((o) =>
-        //     this.roomList.some(({ room_number }) => o === room_number)
-        //   );
-        //   // this.selectedRoom = this.data.gridData.room_number.filter(function (
-        //   //   room
-        //   // ) {
-        //   //   if ((newRoomList.includes(room) ? true : false) == true) {
-        //   //     return this.data.gridData.id;
-        //   //   }
-        //   // });
-        //   return this.selectedRoom;
-        // }
       });
   }
 
-  getRoomNumber(e) {
-    let test = e;
-  }
   getCustomers() {
     this.customerService.getCustomer().subscribe((result) => {
       this.customers = result.data;
