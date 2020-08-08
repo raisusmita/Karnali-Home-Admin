@@ -14,7 +14,7 @@ export class RoomCategoryComponent implements OnInit {
   constructor(
     private roomCategoryService: RoomCategoryService,
     private dialog: MatDialog
-  ) {}
+  ) { }
   displayedColumns: string[] = [
     "image",
     "room_category",
@@ -53,6 +53,11 @@ export class RoomCategoryComponent implements OnInit {
     const dialogRef = this.dialog.open(NewRoomCategoryComponent, {
       width: "50%",
       data: element,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getRoomCategory();
+      }
     });
   }
 

@@ -26,17 +26,16 @@ export class RoomCategoryService {
   }
 
   editRoomCategory(roomCategory: any): Observable<any> {
-    // Image has to be passed from form data. Need to fix issue on image put
-
     const formData = new FormData();
+    formData.append('id', roomCategory.id);
     formData.append('room_category', roomCategory.room_category);
     formData.append('room_type', roomCategory.room_type);
     formData.append('room_price', roomCategory.room_price);
     formData.append('number_of_rooms', roomCategory.number_of_rooms);
     formData.append('image', roomCategory.image);
-    return this.http.put(
-      this.baseURL + "/" + roomCategory.id,
-      roomCategory
+    return this.http.post(
+      environment.apiURL + "editRoomCategory",
+      formData
     );
   }
 
