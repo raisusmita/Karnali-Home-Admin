@@ -19,7 +19,6 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ReservationComponent implements OnInit {
   displayedColumns: string[] = [
-    "booking_id",
     "room_id",
     "room_category_id",
     "customer_id",
@@ -67,10 +66,11 @@ export class ReservationComponent implements OnInit {
         result.data.map((x) => {
           arr.push({
             id: x.id,
-            booking_id: x.booking_id ? x.booking_id : "No Booking",
+            booking_id: x.booking_id ? x.booking_id : 0,
             room_id: x.room.id,
             room_number: x.room.room_number,
             room_category: x.room.room_category.room_category,
+            room_category_id: x.room.room_category.id,
             room_type: x.room.room_category.room_type,
             customer_id: x.customer.id,
             first_name: x.customer.first_name,
@@ -99,6 +99,9 @@ export class ReservationComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getReservation();
+        this.toastr.success("Reservation added successfully", "Success!", {
+          positionClass: "toast-top-right",
+        });
       }
     });
   }
@@ -121,8 +124,13 @@ export class ReservationComponent implements OnInit {
         formType: "Edit",
       },
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.getReservation();
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getReservation();
+        this.toastr.success("Reservation updated successfully", "Success!", {
+          positionClass: "toast-top-right",
+        });
+      }
     });
   }
 

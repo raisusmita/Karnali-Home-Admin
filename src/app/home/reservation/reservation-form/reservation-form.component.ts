@@ -9,6 +9,7 @@ import { MvReservation } from "../reservation.model";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { DatePipe } from "@angular/common";
 import { ToastrService } from "ngx-toastr";
+import { RoomCategoryService } from "../../room-category/room-category.service";
 
 @Component({
   selector: "app-reservation-form",
@@ -50,6 +51,8 @@ export class ReservationFormComponent implements OnInit {
   selectedCheckInDate: Date;
   selectedCheckOutDate: Date;
 
+  paramsRoomCategory: any;
+
   // For mat expansion
   panelOpenState = false;
 
@@ -69,12 +72,18 @@ export class ReservationFormComponent implements OnInit {
   bookedCheckIn: Date;
   bookedCheckOut: Date;
 
+  roomCategories: any[] = [];
+  roomList: any[] = [];
+  selectedRoom: any[] = [];
+  editParams: any[] = [];
+
   constructor(
     private customerService: CustomerService,
     private reservationService: ReservationService,
     private bookingService: BookingService,
     private roomService: RoomService,
     private roomAvailableService: RoomAvailabilityService,
+    private roomCategoryService: RoomCategoryService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public datepipe: DatePipe,
     private toastr: ToastrService,
@@ -88,6 +97,9 @@ export class ReservationFormComponent implements OnInit {
       this.addForm = true;
     } else {
       this.editForm = true;
+      this.disableButton = false;
+      this.reservation.room_category_id = this.data.gridData.room_category_id;
+      this.selectedRoom = this.data.gridData.room_id;
     }
     this.reservationService.getReservation().subscribe(() => {
       if (this.data.gridData) {
@@ -103,8 +115,23 @@ export class ReservationFormComponent implements OnInit {
       }
     });
     this.getCustomers();
-    this.getRoomCategories();
+    this.getRooms();
     this.getBookings();
+    if (this.data.formType == "Edit") {
+      this.reservationDates.push({
+        id:
+          this.reservationDates.length +
+          1 +
+          "_" +
+          this.data.gridData.room_number,
+        check_in_date: new Date(this.data.gridData.check_in_date),
+        check_out_date: new Date(this.data.gridData.check_out_date),
+        isSelect: true,
+        room_id: this.data.gridData.room_id,
+      });
+      this.getRoomByCategory();
+    }
+    this.getRoomCategories();
   }
 
   getCustomers() {
@@ -113,7 +140,16 @@ export class ReservationFormComponent implements OnInit {
     });
   }
 
+  getRoomNumber(e) {
+    let test = e;
+  }
   getRoomCategories() {
+    this.roomCategoryService.getRoomCategory().subscribe((result) => {
+      this.roomCategories = result.data;
+    });
+  }
+
+  getRooms() {
     this.roomService.getRoom().subscribe((result) => {
       this.rooms = result.data;
     });
@@ -152,9 +188,11 @@ export class ReservationFormComponent implements OnInit {
           this.bookingId = customer.bookings[0].id;
           this.byAvailable = false;
           this.byBooking = true;
+          this.disableButton = false;
         } else {
           this.getAvailableRoom();
           this.byAvailable = true;
+          this.disableButton = true;
           this.byBooking = false;
           this.reservation.check_in_date = null;
           this.reservation.check_out_date = null;
@@ -184,7 +222,7 @@ export class ReservationFormComponent implements OnInit {
                 this.reservationDates.length + 1 + "_" + room.room.room_number,
               check_in_date: new Date(this.bookedCheckIn),
               check_out_date: new Date(this.bookedCheckOut),
-              isSelect: false,
+              isSelect: true,
               room_id: room.room.id,
             });
           });
@@ -196,12 +234,15 @@ export class ReservationFormComponent implements OnInit {
   }
 
   getCheckInDate($checkInDate, $roomId, $roomNumber, $index) {
+    this.reservation.check_in_date = new Date($checkInDate);
     if ($checkInDate == null) {
       this.reservationDates[$index].check_in_date = undefined;
     } else {
       this.checkInDate = $checkInDate;
       this.selectedRoomId = $roomId;
       this.reservationDates[$index].isSelect = true;
+      this.reservationDates[$index].check_in_date = new Date($checkInDate);
+
       this.paramsDate = {
         check_in_date: this.checkInDate,
         check_out_date: this.checkOutDate,
@@ -218,6 +259,8 @@ export class ReservationFormComponent implements OnInit {
       this.selectedRoomId = $roomId;
       this.checkOutDate = $checkOutDate;
       this.reservationDates[$index].isSelect = true;
+      this.reservationDates[$index].check_out_date = new Date($checkOutDate);
+
       this.paramsDate = {
         check_in_date: this.checkInDate,
         check_out_date: this.checkOutDate,
@@ -226,6 +269,23 @@ export class ReservationFormComponent implements OnInit {
 
       this.getRoomAvailabilityByDate(this.paramsDate);
     }
+  }
+
+  getRoomByCategory(roomCategoryId?) {
+    if (roomCategoryId) {
+      this.paramsRoomCategory = {
+        room_category_id: roomCategoryId,
+      };
+    } else {
+      this.paramsRoomCategory = {
+        room_category_id: this.data.gridData.room_category_id,
+      };
+    }
+    this.roomService
+      .getRoomByCategory(this.paramsRoomCategory)
+      .subscribe((result) => {
+        this.roomList = result.data;
+      });
   }
 
   // getRoomNumber($roomNumber) {
@@ -250,40 +310,43 @@ export class ReservationFormComponent implements OnInit {
   // }
 
   getRoomAvailabilityByDate(dates) {
+    if (dates.check_in_date == undefined && this.data.formType == "Edit") {
+    }
     if (dates.check_in_date != null && dates.check_out_date != null) {
       this.disableButton = false;
+      if (!this.byBooking) {
+        if (dates.room_number != null) {
+          this.roomAvailableService
+            .getRoomAvailabilityByDate(dates)
+            .subscribe((result) => {
+              this.availableRoomsByDate = result.data;
 
-      if (dates.room_number != null) {
-        this.roomAvailableService
-          .getRoomAvailabilityByDate(dates)
-          .subscribe((result) => {
-            this.availableRoomsByDate = result.data;
-
-            Object.values(this.availableRoomsByDate).map((x: any) => {
-              x.map((y) => {
-                if (y.id == this.selectedRoomId) {
-                  this.available.push(true);
-                } else {
-                  this.available.push(false);
-                }
+              Object.values(this.availableRoomsByDate).map((x: any) => {
+                x.map((y) => {
+                  if (y.id == this.selectedRoomId) {
+                    this.available.push(true);
+                  } else {
+                    this.available.push(false);
+                  }
+                });
               });
+
+              if (!this.available.includes(true)) {
+                this.disableButton = true;
+                this.toastr.error(
+                  dates.room_number + " is not available!",
+                  "Warning!",
+                  {
+                    closeButton: true,
+                    positionClass: "toast-top-right",
+                    disableTimeOut: true,
+                  }
+                );
+              }
+
+              this.available = [];
             });
-
-            if (!this.available.includes(true)) {
-              this.disableButton = true;
-              this.toastr.error(
-                dates.room_number + " is not available!",
-                "Warning!",
-                {
-                  closeButton: true,
-                  positionClass: "toast-top-right",
-                  disableTimeOut: true,
-                }
-              );
-            }
-
-            this.available = [];
-          });
+        }
       }
     }
   }
@@ -302,26 +365,86 @@ export class ReservationFormComponent implements OnInit {
           data.check_out_date.getTime() - offsetCOut
         );
 
-        this.reservationParams.push({
-          customer_id: this.reservation.customer_id,
-          check_in_date: new Date(this.selectedCheckInDate),
-          check_out_date: new Date(this.selectedCheckOutDate),
-          room_id: data.room_id,
-        });
+        if (this.roomsByBooking.length > 0) {
+          this.reservationParams.push({ byBooking: true });
+          this.reservationParams.push({
+            customer_id: this.reservation.customer_id,
+            check_in_date: new Date(this.selectedCheckInDate),
+            check_out_date: new Date(this.selectedCheckOutDate),
+            room_id: data.room_id,
+            booking_id: this.roomsByBooking[0].booking_id,
+          });
+        } else {
+          this.reservationParams.push({ byBooking: false });
+
+          this.reservationParams.push({
+            customer_id: this.reservation.customer_id,
+            check_in_date: new Date(this.selectedCheckInDate),
+            check_out_date: new Date(this.selectedCheckOutDate),
+            room_id: data.room_id,
+          });
+        }
       }
     });
 
     if (this.editForm) {
+      let offsetCIn =
+        this.reservation.check_in_date.getTimezoneOffset() * 60000;
+      let offsetCOut =
+        this.reservation.check_out_date.getTimezoneOffset() * 60000;
+
+      this.selectedCheckInDate = new Date(
+        this.reservation.check_in_date.getTime() - offsetCIn
+      );
+      this.selectedCheckOutDate = new Date(
+        this.reservation.check_out_date.getTime() - offsetCOut
+      );
+
+      // First index is for updating reservation
+      this.editParams.push({
+        reservation_id: this.reservation.id,
+        check_in_date: new Date(this.selectedCheckInDate),
+        check_out_date: new Date(this.selectedCheckOutDate),
+        room_id: this.reservation.room_id,
+      });
+
+      // Remaining are rows for roomAvailabilities
+      if (this.reservation.booking_id != 0) {
+        // For Booked room
+        this.editParams.push({
+          reservation_id: this.reservation.id,
+          booking_id: this.reservation.booking_id,
+          status: "booked",
+          check_in_date: new Date(this.selectedCheckInDate),
+          check_out_date: new Date(this.selectedCheckOutDate),
+          room_id: this.reservation.room_id,
+        });
+      } else {
+        // For direct reservation
+        this.editParams.push({
+          reservation_id: this.reservation.id,
+          booking_id: null,
+          status: "reserved",
+          check_in_date: new Date(this.selectedCheckInDate),
+          check_out_date: new Date(this.selectedCheckOutDate),
+          room_id: this.reservation.room_id,
+        });
+      }
+
       this.reservationService
-        .editReservation(this.reservation)
+        .editReservation(this.editParams)
         .subscribe((result) => {
           this.dialogRef.close(this.reservation);
+          this.roomsByBooking.length = 0;
+          this.reservationParams = null;
         });
     } else {
       this.reservationService
         .addReservation(this.reservationParams)
         .subscribe((reservationResult) => {
           if (reservationResult) {
+            this.roomsByBooking.length = 0;
+            this.reservationParams = null;
             this.toastr.success(
               " Reservation created successfully!",
               "Success!",

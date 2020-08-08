@@ -83,7 +83,7 @@ export class ReservationService {
     );
     const options = { headers: httpHeaders };
     return this.http.put(
-      this.baseURL + "/" + reservation.id,
+      this.baseURL + "/" + reservation[0].reservation_id,
       reservation,
       options
     );

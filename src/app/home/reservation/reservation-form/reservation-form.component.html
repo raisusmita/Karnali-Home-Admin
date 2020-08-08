@@ -7,6 +7,7 @@
       name="customer"
       [(ngModel)]="reservation.customer_id"
       (ngModelChange)="getAssigedRoomForBooking(reservation.customer_id)"
+      [disabled]="editForm"
     >
       <mat-option *ngFor="let customer of customers" [value]="customer.id">
         {{ customer.first_name }}
@@ -15,6 +16,90 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+
+  <section class="row" *ngIf="editForm">
+    <div class="col-md-6">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Room Category</mat-label>
+        <mat-select
+          name="room_category"
+          [(ngModel)]="reservation.room_category_id"
+          (ngModelChange)="getRoomByCategory($event)"
+        >
+          <mat-option
+            *ngFor="let roomCategory of roomCategories"
+            [value]="roomCategory.id"
+          >
+            {{
+              roomCategory.room_category +
+                " ( " +
+                roomCategory.room_type +
+                " ) "
+            }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Room Number</mat-label>
+        <mat-select
+          name="room_number"
+          [(ngModel)]="reservation.room_id"
+          (ngModelChange)="getRoomNumber($event)"
+        >
+          <mat-option *ngFor="let room of roomList" [value]="room.id">{{
+            room.room_number
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>CheckIn Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker1"
+          name="checkIn_date"
+          required
+          [(ngModel)]="reservation.check_in_date"
+          (ngModelChange)="
+            getCheckInDate(
+              $event,
+              reservation.room_id,
+              reservation.room_number,
+              0
+            )
+          "
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>CheckOut Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker2"
+          name="checkOut_date"
+          required
+          [(ngModel)]="reservation.check_out_date"
+          (ngModelChange)="getCheckOutDate($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker2"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </section>
 
   <div *ngFor="let room of availableRoom; let i = index">
     <mat-accordion>

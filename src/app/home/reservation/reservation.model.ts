@@ -1,5 +1,5 @@
 export interface MvReservation {
-  reservation_id: number;
+  id: number;
   customer_id: number;
   room_id: number;
   room_category_id: number;
@@ -8,6 +8,7 @@ export interface MvReservation {
   check_out_date: Date;
   created_at: Date;
   booking_id: number;
+  room_number: string;
   reservation: {
     check_in_date: Date;
     check_out_date: Date;
