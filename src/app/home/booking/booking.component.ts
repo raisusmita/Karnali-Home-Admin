@@ -8,6 +8,7 @@ import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete
 import { RoomAvailabilityService } from "src/app/shared/services/room-availability/room-availability.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-booking",
@@ -24,6 +25,7 @@ export class BookingComponent implements OnInit {
     "number_of_adult",
     "number_of_child",
     "number_of_rooms",
+    "room_number",
     "check_in_date",
     "check_out_date",
     "created_at",
@@ -50,8 +52,9 @@ export class BookingComponent implements OnInit {
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
-    private roomAvailableByDates: RoomAvailabilityService
-  ) { }
+    private roomAvailableByDates: RoomAvailabilityService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.getBookedRoom();
@@ -73,10 +76,16 @@ export class BookingComponent implements OnInit {
             number_of_adult: x.number_of_adult,
             number_of_child: x.number_of_child,
             number_of_rooms: x.number_of_rooms,
+            room_number: x.rooms.map((room) => {
+              return room.room_number;
+            }),
             check_in_date: x.check_in_date,
             check_out_date: x.check_out_date,
             created_at: x.created_at,
           });
+          // x.rooms.map((room) => {
+          //     room_number: room.room_number,
+          // });
         });
       }
       this.dataSource = new MatTableDataSource(arr);
@@ -102,6 +111,9 @@ export class BookingComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getBookedRoom();
+        this.toastr.success("Booking added successfully", "Success!", {
+          positionClass: "toast-top-right",
+        });
       }
     });
   }
@@ -114,6 +126,15 @@ export class BookingComponent implements OnInit {
         formType: "Edit",
       },
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getBookedRoom();
+        this.toastr.success("Booking updated successfully", "Success!", {
+          positionClass: "toast-top-right",
+        });
+      }
+    });
   }
 
   deleteBooking(index) {
@@ -125,6 +146,9 @@ export class BookingComponent implements OnInit {
       if (result === true) {
         this.bookingService.deleteBooking(index).subscribe((data) => {
           this.getBookedRoom();
+        });
+        this.toastr.success("Booking deleted successfully", "Success!", {
+          positionClass: "toast-top-right",
         });
       }
     });

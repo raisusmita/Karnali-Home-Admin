@@ -1,16 +1,20 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { environment } from 'src/environments/environment';
+import { environment } from "src/environments/environment";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class RoomService {
-  constructor(private http: HttpClient) { }
-  private readonly baseURL = environment.apiURL + 'rooms';
+  constructor(private http: HttpClient) {}
+  private readonly baseURL = environment.apiURL + "rooms";
   getRoom(): Observable<any> {
     return this.http.get(this.baseURL);
+  }
+
+  getRoomByCategory(category: any): Observable<any> {
+    return this.http.post(environment.apiURL + "room_category/room", category);
   }
 
   addRoom(room: any): Observable<any> {

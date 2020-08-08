@@ -1,10 +1,14 @@
 <h2 *ngIf="addForm">Add New Booking</h2>
 <h2 *ngIf="editForm">Edit Booking</h2>
-<form #formBooking="ngForm" (ngSubmit)="submitCustomerForm()">
+<form #formBooking="ngForm" (ngSubmit)="submitBookingForm()">
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Customer Full Name</mat-label>
     <mat-select name="room" [(ngModel)]="booking.customer_id">
-      <mat-option *ngFor="let customer of customers" [value]="customer.id" [(ngModel)]="customerName">
+      <mat-option
+        *ngFor="let customer of customers"
+        [value]="customer.id"
+        name="room"
+      >
         {{ customer.first_name }}
         {{ customer.middle_name }}
         {{ customer.last_name + "  ( " + customer.phone + " )" }}
@@ -16,9 +20,15 @@
     <div class="col-md-6">
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Room Category</mat-label>
-        <mat-select name="room_category" [(ngModel)]="booking.room_category_id"
-          (ngModelChange)="getRoomCategory($event)">
-          <mat-option *ngFor="let roomCategory of roomCategories" [value]="roomCategory.id">
+        <mat-select
+          name="room_category"
+          [(ngModel)]="booking.room_category_id"
+          (ngModelChange)="getRoomCategory($event)"
+        >
+          <mat-option
+            *ngFor="let roomCategory of roomCategories"
+            [value]="roomCategory.id"
+          >
             {{
               roomCategory.room_category +
                 " ( " +
@@ -29,26 +39,74 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="col-md-6">
+
+    <div class="col-md-6" *ngIf="showRoomNumber">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Room Number</mat-label>
+        <mat-select name="room_number" [(ngModel)]="selectedRoom" multiple>
+          <mat-select-trigger>
+            {{ cloneSelectedRoom ? cloneSelectedRoom[0] : "" }}
+            <span
+              *ngIf="selectedRoom?.length > 1"
+              class="example-additional-selection"
+            >
+              and {{ selectedRoom.length - 1 }} more
+            </span>
+            <!-- <span
+              *ngIf="selectedRoom?.length > 1"
+              class="example-additional-selection"
+            >
+              (+{{ selectedRoom.length - 1 }}
+              {{ selectedRoom?.length === 2 ? "other" : "others" }})
+            </span> -->
+          </mat-select-trigger>
+          <mat-option *ngFor="let room of roomList" [value]="room.id">{{
+            room.room_number
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </section>
+  <section class="row">
+    <div class="col-md-4">
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Number of Room</mat-label>
-        <input type="number" matInput name="number_of_room" placeholder="Number of Room" required
-          [(ngModel)]="booking.number_of_rooms" (ngModelChange)="getNumberOfRoom($event)" />
+        <input
+          type="number"
+          matInput
+          name="number_of_room"
+          placeholder="Number of Room"
+          required
+          [(ngModel)]="booking.number_of_rooms"
+          (ngModelChange)="getNumberOfRoom($event)"
+        />
       </mat-form-field>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Number of Adult</mat-label>
-        <input type="number" matInput name="number_of_adult" placeholder="Number of Adult"
-          [(ngModel)]="booking.number_of_adult" required />
+        <input
+          type="number"
+          matInput
+          name="number_of_adult"
+          placeholder="Number of Adult"
+          [(ngModel)]="booking.number_of_adult"
+          required
+        />
       </mat-form-field>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Number of Child</mat-label>
-        <input type="number" matInput name="number_of_child" placeholder="Number of Child"
-          [(ngModel)]="booking.number_of_child" required />
+        <input
+          type="number"
+          matInput
+          name="number_of_child"
+          placeholder="Number of Child"
+          [(ngModel)]="booking.number_of_child"
+          required
+        />
       </mat-form-field>
     </div>
     <!-- <div class="remove">
@@ -67,21 +125,38 @@
 
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>CheckIn Date</mat-label>
-    <input matInput [matDatepicker]="picker1" name="checkIn_date" required [(ngModel)]="booking.check_in_date"
-      (ngModelChange)="getCheckInDate($event)" />
+    <input
+      matInput
+      [matDatepicker]="picker1"
+      name="checkIn_date"
+      required
+      [(ngModel)]="booking.check_in_date"
+      (ngModelChange)="getCheckInDate($event)"
+    />
     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
     <mat-datepicker #picker1></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>CheckOut Date</mat-label>
-    <input matInput [matDatepicker]="picker2" name="checkOut_date" required [(ngModel)]="booking.check_out_date"
-      (ngModelChange)="getCheckOutDate($event)" />
+    <input
+      matInput
+      [matDatepicker]="picker2"
+      name="checkOut_date"
+      required
+      [(ngModel)]="booking.check_out_date"
+      (ngModelChange)="getCheckOutDate($event)"
+    />
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker #picker2></mat-datepicker>
   </mat-form-field>
 
-  <button [disabled]="!formBooking.valid || disableButton == true" mat-raised-button type="submit" color="primary">
+  <button
+    [disabled]="!formBooking.valid || disableButton == true"
+    mat-raised-button
+    type="submit"
+    color="primary"
+  >
     CREATE
   </button>
 </form>

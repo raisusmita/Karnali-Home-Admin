@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { environment } from 'src/environments/environment';
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class BookingService {
   private readonly baseURL = environment.apiURL;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getBooking(): Observable<any> {
     return this.http.get(this.baseURL + "booking");
@@ -24,10 +24,7 @@ export class BookingService {
   }
 
   editBooking(booking: any): Observable<any> {
-    return this.http.put(
-      this.baseURL + "booking/" + booking.id,
-      booking
-    );
+    return this.http.put(this.baseURL + "booking/" + booking[0].id, booking);
   }
 
   deleteBooking(id: any): Observable<any> {

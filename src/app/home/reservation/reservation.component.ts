@@ -9,6 +9,8 @@ import { RoomAvailabilityService } from "src/app/shared/services/room-availabili
 import { MvRoomAvailable } from "../booking/room-available.model";
 import { MatTableDataSource } from "@angular/material/table";
 import { identifierModuleUrl } from "@angular/compiler";
+import { CustomerFormComponent } from "../customer/customer-form/customer-form.component";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-reservation",
@@ -17,7 +19,6 @@ import { identifierModuleUrl } from "@angular/compiler";
 })
 export class ReservationComponent implements OnInit {
   displayedColumns: string[] = [
-    "booking_id",
     "room_id",
     "room_category_id",
     "customer_id",
@@ -50,8 +51,9 @@ export class ReservationComponent implements OnInit {
     private reservationService: ReservationService,
     private dialog: MatDialog,
     public datepipe: DatePipe,
+    private toastr: ToastrService,
     private roomAvailableByDates: RoomAvailabilityService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getReservation();
@@ -64,10 +66,11 @@ export class ReservationComponent implements OnInit {
         result.data.map((x) => {
           arr.push({
             id: x.id,
-            booking_id: x.booking_id ? x.booking_id : "No Booking",
+            booking_id: x.booking_id ? x.booking_id : 0,
             room_id: x.room.id,
             room_number: x.room.room_number,
             room_category: x.room.room_category.room_category,
+            room_category_id: x.room.room_category.id,
             room_type: x.room.room_category.room_type,
             customer_id: x.customer.id,
             first_name: x.customer.first_name,
@@ -87,6 +90,7 @@ export class ReservationComponent implements OnInit {
   addReservation() {
     const dialogRef = this.dialog.open(ReservationFormComponent, {
       width: "50%",
+      height: "700px",
       data: {
         gridData: null,
         formType: "Add",
@@ -95,6 +99,9 @@ export class ReservationComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getReservation();
+        this.toastr.success("Reservation added successfully", "Success!", {
+          positionClass: "toast-top-right",
+        });
       }
     });
   }
@@ -111,13 +118,19 @@ export class ReservationComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ReservationFormComponent, {
       width: "50%",
+      height: "700px",
       data: {
         gridData: reservationData,
         formType: "Edit",
       },
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.getReservation();
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getReservation();
+        this.toastr.success("Reservation updated successfully", "Success!", {
+          positionClass: "toast-top-right",
+        });
+      }
     });
   }
 
@@ -129,6 +142,24 @@ export class ReservationComponent implements OnInit {
       if (result === true) {
         this.reservationService.deleteReservation(index).subscribe((data) => {
           this.getReservation();
+        });
+      }
+    });
+  }
+
+  addCustomer() {
+    const dialogRef = this.dialog.open(CustomerFormComponent, {
+      width: "50%",
+      height: "700px",
+      data: null,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.toastr.success("Customer is created successfully", "Success!!", {
+          closeButton: true,
+          positionClass: "toast-top-right",
+          disableTimeOut: true,
         });
       }
     });
