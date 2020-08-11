@@ -9,6 +9,7 @@ import { RoomAvailabilityService } from "src/app/shared/services/room-availabili
 import { MatTableDataSource } from "@angular/material/table";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { ToastrService } from "ngx-toastr";
+import { CustomerFormComponent } from "../customer/customer-form/customer-form.component";
 
 @Component({
   selector: "app-booking",
@@ -60,6 +61,23 @@ export class BookingComponent implements OnInit {
     this.getBookedRoom();
   }
 
+  addCustomer() {
+    const dialogRef = this.dialog.open(CustomerFormComponent, {
+      width: "50%",
+      height: "700px",
+      data: null,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.toastr.success("Customer is created successfully", "Success!!", {
+          closeButton: true,
+          positionClass: "toast-top-right",
+          disableTimeOut: true,
+        });
+      }
+    });
+  }
   getBookedRoom() {
     this.bookingService.getBookedRoom().subscribe((result) => {
       const arr = [];
