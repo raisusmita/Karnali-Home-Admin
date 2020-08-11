@@ -353,6 +353,11 @@ export class ReservationFormComponent implements OnInit {
 
   submitReservationForm() {
     // Removing the timeZone
+    if (this.roomsByBooking.length > 0) {
+      this.reservationParams.push({ byBooking: true });
+    } else {
+      this.reservationParams.push({ byBooking: false });
+    }
     this.reservationDates.map((data) => {
       if (data.isSelect == true) {
         let offsetCIn = data.check_in_date.getTimezoneOffset() * 60000;
@@ -366,7 +371,6 @@ export class ReservationFormComponent implements OnInit {
         );
 
         if (this.roomsByBooking.length > 0) {
-          this.reservationParams.push({ byBooking: true });
           this.reservationParams.push({
             customer_id: this.reservation.customer_id,
             check_in_date: new Date(this.selectedCheckInDate),
@@ -375,8 +379,6 @@ export class ReservationFormComponent implements OnInit {
             booking_id: this.roomsByBooking[0].booking_id,
           });
         } else {
-          this.reservationParams.push({ byBooking: false });
-
           this.reservationParams.push({
             customer_id: this.reservation.customer_id,
             check_in_date: new Date(this.selectedCheckInDate),
@@ -445,15 +447,6 @@ export class ReservationFormComponent implements OnInit {
           if (reservationResult) {
             this.roomsByBooking.length = 0;
             this.reservationParams = null;
-            this.toastr.success(
-              " Reservation created successfully!",
-              "Success!",
-              {
-                closeButton: true,
-                positionClass: "toast-top-right",
-                disableTimeOut: true,
-              }
-            );
             // if (this.byBooking) {
             //   this.reservation.reservation_id = reservationResult.data.id;
             //   this.reservationService
