@@ -176,20 +176,38 @@ export class ReservationFormComponent implements OnInit {
 
   getBookings() {
     this.bookingService.getBookedRoom().subscribe((result) => {
-      this.bookings = result.data;
-      this.bookings.unshift({ id: "No Booking" });
+      if (result) {
+        this.bookings = result.data;
+        this.bookings.unshift({ id: "No Booking" });
+      }
     });
   }
 
   getAssigedRoomForBooking(customerId) {
     this.customers.map((customer) => {
       if (customer.id == customerId) {
-        if (customer.bookings.length != 0) {
-          this.bookingId = customer.bookings[0].id;
-          this.byAvailable = false;
-          this.byBooking = true;
-          this.disableButton = false;
+        // If the customer have already booked room (note: could be old customer as well)
+        if (customer.room_availability_booking != null) {
+          if (
+            customer.room_availability_booking.reservation_id != null &&
+            customer.room_availability_booking.booking_id != null
+          ) {
+            // For direct reservation show all the available rooms
+            this.getAvailableRoom();
+            this.byAvailable = true;
+            this.disableButton = true;
+            this.byBooking = false;
+            this.reservation.check_in_date = null;
+            this.reservation.check_out_date = null;
+          } else {
+            // For booked room
+            this.bookingId = customer.bookings[0].id;
+            this.byAvailable = false;
+            this.byBooking = true;
+            this.disableButton = false;
+          }
         } else {
+          // For direct reservation show all the available rooms
           this.getAvailableRoom();
           this.byAvailable = true;
           this.disableButton = true;
@@ -226,9 +244,6 @@ export class ReservationFormComponent implements OnInit {
               room_id: room.room.id,
             });
           });
-
-          // this.reservation.check_in_date = new Date(this.bookedCheckIn);
-          // this.reservation.check_out_date = new Date(this.bookedCheckOut);
         });
     }
   }
