@@ -19,9 +19,9 @@ export class HeaderComponent implements OnInit {
     //   path: "room-availability",
     //   icon: "event_available",
     // },
-    // { name: "Food", path: "food", icon: "fastfood" },
+    { name: "Food", path: "food", icon: "fastfood" },
     // { name: "Table", path: "table", icon: "weekend" },
-    // { name: "Food Order", path: "food-order", icon: "room_service" },
+    { name: "Food Order", path: "food-order", icon: "room_service" },
     {
       name: "Transaction",
       path: "room-transaction",
@@ -31,9 +31,9 @@ export class HeaderComponent implements OnInit {
     { name: "User", path: "user", icon: "group" },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   logout() {
     localStorage.removeItem("token");

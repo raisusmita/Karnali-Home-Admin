@@ -10,10 +10,10 @@ import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete
   styleUrls: ["./food.component.scss"],
 })
 export class FoodComponent implements OnInit {
-  displayedColumns: string[] = ["name", "price", "food_type", "action"];
+  displayedColumns: string[] = ["mainFoodCategory", "subFoodCategory", "foodName", "header", "price", "action"];
   dataSource: any[];
 
-  constructor(private foodService: FoodService, private dialog: MatDialog) {}
+  constructor(private foodService: FoodService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getFood();
@@ -22,6 +22,7 @@ export class FoodComponent implements OnInit {
   getFood() {
     this.foodService.getFood().subscribe((data) => {
       this.dataSource = data.data;
+      console.log(this.dataSource);
     });
   }
 

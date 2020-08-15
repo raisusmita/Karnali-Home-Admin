@@ -1,6 +1,8 @@
 export interface MvFood {
   id: number;
-  name: string;
+  mainFoodCategory: string;
+  subFoodCategory: string;
+  foodName: string;
+  header: string;
   price: number;
-  food_type: string;
 }
