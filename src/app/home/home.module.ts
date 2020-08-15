@@ -66,6 +66,7 @@ import { DatePipe } from "@angular/common";
 import { RoomAvailabilityComponent } from "./room-availability/room-availability.component";
 import { RoomAvailabilityFormComponent } from "./room-availability/room-availability-form/room-availability-form.component";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { RoomTransactionFormComponent } from "./room-transaction/room-transaction-form/room-transaction-form.component";
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -96,6 +97,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
     ReservationComponent,
     RoomAvailabilityComponent,
     RoomAvailabilityFormComponent,
+    RoomTransactionFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -142,6 +144,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
     UserFormComponent,
     ReservationFormComponent,
     RoomAvailabilityFormComponent,
+    RoomTransactionFormComponent,
   ],
 })
 export class HomeModule {}

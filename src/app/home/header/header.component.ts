@@ -8,20 +8,20 @@ import { Router } from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
   components: any[] = [
-    { name: "Dashboard", path: "", icon: "dashboard" },
+    // { name: "Dashboard", path: "", icon: "dashboard" },
     { name: "Room Category", path: "room-category", icon: "category" },
     { name: "Room", path: "room", icon: "meeting_room" },
     { name: "Customer", path: "customer", icon: "perm_identity" },
     { name: "Booking", path: "booking", icon: "book" },
     { name: "Reservation", path: "reservation", icon: "check_circle" },
-    {
-      name: "Room Availability",
-      path: "room-availability",
-      icon: "event_available",
-    },
-    { name: "Food", path: "food", icon: "fastfood" },
-    { name: "Table", path: "table", icon: "weekend" },
-    { name: "Food Order", path: "food-order", icon: "room_service" },
+    // {
+    //   name: "Room Availability",
+    //   path: "room-availability",
+    //   icon: "event_available",
+    // },
+    // { name: "Food", path: "food", icon: "fastfood" },
+    // { name: "Table", path: "table", icon: "weekend" },
+    // { name: "Food Order", path: "food-order", icon: "room_service" },
     {
       name: "Transaction",
       path: "room-transaction",

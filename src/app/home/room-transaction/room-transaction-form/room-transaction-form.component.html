@@ -1,0 +1,32 @@
+<h2 *ngIf="addForm">Add New Transaction</h2>
+<h2 *ngIf="editForm">Edit Transaction</h2>
+<form #formReservation="ngForm">
+  <div class="main-selector">
+    <section class="row">
+      <div class="col-md-6">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Customer</mat-label>
+          <mat-select name="customer">
+            <mat-option
+              *ngFor="let customer of customers"
+              [value]="customer.id"
+            >
+              {{ customer.first_name }}
+              {{ customer.middle_name }}
+              {{ customer.last_name + "  ( " + customer.phone + " )" }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6"></div>
+    </section>
+  </div>
+
+  <div class="main-content">
+    <section class="row"></section>
+  </div>
+
+  <button mat-raised-button type="submit" color="primary">
+    CREATE
+  </button>
+</form>
