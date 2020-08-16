@@ -1,36 +1,36 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import { MvFood } from "../food-model";
+import { MvFood, MvMainFood } from "../food-model";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { FoodService } from "../food.service";
 
 @Component({
-  selector: "app-food-form",
-  templateUrl: "./food-form.component.html",
-  styleUrls: ["./food-form.component.scss"],
+  selector: "app-main-food-form",
+  templateUrl: "./main-food-form.component.html",
+  styleUrls: ["./main-food-form.component.scss"],
 })
-export class FoodFormComponent implements OnInit {
-  food: MvFood = {} as MvFood;
+export class MainFoodFormComponent implements OnInit {
+  food: MvMainFood = {} as MvMainFood;
   isEdit = false;
-
   mainFood = [];
-  subFood = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private foodService: FoodService,
-    private dialogRef: MatDialogRef<FoodFormComponent>
-  ) { }
+    private dialogRef: MatDialogRef<MainFoodFormComponent>
+  ) {
+    if (data) {
+      this.isEdit = true;
+    }
+  }
 
   ngOnInit() {
     this.getFood();
     this.getMainFood();
-    this.getSubFood();
   }
 
   getFood() {
     this.foodService.getFood().subscribe((data) => {
       if (this.data) {
-        this.isEdit = true;
         this.food = this.data;
       }
     });
@@ -42,20 +42,13 @@ export class FoodFormComponent implements OnInit {
     });
   }
 
-  getSubFood() {
-    this.foodService.getSubFood().subscribe((data) => {
-      this.subFood = data.data;
-    });
-  }
-
-
   submitFoodForm() {
     if (this.isEdit) {
-      this.foodService.editFood(this.food).subscribe((e) => {
+      this.foodService.editMainFood(this.food).subscribe((e) => {
         this.dialogRef.close(this.food);
       });
     } else {
-      this.foodService.addFood(this.food).subscribe((e) => {
+      this.foodService.addMainFood(this.food).subscribe((e) => {
         this.dialogRef.close(this.food);
       });
     }

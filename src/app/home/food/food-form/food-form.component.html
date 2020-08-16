@@ -1,47 +1,40 @@
 <h2>Add New Food</h2>
 <form #formHotel="ngForm" (ngSubmit)="submitFoodForm()">
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Food Name</mat-label>
-    <input
-      matInput
-      name="name"
-      placeholder="Enter Food Name"
-      [(ngModel)]="food.name"
-      required
-    />
-  </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Food Price</mat-label>
-    <input
-      matInput
-      type="number"
-      name="price"
-      placeholder="Enter Food Price"
-      [(ngModel)]="food.price"
-      required
-    />
-  </mat-form-field>
-
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Food Type</mat-label>
-
-    <mat-select [(ngModel)]="food.food_type" name="food_type" required>
-      <mat-option
-        *ngFor="let food_type of foodType | keyvalue"
-        [value]="food_type.value"
-      >
-        {{ food_type.key }}
+    <mat-label>Main Food Category</mat-label>
+    <mat-select [(ngModel)]="food.main_food_category_id" name="mainFoodCategory" required>
+      <mat-option *ngFor="let mainFoodCategory of mainFood" [value]="mainFoodCategory.id">
+        {{ mainFoodCategory.main_food_name }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <button
-    [disabled]="!formHotel.valid"
-    mat-raised-button
-    type="submit"
-    color="primary"
-  >
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Sub Food Category</mat-label>
+    <mat-select [(ngModel)]="food.sub_food_category_id" name="subFoodCategory">
+      <mat-option *ngFor="let subFoodCategory of subFood" [value]="subFoodCategory.id">
+        {{ subFoodCategory.sub_food_name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Food Name</mat-label>
+    <input matInput name="name" placeholder="Enter Food Name" [(ngModel)]="food.food_name" required />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Food Header</mat-label>
+    <input matInput name="header" placeholder="Enter Food Header" [(ngModel)]="food.header" />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Food Price</mat-label>
+    <input matInput type="number" name="price" placeholder="Enter Food Price" [(ngModel)]="food.price" required />
+  </mat-form-field>
+
+  <button [disabled]="!formHotel.valid" mat-raised-button type="submit" color="primary">
     CREATE
   </button>
 </form>

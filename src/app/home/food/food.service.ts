@@ -15,12 +15,36 @@ export class FoodService {
     return this.http.get(this.baseURL);
   }
 
+  getMainFood(): Observable<any> {
+    return this.http.get(environment.apiURL + 'mainFood');
+  }
+
+  getSubFood(): Observable<any> {
+    return this.http.get(environment.apiURL + 'subFood');
+  }
+
   addFood(food: any): Observable<any> {
     return this.http.post(this.baseURL, food);
   }
 
+  addMainFood(food: any): Observable<any> {
+    return this.http.post(`${environment.apiURL}mainFood`, food);
+  }
+
+  addSubFood(food: any): Observable<any> {
+    return this.http.post(`${environment.apiURL}subFood`, food);
+  }
+
   editFood(food: any): Observable<any> {
     return this.http.put(this.baseURL + "/" + food.id, food);
+  }
+
+  editMainFood(food: any): Observable<any> {
+    return this.http.put(`${environment.apiURL}mainFood/${food.id}`, food);
+  }
+
+  editSubFood(food: any): Observable<any> {
+    return this.http.put(`${environment.apiURL}subFood/${food.id}`, food);
   }
 
   deleteFood(id: any): Observable<any> {

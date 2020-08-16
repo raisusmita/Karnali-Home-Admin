@@ -1,0 +1,12 @@
+<h2>Add Main Food</h2>
+<form #formHotel="ngForm" (ngSubmit)="submitFoodForm()">
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Main Food Name</mat-label>
+    <input matInput name="main_food_name" placeholder="Enter main food name" [(ngModel)]="food.main_food_name" />
+  </mat-form-field>
+
+  <button [disabled]="!formHotel.valid" mat-raised-button type="submit" color="primary">
+    CREATE
+  </button>
+</form>
