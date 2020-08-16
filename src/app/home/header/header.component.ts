@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements OnInit {
+  selectedPath = '';
   components: any[] = [
     // { name: "Dashboard", path: "", icon: "dashboard" },
     { name: "Room Category", path: "room-category", icon: "category" },
@@ -31,12 +32,18 @@ export class HeaderComponent implements OnInit {
     { name: "User", path: "user", icon: "group" },
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    this.selectedPath = router.url.split('/')[1];
+  }
 
   ngOnInit() { }
 
   logout() {
     localStorage.removeItem("token");
     this.router.navigate(["/login"]);
+  }
+
+  selectButton(path) {
+    this.selectedPath = path;
   }
 }
