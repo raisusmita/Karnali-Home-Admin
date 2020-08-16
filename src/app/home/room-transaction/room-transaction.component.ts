@@ -30,7 +30,10 @@ export class RoomTransactionComponent implements OnInit {
     const dialogRef = this.dialog.open(RoomTransactionFormComponent, {
       width: "50%",
       height: "700px",
-      data: null,
+      data: {
+        gridData: null,
+        formType: "Add",
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

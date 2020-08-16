@@ -1,3 +1,15 @@
 .mat-raised-button {
   margin-top: 10px;
 }
+
+.mat-form-field {
+  display: inline;
+}
+
+mat-cell:last-of-type {
+  padding-top: 15px !important;
+}
+
+table.mat-table {
+  width: 100%;
+}

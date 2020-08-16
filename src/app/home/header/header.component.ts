@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
     //   icon: "event_available",
     // },
     // { name: "Food", path: "food", icon: "fastfood" },
-    // { name: "Table", path: "table", icon: "weekend" },
+    { name: "Table", path: "table", icon: "weekend" },
     // { name: "Food Order", path: "food-order", icon: "room_service" },
     {
       name: "Transaction",

@@ -1,12 +1,16 @@
 <h2 *ngIf="addForm">Add New Transaction</h2>
 <h2 *ngIf="editForm">Edit Transaction</h2>
-<form #formReservation="ngForm">
+<form #formReservation="ngForm" (ngSubmit)="submitRoomTransactionForm()">
   <div class="main-selector">
     <section class="row">
-      <div class="col-md-6">
+      <div class="col-md-6 col-lg-6">
         <mat-form-field class="example-full-width" appearance="outline">
           <mat-label>Customer</mat-label>
-          <mat-select name="customer">
+          <mat-select
+            name="room_number"
+            [(ngModel)]="roomTransaction.customer_id"
+            (ngModelChange)="onCustomerSelect($event)"
+          >
             <mat-option
               *ngFor="let customer of customers"
               [value]="customer.id"
@@ -18,12 +22,86 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-md-6"></div>
+      <div class="col-md-6 col-lg-6">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Table</mat-label>
+          <mat-select name="table">
+            <mat-option *ngFor="let table of tables" [value]="table.id">
+              {{ table.table_number }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </section>
   </div>
 
-  <div class="main-content">
-    <section class="row"></section>
+  <div class="main-content" *ngIf="roomList">
+    <section class="row">
+      <!-- <p>{{ room.room_id[0].room_number }}</p> -->
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef>
+            <mat-checkbox
+              (change)="$event ? masterToggle($event) : null"
+              [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()"
+              [color]="primaryColor"
+              >All
+            </mat-checkbox>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)"
+              [color]="primaryColor"
+            >
+            </mat-checkbox>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="room_id">
+          <th mat-header-cell *matHeaderCellDef>Room Id</th>
+          <td mat-cell *matCellDef="let element">{{ element.room_id }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="room_number">
+          <th mat-header-cell *matHeaderCellDef>Room Number</th>
+          <td mat-cell *matCellDef="let element">{{ element.room_number }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="room_category">
+          <th mat-header-cell *matHeaderCellDef>Room Category</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.room_category }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="check_in_date">
+          <th mat-header-cell *matHeaderCellDef>Check In Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.check_in_date | date: "medium" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="check_out_date">
+          <th mat-header-cell *matHeaderCellDef>Check Out Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.check_out_date | date: "medium" }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          (click)="selection.toggle(row)"
+        ></tr>
+      </table>
+    </section>
   </div>
 
   <button mat-raised-button type="submit" color="primary">
