@@ -3,7 +3,7 @@ export interface MvFood {
   main_food_category_id: number;
   sub_food_category_id: number;
   food_name: string;
-  header: string;
+  food_header_id: string;
   price: number;
 }
 

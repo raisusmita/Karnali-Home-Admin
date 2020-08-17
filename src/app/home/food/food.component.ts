@@ -18,6 +18,7 @@ export class FoodComponent implements OnInit {
   dataSource: any[];
   mainFood: any[];
   subFood: any[];
+  foodHeader: any[];
 
   constructor(private foodService: FoodService, private dialog: MatDialog) { }
 
@@ -25,6 +26,7 @@ export class FoodComponent implements OnInit {
     this.getFood();
     this.getMainFood();
     this.getSubFood();
+    this.getFoodHeader();
   }
 
   getFood() {
@@ -42,6 +44,12 @@ export class FoodComponent implements OnInit {
   getSubFood() {
     this.foodService.getSubFood().subscribe((data) => {
       this.subFood = data.data;
+    });
+  }
+
+  getFoodHeader() {
+    this.foodService.getFoodHeader().subscribe((data) => {
+      this.foodHeader = data.data;
     });
   }
 
