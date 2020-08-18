@@ -1,8 +1,9 @@
+import { RoomTransactionService } from "./../room-transaction.service";
 import { MvRoomTransaction } from "./../room-transaction.model";
 import { TableService } from "./../../table/table.service";
 import { RoomAvailabilityService } from "src/app/shared/services/room-availability/room-availability.service";
 import { Component, OnInit, Inject } from "@angular/core";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { RoomService } from "../../room/room.service";
 import { CustomerService } from "../../customer/customer.service";
 import { MatTableDataSource } from "@angular/material/table";
@@ -23,35 +24,45 @@ export class RoomTransactionFormComponent implements OnInit {
   addForm: boolean;
   editForm: boolean;
   roomTransaction: MvRoomTransaction = {} as MvRoomTransaction;
-  roomList: any;
+  roomList: boolean;
   displayedColumns: string[] = [
     "select",
-    "room_id",
+    // "room_id",
     "room_number",
-    "room_category",
     "check_in_date",
+    "room_category",
     "check_out_date",
   ];
 
   dataSource: MatTableDataSource<Element>;
   selection = new SelectionModel<Element>(true, []);
   primaryColor: ThemePalette = "primary";
+  dateTry: Date;
   constructor(
-    private roomService: RoomService,
     private customerService: CustomerService,
     private tableService: TableService,
     private roomAvailabilityService: RoomAvailabilityService,
+    private roomTransactionService: RoomTransactionService,
+    private dialogRef: MatDialogRef<RoomTransactionFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit() {
+    this.dateTry = new Date();
     if (this.data.formType == "Add") {
       this.addForm = true;
+      this.geUnavailableRoom();
+      this.getTables();
     } else {
       this.editForm = true;
+      this.roomTransaction = this.data.gridData;
+      this.roomTransaction.check_in_date = new Date(
+        this.roomTransaction.check_in_date
+      );
+      this.roomTransaction.check_out_date = new Date(
+        this.roomTransaction.check_out_date
+      );
     }
-    this.geUnavailableRoom();
-    this.getTables();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -91,8 +102,9 @@ export class RoomTransactionFormComponent implements OnInit {
     this.roomAvailabilityService
       .getRoomListByCustomer(paramsCustomerId)
       .subscribe((result) => {
-        this.roomList = result.data;
-        // this.dataSource = this.roomList;
+        if (result.data != null) {
+          this.roomList = true;
+        }
         const arr = [];
         if (result && result.data) {
           result.data.map((x) => {
@@ -100,9 +112,10 @@ export class RoomTransactionFormComponent implements OnInit {
               room_id: x.room_id[0].id,
               room_number: x.room_id[0].room_number,
               room_category: x.room_id[0].room_category.room_category,
+              room_category_id: x.room_id[0].room_category.id,
               reservation_id: x.reservation_id,
-              check_in_date: x.check_in_date,
-              check_out_date: x.check_out_date,
+              check_in_date: new Date(x.check_in_date),
+              check_out_date: new Date(x.check_out_date),
             });
           });
           this.dataSource = new MatTableDataSource(arr);
@@ -113,6 +126,39 @@ export class RoomTransactionFormComponent implements OnInit {
   submitRoomTransactionForm() {
     if (this.addForm) {
       this.selectedRoom = this.selection.selected;
+      this.selectedRoom.map((data) => {
+        const offsetCIn = data.check_in_date.getTimezoneOffset() * 60000;
+        const offsetCOut = data.check_out_date.getTimezoneOffset() * 60000;
+
+        data.check_in_date = new Date(data.check_in_date.getTime() - offsetCIn);
+        data.check_out_date = new Date(
+          data.check_out_date.getTime() - offsetCOut
+        );
+      });
+      this.roomTransactionService
+        .addRoomTransaction(this.selectedRoom)
+        .subscribe((result) => {
+          if (result) {
+            this.dialogRef.close(result);
+          }
+        });
+    } else if (this.editForm) {
+      const offsetCIn =
+        this.roomTransaction.check_in_date.getTimezoneOffset() * 60000;
+      const offsetCOut =
+        this.roomTransaction.check_out_date.getTimezoneOffset() * 60000;
+
+      this.roomTransaction.check_in_date = new Date(
+        this.roomTransaction.check_in_date.getTime() - offsetCIn
+      );
+      this.roomTransaction.check_out_date = new Date(
+        this.roomTransaction.check_out_date.getTime() - offsetCOut
+      );
+      const editTransactionParams = {
+        reservation_id: this.roomTransaction.reservation_id,
+        check_in_date: this.roomTransaction.check_in_date,
+        check_out_date: this.roomTransaction.check_out_date,
+      };
     }
   }
 }

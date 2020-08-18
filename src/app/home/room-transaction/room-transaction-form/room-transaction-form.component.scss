@@ -6,10 +6,15 @@
   display: inline;
 }
 
-mat-cell:last-of-type {
-  padding-top: 15px !important;
+mat-cell:last-of-type,
+mat-footer-cell:last-of-type,
+mat-header-cell:last-of-type {
+  padding-right: 24px;
+  padding-top: 15px;
 }
-
 table.mat-table {
   width: 100%;
+}
+.datepickerIO {
+  width: 150px;
 }
