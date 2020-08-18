@@ -94,7 +94,7 @@ export class RoomTransactionFormComponent implements OnInit {
   onCustomerSelect(customerId: any) {
     // clear the selected rows for previous customer
     this.selection.clear();
-
+    this.roomList = false;
     const paramsCustomerId = {
       customer_id: customerId,
     };
@@ -158,7 +158,16 @@ export class RoomTransactionFormComponent implements OnInit {
         reservation_id: this.roomTransaction.reservation_id,
         check_in_date: this.roomTransaction.check_in_date,
         check_out_date: this.roomTransaction.check_out_date,
+        rate: this.roomTransaction.rate,
       };
+
+      this.roomTransactionService
+        .editRoomTransaction(editTransactionParams)
+        .subscribe((result) => {
+          if (result) {
+            this.dialogRef.close(result);
+          }
+        });
     }
   }
 }

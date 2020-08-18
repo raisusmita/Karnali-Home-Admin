@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class RoomTransactionService {
-  private readonly baseURL = "http://localhost:8000/api/room_transactions";
+  private readonly baseURL = "http://localhost:8000/api/";
 
   constructor(private http: HttpClient) {}
 
@@ -16,7 +16,11 @@ export class RoomTransactionService {
       "application/json"
     );
     const options = { headers: httpHeaders };
-    return this.http.post(this.baseURL, roomParams, options);
+    return this.http.post(
+      this.baseURL + "room_transactions",
+      roomParams,
+      options
+    );
   }
 
   getRoomTransaction(): Observable<any> {
@@ -25,6 +29,19 @@ export class RoomTransactionService {
       "application/json"
     );
     const options = { headers: httpHeaders };
-    return this.http.get(this.baseURL, options);
+    return this.http.get(this.baseURL + "room_transactions", options);
+  }
+
+  editRoomTransaction(roomParams: any): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.post(
+      this.baseURL + "editRoomTransaction",
+      roomParams,
+      options
+    );
   }
 }
