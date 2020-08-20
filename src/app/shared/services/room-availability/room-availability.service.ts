@@ -18,6 +18,15 @@ export class RoomAvailabilityService {
     return this.http.get(this.baseURL + "available", options);
   }
 
+  getUnavailableRooms(): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.get(this.baseURL + "unavailable", options);
+  }
+
   getRoomByBooking(bookingId: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
       "Content-Type",
@@ -27,6 +36,19 @@ export class RoomAvailabilityService {
     return this.http.post(
       this.baseURL + "availableRoomByBookingId",
       bookingId,
+      options
+    );
+  }
+
+  getRoomListByCustomer(customerId: any): Observable<any> {
+    const httpHeaders = new HttpHeaders().set(
+      "Content-Type",
+      "application/json"
+    );
+    const options = { headers: httpHeaders };
+    return this.http.post(
+      this.baseURL + "roomListByCustomerId",
+      JSON.stringify(customerId),
       options
     );
   }

@@ -190,7 +190,8 @@ export class ReservationFormComponent implements OnInit {
         if (customer.room_availability_booking != null) {
           if (
             customer.room_availability_booking.reservation_id != null &&
-            customer.room_availability_booking.booking_id != null
+            customer.room_availability_booking.booking_id != null &&
+            customer.room_availability_booking.availability != 1
           ) {
             // For direct reservation show all the available rooms
             this.getAvailableRoom();
@@ -462,32 +463,6 @@ export class ReservationFormComponent implements OnInit {
           if (reservationResult) {
             this.roomsByBooking.length = 0;
             this.reservationParams = null;
-            // if (this.byBooking) {
-            //   this.reservation.reservation_id = reservationResult.data.id;
-            //   this.reservationService
-            //     .bookingToReservation(this.reservation)
-            //     .subscribe((result) => {
-            //       const test = result;
-            //     });
-            // } else {
-            //   this.unavailableRoom.push({
-            //     reservation_id: reservationResult.data.id,
-            //     room_id: reservationResult.data.room_id,
-            //     check_in_date: reservationResult.data.check_in_date,
-            //     check_out_date: reservationResult.data.check_out_date,
-            //     status: "reserved",
-            //     booking_id: null,
-            //     created_at: reservationResult.data.created_at,
-            //     updated_at: reservationResult.data.updated_at,
-            //   });
-
-            //   this.unavailableRoom.splice(0, 1);
-            //   this.reservationService
-            //     .addRoomUnavailable(this.unavailableRoom)
-            //     .subscribe((data) => {
-            //       console.log(data);
-            //     });
-            // }
           }
           this.dialogRef.close(this.reservation);
         });

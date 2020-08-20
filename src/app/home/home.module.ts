@@ -25,6 +25,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatTreeModule } from "@angular/material/tree";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 //  ---------------------------------------------------------------------
 
 import { FormsModule } from "@angular/forms";
@@ -124,6 +125,7 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     MatCardModule,
     MatExpansionModule,
     MatTreeModule,
+    MatCheckboxModule,
   ],
   providers: [
     UserAuthService,
