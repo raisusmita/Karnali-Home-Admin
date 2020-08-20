@@ -1,3 +1,4 @@
+import { ConfirmCommonDialogComponent } from "./../shared/components/confirm-common-dialog/confirm-common-dialog.component";
 import { NgModule } from "@angular/core";
 import { HeaderComponent } from "./header/header.component";
 import { ReservationComponent } from "./reservation/reservation.component";
@@ -68,6 +69,7 @@ import { RoomAvailabilityComponent } from "./room-availability/room-availability
 import { RoomAvailabilityFormComponent } from "./room-availability/room-availability-form/room-availability-form.component";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { RoomTransactionFormComponent } from "./room-transaction/room-transaction-form/room-transaction-form.component";
+import { InvoiceReportComponent } from "./invoice/invoice-report/invoice-report.component";
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -83,6 +85,7 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     NewRoomCategoryComponent,
     EditRoomCategoryComponent,
     ConfirmDeleteComponent,
+    ConfirmCommonDialogComponent,
     CustomerComponent,
     AddRoomComponent,
     CustomerFormComponent,
@@ -99,6 +102,7 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     RoomAvailabilityComponent,
     RoomAvailabilityFormComponent,
     RoomTransactionFormComponent,
+    InvoiceReportComponent,
   ],
   imports: [
     BrowserModule,
@@ -140,6 +144,7 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     AddRoomComponent,
     FoodFormComponent,
     ConfirmDeleteComponent,
+    ConfirmCommonDialogComponent,
     CustomerFormComponent,
     AddTableComponent,
     BookingFormComponent,
@@ -147,6 +152,7 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     ReservationFormComponent,
     RoomAvailabilityFormComponent,
     RoomTransactionFormComponent,
+    InvoiceReportComponent,
   ],
 })
 export class HomeModule {}

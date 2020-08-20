@@ -1,9 +1,13 @@
+import { ConfirmCommonDialogComponent } from "./../../shared/components/confirm-common-dialog/confirm-common-dialog.component";
 import { RoomTransactionService } from "./room-transaction.service";
 import { RoomTransactionFormComponent } from "./room-transaction-form/room-transaction-form.component";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { MatTableDataSource } from "@angular/material/table";
+import { SelectionModel } from "@angular/cdk/collections";
+import { ThemePalette } from "@angular/material/core";
+import { InvoiceReportComponent } from "../invoice/invoice-report/invoice-report.component";
 
 @Component({
   selector: "app-room-transaction",
@@ -12,6 +16,7 @@ import { MatTableDataSource } from "@angular/material/table";
 })
 export class RoomTransactionComponent implements OnInit {
   displayedColumns: string[] = [
+    "select",
     "full_name",
     "phone_number",
     "address",
@@ -26,6 +31,8 @@ export class RoomTransactionComponent implements OnInit {
     "action",
   ];
   dataSource: MatTableDataSource<Element>;
+  selection = new SelectionModel<Element>(true, []);
+  primaryColor: ThemePalette = "primary";
 
   constructor(
     private dialog: MatDialog,
@@ -35,6 +42,20 @@ export class RoomTransactionComponent implements OnInit {
 
   ngOnInit() {
     this.getRoomTransaction();
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
 
   getRoomTransaction() {
@@ -60,6 +81,58 @@ export class RoomTransactionComponent implements OnInit {
           });
         });
         this.dataSource = new MatTableDataSource(arr);
+      }
+    });
+  }
+
+  generateInvoice() {
+    if (this.selection.selected.length == 0) {
+      this.toastr.info(
+        "Please select atleast one transaction to proceed",
+        "Info!",
+        {
+          positionClass: "toast-top-right",
+        }
+      );
+    } else {
+      this.generateInvoiceReport();
+    }
+  }
+
+  // onInvoiceGenerate() {
+  //   const dialogRef = this.dialog.open(ConfirmCommonDialogComponent, {
+  //     data: {
+  //       gridData: this.selection.selected,
+  //       formType: "Add",
+  //       callFor: "Invoice Generate",
+  //       confirmationText: "Are you sure you want to proceed the invoice?",
+  //       positiveResponse: "Yes Proceed",
+  //       negativeResponse: "Cancel the Proceed",
+  //     },
+  //   });
+
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     if (result) {
+  //     }
+  //   });
+  // }
+
+  generateInvoiceReport() {
+    const dialogRef = this.dialog.open(InvoiceReportComponent, {
+      width: "70%",
+      height: "700px",
+      data: {
+        gridData: this.selection.selected,
+        callFor: "Invoice Generate",
+        confirmationText: "Are you sure you want to proceed the invoice?",
+        positiveResponse: "Yes Proceed",
+        negativeResponse: "Cancel the Proceed",
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log("test");
       }
     });
   }
