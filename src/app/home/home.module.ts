@@ -46,6 +46,7 @@ import { CustomerFormComponent } from "./customer/customer-form/customer-form.co
 import { FoodFormComponent } from "./food/food-form/food-form.component";
 import { MainFoodFormComponent } from './food/main-food-form/main-food-form.component';
 import { SubFoodFormComponent } from './food/sub-food-form/sub-food-form.component';
+import { FoodHeaderFormComponent } from './food/food-header-form/food-header-form.component';
 import { TableComponent } from "./table/table.component";
 import { AddTableComponent } from "./table/add-table/add-table.component";
 import { BookingFormComponent } from "./booking/booking-form/booking-form.component";
@@ -92,6 +93,7 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     FoodFormComponent,
     MainFoodFormComponent,
     SubFoodFormComponent,
+    FoodHeaderFormComponent,
     TableComponent,
     AddTableComponent,
     BookingFormComponent,
@@ -146,6 +148,7 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     FoodFormComponent,
     MainFoodFormComponent,
     SubFoodFormComponent,
+    FoodHeaderFormComponent,
     ConfirmDeleteComponent,
     CustomerFormComponent,
     AddTableComponent,

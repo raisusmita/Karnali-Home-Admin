@@ -5,6 +5,7 @@ import { FoodFormComponent } from "./food-form/food-form.component";
 import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
 import { MainFoodFormComponent } from './main-food-form/main-food-form.component';
 import { SubFoodFormComponent } from './sub-food-form/sub-food-form.component';
+import { FoodHeaderFormComponent } from './food-header-form/food-header-form.component';
 
 @Component({
   selector: "app-food",
@@ -15,6 +16,8 @@ export class FoodComponent implements OnInit {
   displayedColumns: string[] = ["mainFoodCategory", "subFoodCategory", "foodName", "header", "price", "action"];
   mainFoodDisplayedColumns: string[] = ["mainFoodCategory", "action"];
   subFoodDisplayedColumns: string[] = ["subFoodCategory", "action"];
+  FoodHeaderDisplayedColumns: string[] = ["foodHeader", "action"];
+
   dataSource: any[];
   mainFood: any[];
   subFood: any[];
@@ -93,6 +96,19 @@ export class FoodComponent implements OnInit {
     });
   }
 
+  addFoodHeader() {
+    const dialogRef = this.dialog.open(FoodHeaderFormComponent, {
+      width: "50%",
+      data: null,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getFoodHeader();
+      }
+    });
+  }
+
   editFood(FoodEditData) {
     const dialogRef = this.dialog.open(FoodFormComponent, {
       width: "50%",
@@ -109,6 +125,14 @@ export class FoodComponent implements OnInit {
 
   editSubFood(FoodEditData) {
     const dialogRef = this.dialog.open(SubFoodFormComponent, {
+      width: "50%",
+      data: FoodEditData,
+    });
+  }
+
+  editFoodHeader(FoodEditData) {
+    console.log(FoodEditData);
+    const dialogRef = this.dialog.open(FoodHeaderFormComponent, {
       width: "50%",
       data: FoodEditData,
     });

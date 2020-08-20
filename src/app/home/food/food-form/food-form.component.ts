@@ -14,6 +14,7 @@ export class FoodFormComponent implements OnInit {
 
   mainFood = [];
   subFood = [];
+  foodHeader = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -25,6 +26,7 @@ export class FoodFormComponent implements OnInit {
     this.getFood();
     this.getMainFood();
     this.getSubFood();
+    this.getFoodheader();
   }
 
   getFood() {
@@ -45,6 +47,12 @@ export class FoodFormComponent implements OnInit {
   getSubFood() {
     this.foodService.getSubFood().subscribe((data) => {
       this.subFood = data.data;
+    });
+  }
+
+  getFoodheader() {
+    this.foodService.getFoodHeader().subscribe((data) => {
+      this.foodHeader = data.data;
     });
   }
 
