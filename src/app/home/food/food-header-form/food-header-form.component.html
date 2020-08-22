@@ -1,0 +1,12 @@
+<h2>Add Food Header</h2>
+<form #formHotel="ngForm" (ngSubmit)="submitFoodForm()">
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Food Header Name</mat-label>
+    <input matInput name="food_header" placeholder="Eg; Momo" [(ngModel)]="food.food_header" />
+  </mat-form-field>
+
+  <button [disabled]="!formHotel.valid" mat-raised-button type="submit" color="primary">
+    CREATE
+  </button>
+</form>

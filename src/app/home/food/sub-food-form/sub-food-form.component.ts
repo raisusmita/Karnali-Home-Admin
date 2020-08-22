@@ -1,41 +1,34 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import { MvFood } from "../food-model";
+import { MvFood, MvSubFood } from "../food-model";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { FoodService } from "../food.service";
 
 @Component({
-  selector: "app-food-form",
-  templateUrl: "./food-form.component.html",
-  styleUrls: ["./food-form.component.scss"],
+  selector: "app-sub-food-form",
+  templateUrl: "./sub-food-form.component.html",
+  styleUrls: ["./sub-food-form.component.scss"],
 })
-export class FoodFormComponent implements OnInit {
-  food: MvFood = {} as MvFood;
+export class SubFoodFormComponent implements OnInit {
+  food: MvSubFood = {} as MvSubFood;
   isEdit = false;
 
   mainFood = [];
   subFood = [];
-  foodHeader = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private foodService: FoodService,
-    private dialogRef: MatDialogRef<FoodFormComponent>
-  ) { }
-
-  ngOnInit() {
-    this.getFood();
-    this.getMainFood();
-    this.getSubFood();
-    this.getFoodheader();
+    private dialogRef: MatDialogRef<SubFoodFormComponent>
+  ) {
+    if (data) {
+      this.food = data;
+      this.isEdit = true;
+    }
   }
 
-  getFood() {
-    this.foodService.getFood().subscribe((data) => {
-      if (this.data) {
-        this.isEdit = true;
-        this.food = this.data;
-      }
-    });
+  ngOnInit() {
+    this.getMainFood();
+    this.getSubFood();
   }
 
   getMainFood() {
@@ -50,20 +43,13 @@ export class FoodFormComponent implements OnInit {
     });
   }
 
-  getFoodheader() {
-    this.foodService.getFoodHeader().subscribe((data) => {
-      this.foodHeader = data.data;
-    });
-  }
-
-
   submitFoodForm() {
     if (this.isEdit) {
-      this.foodService.editFood(this.food).subscribe((e) => {
+      this.foodService.editSubFood(this.food).subscribe((e) => {
         this.dialogRef.close(this.food);
       });
     } else {
-      this.foodService.addFood(this.food).subscribe((e) => {
+      this.foodService.addSubFood(this.food).subscribe((e) => {
         this.dialogRef.close(this.food);
       });
     }
