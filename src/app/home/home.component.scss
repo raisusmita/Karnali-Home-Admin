@@ -1,0 +1,13 @@
+app-invoice-report {
+  display: none;
+}
+
+@media print {
+  app-invoice-report {
+    display: block;
+  }
+
+  app-header {
+    display: none;
+  }
+}

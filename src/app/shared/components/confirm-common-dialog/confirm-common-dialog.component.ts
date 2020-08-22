@@ -1,3 +1,4 @@
+import { PrintService } from "./../../services/print-service/print.service";
 import { InvoiceReportComponent } from "./../../../home/invoice/invoice-report/invoice-report.component";
 import { Component, OnInit, Inject } from "@angular/core";
 import {
@@ -18,7 +19,8 @@ export class ConfirmCommonDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<ConfirmCommonDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private printService: PrintService
   ) {}
 
   ngOnInit() {
@@ -30,10 +32,9 @@ export class ConfirmCommonDialogComponent implements OnInit {
   }
 
   onConfirmed() {
-    // if (this.data.callFor == "Invoice Generate") {
-    //   this.generateInvoiceReport();
-    // }
+    // this.printService.printInvoice("invoice-report");
     this.dialogRef.close(true);
+    window.print();
   }
   onCancelled() {
     this.dialogRef.close(false);

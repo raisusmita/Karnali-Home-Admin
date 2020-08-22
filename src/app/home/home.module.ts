@@ -27,7 +27,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatTreeModule } from "@angular/material/tree";
 
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from "@angular/material/tabs";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 //  ---------------------------------------------------------------------
 
@@ -46,9 +46,9 @@ import { CustomerComponent } from "./customer/customer.component";
 import { AddRoomComponent } from "./room/add-room/add-room.component";
 import { CustomerFormComponent } from "./customer/customer-form/customer-form.component";
 import { FoodFormComponent } from "./food/food-form/food-form.component";
-import { MainFoodFormComponent } from './food/main-food-form/main-food-form.component';
-import { SubFoodFormComponent } from './food/sub-food-form/sub-food-form.component';
-import { FoodHeaderFormComponent } from './food/food-header-form/food-header-form.component';
+import { MainFoodFormComponent } from "./food/main-food-form/main-food-form.component";
+import { SubFoodFormComponent } from "./food/sub-food-form/sub-food-form.component";
+import { FoodHeaderFormComponent } from "./food/food-header-form/food-header-form.component";
 import { TableComponent } from "./table/table.component";
 import { AddTableComponent } from "./table/add-table/add-table.component";
 import { BookingFormComponent } from "./booking/booking-form/booking-form.component";
@@ -74,11 +74,12 @@ import { RoomAvailabilityComponent } from "./room-availability/room-availability
 import { RoomAvailabilityFormComponent } from "./room-availability/room-availability-form/room-availability-form.component";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { RoomTransactionFormComponent } from "./room-transaction/room-transaction-form/room-transaction-form.component";
-import { InvoiceReportComponent } from "./invoice/invoice-report/invoice-report.component";
+import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.module";
 @NgModule({
   declarations: [
     HeaderComponent,
     RoomComponent,
+
     RoomCategoryComponent,
     ReservationComponent,
     BookingComponent,
@@ -110,7 +111,6 @@ import { InvoiceReportComponent } from "./invoice/invoice-report/invoice-report.
     RoomAvailabilityComponent,
     RoomAvailabilityFormComponent,
     RoomTransactionFormComponent,
-    InvoiceReportComponent,
   ],
   imports: [
     BrowserModule,
@@ -139,6 +139,7 @@ import { InvoiceReportComponent } from "./invoice/invoice-report/invoice-report.
     MatTreeModule,
     MatTabsModule,
     MatCheckboxModule,
+    InvoiceReportModule,
   ],
   providers: [
     UserAuthService,
@@ -164,7 +165,6 @@ import { InvoiceReportComponent } from "./invoice/invoice-report/invoice-report.
     ReservationFormComponent,
     RoomAvailabilityFormComponent,
     RoomTransactionFormComponent,
-    InvoiceReportComponent,
   ],
 })
-export class HomeModule { }
+export class HomeModule {}

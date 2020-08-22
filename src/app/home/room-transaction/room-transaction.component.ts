@@ -95,7 +95,8 @@ export class RoomTransactionComponent implements OnInit {
         }
       );
     } else {
-      this.generateInvoiceReport();
+      // this.generateInvoiceReport();
+      window.print();
     }
   }
 
@@ -117,25 +118,25 @@ export class RoomTransactionComponent implements OnInit {
   //   });
   // }
 
-  generateInvoiceReport() {
-    const dialogRef = this.dialog.open(InvoiceReportComponent, {
-      width: "70%",
-      height: "700px",
-      data: {
-        gridData: this.selection.selected,
-        callFor: "Invoice Generate",
-        confirmationText: "Are you sure you want to proceed the invoice?",
-        positiveResponse: "Yes Proceed",
-        negativeResponse: "Cancel the Proceed",
-      },
-    });
+  // generateInvoiceReport() {
+  //   const dialogRef = this.dialog.open(InvoiceReportComponent, {
+  //     width: "70%",
+  //     height: "700px",
+  //     data: {
+  //       gridData: this.selection.selected,
+  //       callFor: "Invoice Generate",
+  //       confirmationText: "Are you sure you want to proceed the invoice?",
+  //       positiveResponse: "Yes Proceed",
+  //       negativeResponse: "Cancel the Proceed",
+  //     },
+  //   });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log("test");
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     if (result) {
+  //       console.log("test");
+  //     }
+  //   });
+  // }
 
   onAddClick() {
     const dialogRef = this.dialog.open(RoomTransactionFormComponent, {
