@@ -1,1 +1,36 @@
-<p>food-order works!</p>
+<div class="container">
+
+    <form class="example-form">
+        <div class="row">
+            <div class="col-6">
+
+
+                <mat-form-field class="example-full-width">
+                    <input type="text" placeholder="Select Table Number" aria-label="Number" matInput
+                        [formControl]="selectedTable" [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of filteredTables | async " [value]="option.table_number">
+                            {{option.table_number}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+
+            <div class="col-6">
+                <!-- <mat-form-field class="example-full-width">
+                    <input type="text" placeholder="Select Room Number" aria-label="RoomNumber" matInput
+                        [formControl]="selectedRoom" [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveSecondOption #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of filteredRooms | async " [value]="option.room_number">
+                            {{option.room_number}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field> -->
+            </div>
+        </div>
+    </form>
+
+    <!-- <form class="example-form">
+    </form> -->
+
+</div>

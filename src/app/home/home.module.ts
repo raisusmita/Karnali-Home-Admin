@@ -61,6 +61,7 @@ import { UserService } from "./user/user.service";
 //Toast
 import { ToastrModule } from "ngx-toastr";
 import { MatCardModule } from "@angular/material/card";
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
@@ -73,6 +74,8 @@ import { RoomAvailabilityComponent } from "./room-availability/room-availability
 import { RoomAvailabilityFormComponent } from "./room-availability/room-availability-form/room-availability-form.component";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { RoomTransactionFormComponent } from "./room-transaction/room-transaction-form/room-transaction-form.component";
+
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -131,10 +134,13 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     MatNativeDateModule,
     StorageServiceModule,
     MatCardModule,
+    MatAutocompleteModule,
     MatExpansionModule,
     MatTreeModule,
     MatTabsModule,
     MatCheckboxModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     UserAuthService,
