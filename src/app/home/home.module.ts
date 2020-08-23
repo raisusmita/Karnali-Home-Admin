@@ -1,3 +1,5 @@
+import { InvoiceDataService } from "./../shared/services/invoice-data-service/invoice-data.service";
+import { RoomAvailabilityService } from "./../shared/services/room-availability/room-availability.service";
 import { ConfirmCommonDialogComponent } from "./../shared/components/confirm-common-dialog/confirm-common-dialog.component";
 import { NgModule } from "@angular/core";
 import { HeaderComponent } from "./header/header.component";
@@ -146,6 +148,8 @@ import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.mod
     AuthGuard,
     UserService,
     DatePipe,
+    RoomAvailabilityService,
+    InvoiceDataService,
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { strict: true } },
   ],
   entryComponents: [

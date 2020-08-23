@@ -1,3 +1,4 @@
+import { InvoiceDataService } from "./../../shared/services/invoice-data-service/invoice-data.service";
 import { ConfirmCommonDialogComponent } from "./../../shared/components/confirm-common-dialog/confirm-common-dialog.component";
 import { RoomTransactionService } from "./room-transaction.service";
 import { RoomTransactionFormComponent } from "./room-transaction-form/room-transaction-form.component";
@@ -8,6 +9,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { SelectionModel } from "@angular/cdk/collections";
 import { ThemePalette } from "@angular/material/core";
 import { InvoiceReportComponent } from "../invoice/invoice-report/invoice-report.component";
+import { InvoiceService } from "../invoice/invoice.service";
 
 @Component({
   selector: "app-room-transaction",
@@ -34,14 +36,21 @@ export class RoomTransactionComponent implements OnInit {
   selection = new SelectionModel<Element>(true, []);
   primaryColor: ThemePalette = "primary";
 
+  invoiceData: any;
+
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private roomTransactionService: RoomTransactionService
+    private roomTransactionService: RoomTransactionService,
+    private invoiceService: InvoiceService,
+    private data: InvoiceDataService
   ) {}
 
   ngOnInit() {
     this.getRoomTransaction();
+    this.data.currentInvoiceData.subscribe(
+      (invoiceData) => (this.invoiceData = invoiceData)
+    );
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -64,6 +73,7 @@ export class RoomTransactionComponent implements OnInit {
       if (result && result.data) {
         result.data.map((x) => {
           arr.push({
+            transaction_id: x.id,
             first_name: x.customer.first_name,
             middle_name: x.customer.middle_name,
             last_name: x.customer.last_name,
@@ -96,7 +106,14 @@ export class RoomTransactionComponent implements OnInit {
       );
     } else {
       // this.generateInvoiceReport();
-      window.print();
+      const invoiceParams = this.selection.selected;
+      this.invoiceService.addInvoice(invoiceParams).subscribe((result) => {
+        if (result) {
+          this.data.changeInvoiceData(this.selection.selected);
+
+          window.print();
+        }
+      });
     }
   }
 
