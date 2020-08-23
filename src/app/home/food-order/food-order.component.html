@@ -1,36 +1,80 @@
 <div class="container">
 
-    <form class="example-form">
-        <div class="row">
-            <div class="col-6">
+    <div class="p-3 mt-3">
+        <form class="example-form">
+            <div class="row">
+                <div class="col-sm-6">
+                    <mat-form-field class="example-full-width">
+                        <input type="text" placeholder="Select Table Number" aria-label="Number" matInput
+                            [formControl]="searchedTableValue" [matAutocomplete]="autoTable">
+                        <mat-autocomplete autoActiveFirstOption #autoTable="matAutocomplete"
+                            (optionSelected)='selectTable($event.option.value)'>
+                            <mat-option *ngFor="let option of filteredTables | async " [value]="option.table_number">
+                                {{option.table_number}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
 
+                <div class="col-sm-6">
 
-                <mat-form-field class="example-full-width">
-                    <input type="text" placeholder="Select Table Number" aria-label="Number" matInput
-                        [formControl]="selectedTable" [matAutocomplete]="auto">
-                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                        <mat-option *ngFor="let option of filteredTables | async " [value]="option.table_number">
-                            {{option.table_number}}
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input type="text" placeholder="Select Room Number" aria-label="Number" matInput
+                            [formControl]="searchedRoomValue" [matAutocomplete]="autoRoom">
+                        <mat-autocomplete autoActiveFirstOption #autoRoom="matAutocomplete"
+                            (optionSelected)='selectRoom($event.option.value)'>
+                            <mat-option *ngFor="let roomOption of filteredRooms | async "
+                                [value]="roomOption.room_number">
+                                {{roomOption.room_number }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
             </div>
+        </form>
+    </div>
 
-            <div class="col-6">
-                <!-- <mat-form-field class="example-full-width">
-                    <input type="text" placeholder="Select Room Number" aria-label="RoomNumber" matInput
-                        [formControl]="selectedRoom" [matAutocomplete]="auto">
-                    <mat-autocomplete autoActiveSecondOption #auto="matAutocomplete">
-                        <mat-option *ngFor="let option of filteredRooms | async " [value]="option.room_number">
-                            {{option.room_number}}
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field> -->
+    <div class="container" *ngIf="tableSelected || roomSelected">
+        <div class="row" *ngIf="mainFood">
+            <div class="col-sm-6 col-md-4 mb-2" *ngFor="let mainFoodItem of mainFood ">
+
+                <div class="main-food-card" (click)="getSubFoodAndFoodItems(mainFoodItem)">
+                    <div class="main-food-checked" *ngIf="mainFoodCheckbox.includes(mainFoodItem.id)">
+                        <img src="../../../assets/images/check_circle_outline-24px.svg" alt="checked">
+                    </div>
+                    <h5>
+                        {{mainFoodItem.main_food_name}}
+                    </h5>
+                </div>
             </div>
         </div>
-    </form>
+    </div>
 
-    <!-- <form class="example-form">
-    </form> -->
+    <!-- *ngIf="subFoodShow" -->
+    <div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div
+                    *ngIf="mainFoodSelectedId && foodList[mainFoodSelectedId] && foodList[mainFoodSelectedId]['subFood']">
+                    SubFoodHere:
+                    <div *ngFor="let subFoodItem of foodList[mainFoodSelectedId]['subFood']">
+                        <h5>
+                            {{subFoodItem.sub_food_name}}
+                        </h5>
+                    </div>
+                </div>
+                <div
+                    *ngIf="mainFoodSelectedId && foodList[mainFoodSelectedId] && foodList[mainFoodSelectedId]['foodItems']">
+                    Food Items list
+                    <div *ngFor="let foodItem of foodList[mainFoodSelectedId].foodItems">
+                        <h5>
+                            {{foodItem.food_name}}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 </div>

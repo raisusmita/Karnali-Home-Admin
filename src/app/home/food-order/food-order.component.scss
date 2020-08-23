@@ -5,11 +5,35 @@
 
 
 .example-form {
-  // min-width: 150px;
-  // max-width: 500px;
   width: 100%;
 }
 
 .example-full-width {
   width: 100%;
+}
+
+.main-food-card{
+  background-color: #73879c77;
+  position: relative;
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  
+  h5{
+    word-wrap: break-word;
+  }
+
+  .main-food-checked{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+.main-food-card:hover{
+  box-shadow: 5px 8px 10px #88888890;
 }

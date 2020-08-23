@@ -23,6 +23,10 @@ export class FoodService {
     return this.http.get(environment.apiURL + 'subFood');
   }
 
+  getSubFoodAndFoodItemsById(id): Observable<any> {
+    return this.http.post(environment.apiURL + 'subFoodById', id);
+  }
+
   getFoodHeader(): Observable<any> {
     return this.http.get(environment.apiURL + 'foodHeader');
   }
