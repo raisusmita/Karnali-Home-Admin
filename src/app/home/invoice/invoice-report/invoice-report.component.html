@@ -18,8 +18,8 @@
         </div>
       </div>
       <div class="col-lg-3 col-md-3">
-        <div class="invoice-info">
-          <p>Invoice Number:</p>
+        <div class="invoice-info" *ngFor="let invoice of invoiceData">
+          <p>Invoice Number: {{ invoice.invoice.invoice_number }}</p>
         </div>
       </div>
     </div>
@@ -31,6 +31,7 @@
       <thead>
         <tr>
           <th scope="col">S.N</th>
+          <th scope="col">Room Category</th>
           <th scope="col">Room Number</th>
           <th scope="col">Room Type</th>
           <th scope="col">Check In Date</th>
@@ -41,15 +42,21 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>VR01</td>
-          <td>VIP</td>
-          <td>8/12/2020</td>
-          <td>8/15/2020</td>
-          <td>3</td>
-          <td>150</td>
-          <td>450</td>
+        <tr *ngFor="let transaction of transactionData; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ transaction.roomDetail.room_category.room_category }}</td>
+          <td>{{ transaction.roomDetail.room_number }}</td>
+          <td>{{ transaction.roomDetail.room_category.room_type }}</td>
+          <td>{{ transaction.checkInDate | date }}</td>
+          <td>{{ transaction.checkOutDate | date }}</td>
+          <td>{{ transaction.numberOfDays }}</td>
+          <td>$ {{ transaction.rate }}</td>
+          <td>$ {{ transaction.amount }}</td>
+        </tr>
+        <tr *ngFor="let invoice of invoiceData">
+          <th>Sub-Total</th>
+          <td>{{ invoice.invoice.sub_total }}</td>
+          <!-- <td>{{ transactionData.invoice.sub_total }}</td> -->
         </tr>
       </tbody>
     </table>
@@ -76,27 +83,29 @@
       </tbody>
     </table>
 
-    <table class="total-table">
+    <table class="total-table" *ngFor="let invoice of invoiceData">
       <tbody>
         <tr>
           <th scope="col">Service Charge</th>
-          <td>200</td>
+          <td>{{ invoice.invoice.service_charge }}%</td>
         </tr>
         <tr>
           <th scope="col">VAT</th>
-          <td>13%</td>
+          <td>{{ invoice.invoice.vat }}%</td>
         </tr>
         <tr>
           <th scope="col">Tax</th>
-          <td>5%</td>
+          <td>{{ invoice.invoice.tax }}%</td>
         </tr>
         <tr>
           <th scope="col">Discount</th>
-          <td>10%</td>
+          <td>{{ invoice.invoice.discount }}%</td>
         </tr>
         <tr>
           <th scope="col">Grand Total</th>
-          <th class="total-amount">986</th>
+          <th class="total-amount">
+            {{ invoice.invoice.grand_total }}
+          </th>
         </tr>
       </tbody>
     </table>

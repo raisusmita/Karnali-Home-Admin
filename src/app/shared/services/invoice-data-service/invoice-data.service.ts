@@ -5,13 +5,22 @@ import { BehaviorSubject } from "rxjs";
   providedIn: "root",
 })
 export class InvoiceDataService {
-  arr: [] = [];
-  private dataSource = new BehaviorSubject<any>(this.arr);
-  currentInvoiceData = this.dataSource.asObservable();
+  invoiceArr: [] = [];
+  transactionArr: [] = [];
+
+  private dataSourceInvoice = new BehaviorSubject<any>(this.invoiceArr);
+  private dataSourceTransaction = new BehaviorSubject<any>(this.transactionArr);
+
+  currentInvoiceData = this.dataSourceInvoice.asObservable();
+  currentTransactionData = this.dataSourceTransaction.asObservable();
 
   constructor() {}
 
-  changeInvoiceData(data: any) {
-    this.dataSource.next(data);
+  changeInvoiceData(invoiceData: any) {
+    this.dataSourceInvoice.next(invoiceData);
+  }
+
+  changeTransactionData(transactionData: any) {
+    this.dataSourceTransaction.next(transactionData);
   }
 }

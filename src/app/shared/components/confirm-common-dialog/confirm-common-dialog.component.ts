@@ -34,7 +34,6 @@ export class ConfirmCommonDialogComponent implements OnInit {
   onConfirmed() {
     // this.printService.printInvoice("invoice-report");
     this.dialogRef.close(true);
-    window.print();
   }
   onCancelled() {
     this.dialogRef.close(false);

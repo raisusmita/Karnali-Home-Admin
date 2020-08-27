@@ -37,6 +37,10 @@ export class RoomTransactionComponent implements OnInit {
   primaryColor: ThemePalette = "primary";
 
   invoiceData: any;
+  allData: any;
+  invoicelRelatedData: any;
+  transactionRelatedData: any;
+  valueInitialized: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -109,31 +113,46 @@ export class RoomTransactionComponent implements OnInit {
       const invoiceParams = this.selection.selected;
       this.invoiceService.addInvoice(invoiceParams).subscribe((result) => {
         if (result) {
-          this.data.changeInvoiceData(this.selection.selected);
+          this.allData = result.data;
+          this.invoicelRelatedData = this.allData.filter(
+            (invoice) => invoice.invoice
+          );
+          this.allData.pop();
 
-          window.print();
+          this.transactionRelatedData = this.allData;
+
+          this.data.changeInvoiceData(this.invoicelRelatedData);
+          this.data.changeTransactionData(this.transactionRelatedData);
+
+          if (this.transactionRelatedData.length > 0) {
+            setTimeout(() => {
+              this.onInvoiceGenerate();
+            });
+          }
         }
       });
     }
   }
 
-  // onInvoiceGenerate() {
-  //   const dialogRef = this.dialog.open(ConfirmCommonDialogComponent, {
-  //     data: {
-  //       gridData: this.selection.selected,
-  //       formType: "Add",
-  //       callFor: "Invoice Generate",
-  //       confirmationText: "Are you sure you want to proceed the invoice?",
-  //       positiveResponse: "Yes Proceed",
-  //       negativeResponse: "Cancel the Proceed",
-  //     },
-  //   });
+  onInvoiceGenerate() {
+    const dialogRef = this.dialog.open(ConfirmCommonDialogComponent, {
+      data: {
+        gridData: this.selection.selected,
+        formType: "Add",
+        callFor: "Invoice Generate",
+        confirmationText:
+          "The invoice has been generated successfully. Do you want to print it further?",
+        positiveResponse: "Yes Print",
+        negativeResponse: "Cancel the Print",
+      },
+    });
 
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result) {
-  //     }
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        window.print();
+      }
+    });
+  }
 
   // generateInvoiceReport() {
   //   const dialogRef = this.dialog.open(InvoiceReportComponent, {
