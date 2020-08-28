@@ -3,9 +3,7 @@
     <h2>Karnali Home</h2>
     <h3>Restaurant and Bar</h3>
     <p>Ekikaran Sadak, 44600 Kathmandu</p>
-    <span>
-      Landline:01-5907017, 01-4362886
-    </span>
+    <span> Landline:01-5907017, 01-4362886 </span>
     <hr />
   </div>
 
@@ -14,7 +12,10 @@
       <div class="col-lg-9 col-md-9">
         <div class="customer-info">
           <p>Date:</p>
-          <p>Customer Name:</p>
+          <p>
+            Customer Name:{{ firstName }} {{ middleName ? middleName : "" }}
+            {{ lastName }}
+          </p>
         </div>
       </div>
       <div class="col-lg-3 col-md-3">

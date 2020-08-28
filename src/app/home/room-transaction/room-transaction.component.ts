@@ -111,6 +111,13 @@ export class RoomTransactionComponent implements OnInit {
     } else {
       // this.generateInvoiceReport();
       const invoiceParams = this.selection.selected;
+      const customerName = {
+        firstName: invoiceParams[0]["first_name"],
+        middleName: invoiceParams[0]["middle_name"],
+        lastName: invoiceParams[0]["last_name"],
+      };
+      this.data.changeCustomer(customerName);
+
       this.invoiceService.addInvoice(invoiceParams).subscribe((result) => {
         if (result) {
           this.allData = result.data;
@@ -124,11 +131,11 @@ export class RoomTransactionComponent implements OnInit {
           this.data.changeInvoiceData(this.invoicelRelatedData);
           this.data.changeTransactionData(this.transactionRelatedData);
 
-          if (this.transactionRelatedData.length > 0) {
-            setTimeout(() => {
-              this.onInvoiceGenerate();
-            });
-          }
+          // if (this.transactionRelatedData.length > 0) {
+          //   setTimeout(() => {
+          this.onInvoiceGenerate();
+          // });
+          // }
         }
       });
     }

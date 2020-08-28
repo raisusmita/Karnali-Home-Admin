@@ -191,7 +191,7 @@ export class ReservationFormComponent implements OnInit {
           if (
             customer.room_availability_booking.reservation_id != null &&
             customer.room_availability_booking.booking_id != null &&
-            customer.room_availability_booking.availability == 1
+            customer.room_availability_booking.availability
           ) {
             // For direct reservation show all the available rooms
             this.getAvailableRoom();

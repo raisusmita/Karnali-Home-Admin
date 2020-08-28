@@ -9,6 +9,11 @@ import { Component, OnInit } from "@angular/core";
 export class InvoiceReportComponent implements OnInit {
   invoiceData: any;
   transactionData: any;
+  customerData: any;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+
   constructor(private data: InvoiceDataService) {}
 
   ngOnInit() {}
@@ -21,7 +26,14 @@ export class InvoiceReportComponent implements OnInit {
       });
 
       this.data.currentTransactionData.subscribe((transactionData) => {
-        this.transactionData = [...transactionData];
+        this.transactionData = transactionData;
+      });
+
+      this.data.currentCustomer.subscribe((customer) => {
+        this.customerData = customer;
+        this.firstName = this.customerData.firstName;
+        this.middleName = this.customerData.middleName;
+        this.lastName = this.customerData.lastName;
       });
     });
   }
