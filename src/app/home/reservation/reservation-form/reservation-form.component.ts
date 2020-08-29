@@ -1,3 +1,4 @@
+import { CommonService } from "./../../../shared/services/common-service/common.service";
 import { RoomAvailabilityService } from "./../../../shared/services/room-availability/room-availability.service";
 import { MvRoomUnavailable } from "./room-unavailable.model";
 import { RoomService } from "./../../room/room.service";
@@ -25,6 +26,7 @@ export class ReservationFormComponent implements OnInit {
   customers: any[] = [];
   rooms: any[] = [];
   bookings: any[] = [];
+  activeBookingList: any[] = [];
 
   // For Room Availability
   checkInDate: Date;
@@ -84,6 +86,7 @@ export class ReservationFormComponent implements OnInit {
     private roomService: RoomService,
     private roomAvailableService: RoomAvailabilityService,
     private roomCategoryService: RoomCategoryService,
+    private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public datepipe: DatePipe,
     private toastr: ToastrService,
@@ -114,6 +117,7 @@ export class ReservationFormComponent implements OnInit {
         );
       }
     });
+    this.getActiveBookings();
     this.getCustomers();
     this.getRooms();
     this.getBookings();
@@ -132,6 +136,12 @@ export class ReservationFormComponent implements OnInit {
       this.getRoomByCategory();
     }
     this.getRoomCategories();
+  }
+
+  getActiveBookings() {
+    this.commonService.getActiveBooking().subscribe((result) => {
+      this.activeBookingList = result.data;
+    });
   }
 
   getCustomers() {
@@ -184,29 +194,14 @@ export class ReservationFormComponent implements OnInit {
   }
 
   getAssigedRoomForBooking(customerId) {
-    this.customers.map((customer) => {
-      if (customer.id == customerId) {
-        // If the customer have already booked room (note: could be old customer as well)
-        if (customer.room_availability_booking != null) {
-          if (
-            customer.room_availability_booking.reservation_id != null &&
-            customer.room_availability_booking.booking_id != null &&
-            customer.room_availability_booking.availability
-          ) {
-            // For direct reservation show all the available rooms
-            this.getAvailableRoom();
-            this.byAvailable = true;
-            this.disableButton = true;
-            this.byBooking = false;
-            this.reservation.check_in_date = null;
-            this.reservation.check_out_date = null;
-          } else {
-            // For booked room
-            this.bookingId = customer.bookings[0].id;
-            this.byAvailable = false;
-            this.byBooking = true;
-            this.disableButton = false;
-          }
+    if (this.activeBookingList != null) {
+      this.activeBookingList.map((booking) => {
+        if (booking.customer_id == customerId) {
+          // For booked room
+          this.bookingId = booking.id;
+          this.byAvailable = false;
+          this.byBooking = true;
+          this.disableButton = false;
         } else {
           // For direct reservation show all the available rooms
           this.getAvailableRoom();
@@ -216,8 +211,16 @@ export class ReservationFormComponent implements OnInit {
           this.reservation.check_in_date = null;
           this.reservation.check_out_date = null;
         }
-      }
-    });
+      });
+    } else {
+      // For direct reservation show all the available rooms
+      this.getAvailableRoom();
+      this.byAvailable = true;
+      this.disableButton = true;
+      this.byBooking = false;
+      this.reservation.check_in_date = null;
+      this.reservation.check_out_date = null;
+    }
 
     if (this.byBooking == true) {
       const paramsBookingId = {
@@ -404,6 +407,8 @@ export class ReservationFormComponent implements OnInit {
         }
       }
     });
+
+    this.reservation.status = "active";
 
     if (this.editForm) {
       let offsetCIn =

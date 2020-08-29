@@ -9,6 +9,7 @@ export interface MvReservation {
   created_at: Date;
   booking_id: number;
   room_number: string;
+  status: string;
   reservation: {
     check_in_date: Date;
     check_out_date: Date;

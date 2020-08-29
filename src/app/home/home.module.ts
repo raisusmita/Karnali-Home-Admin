@@ -1,3 +1,4 @@
+import { CommonService } from "./../shared/services/common-service/common.service";
 import { InvoiceDataService } from "./../shared/services/invoice-data-service/invoice-data.service";
 import { RoomAvailabilityService } from "./../shared/services/room-availability/room-availability.service";
 import { ConfirmCommonDialogComponent } from "./../shared/components/confirm-common-dialog/confirm-common-dialog.component";
@@ -150,6 +151,7 @@ import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.mod
     DatePipe,
     RoomAvailabilityService,
     InvoiceDataService,
+    CommonService,
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { strict: true } },
   ],
   entryComponents: [

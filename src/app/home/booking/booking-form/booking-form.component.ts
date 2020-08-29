@@ -286,6 +286,8 @@ export class BookingFormComponent implements OnInit {
     this.booking.check_out_date = new Date(
       this.booking.check_out_date.getTime() - offsetCOut
     );
+
+    this.booking.status = "active";
     if (this.editForm) {
       // First index is for updating booking
       this.editParams.push(this.booking);
