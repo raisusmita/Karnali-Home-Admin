@@ -1,3 +1,4 @@
+import { NgBlockUI } from "ng-block-ui";
 import { DatePipe } from "@angular/common";
 import { MvReservation } from "./reservation.model";
 import { Component, OnInit } from "@angular/core";
@@ -11,6 +12,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { identifierModuleUrl } from "@angular/compiler";
 import { CustomerFormComponent } from "../customer/customer-form/customer-form.component";
 import { ToastrService } from "ngx-toastr";
+import { BlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-reservation",
@@ -47,6 +49,9 @@ export class ReservationComponent implements OnInit {
   checkOutDate: Date;
   availableRoomsByDate: any[];
   paramsDate: {};
+
+  @BlockUI() blockUI: NgBlockUI;
+
   constructor(
     private reservationService: ReservationService,
     private dialog: MatDialog,
@@ -60,6 +65,7 @@ export class ReservationComponent implements OnInit {
   }
 
   getReservation() {
+    this.blockUI.start("Loading...");
     this.reservationService.getReservation().subscribe((result) => {
       const arr = [];
       if (result && result.data) {
@@ -83,6 +89,7 @@ export class ReservationComponent implements OnInit {
           });
         });
         this.dataSource = new MatTableDataSource(arr);
+        this.blockUI.stop();
       }
     });
   }
@@ -107,15 +114,6 @@ export class ReservationComponent implements OnInit {
   }
 
   editReservation(reservationData) {
-    // reservationData.check_in_date = this.datepipe.transform(
-    //   reservationData.check_in_date,
-    //   "M/d/y"
-    // );
-    // reservationData.check_out_date = this.datepipe.transform(
-    //   reservationData.check_out_date,
-    //   "M/d/y"
-    // );
-
     const dialogRef = this.dialog.open(ReservationFormComponent, {
       width: "50%",
       height: "700px",

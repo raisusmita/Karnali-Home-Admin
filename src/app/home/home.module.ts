@@ -1,3 +1,7 @@
+import { CommonService } from "./../shared/services/common-service/common.service";
+import { InvoiceDataService } from "./../shared/services/invoice-data-service/invoice-data.service";
+import { RoomAvailabilityService } from "./../shared/services/room-availability/room-availability.service";
+import { ConfirmCommonDialogComponent } from "./../shared/components/confirm-common-dialog/confirm-common-dialog.component";
 import { NgModule } from "@angular/core";
 import { HeaderComponent } from "./header/header.component";
 import { ReservationComponent } from "./reservation/reservation.component";
@@ -26,7 +30,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatTreeModule } from "@angular/material/tree";
 
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from "@angular/material/tabs";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 //  ---------------------------------------------------------------------
 
@@ -39,15 +43,13 @@ import { RoomComponent } from "./room/room.component";
 import { RoomCategoryComponent } from "./room-category/room-category.component";
 import { BookingComponent } from "./booking/booking.component";
 import { FoodComponent } from "./food/food.component";
-import { NewRoomCategoryComponent } from "./room-category/new-room-category/new-room-category.component";
-import { EditRoomCategoryComponent } from "./room-category/edit-room-category/edit-room-category.component";
 import { CustomerComponent } from "./customer/customer.component";
 import { AddRoomComponent } from "./room/add-room/add-room.component";
 import { CustomerFormComponent } from "./customer/customer-form/customer-form.component";
 import { FoodFormComponent } from "./food/food-form/food-form.component";
-import { MainFoodFormComponent } from './food/main-food-form/main-food-form.component';
-import { SubFoodFormComponent } from './food/sub-food-form/sub-food-form.component';
-import { FoodHeaderFormComponent } from './food/food-header-form/food-header-form.component';
+import { MainFoodFormComponent } from "./food/main-food-form/main-food-form.component";
+import { SubFoodFormComponent } from "./food/sub-food-form/sub-food-form.component";
+import { FoodHeaderFormComponent } from "./food/food-header-form/food-header-form.component";
 import { TableComponent } from "./table/table.component";
 import { AddTableComponent } from "./table/add-table/add-table.component";
 import { BookingFormComponent } from "./booking/booking-form/booking-form.component";
@@ -66,21 +68,26 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MatMomentDateModule,
 } from "@angular/material-moment-adapter";
-import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
+import { BlockUIModule } from "ng-block-ui";
 import { ReservationFormComponent } from "./reservation/reservation-form/reservation-form.component";
 import { DatePipe } from "@angular/common";
 import { RoomAvailabilityComponent } from "./room-availability/room-availability.component";
 import { RoomAvailabilityFormComponent } from "./room-availability/room-availability-form/room-availability-form.component";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { RoomTransactionFormComponent } from "./room-transaction/room-transaction-form/room-transaction-form.component";
-import { BarFormComponent } from './bar/bar-form/bar-form.component';
-import { MainBarFormComponent } from './bar/main-bar-form/main-bar-form.component';
-import { SubBarFormComponent } from './bar/sub-bar-form/sub-bar-form.component';
-import { BarComponent } from './bar/bar.component';
+import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.module";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSortModule } from "@angular/material/sort";
+import { RoomCategoryFormComponent } from "./room-category/room-category-form/room-category-form.component";
+import { MainBarFormComponent } from "./bar/main-bar-form/main-bar-form.component";
+import { SubBarFormComponent } from "./bar/sub-bar-form/sub-bar-form.component";
+import { BarComponent } from "./bar/bar.component";
+import { BarFormComponent } from "./bar/bar-form/bar-form.component";
 @NgModule({
   declarations: [
     HeaderComponent,
     RoomComponent,
+
     RoomCategoryComponent,
     ReservationComponent,
     BookingComponent,
@@ -90,9 +97,9 @@ import { BarComponent } from './bar/bar.component';
     BarComponent,
     FoodOrderComponent,
     InvoiceComponent,
-    NewRoomCategoryComponent,
-    EditRoomCategoryComponent,
+    RoomCategoryFormComponent,
     ConfirmDeleteComponent,
+    ConfirmCommonDialogComponent,
     CustomerComponent,
     AddRoomComponent,
     CustomerFormComponent,
@@ -121,6 +128,7 @@ import { BarComponent } from './bar/bar.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    BlockUIModule.forRoot(),
     RouterModule,
     HttpClientModule,
     MatIconModule,
@@ -143,17 +151,22 @@ import { BarComponent } from './bar/bar.component';
     MatTreeModule,
     MatTabsModule,
     MatCheckboxModule,
+    MatPaginatorModule,
+    MatSortModule,
+    InvoiceReportModule,
   ],
   providers: [
     UserAuthService,
     AuthGuard,
     UserService,
     DatePipe,
+    RoomAvailabilityService,
+    InvoiceDataService,
+    CommonService,
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { strict: true } },
   ],
   entryComponents: [
-    NewRoomCategoryComponent,
-    EditRoomCategoryComponent,
+    RoomCategoryFormComponent,
     AddRoomComponent,
     FoodFormComponent,
     MainFoodFormComponent,
@@ -163,6 +176,7 @@ import { BarComponent } from './bar/bar.component';
     MainBarFormComponent,
     SubBarFormComponent,
     ConfirmDeleteComponent,
+    ConfirmCommonDialogComponent,
     CustomerFormComponent,
     AddTableComponent,
     BookingFormComponent,
@@ -172,4 +186,4 @@ import { BarComponent } from './bar/bar.component';
     RoomTransactionFormComponent,
   ],
 })
-export class HomeModule { }
+export class HomeModule {}

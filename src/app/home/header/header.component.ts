@@ -7,7 +7,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements OnInit {
-  selectedPath = '';
+  selectedPath = "";
   components: any[] = [
     // { name: "Dashboard", path: "", icon: "dashboard" },
     { name: "Room Category", path: "room-category", icon: "category" },
@@ -23,21 +23,21 @@ export class HeaderComponent implements OnInit {
     { name: "Food", path: "food", icon: "fastfood" },
     { name: "Bar", path: "bar", icon: "local_bar" },
     { name: "Table", path: "table", icon: "weekend" },
-    { name: "Food Order", path: "food-order", icon: "room_service" },
+    // { name: "Food Order", path: "food-order", icon: "room_service" },
     {
       name: "Transaction",
       path: "room-transaction",
       icon: "description",
     },
-    { name: "Invoice", path: "invoice", icon: "payment" },
+    // { name: "Invoice", path: "invoice", icon: "payment" },
     { name: "User", path: "user", icon: "group" },
   ];
 
   constructor(private router: Router) {
-    this.selectedPath = router.url.split('/')[1];
+    this.selectedPath = router.url.split("/")[1];
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   logout() {
     localStorage.removeItem("token");

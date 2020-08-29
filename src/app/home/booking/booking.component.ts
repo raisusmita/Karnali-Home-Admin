@@ -10,6 +10,8 @@ import { MatTableDataSource } from "@angular/material/table";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { ToastrService } from "ngx-toastr";
 import { CustomerFormComponent } from "../customer/customer-form/customer-form.component";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
+import { blockInstanceGuid } from "ng-block-ui/decorators/block-ui.decorator";
 
 @Component({
   selector: "app-booking",
@@ -50,6 +52,7 @@ export class BookingComponent implements OnInit {
   checkOutDate: Date;
   availableRoomsByDate: any[];
   paramsDate: {};
+  @BlockUI() blockUI: NgBlockUI;
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
@@ -79,6 +82,8 @@ export class BookingComponent implements OnInit {
     });
   }
   getBookedRoom() {
+    this.blockUI.start("Loading...");
+
     this.bookingService.getBookedRoom().subscribe((result) => {
       const arr = [];
       if (result && result.data) {
@@ -107,6 +112,7 @@ export class BookingComponent implements OnInit {
         });
       }
       this.dataSource = new MatTableDataSource(arr);
+      this.blockUI.stop();
 
       // Define filter function to look for 'premiseId'matches
       // tslint:disable-next-line: only-arrow-functions

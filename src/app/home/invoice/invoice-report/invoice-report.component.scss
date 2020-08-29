@@ -1,0 +1,30 @@
+.header {
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  border: 1px solid #0000008a;
+  padding: 5px;
+}
+
+th {
+  color: #0000008a;
+}
+
+td {
+  text-align: right;
+}
+.total-amount {
+  color: #0000008a;
+  text-align: right;
+}
+
+.footer-text {
+  text-align: center;
+}

@@ -3,6 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { TableService } from "./table.service";
 import { Component, OnInit } from "@angular/core";
 import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-table",
@@ -14,6 +15,9 @@ export class TableComponent implements OnInit {
   dataSource: any[];
   selectedRowIndex: number;
   selectedRoomId: any;
+
+  @BlockUI() blockUI: NgBlockUI;
+
   constructor(private tableService: TableService, private dialog: MatDialog) {}
 
   ngOnInit() {
@@ -21,7 +25,9 @@ export class TableComponent implements OnInit {
   }
 
   getTable() {
+    this.blockUI.start("Loading...");
     this.tableService.getTable().subscribe((result) => {
+      this.blockUI.stop();
       this.dataSource = result.data;
     });
   }
