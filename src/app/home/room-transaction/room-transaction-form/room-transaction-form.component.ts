@@ -10,6 +10,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { SelectionModel, DataSource } from "@angular/cdk/collections";
 import { FormGroup } from "@angular/forms";
 import { ThemePalette } from "@angular/material/core";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-room-transaction-form",
@@ -38,6 +39,9 @@ export class RoomTransactionFormComponent implements OnInit {
   selection = new SelectionModel<Element>(true, []);
   primaryColor: ThemePalette = "primary";
   dateTry: Date;
+
+  @BlockUI() blockUI: NgBlockUI;
+
   constructor(
     private customerService: CustomerService,
     private tableService: TableService,
@@ -51,7 +55,7 @@ export class RoomTransactionFormComponent implements OnInit {
     this.dateTry = new Date();
     if (this.data.formType == "Add") {
       this.addForm = true;
-      this.geUnavailableRoom();
+      this.getCustomers();
       this.getTables();
     } else {
       this.editForm = true;
@@ -79,14 +83,16 @@ export class RoomTransactionFormComponent implements OnInit {
       : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
 
-  geUnavailableRoom() {
+  getCustomers() {
     this.customerService.getCustomer().subscribe((result) => {
       this.customers = result.data;
     });
   }
 
   getTables() {
+    this.blockUI.start("Loading...");
     this.tableService.getTable().subscribe((result) => {
+      this.blockUI.stop();
       this.tables = result.data;
     });
   }
@@ -124,6 +130,7 @@ export class RoomTransactionFormComponent implements OnInit {
   }
 
   submitRoomTransactionForm() {
+    this.blockUI.start("Loading...");
     if (this.addForm) {
       this.selectedRoom = this.selection.selected;
       this.selectedRoom.map((data) => {
@@ -139,6 +146,7 @@ export class RoomTransactionFormComponent implements OnInit {
         .addRoomTransaction(this.selectedRoom)
         .subscribe((result) => {
           if (result) {
+            this.blockUI.stop();
             this.dialogRef.close(result);
           }
         });
@@ -164,9 +172,8 @@ export class RoomTransactionFormComponent implements OnInit {
       this.roomTransactionService
         .editRoomTransaction(editTransactionParams)
         .subscribe((result) => {
-          if (result) {
-            this.dialogRef.close(result);
-          }
+          this.blockUI.stop();
+          this.dialogRef.close(result);
         });
     }
   }

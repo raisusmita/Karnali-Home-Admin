@@ -43,8 +43,6 @@ import { RoomComponent } from "./room/room.component";
 import { RoomCategoryComponent } from "./room-category/room-category.component";
 import { BookingComponent } from "./booking/booking.component";
 import { FoodComponent } from "./food/food.component";
-import { NewRoomCategoryComponent } from "./room-category/new-room-category/new-room-category.component";
-import { EditRoomCategoryComponent } from "./room-category/edit-room-category/edit-room-category.component";
 import { CustomerComponent } from "./customer/customer.component";
 import { AddRoomComponent } from "./room/add-room/add-room.component";
 import { CustomerFormComponent } from "./customer/customer-form/customer-form.component";
@@ -70,7 +68,7 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MatMomentDateModule,
 } from "@angular/material-moment-adapter";
-import { DateAdapter, MAT_DATE_LOCALE } from "@angular/material/core";
+import { BlockUIModule } from "ng-block-ui";
 import { ReservationFormComponent } from "./reservation/reservation-form/reservation-form.component";
 import { DatePipe } from "@angular/common";
 import { RoomAvailabilityComponent } from "./room-availability/room-availability.component";
@@ -78,6 +76,9 @@ import { RoomAvailabilityFormComponent } from "./room-availability/room-availabi
 import { MatExpansionModule } from "@angular/material/expansion";
 import { RoomTransactionFormComponent } from "./room-transaction/room-transaction-form/room-transaction-form.component";
 import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.module";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSortModule } from "@angular/material/sort";
+import { RoomCategoryFormComponent } from "./room-category/room-category-form/room-category-form.component";
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -91,8 +92,7 @@ import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.mod
     FoodComponent,
     FoodOrderComponent,
     InvoiceComponent,
-    NewRoomCategoryComponent,
-    EditRoomCategoryComponent,
+    RoomCategoryFormComponent,
     ConfirmDeleteComponent,
     ConfirmCommonDialogComponent,
     CustomerComponent,
@@ -120,6 +120,7 @@ import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.mod
     AppRoutingModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    BlockUIModule.forRoot(),
     RouterModule,
     HttpClientModule,
     MatIconModule,
@@ -142,6 +143,8 @@ import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.mod
     MatTreeModule,
     MatTabsModule,
     MatCheckboxModule,
+    MatPaginatorModule,
+    MatSortModule,
     InvoiceReportModule,
   ],
   providers: [
@@ -155,8 +158,7 @@ import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.mod
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { strict: true } },
   ],
   entryComponents: [
-    NewRoomCategoryComponent,
-    EditRoomCategoryComponent,
+    RoomCategoryFormComponent,
     AddRoomComponent,
     FoodFormComponent,
     MainFoodFormComponent,

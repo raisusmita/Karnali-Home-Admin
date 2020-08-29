@@ -1,8 +1,10 @@
+import { NgBlockUI } from "ng-block-ui";
 import { Component, OnInit } from "@angular/core";
 import { CustomerService } from "./customer.service";
 import { MatDialog } from "@angular/material/dialog";
 import { CustomerFormComponent } from "./customer-form/customer-form.component";
 import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
+import { BlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-customer",
@@ -24,18 +26,21 @@ export class CustomerComponent implements OnInit {
     "action",
   ];
   dataSource: any[];
+  @BlockUI() blockUI: NgBlockUI;
 
   constructor(
     private customerService: CustomerService,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getCustomer();
   }
 
   getCustomer() {
+    this.blockUI.start("Loading...");
     this.customerService.getCustomer().subscribe((data) => {
+      this.blockUI.stop();
       this.dataSource = data.data;
     });
   }
@@ -44,7 +49,10 @@ export class CustomerComponent implements OnInit {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       width: "50%",
       height: "700px",
-      data: null,
+      data: {
+        gridData: null,
+        formType: "Add",
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -57,7 +65,10 @@ export class CustomerComponent implements OnInit {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       width: "50%",
       height: "700px",
-      data: customerEditData,
+      data: {
+        gridData: customerEditData,
+        formType: "Edit",
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

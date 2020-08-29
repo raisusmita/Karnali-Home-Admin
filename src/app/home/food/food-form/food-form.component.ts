@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from "@angular/core";
 import { MvFood } from "../food-model";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { FoodService } from "../food.service";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-food-form",
@@ -15,12 +16,13 @@ export class FoodFormComponent implements OnInit {
   mainFood = [];
   subFood = [];
   foodHeader = [];
+  @BlockUI() blockUI: NgBlockUI;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private foodService: FoodService,
     private dialogRef: MatDialogRef<FoodFormComponent>
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getFood();
@@ -31,9 +33,9 @@ export class FoodFormComponent implements OnInit {
 
   getFood() {
     this.foodService.getFood().subscribe((data) => {
-      if (this.data) {
+      if (this.data.gridData) {
         this.isEdit = true;
-        this.food = this.data;
+        this.food = this.data.gridData;
       }
     });
   }
@@ -51,24 +53,26 @@ export class FoodFormComponent implements OnInit {
   }
 
   getFoodheader() {
+    this.blockUI.start("Loading...");
     this.foodService.getFoodHeader().subscribe((data) => {
       this.foodHeader = data.data;
+      this.blockUI.stop();
     });
   }
 
-
   submitFoodForm() {
+    this.blockUI.start("Loading...");
     if (this.isEdit) {
       this.foodService.editFood(this.food).subscribe((e) => {
+        this.blockUI.stop();
         this.dialogRef.close(this.food);
       });
     } else {
       this.foodService.addFood(this.food).subscribe((e) => {
+        this.blockUI.stop();
+
         this.dialogRef.close(this.food);
       });
     }
   }
-
 }
-
-

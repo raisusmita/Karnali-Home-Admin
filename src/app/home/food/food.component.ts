@@ -1,11 +1,13 @@
+import { NgBlockUI } from "ng-block-ui";
 import { Component, OnInit } from "@angular/core";
 import { FoodService } from "./food.service";
 import { MatDialog } from "@angular/material/dialog";
 import { FoodFormComponent } from "./food-form/food-form.component";
 import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
-import { MainFoodFormComponent } from './main-food-form/main-food-form.component';
-import { SubFoodFormComponent } from './sub-food-form/sub-food-form.component';
-import { FoodHeaderFormComponent } from './food-header-form/food-header-form.component';
+import { MainFoodFormComponent } from "./main-food-form/main-food-form.component";
+import { SubFoodFormComponent } from "./sub-food-form/sub-food-form.component";
+import { FoodHeaderFormComponent } from "./food-header-form/food-header-form.component";
+import { BlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-food",
@@ -13,7 +15,14 @@ import { FoodHeaderFormComponent } from './food-header-form/food-header-form.com
   styleUrls: ["./food.component.scss"],
 })
 export class FoodComponent implements OnInit {
-  displayedColumns: string[] = ["mainFoodCategory", "subFoodCategory", "foodName", "header", "price", "action"];
+  displayedColumns: string[] = [
+    "mainFoodCategory",
+    "subFoodCategory",
+    "foodName",
+    "header",
+    "price",
+    "action",
+  ];
   mainFoodDisplayedColumns: string[] = ["mainFoodCategory", "action"];
   subFoodDisplayedColumns: string[] = ["subFoodCategory", "action"];
   FoodHeaderDisplayedColumns: string[] = ["foodHeader", "action"];
@@ -23,7 +32,9 @@ export class FoodComponent implements OnInit {
   subFood: any[];
   foodHeader: any[];
 
-  constructor(private foodService: FoodService, private dialog: MatDialog) { }
+  @BlockUI() blockUI: NgBlockUI;
+
+  constructor(private foodService: FoodService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.getFood();
@@ -51,16 +62,21 @@ export class FoodComponent implements OnInit {
   }
 
   getFoodHeader() {
+    this.blockUI.start("Loading...");
     this.foodService.getFoodHeader().subscribe((data) => {
       this.foodHeader = data.data;
+      this.blockUI.stop();
     });
   }
-
 
   addFood() {
     const dialogRef = this.dialog.open(FoodFormComponent, {
       width: "50%",
-      data: null,
+      height: "700px",
+      data: {
+        gridData: null,
+        formType: "Add",
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -73,7 +89,10 @@ export class FoodComponent implements OnInit {
   addMainFood() {
     const dialogRef = this.dialog.open(MainFoodFormComponent, {
       width: "50%",
-      data: null,
+      data: {
+        gridData: null,
+        formType: "Add",
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -86,7 +105,10 @@ export class FoodComponent implements OnInit {
   addSubFood() {
     const dialogRef = this.dialog.open(SubFoodFormComponent, {
       width: "50%",
-      data: null,
+      data: {
+        gridData: null,
+        formType: "Add",
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -99,7 +121,10 @@ export class FoodComponent implements OnInit {
   addFoodHeader() {
     const dialogRef = this.dialog.open(FoodHeaderFormComponent, {
       width: "50%",
-      data: null,
+      data: {
+        gridData: null,
+        formType: "Add",
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -112,21 +137,30 @@ export class FoodComponent implements OnInit {
   editFood(FoodEditData) {
     const dialogRef = this.dialog.open(FoodFormComponent, {
       width: "50%",
-      data: FoodEditData,
+      data: {
+        gridData: FoodEditData,
+        formType: "Add",
+      },
     });
   }
 
   editMainFood(FoodEditData) {
     const dialogRef = this.dialog.open(MainFoodFormComponent, {
       width: "50%",
-      data: FoodEditData,
+      data: {
+        gridData: FoodEditData,
+        formType: "Add",
+      },
     });
   }
 
   editSubFood(FoodEditData) {
     const dialogRef = this.dialog.open(SubFoodFormComponent, {
       width: "50%",
-      data: FoodEditData,
+      data: {
+        gridData: FoodEditData,
+        formType: "Add",
+      },
     });
   }
 
@@ -134,7 +168,10 @@ export class FoodComponent implements OnInit {
     console.log(FoodEditData);
     const dialogRef = this.dialog.open(FoodHeaderFormComponent, {
       width: "50%",
-      data: FoodEditData,
+      data: {
+        gridData: FoodEditData,
+        formType: "Add",
+      },
     });
   }
 

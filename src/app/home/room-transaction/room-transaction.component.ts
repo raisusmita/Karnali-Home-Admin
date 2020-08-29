@@ -10,6 +10,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { ThemePalette } from "@angular/material/core";
 import { InvoiceReportComponent } from "../invoice/invoice-report/invoice-report.component";
 import { InvoiceService } from "../invoice/invoice.service";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-room-transaction",
@@ -42,6 +43,8 @@ export class RoomTransactionComponent implements OnInit {
   transactionRelatedData: any;
   valueInitialized: boolean = false;
 
+  @BlockUI() blockUI: NgBlockUI;
+
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -72,6 +75,7 @@ export class RoomTransactionComponent implements OnInit {
   }
 
   getRoomTransaction() {
+    this.blockUI.start("Loading...");
     this.roomTransactionService.getRoomTransaction().subscribe((result) => {
       const arr = [];
       if (result && result.data) {
@@ -95,6 +99,7 @@ export class RoomTransactionComponent implements OnInit {
           });
         });
         this.dataSource = new MatTableDataSource(arr);
+        this.blockUI.stop();
       }
     });
   }
