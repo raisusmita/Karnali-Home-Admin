@@ -73,6 +73,10 @@ import { RoomAvailabilityComponent } from "./room-availability/room-availability
 import { RoomAvailabilityFormComponent } from "./room-availability/room-availability-form/room-availability-form.component";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { RoomTransactionFormComponent } from "./room-transaction/room-transaction-form/room-transaction-form.component";
+import { BarFormComponent } from './bar/bar-form/bar-form.component';
+import { MainBarFormComponent } from './bar/main-bar-form/main-bar-form.component';
+import { SubBarFormComponent } from './bar/sub-bar-form/sub-bar-form.component';
+import { BarComponent } from './bar/bar.component';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -83,6 +87,7 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     DashboardComponent,
     RoomTransactionComponent,
     FoodComponent,
+    BarComponent,
     FoodOrderComponent,
     InvoiceComponent,
     NewRoomCategoryComponent,
@@ -95,6 +100,9 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     MainFoodFormComponent,
     SubFoodFormComponent,
     FoodHeaderFormComponent,
+    BarFormComponent,
+    MainBarFormComponent,
+    SubBarFormComponent,
     TableComponent,
     AddTableComponent,
     BookingFormComponent,
@@ -151,6 +159,9 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
     MainFoodFormComponent,
     SubFoodFormComponent,
     FoodHeaderFormComponent,
+    BarFormComponent,
+    MainBarFormComponent,
+    SubBarFormComponent,
     ConfirmDeleteComponent,
     CustomerFormComponent,
     AddTableComponent,
