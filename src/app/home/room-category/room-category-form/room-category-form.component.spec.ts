@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { RoomCategoryFormComponent } from "./room-category-form.component";
 
-describe("NewRoomCategoryComponent", () => {
+describe("RoomCategoryFormComponent", () => {
   let component: RoomCategoryFormComponent;
   let fixture: ComponentFixture<RoomCategoryFormComponent>;
 
