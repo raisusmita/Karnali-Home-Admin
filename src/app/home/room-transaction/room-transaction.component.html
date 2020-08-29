@@ -19,13 +19,14 @@
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
           <mat-header-cell *matHeaderCellDef>
-            <mat-checkbox
+            <!-- <mat-checkbox
               (change)="$event ? masterToggle($event) : null"
               [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()"
               [color]="primaryColor"
               >All
-            </mat-checkbox>
+            </mat-checkbox> -->
+            <span>Select </span>
           </mat-header-cell>
           <mat-cell *matCellDef="let row">
             <mat-checkbox
@@ -33,6 +34,7 @@
               (change)="$event ? selection.toggle(row) : null"
               [checked]="selection.isSelected(row)"
               [color]="primaryColor"
+              [disabled]="row.status == 'Paid' ? true : false"
             >
             </mat-checkbox>
           </mat-cell>
