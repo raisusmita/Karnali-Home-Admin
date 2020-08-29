@@ -16,6 +16,7 @@ import { TableComponent } from "./home/table/table.component";
 import { HomeComponent } from "./home/home.component";
 import { UserComponent } from "./home/user/user.component";
 import { RoomAvailabilityComponent } from "./home/room-availability/room-availability.component";
+import { BarComponent } from './home/bar/bar.component';
 const routes: Routes = [
   { path: "login", component: LoginComponent, canActivate: [AuthGuard] },
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: "room-category", component: RoomCategoryComponent },
       { path: "room-transaction", component: RoomTransactionComponent },
       { path: "food", component: FoodComponent },
+      { path: "bar", component: BarComponent },
       { path: "food-order", component: FoodOrderComponent },
       { path: "reservation", component: ReservationComponent },
       { path: "booking", component: BookingComponent },
@@ -46,4 +48,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

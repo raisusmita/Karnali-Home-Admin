@@ -79,6 +79,10 @@ import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.mod
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { RoomCategoryFormComponent } from "./room-category/room-category-form/room-category-form.component";
+import { MainBarFormComponent } from "./bar/main-bar-form/main-bar-form.component";
+import { SubBarFormComponent } from "./bar/sub-bar-form/sub-bar-form.component";
+import { BarComponent } from "./bar/bar.component";
+import { BarFormComponent } from "./bar/bar-form/bar-form.component";
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -90,6 +94,7 @@ import { RoomCategoryFormComponent } from "./room-category/room-category-form/ro
     DashboardComponent,
     RoomTransactionComponent,
     FoodComponent,
+    BarComponent,
     FoodOrderComponent,
     InvoiceComponent,
     RoomCategoryFormComponent,
@@ -102,6 +107,9 @@ import { RoomCategoryFormComponent } from "./room-category/room-category-form/ro
     MainFoodFormComponent,
     SubFoodFormComponent,
     FoodHeaderFormComponent,
+    BarFormComponent,
+    MainBarFormComponent,
+    SubBarFormComponent,
     TableComponent,
     AddTableComponent,
     BookingFormComponent,
@@ -164,6 +172,9 @@ import { RoomCategoryFormComponent } from "./room-category/room-category-form/ro
     MainFoodFormComponent,
     SubFoodFormComponent,
     FoodHeaderFormComponent,
+    BarFormComponent,
+    MainBarFormComponent,
+    SubBarFormComponent,
     ConfirmDeleteComponent,
     ConfirmCommonDialogComponent,
     CustomerFormComponent,
