@@ -61,6 +61,9 @@
                         <h5>
                             {{subFoodItem.sub_food_name}}
                         </h5>
+                        <li *ngFor="let foodItem of subFoodItem.food_items">
+                            {{foodItem.food_name}}
+                        </li>
                     </div>
                 </div>
                 <div

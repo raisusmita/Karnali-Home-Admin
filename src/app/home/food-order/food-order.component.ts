@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { map, startWith } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { TableService } from '../table/table.service';
-import { RoomService } from '../room/room.service';
-import { FoodService } from '../food/food.service';
+import {Component, OnInit} from "@angular/core";
+import {map, startWith} from 'rxjs/operators';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {TableService} from '../table/table.service';
+import {RoomService} from '../room/room.service';
+import {FoodService} from '../food/food.service';
 
 @Component({
   selector: "app-food-order",
@@ -24,17 +24,15 @@ export class FoodOrderComponent implements OnInit {
   roomSelected = '';
   tableSelected = '';
 
-
   mainFood = [];
   mainFoodSelectedId: number;
-  mainFoodCheckbox = [1, 5];
-  foodList = {
-  };
+  mainFoodCheckbox = [1];
+  foodList = {};
 
   subFoodShow = false;
 
 
-  constructor(public tableService: TableService, public roomService: RoomService, public foodService: FoodService) { }
+  constructor(public tableService: TableService, public roomService: RoomService, public foodService: FoodService) {}
 
   ngOnInit() {
     this.getTable();
@@ -73,7 +71,7 @@ export class FoodOrderComponent implements OnInit {
     this.mainFoodSelectedId = mainFoodValue.id;
 
     if (!Object.keys(this.foodList).includes(this.mainFoodSelectedId.toString())) {
-      this.foodService.getSubFoodAndFoodItemsById({ 'id': mainFoodValue.id }).subscribe(subFoodItems => {
+      this.foodService.getSubFoodAndFoodItemsById({'id': mainFoodValue.id}).subscribe(subFoodItems => {
         this.foodList[this.mainFoodSelectedId] = {
           "subFood": [],
           "foodItems": []
@@ -83,16 +81,16 @@ export class FoodOrderComponent implements OnInit {
       });
     }
     console.log(this.foodList);
-
   }
 
   selectRoom(room) {
+    this.searchedTableValue.setValue('');
     this.tableSelected = null;
     this.roomSelected = room;
-
   }
 
   selectTable(table) {
+    this.searchedRoomValue.setValue('');
     this.roomSelected = null;
     this.tableSelected = table;
   }
@@ -109,8 +107,5 @@ export class FoodOrderComponent implements OnInit {
     const filterValue = value.toLowerCase().trim();
     return this.room.filter(option => option.room_number.toLowerCase().includes(filterValue));
   }
-
-
-
 
 }
