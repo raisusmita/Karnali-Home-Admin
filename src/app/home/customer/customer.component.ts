@@ -27,20 +27,49 @@ export class CustomerComponent implements OnInit {
   ];
   dataSource: any[];
   @BlockUI() blockUI: NgBlockUI;
+  pageSizeOptions = [10, 25, 50, 100];
 
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
   constructor(
     private customerService: CustomerService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.getCustomer();
+    this.pageSize = 10;
+    this.pageIndex = 0;
+    this.totalLength = 100;
+
+    this.skip = 0;
+    this.limit = this.pageSize;
+    this.getCustomerList();
   }
 
-  getCustomer() {
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
+    this.getCustomerList();
+  }
+  getCustomerList() {
     this.blockUI.start("Loading...");
-    this.customerService.getCustomer().subscribe((data) => {
+
+    const customerParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+
+    this.customerService.getCustomerList(customerParams).subscribe((data) => {
       this.blockUI.stop();
+      this.totalLength = data.totalCount;
       this.dataSource = data.data;
     });
   }
@@ -57,7 +86,7 @@ export class CustomerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getCustomer();
+        this.getCustomerList();
       }
     });
   }
@@ -73,7 +102,7 @@ export class CustomerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getCustomer();
+        this.getCustomerList();
       }
     });
   }
@@ -86,7 +115,7 @@ export class CustomerComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
         this.customerService.deleteCustomer(index).subscribe((data) => {
-          this.getCustomer();
+          this.getCustomerList();
         });
       }
     });
