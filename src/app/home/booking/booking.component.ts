@@ -25,7 +25,6 @@ export class BookingComponent implements OnInit {
   roomAvailable: MvRoomAvailable = {} as MvRoomAvailable;
 
   displayedColumns: string[] = [
-    "serialN",
     "full_name",
     "room_category",
     "number_of_adult",
@@ -55,7 +54,7 @@ export class BookingComponent implements OnInit {
   checkOutDate: Date;
   availableRoomsByDate: any[];
   paramsDate: {};
-  pageSizeOptions = [7, 10, 25, 100];
+  pageSizeOptions = [10, 25, 50, 100];
 
   pageSize: number;
   pageIndex: number;
@@ -72,7 +71,7 @@ export class BookingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pageSize = 7;
+    this.pageSize = 10;
     this.pageIndex = 0;
     this.totalLength = 100;
 

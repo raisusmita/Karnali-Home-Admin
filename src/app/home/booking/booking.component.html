@@ -148,13 +148,6 @@
 
           <div class="table-container mat-elevation-z8">
             <table #bookingTable mat-table [dataSource]="dataSource">
-              <ng-container matColumnDef="serialN">
-                <th mat-header-cell *matHeaderCellDef>S.N.</th>
-                <td mat-cell *matCellDef="let i = index">
-                  {{ i + 1 + "." }}
-                </td>
-              </ng-container>
-
               <ng-container matColumnDef="full_name" sticky>
                 <th mat-header-cell *matHeaderCellDef>Customer Name</th>
                 <td mat-cell *matCellDef="let element">

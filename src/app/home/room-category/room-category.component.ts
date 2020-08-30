@@ -12,7 +12,6 @@ import { RoomCategoryFormComponent } from "./room-category-form/room-category-fo
 })
 export class RoomCategoryComponent implements OnInit {
   displayedColumns: string[] = [
-    "serialN",
     "image",
     "room_category",
     "room_type",
@@ -25,7 +24,7 @@ export class RoomCategoryComponent implements OnInit {
   selectedRoomCategoryId: any;
   @BlockUI() blockUI: NgBlockUI;
 
-  pageSizeOptions = [7, 10, 25, 100];
+  pageSizeOptions = [10, 25, 50, 100];
 
   pageSize: number;
   pageIndex: number;
@@ -39,7 +38,7 @@ export class RoomCategoryComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pageSize = 7;
+    this.pageSize = 10;
     this.pageIndex = 0;
     this.totalLength = 100;
 

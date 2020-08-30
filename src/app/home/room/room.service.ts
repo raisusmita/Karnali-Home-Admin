@@ -13,6 +13,10 @@ export class RoomService {
     return this.http.get(this.baseURL);
   }
 
+  getRoomList(roomParams: any): Observable<any> {
+    return this.http.post(environment.apiURL + "roomList", roomParams);
+  }
+
   getRoomByCategory(category: any): Observable<any> {
     return this.http.post(environment.apiURL + "room_category/room", category);
   }
