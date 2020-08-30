@@ -91,7 +91,14 @@
             name="checkOut_date"
             required
             [(ngModel)]="reservation.check_out_date"
-            (ngModelChange)="getCheckOutDate($event)"
+            (ngModelChange)="
+              getCheckOutDate(
+                $event,
+                reservation.room_id,
+                reservation.room_number,
+                0
+              )
+            "
           />
           <mat-datepicker-toggle
             matSuffix

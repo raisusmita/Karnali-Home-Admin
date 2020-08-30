@@ -24,11 +24,9 @@ export class ConfirmCommonDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.data.callFor == "Invoice Generate") {
-      this.confirmationText = this.data.confirmationText;
-      this.positiveResponse = this.data.positiveResponse;
-      this.negativeResponse = this.data.negativeResponse;
-    }
+    this.confirmationText = this.data.confirmationText;
+    this.positiveResponse = this.data.positiveResponse;
+    this.negativeResponse = this.data.negativeResponse;
   }
 
   onConfirmed() {

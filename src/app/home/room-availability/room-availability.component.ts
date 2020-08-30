@@ -28,9 +28,11 @@ export class RoomAvailabilityComponent implements OnInit {
   availableRoomsByDate: any[];
   paramsDate: {};
 
-  constructor(private roomAvailableByDates: RoomAvailabilityService) { }
+  constructor(private roomAvailableByDates: RoomAvailabilityService) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
+
+  addRoomAvailability() {}
 
   submitRoomAvailableForm() {
     this.roomAvailableByDates
