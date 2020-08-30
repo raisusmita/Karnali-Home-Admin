@@ -34,7 +34,7 @@ export class RoomCategoryComponent implements OnInit {
   }
 
   getRoomCategory() {
-    this.blockUI.start();
+    this.blockUI.start("Loading...");
     this.roomCategoryService.getRoomCategory().subscribe((data) => {
       this.dataSource = data.data;
       this.blockUI.stop();

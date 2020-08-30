@@ -1,3 +1,4 @@
+import { ConfirmCommonDialogComponent } from "./../../shared/components/confirm-common-dialog/confirm-common-dialog.component";
 import { MvRoomAvailable } from "./room-available.model";
 import { MatDialog } from "@angular/material/dialog";
 import { BookingFormComponent } from "./booking-form/booking-form.component";
@@ -161,17 +162,29 @@ export class BookingComponent implements OnInit {
     });
   }
 
-  deleteBooking(index) {
-    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+  cancelBooking(bookingId) {
+    const dialogRef = this.dialog.open(ConfirmCommonDialogComponent, {
       width: "50%",
+      data: {
+        gridData: null,
+        formType: "Cancel",
+        confirmationText: "Are you sure you want to cancel this booking?",
+        positiveResponse: "Yes ",
+        negativeResponse: "No",
+      },
     });
 
+    const cancelBookingParams = {
+      bookingId: bookingId,
+    };
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.bookingService.deleteBooking(index).subscribe((data) => {
-          this.getBookedRoom();
-        });
-        this.toastr.success("Booking deleted successfully", "Success!", {
+        this.bookingService
+          .cancelBooking(cancelBookingParams)
+          .subscribe((data) => {
+            this.getBookedRoom();
+          });
+        this.toastr.success("Booking cancel successfully", "Success!", {
           positionClass: "toast-top-right",
         });
       }

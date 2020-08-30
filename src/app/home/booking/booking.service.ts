@@ -27,6 +27,10 @@ export class BookingService {
     return this.http.put(this.baseURL + "booking/" + booking[0].id, booking);
   }
 
+  cancelBooking(booking: any): Observable<any> {
+    return this.http.post(this.baseURL + "bookingCancelled", booking);
+  }
+
   deleteBooking(id: any): Observable<any> {
     return this.http.delete(this.baseURL + "booking/" + id);
   }
