@@ -13,6 +13,7 @@ import { ToastrService } from "ngx-toastr";
 import { CustomerFormComponent } from "../customer/customer-form/customer-form.component";
 import { BlockUI, NgBlockUI } from "ng-block-ui";
 import { blockInstanceGuid } from "ng-block-ui/decorators/block-ui.decorator";
+import { PageEvent } from "@angular/material";
 
 @Component({
   selector: "app-booking",
@@ -24,6 +25,7 @@ export class BookingComponent implements OnInit {
   roomAvailable: MvRoomAvailable = {} as MvRoomAvailable;
 
   displayedColumns: string[] = [
+    "serialN",
     "full_name",
     "room_category",
     "number_of_adult",
@@ -53,8 +55,14 @@ export class BookingComponent implements OnInit {
   checkOutDate: Date;
   availableRoomsByDate: any[];
   paramsDate: {};
+  pageSizeOptions = [7, 10, 25, 100];
 
-  page: 1;
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
+
   @BlockUI() blockUI: NgBlockUI;
   constructor(
     private bookingService: BookingService,
@@ -64,9 +72,26 @@ export class BookingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.pageSize = 7;
+    this.pageIndex = 0;
+    this.totalLength = 100;
+
+    this.skip = 0;
+    this.limit = this.pageSize;
+
     this.getBookedRoom();
   }
 
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
+    this.getBookedRoom();
+  }
   addCustomer() {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       width: "50%",
@@ -87,7 +112,13 @@ export class BookingComponent implements OnInit {
   getBookedRoom() {
     this.blockUI.start("Loading...");
 
-    this.bookingService.getBookedRoom().subscribe((result) => {
+    const bookingParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+
+    this.bookingService.getBookingList(bookingParams).subscribe((result) => {
+      this.totalLength = result.totalCount;
       const arr = [];
       if (result && result.data) {
         result.data.map((x) => {
