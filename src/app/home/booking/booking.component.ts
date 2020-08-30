@@ -53,6 +53,8 @@ export class BookingComponent implements OnInit {
   checkOutDate: Date;
   availableRoomsByDate: any[];
   paramsDate: {};
+
+  page: 1;
   @BlockUI() blockUI: NgBlockUI;
   constructor(
     private bookingService: BookingService,
