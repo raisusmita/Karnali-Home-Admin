@@ -24,21 +24,54 @@ export class RoomCategoryComponent implements OnInit {
   selectedRoomCategoryId: any;
   @BlockUI() blockUI: NgBlockUI;
 
+  pageSizeOptions = [10, 25, 50, 100];
+
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
+
   constructor(
     private roomCategoryService: RoomCategoryService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.getRoomCategory();
+    this.pageSize = 10;
+    this.pageIndex = 0;
+    this.totalLength = 100;
+
+    this.skip = 0;
+    this.limit = this.pageSize;
+    this.getRoomCategoryList();
   }
 
-  getRoomCategory() {
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
+    this.getRoomCategoryList();
+  }
+  getRoomCategoryList() {
     this.blockUI.start("Loading...");
-    this.roomCategoryService.getRoomCategory().subscribe((data) => {
-      this.dataSource = data.data;
-      this.blockUI.stop();
-    });
+    const roomCatParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+
+    this.roomCategoryService
+      .getRoomCategoryList(roomCatParams)
+      .subscribe((data) => {
+        this.totalLength = data.totalCount;
+
+        this.dataSource = data.data;
+        this.blockUI.stop();
+      });
   }
   onAddClick() {
     const dialogRef = this.dialog.open(RoomCategoryFormComponent, {
@@ -52,7 +85,7 @@ export class RoomCategoryComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getRoomCategory();
+        this.getRoomCategoryList();
       }
     });
   }
@@ -68,7 +101,7 @@ export class RoomCategoryComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getRoomCategory();
+        this.getRoomCategoryList();
       }
     });
   }
@@ -87,7 +120,7 @@ export class RoomCategoryComponent implements OnInit {
           .deleteRoomCategory(this.selectedRoomCategoryId)
           .subscribe(
             (data) => {
-              this.getRoomCategory();
+              this.getRoomCategoryList();
               // console.log(result);
               // const newArray = [...this.dataSource];
               // newArray.splice(this.selectedRowIndex, 1);

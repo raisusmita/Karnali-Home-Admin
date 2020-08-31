@@ -4,8 +4,8 @@
       <mat-icon>add</mat-icon>
       Add New Room Category
     </button>
-    <div class="main-container">
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <div class="table-container mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource">
         <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
 
@@ -35,7 +35,7 @@
         </ng-container>
 
         <ng-container matColumnDef="number_of_rooms">
-          <th mat-header-cell *matHeaderCellDef>number of rooms</th>
+          <th mat-header-cell *matHeaderCellDef>Number of rooms</th>
           <td mat-cell *matCellDef="let element">
             {{ element.number_of_rooms }}
           </td>
@@ -52,8 +52,7 @@
         <ng-container matColumnDef="room_price">
           <th mat-header-cell *matHeaderCellDef>Price</th>
           <td mat-cell *matCellDef="let element">
-            $ {{ element.room_price }}
-            {{ element.room_price | currency: "NPR":"symbol" }}
+            {{ element.room_price | currency: "NPR ":"symbol" }}
           </td>
         </ng-container>
 
@@ -76,9 +75,22 @@
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+    </div>
+    <div class="pagination-footer mat-elevation-z8">
+      <mat-paginator
+        [length]="totalLength"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)"
+        [pageSizeOptions]="pageSizeOptions"
+      >
+      </mat-paginator>
     </div>
   </div>
 </block-ui>

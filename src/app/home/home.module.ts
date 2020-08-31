@@ -83,11 +83,11 @@ import { MainBarFormComponent } from "./bar/main-bar-form/main-bar-form.componen
 import { SubBarFormComponent } from "./bar/sub-bar-form/sub-bar-form.component";
 import { BarComponent } from "./bar/bar.component";
 import { BarFormComponent } from "./bar/bar-form/bar-form.component";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 @NgModule({
   declarations: [
     HeaderComponent,
     RoomComponent,
-
     RoomCategoryComponent,
     ReservationComponent,
     BookingComponent,
@@ -154,6 +154,7 @@ import { BarFormComponent } from "./bar/bar-form/bar-form.component";
     MatPaginatorModule,
     MatSortModule,
     InvoiceReportModule,
+    NgbModule,
   ],
   providers: [
     UserAuthService,
