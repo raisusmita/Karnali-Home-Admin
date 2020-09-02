@@ -23,7 +23,10 @@ export class SubFoodFormComponent implements OnInit {
     private dialogRef: MatDialogRef<SubFoodFormComponent>
   ) {
     if (data) {
-      this.food = data.gridData;
+      this.food = data;
+    }
+
+    if (data.gridData) {
       this.isEdit = true;
     }
   }
