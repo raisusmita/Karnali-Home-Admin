@@ -27,6 +27,7 @@ export class SubFoodFormComponent implements OnInit {
     }
 
     if (data.gridData) {
+      this.food = data.gridData;
       this.isEdit = true;
     }
   }
