@@ -116,43 +116,50 @@ export class BookingComponent implements OnInit {
       skip: this.skip,
     };
 
-    this.bookingService.getBookingList(bookingParams).subscribe((result) => {
-      this.totalLength = result.totalCount;
-      const arr = [];
-      if (result && result.data) {
-        result.data.map((x) => {
-          arr.push({
-            id: x.id,
-            customer_id: x.customer.id,
-            first_name: x.customer.first_name,
-            middle_name: x.customer_middle_name,
-            last_name: x.customer.last_name,
-            room_category: x.room_category.room_category,
-            room_category_id: x.room_category.id,
-            number_of_adult: x.number_of_adult,
-            number_of_child: x.number_of_child,
-            number_of_rooms: x.number_of_rooms,
-            room_number: x.rooms.map((room) => {
-              return room.room_number;
-            }),
-            check_in_date: x.check_in_date,
-            check_out_date: x.check_out_date,
-            created_at: x.created_at,
+    this.bookingService.getBookingList(bookingParams).subscribe(
+      (result) => {
+        const arr = [];
+        if (result && result.data) {
+          this.totalLength = result.totalCount;
+          result.data.map((x) => {
+            arr.push({
+              id: x.id,
+              customer_id: x.customer.id,
+              first_name: x.customer.first_name,
+              middle_name: x.customer_middle_name,
+              last_name: x.customer.last_name,
+              room_category: x.room_category.room_category,
+              room_category_id: x.room_category.id,
+              number_of_adult: x.number_of_adult,
+              number_of_child: x.number_of_child,
+              number_of_rooms: x.number_of_rooms,
+              room_number: x.rooms.map((room) => {
+                return room.room_number;
+              }),
+              check_in_date: x.check_in_date,
+              check_out_date: x.check_out_date,
+              created_at: x.created_at,
+            });
+            // x.rooms.map((room) => {
+            //     room_number: room.room_number,
+            // });
           });
-          // x.rooms.map((room) => {
-          //     room_number: room.room_number,
-          // });
-        });
-      }
-      this.dataSource = new MatTableDataSource(arr);
-      this.blockUI.stop();
+        } else {
+          this.blockUI.stop();
+        }
+        this.dataSource = new MatTableDataSource(arr);
+        this.blockUI.stop();
 
-      // Define filter function to look for 'premiseId'matches
-      // tslint:disable-next-line: only-arrow-functions
-      // this.dataSource.filterPredicate = function (data, filter): boolean {
-      //   return data.id.toLowerCase().includes(filter);
-      // };
-    });
+        // Define filter function to look for 'premiseId'matches
+        // tslint:disable-next-line: only-arrow-functions
+        // this.dataSource.filterPredicate = function (data, filter): boolean {
+        //   return data.id.toLowerCase().includes(filter);
+        // };
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addBooking() {
