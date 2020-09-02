@@ -1,12 +1,23 @@
-<h2>Add Main Bar</h2>
-<form #formHotel="ngForm" (ngSubmit)="submitBarForm()">
+<block-ui>
+  <h2>Add Main Bar</h2>
+  <form #formHotel="ngForm" (ngSubmit)="submitBarForm()">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Main Bar Name</mat-label>
+      <input
+        matInput
+        name="main_bar_name"
+        placeholder="Enter main bar name"
+        [(ngModel)]="bar.main_bar_name"
+      />
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Main Bar Name</mat-label>
-    <input matInput name="main_bar_name" placeholder="Enter main bar name" [(ngModel)]="bar.main_bar_name" />
-  </mat-form-field>
-
-  <button [disabled]="!formHotel.valid" mat-raised-button type="submit" color="primary">
-    CREATE
-  </button>
-</form>
+    <button
+      [disabled]="!formHotel.valid"
+      mat-raised-button
+      type="submit"
+      color="primary"
+    >
+      CREATE
+    </button>
+  </form>
+</block-ui>

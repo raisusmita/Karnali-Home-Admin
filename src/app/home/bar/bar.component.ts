@@ -3,8 +3,9 @@ import { BarService } from "./bar.service";
 import { MatDialog } from "@angular/material/dialog";
 import { BarFormComponent } from "./bar-form/bar-form.component";
 import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
-import { MainBarFormComponent } from './main-bar-form/main-bar-form.component';
-import { SubBarFormComponent } from './sub-bar-form/sub-bar-form.component';
+import { MainBarFormComponent } from "./main-bar-form/main-bar-form.component";
+import { SubBarFormComponent } from "./sub-bar-form/sub-bar-form.component";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-bar",
@@ -12,7 +13,14 @@ import { SubBarFormComponent } from './sub-bar-form/sub-bar-form.component';
   styleUrls: ["./bar.component.scss"],
 })
 export class BarComponent implements OnInit {
-  displayedColumns: string[] = ["mainBarCategory", "subBarCategory", "barName", "quantity", "price", "action"];
+  displayedColumns: string[] = [
+    "mainBarCategory",
+    "subBarCategory",
+    "barName",
+    "quantity",
+    "price",
+    "action",
+  ];
   mainBarDisplayedColumns: string[] = ["mainBarCategory", "action"];
   subBarDisplayedColumns: string[] = ["subBarCategory", "action"];
 
@@ -21,13 +29,14 @@ export class BarComponent implements OnInit {
   subBar: any[];
   barHeader: any[];
 
-  constructor(private barService: BarService, private dialog: MatDialog) { }
+  @BlockUI() blockUI: NgBlockUI;
+
+  constructor(private barService: BarService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.getBar();
     this.getMainBar();
     this.getSubBar();
-
   }
 
   getBar() {
@@ -43,8 +52,10 @@ export class BarComponent implements OnInit {
   }
 
   getSubBar() {
+    this.blockUI.start("Loading...");
     this.barService.getSubBar().subscribe((data) => {
       this.subBar = data.data;
+      this.blockUI.stop();
     });
   }
 

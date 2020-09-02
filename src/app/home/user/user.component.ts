@@ -5,6 +5,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { UserFormComponent } from "./user-form/user-form.component";
 import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
 import { UserService } from "src/app/home/user/user.service";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-user",
@@ -15,6 +16,8 @@ export class UserComponent implements OnInit {
   displayedColumns: string[] = ["name", "email", "role", "action"];
   dataSource: any[];
 
+  @BlockUI() blockUI: NgBlockUI;
+
   constructor(private userService: UserService, private dialog: MatDialog) {}
 
   ngOnInit() {
@@ -22,8 +25,10 @@ export class UserComponent implements OnInit {
   }
 
   getUser() {
+    this.blockUI.start("Loading...");
     this.userService.getUser().subscribe((data) => {
       this.dataSource = data.data;
+      this.blockUI.stop();
     });
   }
 

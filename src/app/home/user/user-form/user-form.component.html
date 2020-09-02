@@ -1,26 +1,56 @@
-<h2>Add New User</h2>
-<form #formHotel="ngForm" (ngSubmit)="submitUserForm()">
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>User Name</mat-label>
-    <input matInput name="name" placeholder="Enter User Name" [(ngModel)]="user.name" required />
-  </mat-form-field>
+<block-ui>
+  <h2>Add New User</h2>
+  <form #formHotel="ngForm" (ngSubmit)="submitUserForm()">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>User Name</mat-label>
+      <input
+        matInput
+        name="name"
+        placeholder="Enter User Name"
+        [(ngModel)]="user.name"
+        required
+      />
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>User Email</mat-label>
-    <input matInput name="email" placeholder="Enter User Email" [(ngModel)]="user.email" />
-  </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>User Email</mat-label>
+      <input
+        matInput
+        name="email"
+        placeholder="Enter User Email"
+        [(ngModel)]="user.email"
+      />
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>User Password</mat-label>
-    <input matInput name="password" placeholder="Enter Customer Password" [(ngModel)]="user.password" required />
-  </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>User Password</mat-label>
+      <input
+        matInput
+        name="password"
+        placeholder="Enter Customer Password"
+        [(ngModel)]="user.password"
+        required
+      />
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>User Role</mat-label>
-    <input matInput name="role" placeholder="Enter Customer Role" [(ngModel)]="user.role" required />
-  </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>User Role</mat-label>
+      <input
+        matInput
+        name="role"
+        placeholder="Enter Customer Role"
+        [(ngModel)]="user.role"
+        required
+      />
+    </mat-form-field>
 
-  <button [disabled]="!formHotel.valid" mat-raised-button type="submit" color="primary">
-    CREATE
-  </button>
-</form>
+    <button
+      [disabled]="!formHotel.valid"
+      mat-raised-button
+      type="submit"
+      color="primary"
+    >
+      CREATE
+    </button>
+  </form>
+</block-ui>

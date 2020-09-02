@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from "@angular/core";
 import { MvUser } from "src/app/home/customer/customer-model";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { UserService } from "src/app/home/user/user.service";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-user-form",
@@ -11,6 +12,8 @@ import { UserService } from "src/app/home/user/user.service";
 export class UserFormComponent implements OnInit {
   user: MvUser = {} as MvUser;
   isEdit = false;
+
+  @BlockUI() blockUI: NgBlockUI;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -27,13 +30,16 @@ export class UserFormComponent implements OnInit {
     });
   }
   submitUserForm() {
+    this.blockUI.start("Loading...");
     if (this.isEdit) {
       this.userService.editUser(this.user).subscribe(() => {
         this.dialogRef.close(this.user);
+        this.blockUI.stop();
       });
     } else {
       this.userService.addUser(this.user).subscribe(() => {
         this.dialogRef.close(this.user);
+        this.blockUI.stop();
       });
     }
   }
