@@ -13,7 +13,7 @@ export class ReservationService {
   constructor(private http: HttpClient) {}
 
   getReservation(): Observable<any> {
-    return this.http.get(this.baseURL);
+    return this.http.get(this.baseURL + "reservations");
   }
 
   getAvailableRoom(): Observable<any> {
