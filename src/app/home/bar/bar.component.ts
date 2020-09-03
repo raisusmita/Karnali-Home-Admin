@@ -53,10 +53,19 @@ export class BarComponent implements OnInit {
 
   getSubBar() {
     this.blockUI.start("Loading...");
-    this.barService.getSubBar().subscribe((data) => {
-      this.subBar = data.data;
-      this.blockUI.stop();
-    });
+    this.barService.getSubBar().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.subBar = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addBar() {

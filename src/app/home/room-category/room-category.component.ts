@@ -64,14 +64,20 @@ export class RoomCategoryComponent implements OnInit {
       skip: this.skip,
     };
 
-    this.roomCategoryService
-      .getRoomCategoryList(roomCatParams)
-      .subscribe((data) => {
-        this.totalLength = data.totalCount;
-
-        this.dataSource = data.data;
+    this.roomCategoryService.getRoomCategoryList(roomCatParams).subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.totalLength = result.totalCount;
+          this.dataSource = result.data;
+        } else {
+          this.blockUI.stop();
+        }
         this.blockUI.stop();
-      });
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
   onAddClick() {
     const dialogRef = this.dialog.open(RoomCategoryFormComponent, {

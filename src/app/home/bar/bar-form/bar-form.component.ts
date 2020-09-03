@@ -57,24 +57,43 @@ export class BarFormComponent implements OnInit {
 
   getSubBar() {
     this.blockUI.start("Loading...");
-    this.barService.getSubBar().subscribe((data) => {
-      this.subBar = data.data;
-      this.blockUI.stop();
-    });
+    this.barService.getSubBar().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.subBar = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   submitBarForm() {
     this.blockUI.start("Loading...");
     if (this.isEdit) {
-      this.barService.editBar(this.bar).subscribe((e) => {
-        this.dialogRef.close(this.bar);
-        this.blockUI.stop();
-      });
+      this.barService.editBar(this.bar).subscribe(
+        (e) => {
+          this.dialogRef.close(this.bar);
+          this.blockUI.stop();
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
-      this.barService.addBar(this.bar).subscribe((e) => {
-        this.dialogRef.close(this.bar);
-        this.blockUI.stop();
-      });
+      this.barService.addBar(this.bar).subscribe(
+        (e) => {
+          this.dialogRef.close(this.bar);
+          this.blockUI.stop();
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

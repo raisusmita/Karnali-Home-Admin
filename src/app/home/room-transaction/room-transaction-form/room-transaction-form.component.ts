@@ -91,10 +91,19 @@ export class RoomTransactionFormComponent implements OnInit {
 
   getTables() {
     this.blockUI.start("Loading...");
-    this.tableService.getTable().subscribe((result) => {
-      this.blockUI.stop();
-      this.tables = result.data;
-    });
+    this.tableService.getTable().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.tables = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   onCustomerSelect(customerId: any) {
@@ -144,12 +153,19 @@ export class RoomTransactionFormComponent implements OnInit {
       });
       this.roomTransactionService
         .addRoomTransaction(this.selectedRoom)
-        .subscribe((result) => {
-          if (result) {
+        .subscribe(
+          (result) => {
+            if (result) {
+              this.blockUI.stop();
+              this.dialogRef.close(result);
+            } else {
+              this.blockUI.stop();
+            }
+          },
+          (error) => {
             this.blockUI.stop();
-            this.dialogRef.close(result);
           }
-        });
+        );
     } else if (this.editForm) {
       const offsetCIn =
         this.roomTransaction.check_in_date.getTimezoneOffset() * 60000;
@@ -171,10 +187,15 @@ export class RoomTransactionFormComponent implements OnInit {
 
       this.roomTransactionService
         .editRoomTransaction(editTransactionParams)
-        .subscribe((result) => {
-          this.blockUI.stop();
-          this.dialogRef.close(result);
-        });
+        .subscribe(
+          (result) => {
+            this.blockUI.stop();
+            this.dialogRef.close(result);
+          },
+          (error) => {
+            this.blockUI.stop();
+          }
+        );
     }
   }
 }

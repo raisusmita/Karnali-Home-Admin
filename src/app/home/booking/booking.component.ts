@@ -140,9 +140,6 @@ export class BookingComponent implements OnInit {
               check_out_date: x.check_out_date,
               created_at: x.created_at,
             });
-            // x.rooms.map((room) => {
-            //     room_number: room.room_number,
-            // });
           });
         } else {
           this.blockUI.stop();

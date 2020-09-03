@@ -54,25 +54,44 @@ export class FoodFormComponent implements OnInit {
 
   getFoodheader() {
     this.blockUI.start("Loading...");
-    this.foodService.getFoodHeader().subscribe((data) => {
-      this.foodHeader = data.data;
-      this.blockUI.stop();
-    });
+    this.foodService.getFoodHeader().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.foodHeader = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   submitFoodForm() {
     this.blockUI.start("Loading...");
     if (this.isEdit) {
-      this.foodService.editFood(this.food).subscribe((e) => {
-        this.blockUI.stop();
-        this.dialogRef.close(this.food);
-      });
+      this.foodService.editFood(this.food).subscribe(
+        (e) => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.food);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
-      this.foodService.addFood(this.food).subscribe((e) => {
-        this.blockUI.stop();
+      this.foodService.addFood(this.food).subscribe(
+        (e) => {
+          this.blockUI.stop();
 
-        this.dialogRef.close(this.food);
-      });
+          this.dialogRef.close(this.food);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

@@ -76,32 +76,39 @@ export class RoomTransactionComponent implements OnInit {
 
   getRoomTransaction() {
     this.blockUI.start("Loading...");
-    this.roomTransactionService.getRoomTransaction().subscribe((result) => {
-      const arr = [];
-      if (result && result.data) {
-        result.data.map((x) => {
-          arr.push({
-            transaction_id: x.id,
-            first_name: x.customer.first_name,
-            middle_name: x.customer.middle_name,
-            last_name: x.customer.last_name,
-            phone_number: x.customer.phone,
-            address: x.customer.address,
-            room_category: x.reservation.room.room_category.room_category,
-            room_number: x.reservation.room.room_number,
-            no_of_days: x.number_of_days,
-            rate: x.rate,
-            amount: x.total_amount,
-            status: x.invoice_id == null ? "Due" : "Paid",
-            check_in_date: x.reservation.check_in_date,
-            check_out_date: x.reservation.check_out_date,
-            reservation_id: x.reservation.id,
+    this.roomTransactionService.getRoomTransaction().subscribe(
+      (result) => {
+        const arr = [];
+        if (result && result.data) {
+          result.data.map((x) => {
+            arr.push({
+              transaction_id: x.id,
+              first_name: x.customer.first_name,
+              middle_name: x.customer.middle_name,
+              last_name: x.customer.last_name,
+              phone_number: x.customer.phone,
+              address: x.customer.address,
+              room_category: x.reservation.room.room_category.room_category,
+              room_number: x.reservation.room.room_number,
+              no_of_days: x.number_of_days,
+              rate: x.rate,
+              amount: x.total_amount,
+              status: x.invoice_id == null ? "Due" : "Paid",
+              check_in_date: x.reservation.check_in_date,
+              check_out_date: x.reservation.check_out_date,
+              reservation_id: x.reservation.id,
+            });
           });
-        });
-        this.dataSource = new MatTableDataSource(arr);
+          this.dataSource = new MatTableDataSource(arr);
+          this.blockUI.stop();
+        } else {
+          this.blockUI.stop();
+        }
+      },
+      (error) => {
         this.blockUI.stop();
       }
-    });
+    );
   }
 
   generateInvoice() {

@@ -59,20 +59,26 @@ export class RoomCategoryFormComponent implements OnInit {
         delete this.category.image;
       }
       this.blockUI.start("Loading...");
-      this.roomCategoryService
-        .editRoomCategory(this.category)
-        .subscribe((data) => {
+      this.roomCategoryService.editRoomCategory(this.category).subscribe(
+        (data) => {
           this.blockUI.stop();
           this.dialogRef.close(this.category);
-        });
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
       this.blockUI.start("Loading...");
-      this.roomCategoryService
-        .addRoomCategory(this.category)
-        .subscribe((data) => {
+      this.roomCategoryService.addRoomCategory(this.category).subscribe(
+        (data) => {
           this.blockUI.stop();
           this.dialogRef.close(this.category);
-        });
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

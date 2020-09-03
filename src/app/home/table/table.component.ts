@@ -26,10 +26,19 @@ export class TableComponent implements OnInit {
 
   getTable() {
     this.blockUI.start("Loading...");
-    this.tableService.getTable().subscribe((result) => {
-      this.blockUI.stop();
-      this.dataSource = result.data;
-    });
+    this.tableService.getTable().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.dataSource = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addTable() {

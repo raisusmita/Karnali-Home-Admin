@@ -32,15 +32,25 @@ export class UserFormComponent implements OnInit {
   submitUserForm() {
     this.blockUI.start("Loading...");
     if (this.isEdit) {
-      this.userService.editUser(this.user).subscribe(() => {
-        this.dialogRef.close(this.user);
-        this.blockUI.stop();
-      });
+      this.userService.editUser(this.user).subscribe(
+        () => {
+          this.dialogRef.close(this.user);
+          this.blockUI.stop();
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
-      this.userService.addUser(this.user).subscribe(() => {
-        this.dialogRef.close(this.user);
-        this.blockUI.stop();
-      });
+      this.userService.addUser(this.user).subscribe(
+        () => {
+          this.dialogRef.close(this.user);
+          this.blockUI.stop();
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

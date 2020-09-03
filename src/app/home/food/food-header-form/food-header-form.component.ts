@@ -49,15 +49,25 @@ export class FoodHeaderFormComponent implements OnInit {
   submitFoodForm() {
     this.blockUI.start("Loading...");
     if (this.isEdit) {
-      this.foodService.editFoodHeader(this.food).subscribe((e) => {
-        this.blockUI.stop();
-        this.dialogRef.close(this.food);
-      });
+      this.foodService.editFoodHeader(this.food).subscribe(
+        (e) => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.food);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
-      this.foodService.addFoodHeader(this.food).subscribe((e) => {
-        this.blockUI.stop();
-        this.dialogRef.close(this.food);
-      });
+      this.foodService.addFoodHeader(this.food).subscribe(
+        (e) => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.food);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

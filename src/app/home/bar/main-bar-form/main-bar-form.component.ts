@@ -48,15 +48,25 @@ export class MainBarFormComponent implements OnInit {
   submitBarForm() {
     this.blockUI.start("Loading...");
     if (this.isEdit) {
-      this.barService.editMainBar(this.bar).subscribe((e) => {
-        this.dialogRef.close(this.bar);
-        this.blockUI.stop();
-      });
+      this.barService.editMainBar(this.bar).subscribe(
+        (e) => {
+          this.dialogRef.close(this.bar);
+          this.blockUI.stop();
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
-      this.barService.addMainBar(this.bar).subscribe((e) => {
-        this.dialogRef.close(this.bar);
-        this.blockUI.stop();
-      });
+      this.barService.addMainBar(this.bar).subscribe(
+        (e) => {
+          this.dialogRef.close(this.bar);
+          this.blockUI.stop();
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

@@ -47,17 +47,27 @@ export class MainFoodFormComponent implements OnInit {
   submitFoodForm() {
     this.blockUI.start("Loading...");
     if (this.isEdit) {
-      this.foodService.editMainFood(this.food).subscribe((e) => {
-        this.blockUI.stop();
+      this.foodService.editMainFood(this.food).subscribe(
+        (e) => {
+          this.blockUI.stop();
 
-        this.dialogRef.close(this.food);
-      });
+          this.dialogRef.close(this.food);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
-      this.foodService.addMainFood(this.food).subscribe((e) => {
-        this.blockUI.stop();
+      this.foodService.addMainFood(this.food).subscribe(
+        (e) => {
+          this.blockUI.stop();
 
-        this.dialogRef.close(this.food);
-      });
+          this.dialogRef.close(this.food);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

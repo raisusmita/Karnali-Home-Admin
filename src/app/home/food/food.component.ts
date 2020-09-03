@@ -63,10 +63,19 @@ export class FoodComponent implements OnInit {
 
   getFoodHeader() {
     this.blockUI.start("Loading...");
-    this.foodService.getFoodHeader().subscribe((data) => {
-      this.foodHeader = data.data;
-      this.blockUI.stop();
-    });
+    this.foodService.getFoodHeader().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.foodHeader = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addFood() {

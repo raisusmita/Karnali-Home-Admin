@@ -61,12 +61,21 @@ export class RoomComponent implements OnInit {
       skip: this.skip,
     };
 
-    this.roomService.getRoomList(roomParams).subscribe((data) => {
-      this.dataSource = data.data;
-      this.totalLength = data.totalCount;
+    this.roomService.getRoomList(roomParams).subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.totalLength = result.totalCount;
+          this.dataSource = result.data;
+        } else {
+          this.blockUI.stop();
+        }
 
-      this.blockUI.stop();
-    });
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addRoom() {

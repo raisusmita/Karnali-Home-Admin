@@ -26,10 +26,19 @@ export class UserComponent implements OnInit {
 
   getUser() {
     this.blockUI.start("Loading...");
-    this.userService.getUser().subscribe((data) => {
-      this.dataSource = data.data;
-      this.blockUI.stop();
-    });
+    this.userService.getUser().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.dataSource = result.data;
+          this.blockUI.stop();
+        } else {
+          this.blockUI.stop();
+        }
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addUser() {

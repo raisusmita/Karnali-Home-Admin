@@ -140,18 +140,36 @@ export class BookingFormComponent implements OnInit {
   getCustomers() {
     this.blockUI.start("Loading...");
 
-    this.customerService.getCustomer().subscribe((result) => {
-      this.customers = result.data;
-      this.blockUI.stop(); // Stop blocking
-    });
+    this.customerService.getCustomer().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.customers = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop(); // Stop blocking
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   getRoomCategories() {
     this.blockUI.start("Loading...");
-    this.roomCategoryService.getRoomCategory().subscribe((result) => {
-      this.roomCategories = result.data;
-      this.blockUI.stop(); // Stop blocking
-    });
+    this.roomCategoryService.getRoomCategory().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.roomCategories = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop(); // Stop blocking
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addRoomCategory() {
@@ -315,17 +333,27 @@ export class BookingFormComponent implements OnInit {
       });
 
       this.blockUI.start("Loading");
-      this.bookingService.editBooking(this.editParams).subscribe((result) => {
-        this.blockUI.stop();
-        this.dialogRef.close(this.booking);
-        this.editParams.length = 0;
-      });
+      this.bookingService.editBooking(this.editParams).subscribe(
+        (result) => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.booking);
+          this.editParams.length = 0;
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
       this.blockUI.start("Loading...");
-      this.bookingService.addBooking(this.booking).subscribe((result) => {
-        this.blockUI.stop();
-        this.dialogRef.close(this.booking);
-      });
+      this.bookingService.addBooking(this.booking).subscribe(
+        (result) => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.booking);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }
