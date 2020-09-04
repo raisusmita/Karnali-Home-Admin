@@ -73,7 +73,7 @@ export class BookingComponent implements OnInit {
   ngOnInit() {
     this.pageSize = 10;
     this.pageIndex = 0;
-    this.totalLength = 100;
+    this.totalLength = 0;
 
     this.skip = 0;
     this.limit = this.pageSize;

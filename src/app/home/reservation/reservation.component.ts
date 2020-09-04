@@ -50,6 +50,14 @@ export class ReservationComponent implements OnInit {
   availableRoomsByDate: any[];
   paramsDate: {};
 
+  pageSizeOptions = [10, 25, 50, 100];
+
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
+
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(
@@ -61,15 +69,40 @@ export class ReservationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.pageSize = 10;
+    this.pageIndex = 0;
+    this.totalLength = 0;
+
+    this.skip = 0;
+    this.limit = this.pageSize;
+
+    this.getReservation();
+  }
+
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
     this.getReservation();
   }
 
   getReservation() {
     this.blockUI.start("Loading...");
-    this.reservationService.getReservation().subscribe(
+    const reservationParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+
+    this.reservationService.getReservationList(reservationParams).subscribe(
       (result) => {
         const arr = [];
         if (result && result.data) {
+          this.totalLength = result.totalCount;
+
           result.data.map((x) => {
             arr.push({
               id: x.id,
