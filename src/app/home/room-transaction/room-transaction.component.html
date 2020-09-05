@@ -9,13 +9,8 @@
       <mat-icon>add</mat-icon>
       Add New Transaction
     </button>
-    <div class="main-container">
-      <table
-        #bookingTable
-        mat-table
-        [dataSource]="dataSource"
-        class="mat-elevation-z8"
-      >
+    <div class="table-container mat-elevation-z8">
+      <table #bookingTable mat-table [dataSource]="dataSource">
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
           <mat-header-cell *matHeaderCellDef>
@@ -151,6 +146,16 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+    </div>
+    <div class="pagination-footer mat-elevation-z8">
+      <mat-paginator
+        [length]="totalLength"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="onPageChange($event)"
+        [pageSizeOptions]="pageSizeOptions"
+      >
+      </mat-paginator>
     </div>
   </div>
 </block-ui>
