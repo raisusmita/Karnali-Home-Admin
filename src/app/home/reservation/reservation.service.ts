@@ -7,12 +7,13 @@ import { environment } from "src/environments/environment";
   providedIn: "root",
 })
 export class ReservationService {
-  private readonly baseURL = "http://localhost:8000/api/reservations";
+  private readonly baseURL = environment.apiURL;
+  // private readonly baseURL = "http://localhost:8000/api/reservations";
 
   constructor(private http: HttpClient) {}
 
   getReservation(): Observable<any> {
-    return this.http.get(this.baseURL);
+    return this.http.get(this.baseURL + "reservations");
   }
 
   getReservationList(reservationParams): Observable<any> {
@@ -23,42 +24,42 @@ export class ReservationService {
   }
 
   getAvailableRoom(): Observable<any> {
-    return this.http.get("http://localhost:8000/api/available");
+    return this.http.get(this.baseURL + "available");
   }
 
   addReservation(reservation: any): Observable<any> {
-    return this.http.post(this.baseURL, reservation);
+    return this.http.post(this.baseURL + "reservations", reservation);
   }
 
   addRoomUnavailable(unavailableRoom: any): Observable<any> {
     return this.http.post(
-      "http://localhost:8000/api/availableRoomByBooking",
+      this.baseURL + "availableRoomByBooking",
       JSON.stringify(unavailableRoom)
     );
   }
 
   bookingToReservation(reservation: any): Observable<any> {
     return this.http.post(
-      "http://localhost:8000/api/bookingToReservation",
+      this.baseURL + "bookingToReservation",
       JSON.stringify(reservation)
     );
   }
 
   getRoomAvailabilityByDate(dates: any): Observable<any> {
     return this.http.post(
-      "http://localhost:8000/api/availableRoomByDate",
+      this.baseURL + "reservations/availableRoomByDate",
       dates
     );
   }
 
   editReservation(reservation: any): Observable<any> {
     return this.http.put(
-      this.baseURL + "/" + reservation[0].reservation_id,
+      this.baseURL + "reservations/" + reservation[0].reservation_id,
       reservation
     );
   }
 
   deleteReservation(id: any): Observable<any> {
-    return this.http.delete(this.baseURL + "/" + id);
+    return this.http.delete(this.baseURL + "reservations/" + id);
   }
 }
