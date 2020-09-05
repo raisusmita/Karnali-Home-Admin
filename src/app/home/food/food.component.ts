@@ -51,6 +51,10 @@ export class FoodComponent implements OnInit {
   constructor(private foodService: FoodService, private dialog: MatDialog) {}
 
   ngOnInit() {
+    this.initialize();
+  }
+
+  initialize() {
     this.pageSize = 10;
     this.pageIndex = 0;
     this.mainFoodTotalLength = 0;
@@ -60,15 +64,7 @@ export class FoodComponent implements OnInit {
 
     this.skip = 0;
     this.limit = this.pageSize;
-    this.initialize();
-  }
-
-  initialize() {
-    const paginationParams = {
-      limit: this.limit,
-      skip: this.skip,
-    };
-
+    this.tabLabel = "Food Items";
     this.getFood();
     this.getMainFood();
     this.getSubFood();

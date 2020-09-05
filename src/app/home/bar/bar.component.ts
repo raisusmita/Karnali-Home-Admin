@@ -29,34 +29,92 @@ export class BarComponent implements OnInit {
   subBar: any[];
   barHeader: any[];
 
+  pageSizeOptions = [10, 25, 50, 100];
+
+  pageSize: number;
+  pageIndex: number;
+  barTotalLength: number;
+  mainBarTotalLength: number;
+  subBarTotalLength: number;
+
+  limit: number;
+  skip: number;
+
+  tabLabel: string;
+
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(private barService: BarService, private dialog: MatDialog) {}
 
   ngOnInit() {
+    this.initialize();
+  }
+
+  initialize() {
+    this.pageSize = 10;
+    this.pageIndex = 0;
+    this.mainBarTotalLength = 0;
+    this.barTotalLength = 0;
+    this.subBarTotalLength = 0;
+
+    this.skip = 0;
+    this.limit = this.pageSize;
+    this.tabLabel = "Bar Items";
     this.getBar();
     this.getMainBar();
     this.getSubBar();
   }
 
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
+    if (this.tabLabel == "Bar Items") {
+      this.getBar();
+    } else if (this.tabLabel == "Main Bar") {
+      this.getMainBar();
+    } else if (this.tabLabel == "Sub Bar") {
+      this.getSubBar();
+    }
+  }
+
   getBar() {
-    this.barService.getBar().subscribe((data) => {
-      this.dataSource = data.data;
+    const paginationParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+    this.barService.getBarList(paginationParams).subscribe((result) => {
+      this.dataSource = result.data;
+      this.barTotalLength = result.totalCount;
     });
   }
 
   getMainBar() {
-    this.barService.getMainBar().subscribe((data) => {
-      this.mainBar = data.data;
+    const paginationParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+    this.barService.getMainBarList(paginationParams).subscribe((result) => {
+      this.mainBar = result.data;
+      this.mainBarTotalLength = result.totalCount;
     });
   }
 
   getSubBar() {
+    const paginationParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
     this.blockUI.start("Loading...");
-    this.barService.getSubBar().subscribe(
+    this.barService.getSubBarList(paginationParams).subscribe(
       (result) => {
         if (result && result.data) {
           this.subBar = result.data;
+          this.subBarTotalLength = result.totalCount;
         } else {
           this.blockUI.stop();
         }
