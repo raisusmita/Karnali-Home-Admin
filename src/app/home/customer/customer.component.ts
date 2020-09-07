@@ -42,7 +42,7 @@ export class CustomerComponent implements OnInit {
   ngOnInit() {
     this.pageSize = 10;
     this.pageIndex = 0;
-    this.totalLength = 100;
+    this.totalLength = 0;
 
     this.skip = 0;
     this.limit = this.pageSize;
@@ -67,11 +67,20 @@ export class CustomerComponent implements OnInit {
       skip: this.skip,
     };
 
-    this.customerService.getCustomerList(customerParams).subscribe((data) => {
-      this.blockUI.stop();
-      this.totalLength = data.totalCount;
-      this.dataSource = data.data;
-    });
+    this.customerService.getCustomerList(customerParams).subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.totalLength = result.totalCount;
+          this.dataSource = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addCustomer() {

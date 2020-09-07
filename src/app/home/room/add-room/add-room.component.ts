@@ -31,29 +31,48 @@ export class AddRoomComponent implements OnInit {
 
   getRoomCategories() {
     this.blockUI.start("Loading...");
-    this.roomCategoryService.getRoomCategory().subscribe((rc) => {
-      this.blockUI.stop();
-      if (this.data) {
-        this.isEdit = true;
-        this.room = this.data;
+    if (this.data) {
+      this.isEdit = true;
+      this.room = this.data;
+    }
+    this.roomCategoryService.getRoomCategory().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.roomCategories = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
       }
-      this.roomCategories = rc.data;
-    });
+    );
   }
 
   submitRoomForm() {
     if (this.isEdit) {
       this.blockUI.start("Loading...");
-      this.roomService.editRoom(this.room).subscribe((e) => {
-        this.blockUI.stop();
-        this.dialogRef.close(this.room);
-      });
+      this.roomService.editRoom(this.room).subscribe(
+        (e) => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.room);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
       this.blockUI.start("Loading...");
-      this.roomService.addRoom(this.room).subscribe((e) => {
-        this.blockUI.stop();
-        this.dialogRef.close(this.room);
-      });
+      this.roomService.addRoom(this.room).subscribe(
+        (e) => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.room);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

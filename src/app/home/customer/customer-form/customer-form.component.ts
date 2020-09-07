@@ -51,14 +51,19 @@ export class CustomerFormComponent implements OnInit {
 
   getCustomers() {
     this.blockUI.start("Loading...");
-    this.customerService.getCustomer().subscribe(() => {
-      this.blockUI.stop();
-      if (this.data) {
-        this.isEdit = true;
-        this.customer = this.data.gridData;
-        this.otherValidation = true;
+    if (this.data) {
+      this.isEdit = true;
+      this.customer = this.data.gridData;
+      this.otherValidation = true;
+    }
+    this.customerService.getCustomer().subscribe(
+      () => {
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
       }
-    });
+    );
   }
 
   onSelectedFiles(imageFile: any) {
@@ -100,16 +105,26 @@ export class CustomerFormComponent implements OnInit {
         this.customer.identity_image_second = null;
       }
       this.blockUI.start("Loading");
-      this.customerService.editCustomer(this.customer).subscribe(() => {
-        this.blockUI.stop();
-        this.dialogRef.close(this.customer);
-      });
+      this.customerService.editCustomer(this.customer).subscribe(
+        () => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.customer);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
       this.blockUI.start("Loading");
-      this.customerService.addCustomer(this.customer).subscribe(() => {
-        this.blockUI.stop();
-        this.dialogRef.close(this.customer);
-      });
+      this.customerService.addCustomer(this.customer).subscribe(
+        () => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.customer);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 

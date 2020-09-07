@@ -73,7 +73,7 @@ export class BookingComponent implements OnInit {
   ngOnInit() {
     this.pageSize = 10;
     this.pageIndex = 0;
-    this.totalLength = 100;
+    this.totalLength = 0;
 
     this.skip = 0;
     this.limit = this.pageSize;
@@ -140,9 +140,6 @@ export class BookingComponent implements OnInit {
               check_out_date: x.check_out_date,
               created_at: x.created_at,
             });
-            // x.rooms.map((room) => {
-            //     room_number: room.room_number,
-            // });
           });
         } else {
           this.blockUI.stop();

@@ -1,26 +1,38 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { environment } from 'src/environments/environment';
+import { environment } from "src/environments/environment";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class BarService {
-  private readonly baseURL = environment.apiURL + 'bar';
+  private readonly baseURL = environment.apiURL + "bar";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getBar(): Observable<any> {
     return this.http.get(this.baseURL);
   }
 
   getMainBar(): Observable<any> {
-    return this.http.get(environment.apiURL + 'mainBar');
+    return this.http.get(environment.apiURL + "mainBar");
   }
 
   getSubBar(): Observable<any> {
-    return this.http.get(environment.apiURL + 'subBar');
+    return this.http.get(environment.apiURL + "subBar");
+  }
+
+  getBarList(barParams): Observable<any> {
+    return this.http.post(environment.apiURL + "barItemList", barParams);
+  }
+
+  getMainBarList(barParams): Observable<any> {
+    return this.http.post(environment.apiURL + "mainBarList", barParams);
+  }
+
+  getSubBarList(barParams): Observable<any> {
+    return this.http.post(environment.apiURL + "subBarList", barParams);
   }
 
   addBar(bar: any): Observable<any> {

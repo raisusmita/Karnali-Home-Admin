@@ -30,18 +30,28 @@ export class AddTableComponent implements OnInit {
   submitTableForm() {
     if (this.isEdit) {
       this.blockUI.start("Loading...");
-      this.tableService.editTable(this.table).subscribe((e) => {
-        this.blockUI.stop();
-        this.dialogRef.close(this.table);
-      });
+      this.tableService.editTable(this.table).subscribe(
+        (e) => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.table);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
       this.blockUI.start("Loading...");
 
-      this.tableService.addTable(this.table).subscribe((e) => {
-        this.blockUI.stop();
+      this.tableService.addTable(this.table).subscribe(
+        (e) => {
+          this.blockUI.stop();
 
-        this.dialogRef.close(this.table);
-      });
+          this.dialogRef.close(this.table);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

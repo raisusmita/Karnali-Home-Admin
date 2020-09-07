@@ -163,10 +163,19 @@ export class ReservationFormComponent implements OnInit {
   }
   getRoomCategories() {
     this.blockUI.start("Loading...");
-    this.roomCategoryService.getRoomCategory().subscribe((result) => {
-      this.blockUI.stop();
-      this.roomCategories = result.data;
-    });
+    this.roomCategoryService.getRoomCategory().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.roomCategories = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   getRooms() {
@@ -450,26 +459,34 @@ export class ReservationFormComponent implements OnInit {
       }
 
       this.blockUI.start("Loading...");
-      this.reservationService
-        .editReservation(this.editParams)
-        .subscribe((result) => {
+      this.reservationService.editReservation(this.editParams).subscribe(
+        (result) => {
           this.blockUI.stop();
           this.dialogRef.close(this.reservation);
           this.roomsByBooking.length = 0;
           this.reservationParams = null;
-        });
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
       this.blockUI.start("Loading...");
-      this.reservationService
-        .addReservation(this.reservationParams)
-        .subscribe((reservationResult) => {
+      this.reservationService.addReservation(this.reservationParams).subscribe(
+        (reservationResult) => {
           if (reservationResult) {
             this.roomsByBooking.length = 0;
             this.reservationParams = null;
+          } else {
+            this.blockUI.stop();
           }
           this.blockUI.stop();
           this.dialogRef.close(this.reservation);
-        });
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

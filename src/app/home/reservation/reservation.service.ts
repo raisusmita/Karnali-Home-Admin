@@ -16,6 +16,13 @@ export class ReservationService {
     return this.http.get(this.baseURL + "reservations");
   }
 
+  getReservationList(reservationParams): Observable<any> {
+    return this.http.post(
+      environment.apiURL + "reservationList",
+      reservationParams
+    );
+  }
+
   getAvailableRoom(): Observable<any> {
     return this.http.get(this.baseURL + "available");
   }

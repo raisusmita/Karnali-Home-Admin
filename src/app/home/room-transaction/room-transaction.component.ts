@@ -45,6 +45,14 @@ export class RoomTransactionComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
 
+  pageSizeOptions = [10, 25, 50, 100];
+
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
+
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -54,10 +62,32 @@ export class RoomTransactionComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initialize();
+  }
+
+  initialize() {
+    this.pageSize = 10;
+    this.pageIndex = 0;
+    this.totalLength = 0;
+
+    this.skip = 0;
+    this.limit = this.pageSize;
+
     this.getRoomTransaction();
     this.data.currentInvoiceData.subscribe(
       (invoiceData) => (this.invoiceData = invoiceData)
     );
+  }
+
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
+    this.getRoomTransaction();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -76,32 +106,48 @@ export class RoomTransactionComponent implements OnInit {
 
   getRoomTransaction() {
     this.blockUI.start("Loading...");
-    this.roomTransactionService.getRoomTransaction().subscribe((result) => {
-      const arr = [];
-      if (result && result.data) {
-        result.data.map((x) => {
-          arr.push({
-            transaction_id: x.id,
-            first_name: x.customer.first_name,
-            middle_name: x.customer.middle_name,
-            last_name: x.customer.last_name,
-            phone_number: x.customer.phone,
-            address: x.customer.address,
-            room_category: x.reservation.room.room_category.room_category,
-            room_number: x.reservation.room.room_number,
-            no_of_days: x.number_of_days,
-            rate: x.rate,
-            amount: x.total_amount,
-            status: x.invoice_id == null ? "Due" : "Paid",
-            check_in_date: x.reservation.check_in_date,
-            check_out_date: x.reservation.check_out_date,
-            reservation_id: x.reservation.id,
-          });
-        });
-        this.dataSource = new MatTableDataSource(arr);
-        this.blockUI.stop();
-      }
-    });
+
+    const paginationParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+    this.roomTransactionService
+      .getRoomTransactionList(paginationParams)
+      .subscribe(
+        (result) => {
+          const arr = [];
+          if (result && result.data) {
+            this.totalLength = result.totalCount;
+
+            result.data.map((x) => {
+              arr.push({
+                transaction_id: x.id,
+                first_name: x.customer.first_name,
+                middle_name: x.customer.middle_name,
+                last_name: x.customer.last_name,
+                phone_number: x.customer.phone,
+                address: x.customer.address,
+                room_category: x.reservation.room.room_category.room_category,
+                room_number: x.reservation.room.room_number,
+                no_of_days: x.number_of_days,
+                rate: x.rate,
+                amount: x.total_amount,
+                status: x.invoice_id == null ? "Due" : "Paid",
+                check_in_date: x.reservation.check_in_date,
+                check_out_date: x.reservation.check_out_date,
+                reservation_id: x.reservation.id,
+              });
+            });
+            this.dataSource = new MatTableDataSource(arr);
+            this.blockUI.stop();
+          } else {
+            this.blockUI.stop();
+          }
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
   }
 
   generateInvoice() {

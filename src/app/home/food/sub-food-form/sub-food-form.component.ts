@@ -27,6 +27,7 @@ export class SubFoodFormComponent implements OnInit {
     }
 
     if (data.gridData) {
+      this.food = data.gridData;
       this.isEdit = true;
     }
   }
@@ -44,26 +45,45 @@ export class SubFoodFormComponent implements OnInit {
 
   getSubFood() {
     this.blockUI.start("Loading...");
-    this.foodService.getSubFood().subscribe((data) => {
-      this.subFood = data.data;
-      this.blockUI.stop();
-    });
+    this.foodService.getSubFood().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.subFood = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   submitFoodForm() {
     this.blockUI.start("Loading...");
     if (this.isEdit) {
-      this.foodService.editSubFood(this.food).subscribe((e) => {
-        this.blockUI.stop();
+      this.foodService.editSubFood(this.food).subscribe(
+        (e) => {
+          this.blockUI.stop();
 
-        this.dialogRef.close(this.food);
-      });
+          this.dialogRef.close(this.food);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
-      this.foodService.addSubFood(this.food).subscribe((e) => {
-        this.blockUI.stop();
+      this.foodService.addSubFood(this.food).subscribe(
+        (e) => {
+          this.blockUI.stop();
 
-        this.dialogRef.close(this.food);
-      });
+          this.dialogRef.close(this.food);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

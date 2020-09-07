@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from "@angular/core";
 import { MvSubBar } from "../bar-model";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { BarService } from "../bar.service";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-sub-bar-form",
@@ -14,6 +15,8 @@ export class SubBarFormComponent implements OnInit {
 
   mainBar = [];
   subBar = [];
+
+  @BlockUI() blockUI: NgBlockUI;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -38,23 +41,44 @@ export class SubBarFormComponent implements OnInit {
   }
 
   getSubBar() {
-    this.barService.getSubBar().subscribe((data) => {
-      this.subBar = data.data;
-    });
+    this.blockUI.start("Loading...");
+    this.barService.getSubBar().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.subBar = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   submitBarForm() {
+    this.blockUI.start("Loading...");
     if (this.isEdit) {
-      this.barService.editSubBar(this.bar).subscribe((e) => {
-        this.dialogRef.close(this.bar);
-      });
+      this.barService.editSubBar(this.bar).subscribe(
+        (e) => {
+          this.dialogRef.close(this.bar);
+          this.blockUI.stop();
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
-      this.barService.addSubBar(this.bar).subscribe((e) => {
-        this.dialogRef.close(this.bar);
-      });
+      this.barService.addSubBar(this.bar).subscribe(
+        (e) => {
+          this.dialogRef.close(this.bar);
+          this.blockUI.stop();
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
-
 }
-
-

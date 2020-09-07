@@ -18,18 +18,61 @@ export class TableComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
 
+  pageSizeOptions = [10, 25, 50, 100];
+
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
+
   constructor(private tableService: TableService, private dialog: MatDialog) {}
 
   ngOnInit() {
+    this.initialize();
+  }
+
+  initialize() {
+    this.pageSize = 10;
+    this.pageIndex = 0;
+    this.totalLength = 0;
+
+    this.skip = 0;
+    this.limit = this.pageSize;
+    this.getTable();
+  }
+
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
     this.getTable();
   }
 
   getTable() {
     this.blockUI.start("Loading...");
-    this.tableService.getTable().subscribe((result) => {
-      this.blockUI.stop();
-      this.dataSource = result.data;
-    });
+    const paginationParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+    this.tableService.getTableList(paginationParams).subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.dataSource = result.data;
+          this.totalLength = result.totalCount;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addTable() {

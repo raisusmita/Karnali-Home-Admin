@@ -50,7 +50,7 @@
               </form>
             </mat-card-content>
           </mat-card>
-          <div class="example-container mat-elevation-z8">
+          <div class="main-container mat-elevation-z8">
             <table
               class="available-room"
               #roomAvailableTable
@@ -119,7 +119,7 @@
             />
           </mat-form-field>
 
-          <div class="main-container mat-elevation-z8">
+          <div class="table-container mat-elevation-z8">
             <table mat-table [dataSource]="dataSource">
               <!-- <ng-container matColumnDef="booking_id" sticky>
                 <th mat-header-cell *matHeaderCellDef>Booking Id</th>
@@ -213,6 +213,16 @@
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
+          </div>
+          <div class="pagination-footer mat-elevation-z8">
+            <mat-paginator
+              [length]="totalLength"
+              [pageSize]="pageSize"
+              [pageIndex]="pageIndex"
+              (page)="onPageChange($event)"
+              [pageSizeOptions]="pageSizeOptions"
+            >
+            </mat-paginator>
           </div>
         </div>
       </div>
