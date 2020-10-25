@@ -8,7 +8,6 @@ import { ToastrService } from "ngx-toastr";
 import { MatTableDataSource } from "@angular/material/table";
 import { SelectionModel } from "@angular/cdk/collections";
 import { ThemePalette } from "@angular/material/core";
-import { InvoiceReportComponent } from "../invoice/invoice-report/invoice-report.component";
 import { InvoiceService } from "../invoice/invoice.service";
 import { BlockUI, NgBlockUI } from "ng-block-ui";
 
@@ -20,6 +19,7 @@ import { BlockUI, NgBlockUI } from "ng-block-ui";
 export class RoomTransactionComponent implements OnInit {
   displayedColumns: string[] = [
     "select",
+    "invoice_number",
     "full_name",
     "phone_number",
     "address",
@@ -86,7 +86,6 @@ export class RoomTransactionComponent implements OnInit {
       this.skip = e.pageIndex * e.pageSize;
     }
     this.limit = e.pageSize;
-
     this.getRoomTransaction();
   }
 
@@ -122,6 +121,7 @@ export class RoomTransactionComponent implements OnInit {
             result.data.map((x) => {
               arr.push({
                 transaction_id: x.id,
+                invoice_number: x.invoice_id == null ? "":x.invoice.invoice_number,
                 first_name: x.customer.first_name,
                 middle_name: x.customer.middle_name,
                 last_name: x.customer.last_name,
@@ -144,7 +144,7 @@ export class RoomTransactionComponent implements OnInit {
             this.blockUI.stop();
           }
         },
-        (error) => {
+        () => {
           this.blockUI.stop();
         }
       );
@@ -208,29 +208,10 @@ export class RoomTransactionComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         window.print();
+        this.initialize();
       }
     });
   }
-
-  // generateInvoiceReport() {
-  //   const dialogRef = this.dialog.open(InvoiceReportComponent, {
-  //     width: "70%",
-  //     height: "700px",
-  //     data: {
-  //       gridData: this.selection.selected,
-  //       callFor: "Invoice Generate",
-  //       confirmationText: "Are you sure you want to proceed the invoice?",
-  //       positiveResponse: "Yes Proceed",
-  //       negativeResponse: "Cancel the Proceed",
-  //     },
-  //   });
-
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result) {
-  //       console.log("test");
-  //     }
-  //   });
-  // }
 
   onAddClick() {
     const dialogRef = this.dialog.open(RoomTransactionFormComponent, {
