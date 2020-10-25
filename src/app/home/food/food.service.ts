@@ -24,7 +24,7 @@ export class FoodService {
   }
 
   getSubFoodAndFoodItemsById(id): Observable<any> {
-    return this.http.post(environment.apiURL + 'subFoodById', id);
+    return this.http.post(environment.apiURL + "subFoodById", id);
   }
 
   getFoodHeader(): Observable<any> {
@@ -81,5 +81,9 @@ export class FoodService {
 
   deleteFood(id: any): Observable<any> {
     return this.http.delete(this.baseURL + "/" + id);
+  }
+
+  addFoodOrder(food: any): Observable<any> {
+    return this.http.post(`${environment.apiURL}foodOrder`, food);
   }
 }

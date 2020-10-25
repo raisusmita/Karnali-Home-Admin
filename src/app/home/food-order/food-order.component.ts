@@ -7,9 +7,9 @@ import {RoomService} from '../room/room.service';
 import {FoodService} from '../food/food.service';
 
 @Component({
-  selector: 'app-food-order',
-  templateUrl: './food-order.component.html',
-  styleUrls: ['./food-order.component.scss'],
+  selector: "app-food-order",
+  templateUrl: "./food-order.component.html",
+  styleUrls: ["./food-order.component.scss"],
 })
 export class FoodOrderComponent implements OnInit {
   table = [];
@@ -21,14 +21,15 @@ export class FoodOrderComponent implements OnInit {
   searchedTableValue = new FormControl();
   searchedRoomValue = new FormControl();
 
-  roomSelected = '';
-  tableSelected = '';
+  roomSelected = "";
+  tableSelected = "";
 
   mainFood = [];
   mainFoodSelectedId: number;
   foodHeader = {};
   mainFoodCheckbox = [1, 2];
   foodList = {};
+  foodOrderList = {};
 
   step = 0;
 
@@ -44,11 +45,11 @@ export class FoodOrderComponent implements OnInit {
     this.getTable();
     this.getRooms();
     this.filteredTables = this.searchedTableValue.valueChanges.pipe(
-      startWith(''),
+      startWith(""),
       map((value) => this._filterTable(value))
     );
     this.filteredRooms = this.searchedRoomValue.valueChanges.pipe(
-      startWith(''),
+      startWith(""),
       map((value) => this._filterRoom(value))
     );
 
@@ -76,7 +77,7 @@ export class FoodOrderComponent implements OnInit {
 
   getFoodHeader() {
     this.foodService.getFoodHeader().subscribe((header) => {
-      header.data.forEach(foodHead => {
+      header.data.forEach((foodHead) => {
         this.foodHeader[foodHead.id] = foodHead.food_header;
       });
     });
@@ -95,30 +96,30 @@ export class FoodOrderComponent implements OnInit {
             subFood: [],
             foodItems: {},
           };
-          this.foodList[this.mainFoodSelectedId]['subFood'].push(
-            ...subFoodItems.data['subFood']
+          this.foodList[this.mainFoodSelectedId]["subFood"].push(
+            ...subFoodItems.data["subFood"]
           );
-          this.foodList[this.mainFoodSelectedId]['foodItems'] =
-            subFoodItems.data['foodItems'];
+          this.foodList[this.mainFoodSelectedId]["foodItems"] =
+            subFoodItems.data["foodItems"];
         });
     }
   }
 
   selectRoom(room) {
-    this.searchedTableValue.setValue('');
+    this.searchedTableValue.setValue("");
     this.tableSelected = null;
     this.roomSelected = room;
   }
 
   selectTable(table) {
-    this.searchedRoomValue.setValue('');
+    this.searchedRoomValue.setValue("");
     this.roomSelected = null;
     this.tableSelected = table;
   }
 
   private _filterTable(value: string): string[] {
     const filterValue = value.toLowerCase().trim();
-    if (filterValue == '' || !filterValue) {
+    if (filterValue == "" || !filterValue) {
       return this.table;
     }
     return this.table.filter((option) =>
@@ -132,6 +133,50 @@ export class FoodOrderComponent implements OnInit {
       option.room_number.toLowerCase().includes(filterValue)
     );
   }
+
+  storeFoodOrder(event, data) {
+    if (event.checked) {
+      this.saveNewFoodOrder(data);
+      //Todo: Need to handle main food id as well
+    } else {
+      delete this.foodOrderList[data.id];
+    }
+  }
+
+  maintainOrderQuantity(event, data) {
+    if(this.foodOrderList[data.id]){
+      this.foodOrderList[data.id]["quantity"] = parseInt(event.target.value);
+      this.foodOrderList[data.id]["total_amount"] = data.price * this.foodOrderList[data.id]["quantity"];
+    } else {
+      // Order value is by default is 1 to increase it by 1 for the first click
+      const quantity = 2
+      this.saveNewFoodOrder(data, quantity);
+    }
+  }
+
+  saveNewFoodOrder(data, quantity=1){
+    this.foodOrderList[data.id] = {};
+    this.foodOrderList[data.id]["food_id"] = data.id;
+    this.foodOrderList[data.id]["quantity"] = quantity;
+    this.foodOrderList[data.id]["price"] = data.price;
+    this.foodOrderList[data.id]["total_amount"] = data.price * this.foodOrderList[data.id]["quantity"];
+    if (this.roomSelected) {
+      this.foodOrderList[data.id]["room_id"] = parseInt(this.roomSelected);
+    } else {
+      this.foodOrderList[data.id]["table_id"] = parseInt(this.tableSelected);
+    }
+  }
+
+  addFoodOrder(){
+    this.foodService.addFoodOrder(Object.values(this.foodOrderList)).subscribe(
+      (foodOrder) => {
+        console.log(foodOrder);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }  
 
   setStep(index: number) {
     this.step = index;
