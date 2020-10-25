@@ -7,6 +7,12 @@ table {
   margin-bottom: 20px;
 }
 
+// .wrapper {
+//   -ms-transform: rotate(-90deg); /* IE 9 */
+//   transform: rotate(-90deg);
+//   margin: 0;
+// }
+
 th,
 td {
   border: 1px solid #0000008a;
@@ -18,13 +24,19 @@ th {
 }
 
 td {
-  text-align: right;
+  text-align: center;
 }
 .total-amount {
   color: #0000008a;
-  text-align: right;
+  text-align: center;
 }
 
 .footer-text {
   text-align: center;
+}
+
+@media print {
+  .breakHere {
+    page-break-before: always;
+  }
 }
