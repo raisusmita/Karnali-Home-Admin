@@ -9,6 +9,7 @@ import { Component, OnInit, Inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MvBooking } from "../booking.model";
 import { FormControl } from "@angular/forms";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-booking-form",
@@ -66,6 +67,8 @@ export class BookingFormComponent implements OnInit {
   selectedRoom: any[] = [];
   cloneSelectedRoom: any[] = [];
   editParams: any[] = [];
+
+  @BlockUI() blockUI: NgBlockUI;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -135,15 +138,38 @@ export class BookingFormComponent implements OnInit {
   }
 
   getCustomers() {
-    this.customerService.getCustomer().subscribe((result) => {
-      this.customers = result.data;
-    });
+    this.blockUI.start("Loading...");
+
+    this.customerService.getCustomer().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.customers = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop(); // Stop blocking
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   getRoomCategories() {
-    this.roomCategoryService.getRoomCategory().subscribe((result) => {
-      this.roomCategories = result.data;
-    });
+    this.blockUI.start("Loading...");
+    this.roomCategoryService.getRoomCategory().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.roomCategories = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop(); // Stop blocking
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addRoomCategory() {
@@ -286,6 +312,8 @@ export class BookingFormComponent implements OnInit {
     this.booking.check_out_date = new Date(
       this.booking.check_out_date.getTime() - offsetCOut
     );
+
+    this.booking.status = "active";
     if (this.editForm) {
       // First index is for updating booking
       this.editParams.push(this.booking);
@@ -304,14 +332,28 @@ export class BookingFormComponent implements OnInit {
         });
       });
 
-      this.bookingService.editBooking(this.editParams).subscribe((result) => {
-        this.dialogRef.close(this.booking);
-        this.editParams.length = 0;
-      });
+      this.blockUI.start("Loading");
+      this.bookingService.editBooking(this.editParams).subscribe(
+        (result) => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.booking);
+          this.editParams.length = 0;
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
-      this.bookingService.addBooking(this.booking).subscribe((result) => {
-        this.dialogRef.close(this.booking);
-      });
+      this.blockUI.start("Loading...");
+      this.bookingService.addBooking(this.booking).subscribe(
+        (result) => {
+          this.blockUI.stop();
+          this.dialogRef.close(this.booking);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
 }

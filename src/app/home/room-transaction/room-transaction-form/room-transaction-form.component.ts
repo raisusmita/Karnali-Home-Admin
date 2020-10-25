@@ -10,6 +10,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { SelectionModel, DataSource } from "@angular/cdk/collections";
 import { FormGroup } from "@angular/forms";
 import { ThemePalette } from "@angular/material/core";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-room-transaction-form",
@@ -38,6 +39,9 @@ export class RoomTransactionFormComponent implements OnInit {
   selection = new SelectionModel<Element>(true, []);
   primaryColor: ThemePalette = "primary";
   dateTry: Date;
+
+  @BlockUI() blockUI: NgBlockUI;
+
   constructor(
     private customerService: CustomerService,
     private tableService: TableService,
@@ -51,7 +55,7 @@ export class RoomTransactionFormComponent implements OnInit {
     this.dateTry = new Date();
     if (this.data.formType == "Add") {
       this.addForm = true;
-      this.geUnavailableRoom();
+      this.getCustomers();
       this.getTables();
     } else {
       this.editForm = true;
@@ -73,22 +77,33 @@ export class RoomTransactionFormComponent implements OnInit {
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
+  masterToggle($e) {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
 
-  geUnavailableRoom() {
+  getCustomers() {
     this.customerService.getCustomer().subscribe((result) => {
       this.customers = result.data;
     });
   }
 
   getTables() {
-    this.tableService.getTable().subscribe((result) => {
-      this.tables = result.data;
-    });
+    this.blockUI.start("Loading...");
+    this.tableService.getTable().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.tables = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   onCustomerSelect(customerId: any) {
@@ -124,6 +139,7 @@ export class RoomTransactionFormComponent implements OnInit {
   }
 
   submitRoomTransactionForm() {
+    this.blockUI.start("Loading...");
     if (this.addForm) {
       this.selectedRoom = this.selection.selected;
       this.selectedRoom.map((data) => {
@@ -137,11 +153,19 @@ export class RoomTransactionFormComponent implements OnInit {
       });
       this.roomTransactionService
         .addRoomTransaction(this.selectedRoom)
-        .subscribe((result) => {
-          if (result) {
-            this.dialogRef.close(result);
+        .subscribe(
+          (result) => {
+            if (result) {
+              this.blockUI.stop();
+              this.dialogRef.close(result);
+            } else {
+              this.blockUI.stop();
+            }
+          },
+          (error) => {
+            this.blockUI.stop();
           }
-        });
+        );
     } else if (this.editForm) {
       const offsetCIn =
         this.roomTransaction.check_in_date.getTimezoneOffset() * 60000;
@@ -163,11 +187,15 @@ export class RoomTransactionFormComponent implements OnInit {
 
       this.roomTransactionService
         .editRoomTransaction(editTransactionParams)
-        .subscribe((result) => {
-          if (result) {
+        .subscribe(
+          (result) => {
+            this.blockUI.stop();
             this.dialogRef.close(result);
+          },
+          (error) => {
+            this.blockUI.stop();
           }
-        });
+        );
     }
   }
 }

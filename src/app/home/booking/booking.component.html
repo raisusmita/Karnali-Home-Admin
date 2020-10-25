@@ -1,54 +1,55 @@
-<div class="container">
-  <div class="main-container">
-    <div class="row">
-      <div class="col-lg-4">
-        <mat-card class="example-card">
-          <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Check Room Availablility </mat-card-title>
-            <mat-card-subtitle>Room Category</mat-card-subtitle>
-          </mat-card-header>
+<block-ui>
+  <div class="container">
+    <div class="main-container">
+      <div class="row">
+        <div class="col-lg-4">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Check Room Availablility </mat-card-title>
+              <mat-card-subtitle>Room Category</mat-card-subtitle>
+            </mat-card-header>
 
-          <mat-card-content>
-            <form #formHotel="ngForm" (ngSubmit)="submitRoomAvailableForm()">
-              <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>CheckIn Date</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="picker1"
-                  name="checkIn_date"
-                  required
-                  [(ngModel)]="roomAvailable.check_in_date"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="picker1"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-              </mat-form-field>
+            <mat-card-content>
+              <form #formHotel="ngForm" (ngSubmit)="submitRoomAvailableForm()">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>CheckIn Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker1"
+                    name="checkIn_date"
+                    required
+                    [(ngModel)]="roomAvailable.check_in_date"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker1"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
 
-              <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>CheckOut Date</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="picker2"
-                  name="checkOut_date"
-                  required
-                  [(ngModel)]="roomAvailable.check_out_date"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="picker2"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
-              </mat-form-field>
-              <button mat-raised-button class="button-blue">
-                <mat-icon>view_list</mat-icon>
-                Available Room
-              </button>
-            </form>
-          </mat-card-content>
-          <!-- <mat-card-actions>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>CheckOut Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker2"
+                    name="checkOut_date"
+                    required
+                    [(ngModel)]="roomAvailable.check_out_date"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker2"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+                <button mat-raised-button class="button-blue">
+                  <mat-icon>view_list</mat-icon>
+                  Available Room
+                </button>
+              </form>
+            </mat-card-content>
+            <!-- <mat-card-actions>
             <div class="example-container mat-elevation-z8">
               <table
                 #roomAvailableTable
@@ -80,171 +81,188 @@
               </table>
             </div>
           </mat-card-actions> -->
-        </mat-card>
-        <div class="example-container mat-elevation-z8">
-          <table
-            class="available-room"
-            #roomAvailableTable
-            mat-table
-            [dataSource]="roomAvailableDataSource"
-          >
-            <ng-container matColumnDef="room_category">
-              <th mat-header-cell *matHeaderCellDef>Room Category</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.category }}
-              </td>
-            </ng-container>
+          </mat-card>
+          <div class="example-container mat-elevation-z8">
+            <table
+              class="available-room"
+              #roomAvailableTable
+              mat-table
+              [dataSource]="roomAvailableDataSource"
+            >
+              <ng-container matColumnDef="room_category">
+                <th mat-header-cell *matHeaderCellDef>Room Category</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.category }}
+                </td>
+              </ng-container>
 
-            <ng-container matColumnDef="type">
-              <th mat-header-cell *matHeaderCellDef>Type</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.type }}
-              </td>
-            </ng-container>
+              <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Type</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.type }}
+                </td>
+              </ng-container>
 
-            <ng-container matColumnDef="price">
-              <th mat-header-cell *matHeaderCellDef>Price</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.price }}
-              </td>
-            </ng-container>
+              <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef>Price</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.price }}
+                </td>
+              </ng-container>
 
-            <ng-container matColumnDef="number_of_rooms">
-              <th mat-header-cell *matHeaderCellDef>Number of Rooms</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.totalNumber }}
-              </td>
-            </ng-container>
+              <ng-container matColumnDef="number_of_rooms">
+                <th mat-header-cell *matHeaderCellDef>Number of Rooms</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.totalNumber }}
+                </td>
+              </ng-container>
 
-            <tr
-              mat-header-row
-              *matHeaderRowDef="roomAvailableColumns; sticky: true"
-            ></tr>
-            <tr
-              mat-row
-              *matRowDef="let row; columns: roomAvailableColumns"
-            ></tr>
-          </table>
+              <tr
+                mat-header-row
+                *matHeaderRowDef="roomAvailableColumns; sticky: true"
+              ></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: roomAvailableColumns"
+              ></tr>
+            </table>
+          </div>
         </div>
-      </div>
-      <div class="col-lg-8">
-        <button mat-raised-button class="button-blue" (click)="addCustomer()">
-          <mat-icon>add</mat-icon>
-          Add Customer
-        </button>
-        <button mat-raised-button class="button-blue" (click)="addBooking()">
-          <mat-icon>add</mat-icon>
-          Add Booking
-        </button>
-        <mat-form-field>
-          <mat-label>Filter</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" />
-        </mat-form-field>
+        <div class="col-lg-8">
+          <button mat-raised-button class="button-blue" (click)="addCustomer()">
+            <mat-icon>add</mat-icon>
+            Add Customer
+          </button>
+          <button mat-raised-button class="button-blue" (click)="addBooking()">
+            <mat-icon>add</mat-icon>
+            Add Booking
+          </button>
+          <mat-form-field>
+            <mat-label>Filter</mat-label>
+            <input
+              matInput
+              (keyup)="applyFilter($event)"
+              placeholder="Ex. ium"
+            />
+          </mat-form-field>
 
-        <!-- <div class="table-container mat-elevation-z8"> -->
-        <table
-          #bookingTable
-          mat-table
-          [dataSource]="dataSource"
-          class="mat-elevation-z8"
-        >
-          <ng-container matColumnDef="full_name" sticky>
-            <th mat-header-cell *matHeaderCellDef>Customer Name</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.first_name }}
-              {{ element.middle_name }}
-              {{ element.last_name }}
-            </td>
-          </ng-container>
+          <div class="table-container mat-elevation-z8">
+            <table #bookingTable mat-table [dataSource]="dataSource">
+              <ng-container matColumnDef="full_name" sticky>
+                <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.first_name }}
+                  {{ element.middle_name }}
+                  {{ element.last_name }}
+                </td>
+              </ng-container>
 
-          <ng-container matColumnDef="room_category">
-            <th mat-header-cell *matHeaderCellDef>Room Category</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.room_category }}
-            </td>
-          </ng-container>
+              <ng-container matColumnDef="room_category">
+                <th mat-header-cell *matHeaderCellDef>Room Category</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.room_category }}
+                </td>
+              </ng-container>
 
-          <ng-container matColumnDef="number_of_adult">
-            <th mat-header-cell *matHeaderCellDef>Number of adult</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.number_of_adult }}
-            </td>
-          </ng-container>
+              <ng-container matColumnDef="number_of_adult">
+                <th mat-header-cell *matHeaderCellDef>Adult</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.number_of_adult }}
+                </td>
+              </ng-container>
 
-          <ng-container matColumnDef="number_of_child">
-            <th mat-header-cell *matHeaderCellDef>Number of child</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.number_of_child }}
-            </td>
-          </ng-container>
+              <ng-container matColumnDef="number_of_child">
+                <th mat-header-cell *matHeaderCellDef>Child</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.number_of_child }}
+                </td>
+              </ng-container>
 
-          <ng-container matColumnDef="number_of_rooms">
-            <th mat-header-cell *matHeaderCellDef>Number of room</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.number_of_rooms }}
-            </td>
-          </ng-container>
+              <ng-container matColumnDef="number_of_rooms">
+                <th mat-header-cell *matHeaderCellDef>Room</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.number_of_rooms }}
+                </td>
+              </ng-container>
 
-          <ng-container matColumnDef="room_number">
-            <th mat-header-cell *matHeaderCellDef>Room number</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.room_number }}
+              <ng-container matColumnDef="room_number">
+                <th mat-header-cell *matHeaderCellDef>Room number</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.room_number }}
 
-              <div *ngFor="let room of element.rooms">
-                <p>{{ room.room_number }}</p>
-              </div>
-            </td>
-          </ng-container>
+                  <div *ngFor="let room of element.rooms">
+                    <p>{{ room.room_number }}</p>
+                  </div>
+                </td>
+              </ng-container>
 
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="check_in_date">
-            <th mat-header-cell *matHeaderCellDef>Start Date</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.check_in_date | date }}
-            </td>
-          </ng-container>
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="check_in_date">
+                <th mat-header-cell *matHeaderCellDef>Start Date</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.check_in_date | date: "MM/dd/yyyy" }}
+                </td>
+              </ng-container>
 
-          <ng-container matColumnDef="check_out_date">
-            <th mat-header-cell *matHeaderCellDef>End Date</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.check_out_date | date }}
-            </td>
-          </ng-container>
+              <ng-container matColumnDef="check_out_date">
+                <th mat-header-cell *matHeaderCellDef>End Date</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.check_out_date | date: "MM/dd/yyyy" }}
+                </td>
+              </ng-container>
 
-          <ng-container matColumnDef="created_at">
-            <th mat-header-cell *matHeaderCellDef>Booking Date</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.created_at | date }}
-            </td>
-          </ng-container>
+              <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef>Booking Date</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.created_at | date: "MM/dd/yyyy" }}
+                </td>
+                <td mat-footer-cell *matFooterCellDef>Total</td>
+              </ng-container>
 
-          <ng-container matColumnDef="action" stickyEnd>
-            <th mat-header-cell *matHeaderCellDef>Action</th>
-            <td mat-cell *matCellDef="let element; let i = index">
-              <button mat-icon-button [matMenuTriggerFor]="menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button class="mat-menu-item" (click)="editBooking(element)">
-                  <mat-icon>create</mat-icon>
-                  <span>Edit</span>
-                </button>
-                <!-- <button
-                  class="mat-menu-item"
-                  (click)="deleteBooking(element.id)"
-                >
-                  <mat-icon>delete</mat-icon>
-                  <span>Delete</span>
-                </button> -->
-              </mat-menu>
-            </td>
-          </ng-container>
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button
+                      class="mat-menu-item"
+                      (click)="editBooking(element)"
+                    >
+                      <mat-icon>create</mat-icon>
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      class="mat-menu-item"
+                      (click)="cancelBooking(element.id)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                      <span>Cancel</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-        <!-- </div> -->
+              <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumns; sticky: true"
+              ></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+          <div class="pagination-footer mat-elevation-z8">
+            <mat-paginator
+              [length]="totalLength"
+              [pageSize]="pageSize"
+              [pageIndex]="pageIndex"
+              (page)="onPageChange($event)"
+              [pageSizeOptions]="pageSizeOptions"
+            >
+            </mat-paginator>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</block-ui>

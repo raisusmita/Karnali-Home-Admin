@@ -1,56 +1,58 @@
-<h2>Add New Room</h2>
-<form #formHotel="ngForm" (ngSubmit)="submitRoomForm()">
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Room Category</mat-label>
-    <mat-select [(ngModel)]="room.room_category_id" name="room">
-      <mat-option
-        *ngFor="let roomCategory of roomCategories"
-        [value]="roomCategory.id"
-      >
-        {{ roomCategory.room_category }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+<block-ui>
+  <h2>Add New Room</h2>
+  <form #formHotel="ngForm" (ngSubmit)="submitRoomForm()">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Room Category</mat-label>
+      <mat-select [(ngModel)]="room.room_category_id" name="room">
+        <mat-option
+          *ngFor="let roomCategory of roomCategories"
+          [value]="roomCategory.id"
+        >
+          {{ roomCategory.room_category }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Room Number</mat-label>
-    <input
-      matInput
-      name="room_number"
-      placeholder="Enter Number of Room"
-      [(ngModel)]="room.room_number"
-      required
-    />
-  </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Room Number</mat-label>
+      <input
+        matInput
+        name="room_number"
+        placeholder="Enter Number of Room"
+        [(ngModel)]="room.room_number"
+        required
+      />
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Number of Bed</mat-label>
-    <input
-      matInput
-      name="number_of_bed"
-      placeholder="Enter Number of bed"
-      [(ngModel)]="room.number_of_bed"
-      required
-    />
-  </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Number of Bed</mat-label>
+      <input
+        matInput
+        name="number_of_bed"
+        placeholder="Enter Number of bed"
+        [(ngModel)]="room.number_of_bed"
+        required
+      />
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Phone Number</mat-label>
-    <input
-      matInput
-      name="phone_number"
-      placeholder="Enter Room phone number"
-      [(ngModel)]="room.telephone_number"
-      required
-    />
-  </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Phone Number</mat-label>
+      <input
+        matInput
+        name="phone_number"
+        placeholder="Enter Room phone number"
+        [(ngModel)]="room.telephone_number"
+        required
+      />
+    </mat-form-field>
 
-  <button
-    [disabled]="!formHotel.valid"
-    mat-raised-button
-    type="submit"
-    color="primary"
-  >
-    CREATE
-  </button>
-</form>
+    <button
+      [disabled]="!formHotel.valid"
+      mat-raised-button
+      type="submit"
+      color="primary"
+    >
+      CREATE
+    </button>
+  </form>
+</block-ui>

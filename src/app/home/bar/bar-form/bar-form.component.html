@@ -1,0 +1,76 @@
+<block-ui>
+  <h2>Add New Bar</h2>
+  <form #formHotel="ngForm" (ngSubmit)="submitBarForm()">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Main Bar Category</mat-label>
+      <mat-select
+        [(ngModel)]="bar.main_bar_category_id"
+        name="mainBarCategory"
+        required
+      >
+        <mat-option
+          *ngFor="let mainBarCategory of mainBar"
+          [value]="mainBarCategory.id"
+        >
+          {{ mainBarCategory.main_bar_name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Sub Bar Category</mat-label>
+      <mat-select [(ngModel)]="bar.sub_bar_category_id" name="subBarCategory">
+        <mat-option
+          *ngFor="let subBarCategory of subBar"
+          [value]="subBarCategory.id"
+        >
+          {{ subBarCategory.sub_bar_name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Bar Name</mat-label>
+      <input
+        matInput
+        name="name"
+        placeholder="Enter Bar Name"
+        [(ngModel)]="bar.bar_name"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Quantity</mat-label>
+      <mat-select [(ngModel)]="bar.quantity" name="quantity">
+        <mat-option
+          *ngFor="let quantity of barQuantity | keyvalue"
+          [value]="quantity.key"
+        >
+          {{ quantity.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Bar Price</mat-label>
+      <input
+        matInput
+        type="number"
+        name="price"
+        placeholder="Enter Bar Price"
+        [(ngModel)]="bar.price"
+        required
+      />
+    </mat-form-field>
+
+    <button
+      [disabled]="!formHotel.valid"
+      mat-raised-button
+      type="submit"
+      color="primary"
+    >
+      CREATE
+    </button>
+  </form>
+</block-ui>

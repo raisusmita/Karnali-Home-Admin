@@ -1,0 +1,40 @@
+<block-ui>
+  <h2>Add Sub Bar</h2>
+  <form #formHotel="ngForm" (ngSubmit)="submitBarForm()">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Main Bar Category</mat-label>
+      <mat-select
+        [(ngModel)]="bar.main_bar_category_id"
+        name="mainBarCategory"
+        required
+      >
+        <mat-option
+          *ngFor="let mainBarCategory of mainBar"
+          [value]="mainBarCategory.id"
+        >
+          {{ mainBarCategory.main_bar_name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Sub Bar Name</mat-label>
+      <input
+        matInput
+        name="sub_bar_name"
+        placeholder="Enter sub bar name"
+        [(ngModel)]="bar.sub_bar_name"
+        required
+      />
+    </mat-form-field>
+
+    <button
+      [disabled]="!formHotel.valid"
+      mat-raised-button
+      type="submit"
+      color="primary"
+    >
+      CREATE
+    </button>
+  </form>
+</block-ui>

@@ -1,3 +1,4 @@
+import { NgBlockUI } from "ng-block-ui";
 import { DatePipe } from "@angular/common";
 import { MvReservation } from "./reservation.model";
 import { Component, OnInit } from "@angular/core";
@@ -11,6 +12,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { identifierModuleUrl } from "@angular/compiler";
 import { CustomerFormComponent } from "../customer/customer-form/customer-form.component";
 import { ToastrService } from "ngx-toastr";
+import { BlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-reservation",
@@ -47,6 +49,17 @@ export class ReservationComponent implements OnInit {
   checkOutDate: Date;
   availableRoomsByDate: any[];
   paramsDate: {};
+
+  pageSizeOptions = [10, 25, 50, 100];
+
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
+
+  @BlockUI() blockUI: NgBlockUI;
+
   constructor(
     private reservationService: ReservationService,
     private dialog: MatDialog,
@@ -56,35 +69,69 @@ export class ReservationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.pageSize = 10;
+    this.pageIndex = 0;
+    this.totalLength = 0;
+
+    this.skip = 0;
+    this.limit = this.pageSize;
+
+    this.getReservation();
+  }
+
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
     this.getReservation();
   }
 
   getReservation() {
-    this.reservationService.getReservation().subscribe((result) => {
-      const arr = [];
-      if (result && result.data) {
-        result.data.map((x) => {
-          arr.push({
-            id: x.id,
-            booking_id: x.booking_id ? x.booking_id : 0,
-            room_id: x.room.id,
-            room_number: x.room.room_number,
-            room_category: x.room.room_category.room_category,
-            room_category_id: x.room.room_category.id,
-            room_type: x.room.room_category.room_type,
-            customer_id: x.customer.id,
-            first_name: x.customer.first_name,
-            middle_name: x.customer.middle_name,
-            last_name: x.customer.last_name,
-            email: x.customer.email,
-            phone: x.customer.phone,
-            check_in_date: x.check_in_date,
-            check_out_date: x.check_out_date,
+    this.blockUI.start("Loading...");
+    const reservationParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+
+    this.reservationService.getReservationList(reservationParams).subscribe(
+      (result) => {
+        const arr = [];
+        if (result && result.data) {
+          this.totalLength = result.totalCount;
+
+          result.data.map((x) => {
+            arr.push({
+              id: x.id,
+              booking_id: x.booking_id ? x.booking_id : 0,
+              room_id: x.room.id,
+              room_number: x.room.room_number,
+              room_category: x.room.room_category.room_category,
+              room_category_id: x.room.room_category.id,
+              room_type: x.room.room_category.room_type,
+              customer_id: x.customer.id,
+              first_name: x.customer.first_name,
+              middle_name: x.customer.middle_name,
+              last_name: x.customer.last_name,
+              email: x.customer.email,
+              phone: x.customer.phone,
+              check_in_date: x.check_in_date,
+              check_out_date: x.check_out_date,
+            });
           });
-        });
-        this.dataSource = new MatTableDataSource(arr);
+          this.dataSource = new MatTableDataSource(arr);
+          this.blockUI.stop();
+        } else {
+          this.blockUI.stop();
+        }
+      },
+      (error) => {
+        this.blockUI.stop();
       }
-    });
+    );
   }
 
   addReservation() {
@@ -107,15 +154,6 @@ export class ReservationComponent implements OnInit {
   }
 
   editReservation(reservationData) {
-    // reservationData.check_in_date = this.datepipe.transform(
-    //   reservationData.check_in_date,
-    //   "M/d/y"
-    // );
-    // reservationData.check_out_date = this.datepipe.transform(
-    //   reservationData.check_out_date,
-    //   "M/d/y"
-    // );
-
     const dialogRef = this.dialog.open(ReservationFormComponent, {
       width: "50%",
       height: "700px",

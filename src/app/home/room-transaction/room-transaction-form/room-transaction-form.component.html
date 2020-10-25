@@ -1,202 +1,202 @@
-<h2 *ngIf="addForm">Add New Transaction</h2>
-<h2 *ngIf="editForm">Edit Transaction</h2>
-<form #formReservation="ngForm" (ngSubmit)="submitRoomTransactionForm()">
-  <div class="main-add-selector" *ngIf="addForm">
-    <div class="main-selector">
-      <section class="row">
-        <div class="col-md-6 col-lg-6">
-          <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Customer</mat-label>
-            <mat-select
-              name="room_number"
-              [(ngModel)]="roomTransaction.customer_id"
-              (ngModelChange)="onCustomerSelect($event)"
-            >
-              <mat-option
-                *ngFor="let customer of customers"
-                [value]="customer.id"
+<block-ui>
+  <h2 *ngIf="addForm">Add New Transaction</h2>
+  <h2 *ngIf="editForm">Edit Transaction</h2>
+  <form #formReservation="ngForm" (ngSubmit)="submitRoomTransactionForm()">
+    <div class="main-add-selector" *ngIf="addForm">
+      <div class="main-selector">
+        <section class="row">
+          <div class="col-md-6 col-lg-6">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Customer</mat-label>
+              <mat-select
+                name="room_number"
+                [(ngModel)]="roomTransaction.customer_id"
+                (ngModelChange)="onCustomerSelect($event)"
               >
-                {{ customer.first_name }}
-                {{ customer.middle_name }}
-                {{ customer.last_name + "  ( " + customer.phone + " )" }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-md-6 col-lg-6">
-          <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Table</mat-label>
-            <mat-select name="table">
-              <mat-option *ngFor="let table of tables" [value]="table.id">
-                {{ table.table_number }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </section>
-    </div>
-
-    <div class="main-content" *ngIf="roomList">
-      <section class="row">
-        <!-- <p>{{ room.room_id[0].room_number }}</p> -->
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-          <!-- Checkbox Column -->
-          <ng-container matColumnDef="select">
-            <mat-header-cell *matHeaderCellDef>
-              <mat-checkbox
-                (change)="$event ? masterToggle($event) : null"
-                [checked]="selection.hasValue() && isAllSelected()"
-                [indeterminate]="selection.hasValue() && !isAllSelected()"
-                [color]="primaryColor"
-                >All
-              </mat-checkbox>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let row">
-              <mat-checkbox
-                (click)="$event.stopPropagation()"
-                (change)="$event ? selection.toggle(row) : null"
-                [checked]="selection.isSelected(row)"
-                [color]="primaryColor"
-              >
-              </mat-checkbox>
-            </mat-cell>
-          </ng-container>
-
-          <!-- Position Column -->
-          <!-- <ng-container matColumnDef="room_id">
-            <th mat-header-cell *matHeaderCellDef>Room Id</th>
-            <td mat-cell *matCellDef="let element">{{ element.room_id }}</td>
-          </ng-container> -->
-
-          <!-- Name Column -->
-          <ng-container matColumnDef="room_number">
-            <th mat-header-cell *matHeaderCellDef>Room Number</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.room_number }}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="check_in_date">
-            <mat-header-cell *matHeaderCellDef>
-              <mat-label>CheckIn Date</mat-label>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element; let i = index">
-              <mat-form-field appearance="outline" class="datepickerIO">
-                <input
-                  matInput
-                  [matDatepicker]="pickerI_i"
-                  name="check_in_date[{{ i }}]"
-                  [(ngModel)]="element.check_in_date"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="pickerI_i"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #pickerI_i></mat-datepicker>
-              </mat-form-field>
-            </mat-cell>
-            <!-- <th mat-header-cell *matHeaderCellDef>Check In Date</th>
-                <td mat-cell *matCellDef="let element">
-              {{ element.check_in_date | date: "medium" }}
-            </td> -->
-          </ng-container>
-
-          <ng-container matColumnDef="room_category">
-            <th mat-header-cell *matHeaderCellDef>Room Category</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.room_category }}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="check_out_date">
-            <mat-header-cell *matHeaderCellDef>
-              <mat-label>CheckOut Date</mat-label>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element; let i = index">
-              <mat-form-field appearance="outline" class="datepickerIO">
-                <input
-                  matInput
-                  [matDatepicker]="pickerO_i"
-                  name="check_out_date[{{ i }}]"
-                  [(ngModel)]="element.check_out_date"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="pickerO_i"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #pickerO_i></mat-datepicker>
-              </mat-form-field>
-            </mat-cell>
-            <!-- <th mat-header-cell *matHeaderCellDef>Check Out Date</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.check_out_date | date: "medium" }}
-            </td> -->
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr
-            mat-row
-            *matRowDef="let row; columns: displayedColumns"
-            (click)="selection.toggle(row)"
-          ></tr>
-        </table>
-      </section>
-    </div>
-  </div>
-
-  <div class="main-edit-selector" *ngIf="editForm">
-    <div class="main-section">
-      <mat-accordion>
-        <mat-expansion-panel expanded>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Room No: {{ " " + roomTransaction.room_number }}
-            </mat-panel-title>
-            <mat-panel-description>
-              Room Category: {{ " " + roomTransaction.room_category + " " }}
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-
-          <div class="row">
-            <div class="col-lg-6">
-              <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>CheckIn Date</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="picker_i"
-                  name="check_in_date"
-                  [(ngModel)]="roomTransaction.check_in_date"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="picker_i"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker_i></mat-datepicker>
-              </mat-form-field>
-            </div>
-            <div class="col-lg-6">
-              <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>CheckOut Date</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="i_picker"
-                  name="check_out_date"
-                  [(ngModel)]="roomTransaction.check_out_date"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="i_picker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #i_picker></mat-datepicker>
-              </mat-form-field>
-            </div>
+                <mat-option
+                  *ngFor="let customer of customers"
+                  [value]="customer.id"
+                >
+                  {{ customer.first_name }}
+                  {{ customer.middle_name }}
+                  {{ customer.last_name + "  ( " + customer.phone + " )" }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
-  </div>
+          <div class="col-md-6 col-lg-6">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Table</mat-label>
+              <mat-select name="table">
+                <mat-option *ngFor="let table of tables" [value]="table.id">
+                  {{ table.table_number }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
 
-  <button mat-raised-button type="submit" color="primary">
-    CREATE
-  </button>
-</form>
+      <div class="main-content" *ngIf="roomList">
+        <section class="row">
+          <!-- <p>{{ room.room_id[0].room_number }}</p> -->
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+              <mat-header-cell *matHeaderCellDef>
+                <mat-checkbox
+                  (change)="$event ? masterToggle($event) : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                  [color]="primaryColor"
+                  >All
+                </mat-checkbox>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <mat-checkbox
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)"
+                  [color]="primaryColor"
+                >
+                </mat-checkbox>
+              </mat-cell>
+            </ng-container>
+
+            <!-- Position Column -->
+            <!-- <ng-container matColumnDef="room_id">
+              <th mat-header-cell *matHeaderCellDef>Room Id</th>
+              <td mat-cell *matCellDef="let element">{{ element.room_id }}</td>
+            </ng-container> -->
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="room_number">
+              <th mat-header-cell *matHeaderCellDef>Room Number</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.room_number }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="check_in_date">
+              <mat-header-cell *matHeaderCellDef>
+                <mat-label>CheckIn Date</mat-label>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element; let i = index">
+                <mat-form-field appearance="outline" class="datepickerIO">
+                  <input
+                    matInput
+                    [matDatepicker]="pickerI_i"
+                    name="check_in_date[{{ i }}]"
+                    [(ngModel)]="element.check_in_date"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="pickerI_i"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #pickerI_i></mat-datepicker>
+                </mat-form-field>
+              </mat-cell>
+              <!-- <th mat-header-cell *matHeaderCellDef>Check In Date</th>
+                  <td mat-cell *matCellDef="let element">
+                {{ element.check_in_date | date: "medium" }}
+              </td> -->
+            </ng-container>
+
+            <ng-container matColumnDef="room_category">
+              <th mat-header-cell *matHeaderCellDef>Room Category</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.room_category }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="check_out_date">
+              <mat-header-cell *matHeaderCellDef>
+                <mat-label>CheckOut Date</mat-label>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element; let i = index">
+                <mat-form-field appearance="outline" class="datepickerIO">
+                  <input
+                    matInput
+                    [matDatepicker]="pickerO_i"
+                    name="check_out_date[{{ i }}]"
+                    [(ngModel)]="element.check_out_date"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="pickerO_i"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #pickerO_i></mat-datepicker>
+                </mat-form-field>
+              </mat-cell>
+              <!-- <th mat-header-cell *matHeaderCellDef>Check Out Date</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.check_out_date | date: "medium" }}
+              </td> -->
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              (click)="selection.toggle(row)"
+            ></tr>
+          </table>
+        </section>
+      </div>
+    </div>
+
+    <div class="main-edit-selector" *ngIf="editForm">
+      <div class="main-section">
+        <mat-accordion>
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Room No: {{ " " + roomTransaction.room_number }}
+              </mat-panel-title>
+              <mat-panel-description>
+                Room Category: {{ " " + roomTransaction.room_category + " " }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+              <div class="col-lg-6">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>CheckIn Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker_i"
+                    name="check_in_date"
+                    [(ngModel)]="roomTransaction.check_in_date"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker_i"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #picker_i></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-6">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>CheckOut Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="i_picker"
+                    name="check_out_date"
+                    [(ngModel)]="roomTransaction.check_out_date"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="i_picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #i_picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+
+    <button mat-raised-button type="submit" color="primary">CREATE</button>
+  </form>
+</block-ui>

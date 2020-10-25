@@ -1,21 +1,40 @@
-<h2>Add Sub Food</h2>
-<form #formHotel="ngForm" (ngSubmit)="submitFoodForm()">
+<block-ui>
+  <h2>Add Sub Food</h2>
+  <form #formHotel="ngForm" (ngSubmit)="submitFoodForm()">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Main Food Category</mat-label>
+      <mat-select
+        [(ngModel)]="food.main_food_category_id"
+        name="mainFoodCategory"
+        required
+      >
+        <mat-option
+          *ngFor="let mainFoodCategory of mainFood"
+          [value]="mainFoodCategory.id"
+        >
+          {{ mainFoodCategory.main_food_name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Main Food Category</mat-label>
-    <mat-select [(ngModel)]="food.main_food_category_id" name="mainFoodCategory" required>
-      <mat-option *ngFor="let mainFoodCategory of mainFood" [value]="mainFoodCategory.id">
-        {{ mainFoodCategory.main_food_name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Sub Food Name</mat-label>
+      <input
+        matInput
+        name="sub_food_name"
+        placeholder="Enter sub food name"
+        [(ngModel)]="food.sub_food_name"
+        required
+      />
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Sub Food Name</mat-label>
-    <input matInput name="sub_food_name" placeholder="Enter sub food name" [(ngModel)]="food.sub_food_name" required />
-  </mat-form-field>
-
-  <button [disabled]="!formHotel.valid" mat-raised-button type="submit" color="primary">
-    CREATE
-  </button>
-</form>
+    <button
+      [disabled]="!formHotel.valid"
+      mat-raised-button
+      type="submit"
+      color="primary"
+    >
+      CREATE
+    </button>
+  </form>
+</block-ui>

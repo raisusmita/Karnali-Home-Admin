@@ -1,9 +1,9 @@
-import { EditRoomCategoryComponent } from "./edit-room-category/edit-room-category.component";
-import { NewRoomCategoryComponent } from "./new-room-category/new-room-category.component";
 import { RoomCategoryService } from "./room-category.service";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
+import { RoomCategoryFormComponent } from "./room-category-form/room-category-form.component";
 
 @Component({
   selector: "app-room-category",
@@ -11,10 +11,6 @@ import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete
   styleUrls: ["./room-category.component.scss"],
 })
 export class RoomCategoryComponent implements OnInit {
-  constructor(
-    private roomCategoryService: RoomCategoryService,
-    private dialog: MatDialog
-  ) { }
   displayedColumns: string[] = [
     "image",
     "room_category",
@@ -26,37 +22,92 @@ export class RoomCategoryComponent implements OnInit {
   selectedRowIndex: number;
   dataSource: any[];
   selectedRoomCategoryId: any;
+  @BlockUI() blockUI: NgBlockUI;
 
-  getRoomCategory() {
-    this.roomCategoryService.getRoomCategory().subscribe((data) => {
-      this.dataSource = data.data;
-    });
-  }
+  pageSizeOptions = [10, 25, 50, 100];
+
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
+
+  constructor(
+    private roomCategoryService: RoomCategoryService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
-    this.getRoomCategory();
+    this.pageSize = 10;
+    this.pageIndex = 0;
+    this.totalLength = 0;
+
+    this.skip = 0;
+    this.limit = this.pageSize;
+    this.getRoomCategoryList();
   }
 
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
+    this.getRoomCategoryList();
+  }
+  getRoomCategoryList() {
+    this.blockUI.start("Loading...");
+    const roomCatParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+
+    this.roomCategoryService.getRoomCategoryList(roomCatParams).subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.totalLength = result.totalCount;
+          this.dataSource = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
+  }
   onAddClick() {
-    const dialogRef = this.dialog.open(NewRoomCategoryComponent, {
+    const dialogRef = this.dialog.open(RoomCategoryFormComponent, {
       width: "50%",
+      height: "700px",
+      data: {
+        gridData: null,
+        formType: "Add",
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getRoomCategory();
+        this.getRoomCategoryList();
       }
     });
   }
 
   onEditClick(element) {
-    const dialogRef = this.dialog.open(NewRoomCategoryComponent, {
+    const dialogRef = this.dialog.open(RoomCategoryFormComponent, {
       width: "50%",
-      data: element,
+      height: "700px",
+      data: {
+        gridData: element,
+        formType: "Edit",
+      },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getRoomCategory();
+        this.getRoomCategoryList();
       }
     });
   }
@@ -75,7 +126,7 @@ export class RoomCategoryComponent implements OnInit {
           .deleteRoomCategory(this.selectedRoomCategoryId)
           .subscribe(
             (data) => {
-              this.getRoomCategory();
+              this.getRoomCategoryList();
               // console.log(result);
               // const newArray = [...this.dataSource];
               // newArray.splice(this.selectedRowIndex, 1);

@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from "@angular/core";
 import { MvFood, MvMainFood } from "../food-model";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { FoodService } from "../food.service";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-main-food-form",
@@ -12,13 +13,14 @@ export class MainFoodFormComponent implements OnInit {
   food: MvMainFood = {} as MvMainFood;
   isEdit = false;
   mainFood = [];
+  @BlockUI() blockUI: NgBlockUI;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private foodService: FoodService,
     private dialogRef: MatDialogRef<MainFoodFormComponent>
   ) {
-    if (data) {
+    if (data.gridData) {
       this.isEdit = true;
     }
   }
@@ -30,8 +32,8 @@ export class MainFoodFormComponent implements OnInit {
 
   getFood() {
     this.foodService.getFood().subscribe((data) => {
-      if (this.data) {
-        this.food = this.data;
+      if (this.data.gridData) {
+        this.food = this.data.gridData;
       }
     });
   }
@@ -43,17 +45,29 @@ export class MainFoodFormComponent implements OnInit {
   }
 
   submitFoodForm() {
+    this.blockUI.start("Loading...");
     if (this.isEdit) {
-      this.foodService.editMainFood(this.food).subscribe((e) => {
-        this.dialogRef.close(this.food);
-      });
+      this.foodService.editMainFood(this.food).subscribe(
+        (e) => {
+          this.blockUI.stop();
+
+          this.dialogRef.close(this.food);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     } else {
-      this.foodService.addMainFood(this.food).subscribe((e) => {
-        this.dialogRef.close(this.food);
-      });
+      this.foodService.addMainFood(this.food).subscribe(
+        (e) => {
+          this.blockUI.stop();
+
+          this.dialogRef.close(this.food);
+        },
+        (error) => {
+          this.blockUI.stop();
+        }
+      );
     }
   }
-
 }
-
-

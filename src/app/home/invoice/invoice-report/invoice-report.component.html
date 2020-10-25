@@ -1,0 +1,122 @@
+<div class="wrapper">
+  <div class="header">
+    <h2>Karnali Home</h2>
+    <h3>Restaurant and Bar</h3>
+    <p>Ekikaran Sadak, 44600 Kathmandu</p>
+    <span> Landline:01-5907017, 01-4362886 </span>
+    <hr />
+  </div>
+
+  <div class="invoice-detail">
+    <div class="row">
+      <div class="col-lg-9 col-md-9">
+        <div class="customer-info">
+          <p>Date:</p>
+          <p>
+            Customer Name:{{ firstName }} {{ middleName ? middleName : "" }}
+            {{ lastName }}
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <div class="invoice-info" *ngFor="let invoice of invoiceData">
+          <p>Invoice Number: {{ invoice.invoice.invoice_number }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <p><strong>Room Charge:</strong></p>
+    <table class="room-table">
+      <thead>
+        <tr>
+          <th scope="col">S.N</th>
+          <th scope="col">Room Category</th>
+          <th scope="col">Room Number</th>
+          <th scope="col">Room Type</th>
+          <th scope="col">Check In Date</th>
+          <th scope="col">Check Out Date</th>
+          <th scope="col">Number of Days</th>
+          <th scope="col">Rate per night</th>
+          <th scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactionData; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ transaction.roomDetail.room_category.room_category }}</td>
+          <td>{{ transaction.roomDetail.room_number }}</td>
+          <td>{{ transaction.roomDetail.room_category.room_type }}</td>
+          <td>{{ transaction.checkInDate | date }}</td>
+          <td>{{ transaction.checkOutDate | date }}</td>
+          <td>{{ transaction.numberOfDays }}</td>
+          <td>$ {{ transaction.rate }}</td>
+          <td>$ {{ transaction.amount }}</td>
+        </tr>
+        <tr *ngFor="let invoice of invoiceData">
+          <th>Sub-Total</th>
+          <td>{{ invoice.invoice.sub_total }}</td>
+          <!-- <td>{{ transactionData.invoice.sub_total }}</td> -->
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Food Charge:</strong></p>
+    <table class="food-table">
+      <thead>
+        <tr>
+          <th scope="col">S.N</th>
+          <th scope="col">Particular</th>
+          <th scope="col">Rate</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Chicken Momo</td>
+          <td>150</td>
+          <td>2</td>
+          <td>300</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="total-table" *ngFor="let invoice of invoiceData">
+      <tbody>
+        <tr>
+          <th scope="col">Service Charge</th>
+          <td>{{ invoice.invoice.service_charge }}%</td>
+        </tr>
+        <tr>
+          <th scope="col">VAT</th>
+          <td>{{ invoice.invoice.vat }}%</td>
+        </tr>
+        <tr>
+          <th scope="col">Tax</th>
+          <td>{{ invoice.invoice.tax }}%</td>
+        </tr>
+        <tr>
+          <th scope="col">Discount</th>
+          <td>{{ invoice.invoice.discount }}%</td>
+        </tr>
+        <tr>
+          <th scope="col">Grand Total</th>
+          <th class="total-amount">
+            {{ invoice.invoice.grand_total }}
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cashier-detail">
+    <h6>Cashier:</h6>
+  </div>
+
+  <div class="footer">
+    <p class="footer-text">Thank You for your visit in Karnali Home</p>
+  </div>
+</div>

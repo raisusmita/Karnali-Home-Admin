@@ -1,8 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { RoomService } from "./room.service";
 import { MatDialog } from "@angular/material/dialog";
 import { AddRoomComponent } from "./add-room/add-room.component";
 import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
+import { MatPaginator } from "@angular/material";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Component({
   selector: "app-room",
@@ -20,16 +22,60 @@ export class RoomComponent implements OnInit {
   selectedRowIndex: number;
   selectedRoomId: any;
 
+  @BlockUI() blockUI: NgBlockUI;
+
+  pageSizeOptions = [10, 25, 50, 100];
+
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
+
   constructor(private roomService: RoomService, private dialog: MatDialog) {}
 
   ngOnInit() {
-    this.getRoom();
-  }
+    this.pageSize = 10;
+    this.pageIndex = 0;
+    this.totalLength = 0;
 
-  getRoom() {
-    this.roomService.getRoom().subscribe((data) => {
-      this.dataSource = data.data;
-    });
+    this.skip = 0;
+    this.limit = this.pageSize;
+    this.getRoomList();
+  }
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
+    this.getRoomList();
+  }
+  getRoomList() {
+    this.blockUI.start("Loading...");
+
+    const roomParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+
+    this.roomService.getRoomList(roomParams).subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.totalLength = result.totalCount;
+          this.dataSource = result.data;
+        } else {
+          this.blockUI.stop();
+        }
+
+        this.blockUI.stop();
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addRoom() {
@@ -39,15 +85,16 @@ export class RoomComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.getRoom();
-      }
+      this.getRoomList();
     });
   }
   editRoom(roomEditData) {
     const dialogRef = this.dialog.open(AddRoomComponent, {
       width: "50%",
       data: roomEditData,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getRoomList();
     });
   }
 
@@ -59,7 +106,7 @@ export class RoomComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
         this.roomService.deleteRoom(index).subscribe((data) => {
-          this.getRoom();
+          this.getRoomList();
         });
       }
     });

@@ -1,26 +1,26 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { environment } from 'src/environments/environment';
+import { environment } from "src/environments/environment";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class FoodService {
-  private readonly baseURL = environment.apiURL + 'food';
+  private readonly baseURL = environment.apiURL + "food";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getFood(): Observable<any> {
     return this.http.get(this.baseURL);
   }
 
   getMainFood(): Observable<any> {
-    return this.http.get(environment.apiURL + 'mainFood');
+    return this.http.get(environment.apiURL + "mainFood");
   }
 
   getSubFood(): Observable<any> {
-    return this.http.get(environment.apiURL + 'subFood');
+    return this.http.get(environment.apiURL + "subFood");
   }
 
   getSubFoodAndFoodItemsById(id): Observable<any> {
@@ -28,7 +28,23 @@ export class FoodService {
   }
 
   getFoodHeader(): Observable<any> {
-    return this.http.get(environment.apiURL + 'foodHeader');
+    return this.http.get(environment.apiURL + "foodHeader");
+  }
+
+  getFoodList(foodParams): Observable<any> {
+    return this.http.post(environment.apiURL + "foodItemList", foodParams);
+  }
+
+  getMainFoodList(foodParams): Observable<any> {
+    return this.http.post(environment.apiURL + "mainFoodList", foodParams);
+  }
+
+  getSubFoodList(foodParams): Observable<any> {
+    return this.http.post(environment.apiURL + "subFoodList", foodParams);
+  }
+
+  getFoodHeaderList(foodParams): Observable<any> {
+    return this.http.post(environment.apiURL + "headerFoodList", foodParams);
   }
 
   addFood(food: any): Observable<any> {

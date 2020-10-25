@@ -9,4 +9,5 @@ export interface MvBooking {
   created_at: Date;
   room_id: number;
   booking_id: number;
+  status: string;
 }

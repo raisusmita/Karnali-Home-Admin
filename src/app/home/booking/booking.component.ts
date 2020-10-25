@@ -1,3 +1,4 @@
+import { ConfirmCommonDialogComponent } from "./../../shared/components/confirm-common-dialog/confirm-common-dialog.component";
 import { MvRoomAvailable } from "./room-available.model";
 import { MatDialog } from "@angular/material/dialog";
 import { BookingFormComponent } from "./booking-form/booking-form.component";
@@ -10,6 +11,9 @@ import { MatTableDataSource } from "@angular/material/table";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { ToastrService } from "ngx-toastr";
 import { CustomerFormComponent } from "../customer/customer-form/customer-form.component";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
+import { blockInstanceGuid } from "ng-block-ui/decorators/block-ui.decorator";
+import { PageEvent } from "@angular/material";
 
 @Component({
   selector: "app-booking",
@@ -50,6 +54,15 @@ export class BookingComponent implements OnInit {
   checkOutDate: Date;
   availableRoomsByDate: any[];
   paramsDate: {};
+  pageSizeOptions = [10, 25, 50, 100];
+
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
+
+  @BlockUI() blockUI: NgBlockUI;
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
@@ -58,9 +71,26 @@ export class BookingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.pageSize = 10;
+    this.pageIndex = 0;
+    this.totalLength = 0;
+
+    this.skip = 0;
+    this.limit = this.pageSize;
+
     this.getBookedRoom();
   }
 
+  onPageChange(e: any) {
+    if (e.pageIndex === 0) {
+      this.skip = 0;
+    } else {
+      this.skip = e.pageIndex * e.pageSize;
+    }
+    this.limit = e.pageSize;
+
+    this.getBookedRoom();
+  }
   addCustomer() {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       width: "50%",
@@ -79,41 +109,54 @@ export class BookingComponent implements OnInit {
     });
   }
   getBookedRoom() {
-    this.bookingService.getBookedRoom().subscribe((result) => {
-      const arr = [];
-      if (result && result.data) {
-        result.data.map((x) => {
-          arr.push({
-            id: x.id,
-            customer_id: x.customer.id,
-            first_name: x.customer.first_name,
-            middle_name: x.customer_middle_name,
-            last_name: x.customer.last_name,
-            room_category: x.room_category.room_category,
-            room_category_id: x.room_category.id,
-            number_of_adult: x.number_of_adult,
-            number_of_child: x.number_of_child,
-            number_of_rooms: x.number_of_rooms,
-            room_number: x.rooms.map((room) => {
-              return room.room_number;
-            }),
-            check_in_date: x.check_in_date,
-            check_out_date: x.check_out_date,
-            created_at: x.created_at,
-          });
-          // x.rooms.map((room) => {
-          //     room_number: room.room_number,
-          // });
-        });
-      }
-      this.dataSource = new MatTableDataSource(arr);
+    this.blockUI.start("Loading...");
 
-      // Define filter function to look for 'premiseId'matches
-      // tslint:disable-next-line: only-arrow-functions
-      // this.dataSource.filterPredicate = function (data, filter): boolean {
-      //   return data.id.toLowerCase().includes(filter);
-      // };
-    });
+    const bookingParams = {
+      limit: this.limit,
+      skip: this.skip,
+    };
+
+    this.bookingService.getBookingList(bookingParams).subscribe(
+      (result) => {
+        const arr = [];
+        if (result && result.data) {
+          this.totalLength = result.totalCount;
+          result.data.map((x) => {
+            arr.push({
+              id: x.id,
+              customer_id: x.customer.id,
+              first_name: x.customer.first_name,
+              middle_name: x.customer_middle_name,
+              last_name: x.customer.last_name,
+              room_category: x.room_category.room_category,
+              room_category_id: x.room_category.id,
+              number_of_adult: x.number_of_adult,
+              number_of_child: x.number_of_child,
+              number_of_rooms: x.number_of_rooms,
+              room_number: x.rooms.map((room) => {
+                return room.room_number;
+              }),
+              check_in_date: x.check_in_date,
+              check_out_date: x.check_out_date,
+              created_at: x.created_at,
+            });
+          });
+        } else {
+          this.blockUI.stop();
+        }
+        this.dataSource = new MatTableDataSource(arr);
+        this.blockUI.stop();
+
+        // Define filter function to look for 'premiseId'matches
+        // tslint:disable-next-line: only-arrow-functions
+        // this.dataSource.filterPredicate = function (data, filter): boolean {
+        //   return data.id.toLowerCase().includes(filter);
+        // };
+      },
+      (error) => {
+        this.blockUI.stop();
+      }
+    );
   }
 
   addBooking() {
@@ -155,17 +198,29 @@ export class BookingComponent implements OnInit {
     });
   }
 
-  deleteBooking(index) {
-    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+  cancelBooking(bookingId) {
+    const dialogRef = this.dialog.open(ConfirmCommonDialogComponent, {
       width: "50%",
+      data: {
+        gridData: null,
+        formType: "Cancel",
+        confirmationText: "Are you sure you want to cancel this booking?",
+        positiveResponse: "Yes ",
+        negativeResponse: "No",
+      },
     });
 
+    const cancelBookingParams = {
+      bookingId: bookingId,
+    };
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.bookingService.deleteBooking(index).subscribe((data) => {
-          this.getBookedRoom();
-        });
-        this.toastr.success("Booking deleted successfully", "Success!", {
+        this.bookingService
+          .cancelBooking(cancelBookingParams)
+          .subscribe((data) => {
+            this.getBookedRoom();
+          });
+        this.toastr.success("Booking cancel successfully", "Success!", {
           positionClass: "toast-top-right",
         });
       }

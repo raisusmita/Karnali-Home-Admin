@@ -23,8 +23,16 @@ export class BookingService {
     return this.http.post(this.baseURL + "booking", booking);
   }
 
+  getBookingList(bookingParams: any): Observable<any> {
+    return this.http.post(this.baseURL + "bookingList", bookingParams);
+  }
+
   editBooking(booking: any): Observable<any> {
     return this.http.put(this.baseURL + "booking/" + booking[0].id, booking);
+  }
+
+  cancelBooking(booking: any): Observable<any> {
+    return this.http.post(this.baseURL + "bookingCancelled", booking);
   }
 
   deleteBooking(id: any): Observable<any> {
