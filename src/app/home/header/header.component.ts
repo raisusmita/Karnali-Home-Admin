@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
       path: "room-transaction",
       icon: "description",
     },
-    // { name: "Invoice", path: "invoice", icon: "payment" },
+    { name: "Invoice", path: "invoice", icon: "payment" },
     { name: "User", path: "user", icon: "group" },
   ];
 
