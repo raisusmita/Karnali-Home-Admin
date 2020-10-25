@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit} from '@angular/core';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
@@ -7,9 +7,9 @@ import {RoomService} from '../room/room.service';
 import {FoodService} from '../food/food.service';
 
 @Component({
-  selector: "app-food-order",
-  templateUrl: "./food-order.component.html",
-  styleUrls: ["./food-order.component.scss"],
+  selector: 'app-food-order',
+  templateUrl: './food-order.component.html',
+  styleUrls: ['./food-order.component.scss'],
 })
 export class FoodOrderComponent implements OnInit {
   table = [];
@@ -26,27 +26,34 @@ export class FoodOrderComponent implements OnInit {
 
   mainFood = [];
   mainFoodSelectedId: number;
-  mainFoodCheckbox = [1];
+  foodHeader = {};
+  mainFoodCheckbox = [1, 2];
   foodList = {};
+
+  step = 0;
 
   subFoodShow = false;
 
-
-  constructor(public tableService: TableService, public roomService: RoomService, public foodService: FoodService) {}
+  constructor(
+    public tableService: TableService,
+    public roomService: RoomService,
+    public foodService: FoodService
+  ) {}
 
   ngOnInit() {
     this.getTable();
     this.getRooms();
     this.filteredTables = this.searchedTableValue.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterTable(value))
+      map((value) => this._filterTable(value))
     );
     this.filteredRooms = this.searchedRoomValue.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterRoom(value))
+      map((value) => this._filterRoom(value))
     );
 
     this.getMainFood();
+    this.getFoodHeader();
   }
 
   getTable() {
@@ -62,25 +69,39 @@ export class FoodOrderComponent implements OnInit {
   }
 
   getMainFood() {
-    this.foodService.getMainFood().subscribe(mainFood => {
+    this.foodService.getMainFood().subscribe((mainFood) => {
       this.mainFood = mainFood.data;
+    });
+  }
+
+  getFoodHeader() {
+    this.foodService.getFoodHeader().subscribe((header) => {
+      header.data.forEach(foodHead => {
+        this.foodHeader[foodHead.id] = foodHead.food_header;
+      });
     });
   }
 
   getSubFoodAndFoodItems(mainFoodValue) {
     this.mainFoodSelectedId = mainFoodValue.id;
 
-    if (!Object.keys(this.foodList).includes(this.mainFoodSelectedId.toString())) {
-      this.foodService.getSubFoodAndFoodItemsById({'id': mainFoodValue.id}).subscribe(subFoodItems => {
-        this.foodList[this.mainFoodSelectedId] = {
-          "subFood": [],
-          "foodItems": []
-        };
-        this.foodList[this.mainFoodSelectedId]['subFood'].push(...subFoodItems.data['subFood']);
-        this.foodList[this.mainFoodSelectedId]['foodItems'].push(...subFoodItems.data['foodItems']);
-      });
+    if (
+      !Object.keys(this.foodList).includes(this.mainFoodSelectedId.toString())
+    ) {
+      this.foodService
+        .getSubFoodAndFoodItemsById({ id: mainFoodValue.id })
+        .subscribe((subFoodItems) => {
+          this.foodList[this.mainFoodSelectedId] = {
+            subFood: [],
+            foodItems: {},
+          };
+          this.foodList[this.mainFoodSelectedId]['subFood'].push(
+            ...subFoodItems.data['subFood']
+          );
+          this.foodList[this.mainFoodSelectedId]['foodItems'] =
+            subFoodItems.data['foodItems'];
+        });
     }
-    console.log(this.foodList);
   }
 
   selectRoom(room) {
@@ -100,12 +121,19 @@ export class FoodOrderComponent implements OnInit {
     if (filterValue == '' || !filterValue) {
       return this.table;
     }
-    return this.table.filter(option => option.table_number.toLowerCase().includes(filterValue));
+    return this.table.filter((option) =>
+      option.table_number.toLowerCase().includes(filterValue)
+    );
   }
 
   private _filterRoom(value: string): string[] {
     const filterValue = value.toLowerCase().trim();
-    return this.room.filter(option => option.room_number.toLowerCase().includes(filterValue));
+    return this.room.filter((option) =>
+      option.room_number.toLowerCase().includes(filterValue)
+    );
   }
 
+  setStep(index: number) {
+    this.step = index;
+  }
 }
