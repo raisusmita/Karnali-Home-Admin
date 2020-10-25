@@ -31,7 +31,7 @@ export class RoomTransactionComponent implements OnInit {
     "status",
     "check_in_date",
     "check_out_date",
-    "action",
+    // "action",
   ];
   dataSource: MatTableDataSource<Element>;
   selection = new SelectionModel<Element>(true, []);

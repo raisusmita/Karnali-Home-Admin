@@ -20,6 +20,8 @@
                     name="checkIn_date"
                     required
                     [(ngModel)]="roomAvailable.check_in_date"
+                    (ngModelChange)="getCheckInDate($event)"
+
                   />
                   <mat-datepicker-toggle
                     matSuffix
@@ -36,6 +38,8 @@
                     name="checkOut_date"
                     required
                     [(ngModel)]="roomAvailable.check_out_date"
+                    (ngModelChange)="getCheckOutDate($event)"
+
                   />
                   <mat-datepicker-toggle
                     matSuffix
@@ -43,7 +47,9 @@
                   ></mat-datepicker-toggle>
                   <mat-datepicker #picker2></mat-datepicker>
                 </mat-form-field>
-                <button mat-raised-button class="button-blue">
+                <button mat-raised-button 
+                [disabled]="disableButton == true"
+                class="button-blue">
                   <mat-icon>view_list</mat-icon>
                   Available Room
                 </button>
