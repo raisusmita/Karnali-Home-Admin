@@ -172,7 +172,7 @@ export class ReservationFormComponent implements OnInit {
         }
         this.blockUI.stop();
       },
-      (error) => {
+      () => {
         this.blockUI.stop();
       }
     );
@@ -249,23 +249,23 @@ export class ReservationFormComponent implements OnInit {
 
   getBookingOrDirectReservation(customerId) {
     if (this.activeBookingList != null) {
-      this.activeBookingList.map((booking) => {
-        if (booking.customer_id == customerId) {
-          // For booked room
-          this.bookingId = booking.id;
-          this.byAvailable = false;
-          this.byBooking = true;
-          this.disableButton = false;
-        } else {
-          // For direct reservation show all the available rooms
-          this.getAvailableRoom();
-          this.byAvailable = true;
-          this.disableButton = true;
-          this.byBooking = false;
-          this.reservation.check_in_date = null;
-          this.reservation.check_out_date = null;
-        }
-      });
+      let bookingCustomer = this.activeBookingList.filter(booking=>booking.customer_id === customerId);
+
+      if(bookingCustomer.length==0 ){
+        // For direct reservation show all the available rooms
+        this.getAvailableRoom();
+        this.byAvailable = true;
+        this.disableButton = true;
+        this.byBooking = false;
+        this.reservation.check_in_date = null;
+        this.reservation.check_out_date = null;
+      }else{
+        // For booked room
+        this.bookingId = bookingCustomer[0].id;
+        this.byAvailable = false;
+        this.byBooking = true;
+        this.disableButton = false;
+      }
     } else {
       // For direct reservation show all the available rooms
       this.getAvailableRoom();
@@ -392,6 +392,7 @@ export class ReservationFormComponent implements OnInit {
         this.selectedCheckOutDate = new Date(
           data.check_out_date.getTime() - offsetCOut
         );
+        
 
         if (this.roomsByBooking.length > 0) {
           this.reservationParams.push({
@@ -466,7 +467,7 @@ export class ReservationFormComponent implements OnInit {
           this.roomsByBooking.length = 0;
           this.reservationParams = null;
         },
-        (error) => {
+        () => {
           this.blockUI.stop();
         }
       );
@@ -477,13 +478,11 @@ export class ReservationFormComponent implements OnInit {
           if (reservationResult) {
             this.roomsByBooking.length = 0;
             this.reservationParams = null;
-          } else {
-            this.blockUI.stop();
-          }
+          } 
           this.blockUI.stop();
           this.dialogRef.close(this.reservation);
         },
-        (error) => {
+        () => {
           this.blockUI.stop();
         }
       );
