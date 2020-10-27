@@ -64,7 +64,7 @@
         >
           <div
             class="main-food-checked"
-            *ngIf="mainFoodCheckbox.includes(mainFoodItem.id)"
+            *ngIf="mainFoodChecked[mainFoodItem.id]>0"
           >
             <img
               src="../../../assets/images/check_circle_outline-24px.svg"
@@ -88,8 +88,8 @@
           *ngFor="let subFoodItem of foodList[mainFoodSelectedId]['subFood']; let i = index"
         >
         Sub Food:
-          <mat-accordion class="example-headers-align">
-            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+          <mat-accordion class="example-headers-align" >
+            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)">
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   <h5>
@@ -103,7 +103,7 @@
                   {{ foodItem.key ? foodHeader[foodItem.key] : '' }}
                 </h6>
                 <div class="d-flex mb-3" *ngFor="let foodItemDetail of foodItem.value">
-                  <mat-checkbox [checked]="foodOrderList[foodItemDetail.id]" (change)="storeFoodOrder($event, foodItemDetail)">
+                  <mat-checkbox [checked]="foodOrderList[foodItemDetail.id]" color="primary" (change)="storeFoodOrder($event, foodItemDetail)">
                     {{ foodItemDetail.food_name }}
                   </mat-checkbox>
 
@@ -116,7 +116,9 @@
             </mat-expansion-panel>
           </mat-accordion>
         </div>
-
+        
+        <hr>
+        
       <div *ngIf="
           mainFoodSelectedId &&
           foodList[mainFoodSelectedId] &&
@@ -125,9 +127,9 @@
         <div class="mb-3" *ngFor="let foodItem of foodList[mainFoodSelectedId].foodItems | keyvalue; let i=index">
           Food Header:
           <mat-accordion class="example-headers-align">
-            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" class="custom-panel">
               <mat-expansion-panel-header>
-                <mat-panel-title>
+                <mat-panel-title >
                   <h5>
                     {{ foodItem.key ? foodHeader[foodItem.key] : 'Food Header'  }}
                   </h5>
@@ -136,7 +138,7 @@
           
               <div  *ngIf="foodItem.value">
                 <div class="d-flex mb-3" *ngFor="let foodItemDetail of foodItem.value">
-                    <mat-checkbox [checked]="foodOrderList[foodItemDetail.id]" (change)="storeFoodOrder($event, foodItemDetail)">
+                    <mat-checkbox [checked]="foodOrderList[foodItemDetail.id]" color="primary" (change)="storeFoodOrder($event, foodItemDetail)">
                       {{ foodItemDetail.food_name }}
                     </mat-checkbox>
                     <div class="border ml-3 p-1 w-5">

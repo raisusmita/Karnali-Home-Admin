@@ -27,7 +27,7 @@ export class FoodOrderComponent implements OnInit {
   mainFood = [];
   mainFoodSelectedId: number;
   foodHeader = {};
-  mainFoodCheckbox = [1, 2];
+  mainFoodChecked = {};
   foodList = {};
   foodOrderList = {};
 
@@ -129,9 +129,11 @@ export class FoodOrderComponent implements OnInit {
 
   private _filterRoom(value: string): string[] {
     const filterValue = value.toLowerCase().trim();
-    return this.room.filter((option) =>
-      option.room_number.toLowerCase().includes(filterValue)
-    );
+    if(this.room){
+      return this.room.filter((option) =>
+        option.room_number.toLowerCase().includes(filterValue)
+      );
+    }
   }
 
   storeFoodOrder(event, data) {
@@ -140,6 +142,7 @@ export class FoodOrderComponent implements OnInit {
       //Todo: Need to handle main food id as well
     } else {
       delete this.foodOrderList[data.id];
+      this.mainFoodChecked[data.main_food_category_id] -= 1;
     }
   }
 
@@ -156,7 +159,7 @@ export class FoodOrderComponent implements OnInit {
 
   saveNewFoodOrder(data, quantity=1){
     this.foodOrderList[data.id] = {};
-    this.foodOrderList[data.id]["food_id"] = data.id;
+    this.foodOrderList[data.id]["food_items_id"] = data.id;
     this.foodOrderList[data.id]["quantity"] = quantity;
     this.foodOrderList[data.id]["price"] = data.price;
     this.foodOrderList[data.id]["total_amount"] = data.price * this.foodOrderList[data.id]["quantity"];
@@ -164,6 +167,12 @@ export class FoodOrderComponent implements OnInit {
       this.foodOrderList[data.id]["room_id"] = parseInt(this.roomSelected);
     } else {
       this.foodOrderList[data.id]["table_id"] = parseInt(this.tableSelected);
+    }
+    if (this.mainFoodChecked[data.main_food_category_id])
+    {
+      this.mainFoodChecked[data.main_food_category_id] += 1;
+    } else{
+      this.mainFoodChecked[data.main_food_category_id] = 1;
     }
   }
 
