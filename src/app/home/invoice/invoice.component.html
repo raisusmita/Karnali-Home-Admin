@@ -1,20 +1,14 @@
 <block-ui>
     <div class="container">
-      <button mat-raised-button class="button-blue" >
-        <mat-icon>receipt</mat-icon>
-        Generate Bill
-      </button>
-  
       
       <div class="table-container mat-elevation-z8">
         <table #bookingTable mat-table [dataSource]="dataSource">
             <ng-container matColumnDef="action" >
                 <th mat-header-cell *matHeaderCellDef>Action</th>
                 <td mat-cell *matCellDef="let element">
-                    <button mat-raised-button class="button-blue" >
-                        <mat-icon>receipt</mat-icon>
-                        Generate Bill
-                      </button>
+                        <mat-icon #tooltip="matTooltip"
+                        matTooltip="Print" (click)="onPrint(element.id)"
+                        >print</mat-icon>
                 </td>
               </ng-container>
 

@@ -1,7 +1,9 @@
 import { InvoiceService } from './invoice.service';
 import { Component, OnInit } from "@angular/core";
-import { MatTableDataSource } from '@angular/material';
+import { MatDialog, MatTableDataSource } from '@angular/material';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { InvoiceDataService } from 'src/app/shared/services/invoice-data-service/invoice-data.service';
+import { ConfirmCommonDialogComponent } from 'src/app/shared/components/confirm-common-dialog/confirm-common-dialog.component';
 
 @Component({
   selector: "app-invoice",
@@ -12,7 +14,7 @@ export class InvoiceComponent implements OnInit {
   displayedColumns: string[] = [
     "action",
     "invoice_number",
-    "room_number",
+    // "room_number",
     "status",
     "sub_total",
     "discount",
@@ -20,6 +22,10 @@ export class InvoiceComponent implements OnInit {
 
   ];
   dataSource: MatTableDataSource<Element>;
+  invoiceData: any;
+  allData: any;
+  invoicelRelatedData: any;
+  transactionRelatedData: any;
 
   @BlockUI() blockUI: NgBlockUI;
 
@@ -30,7 +36,11 @@ export class InvoiceComponent implements OnInit {
   totalLength: number;
   limit: number;
   skip: number;
-  constructor(private invoiceService: InvoiceService) {}
+  constructor(
+    private invoiceService: InvoiceService,    
+    private data: InvoiceDataService,
+    private dialog: MatDialog,
+    ) {}
 
   ngOnInit() {
     this.initialize();
@@ -91,5 +101,44 @@ export class InvoiceComponent implements OnInit {
       }
     );
   }
+
+  onPrint(invoiceDetail){
+    const invoiceParams ={"invoiceId": invoiceDetail}
+    this.invoiceService.invoiceDetail(invoiceParams).subscribe(result=>{
+      
+      const invoiceParams = result.data;
+      const customerName = {
+        firstName: invoiceParams[0]["first_name"],
+        middleName: invoiceParams[0]["middle_name"],
+        lastName: invoiceParams[0]["last_name"],
+      };
+      this.data.changeCustomer(customerName);
+
+      this.invoiceService.addInvoice(invoiceParams).subscribe((result) => {
+        if (result) {
+          this.allData = result.data;
+          this.invoicelRelatedData = this.allData.filter(
+            (invoice) => invoice.invoice
+          );
+          this.allData.pop();
+
+          this.transactionRelatedData = this.allData;
+
+          this.data.changeInvoiceData(this.invoicelRelatedData);
+          this.data.changeTransactionData(this.transactionRelatedData);
+
+          this.onInvoiceGenerate();
+        }
+      });
+
+    })
+  }
+
+
+  onInvoiceGenerate() {
+    window.print();
+    this.initialize();
+  }
+
 
 }

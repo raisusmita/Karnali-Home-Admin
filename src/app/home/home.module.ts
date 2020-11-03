@@ -78,6 +78,7 @@ import { RoomTransactionFormComponent } from "./room-transaction/room-transactio
 import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.module";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { RoomCategoryFormComponent } from "./room-category/room-category-form/room-category-form.component";
 import { MainBarFormComponent } from "./bar/main-bar-form/main-bar-form.component";
 import { SubBarFormComponent } from "./bar/sub-bar-form/sub-bar-form.component";
@@ -150,6 +151,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
     MatExpansionModule,
     MatTreeModule,
     MatTabsModule,
+    MatTooltipModule,
     MatCheckboxModule,
     MatPaginatorModule,
     MatSortModule,

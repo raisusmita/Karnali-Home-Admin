@@ -19,6 +19,13 @@ export class InvoiceService {
     );
   }
 
+  invoiceDetail(invoiceParams): Observable<any> {
+    return this.http.post(
+      environment.apiURL + "invoiceDetail",
+      invoiceParams
+    );
+  }
+
   addInvoice(invoiceParams: any): Observable<any> {
     return this.http.post(this.baseURL + "invoices", invoiceParams );
   }

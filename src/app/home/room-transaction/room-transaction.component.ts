@@ -136,6 +136,7 @@ export class RoomTransactionComponent implements OnInit {
                 check_in_date: x.reservation.check_in_date,
                 check_out_date: x.reservation.check_out_date,
                 reservation_id: x.reservation.id,
+                callFrom:'transaction'
               });
             });
             this.dataSource = new MatTableDataSource(arr);
