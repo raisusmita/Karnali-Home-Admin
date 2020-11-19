@@ -110,14 +110,18 @@ export class FoodOrderComponent implements OnInit {
   selectRoom(room) {
     this.searchedTableValue.setValue("");
     this.tableSelected = null;
+    this.actualRoomId = null;
+    this.actualTableId = null;
     this.roomSelected = room;
+
   }
   
   selectTable(table) {
     this.searchedRoomValue.setValue("");
     this.roomSelected = null;
+    this.actualRoomId = null;
+    this.actualTableId = null;
     this.tableSelected = table;
-    // 
   }
 
   private _filterTable(value: string): string[] {
@@ -196,9 +200,11 @@ export class FoodOrderComponent implements OnInit {
     })
     this.foodService.addFoodOrder(Object.values(this.foodOrderList)).subscribe(
       (foodOrder) => {
-        console.log(foodOrder);
+        //TODO: Loader and toaster is required
+        // console.log(foodOrder);
       },
       (err) => {
+        // TODO: Toast message is required
         console.log(err);
       }
     );
