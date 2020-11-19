@@ -23,6 +23,8 @@ export class FoodOrderComponent implements OnInit {
 
   roomSelected = "";
   tableSelected = "";
+  actualRoomId = null;
+  actualTableId = null
 
   mainFood = [];
   mainFoodSelectedId: number;
@@ -110,11 +112,12 @@ export class FoodOrderComponent implements OnInit {
     this.tableSelected = null;
     this.roomSelected = room;
   }
-
+  
   selectTable(table) {
     this.searchedRoomValue.setValue("");
     this.roomSelected = null;
     this.tableSelected = table;
+    // 
   }
 
   private _filterTable(value: string): string[] {
@@ -151,7 +154,7 @@ export class FoodOrderComponent implements OnInit {
       this.foodOrderList[data.id]["quantity"] = parseInt(event.target.value);
       this.foodOrderList[data.id]["total_amount"] = data.price * this.foodOrderList[data.id]["quantity"];
     } else {
-      // Order value is by default is 1 to increase it by 1 for the first click
+      // Default Order value is 1, so to increase it by 1 on the first click quantity is set as 2
       const quantity = 2
       this.saveNewFoodOrder(data, quantity);
     }
@@ -163,20 +166,34 @@ export class FoodOrderComponent implements OnInit {
     this.foodOrderList[data.id]["quantity"] = quantity;
     this.foodOrderList[data.id]["price"] = data.price;
     this.foodOrderList[data.id]["total_amount"] = data.price * this.foodOrderList[data.id]["quantity"];
-    if (this.roomSelected) {
-      this.foodOrderList[data.id]["room_id"] = parseInt(this.roomSelected);
-    } else {
-      this.foodOrderList[data.id]["table_id"] = parseInt(this.tableSelected);
-    }
-    if (this.mainFoodChecked[data.main_food_category_id])
-    {
+    if (this.mainFoodChecked[data.main_food_category_id]) {
       this.mainFoodChecked[data.main_food_category_id] += 1;
-    } else{
+    } else {
       this.mainFoodChecked[data.main_food_category_id] = 1;
     }
   }
 
+  getRoomId(){
+    this.actualRoomId =  this.room.filter(room => room.room_number == this.roomSelected)[0].id;
+    return this.actualRoomId;
+  }
+
+  getTableId() {
+    this.actualTableId =  this.table.filter(tableData => tableData.table_number == this.tableSelected)[0].id;
+    return this.actualTableId;
+  }
+
+
   addFoodOrder(){
+    Object.values(this.foodOrderList).forEach(foodOrderItem=>{
+      if (this.roomSelected) {
+        foodOrderItem["room_id"] = this.actualRoomId || this.getRoomId();
+        delete foodOrderItem['table_id'];
+      } else {
+        foodOrderItem["table_id"] = this.actualTableId || this.getTableId();
+        delete foodOrderItem["room_id"];
+      }
+    })
     this.foodService.addFoodOrder(Object.values(this.foodOrderList)).subscribe(
       (foodOrder) => {
         console.log(foodOrder);

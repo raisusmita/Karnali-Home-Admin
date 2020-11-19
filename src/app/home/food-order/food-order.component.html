@@ -118,7 +118,7 @@
         </div>
         
         <hr>
-        
+
       <div *ngIf="
           mainFoodSelectedId &&
           foodList[mainFoodSelectedId] &&
@@ -142,7 +142,7 @@
                       {{ foodItemDetail.food_name }}
                     </mat-checkbox>
                     <div class="border ml-3 p-1 w-5">
-                      <input matInput type="number" value="1" min="1" (change)="maintainOrderQuantity($event, foodItemDetail)">
+                      <input matInput type="number" [value]="foodOrderList[foodItemDetail.id] ? foodOrderList[foodItemDetail.id]['quantity'] : '1'" min="1" (change)="maintainOrderQuantity($event, foodItemDetail)">
                     </div>
                 </div>
               </div>
