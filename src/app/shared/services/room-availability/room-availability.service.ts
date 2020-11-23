@@ -1,69 +1,69 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { Observable } from 'rxjs'
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class RoomAvailabilityService {
-  private readonly baseURL = "http://localhost:8000/api/";
+  private readonly baseURL = 'http://localhost:8000/api/'
   constructor(private http: HttpClient) {}
 
   getAvailableRooms(): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.get(this.baseURL + "available", options);
+      'Content-Type',
+      'application/json'
+    )
+    const options = { headers: httpHeaders }
+    return this.http.get(this.baseURL + 'available', options)
   }
 
   getUnavailableRooms(): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.get(this.baseURL + "unavailable", options);
+      'Content-Type',
+      'application/json'
+    )
+    const options = { headers: httpHeaders }
+    return this.http.get(this.baseURL + 'unavailable', options)
   }
 
   getRoomByBooking(bookingId: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
+      'Content-Type',
+      'application/json'
+    )
+    const options = { headers: httpHeaders }
     return this.http.post(
-      this.baseURL + "availableRoomByBookingId",
+      this.baseURL + 'availableRoomByBookingId',
       bookingId,
       options
-    );
+    )
   }
 
   getRoomListByCustomer(customerId: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
+      'Content-Type',
+      'application/json'
+    )
+    const options = { headers: httpHeaders }
     return this.http.post(
-      this.baseURL + "roomListByCustomerId",
+      this.baseURL + 'roomListByCustomerId',
       JSON.stringify(customerId),
       options
-    );
+    )
   }
 
   addRoomUnavailable(unavailableRoom: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
+      'Content-Type',
+      'application/json'
+    )
+    const options = { headers: httpHeaders }
     return this.http.post(
-      this.baseURL + "availableRoomByBooking",
+      this.baseURL + 'availableRoomByBooking',
       unavailableRoom,
       options
-    );
+    )
   }
 
   // getAvailableRoomsByDate(startDate, endDate): Observable<any> {
@@ -79,10 +79,10 @@ export class RoomAvailabilityService {
 
   getRoomAvailabilityByDate(dates: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
-      "Content-Type",
-      "application/json"
-    );
-    const options = { headers: httpHeaders };
-    return this.http.post(this.baseURL + "availableRoomByDate", dates, options);
+      'Content-Type',
+      'application/json'
+    )
+    const options = { headers: httpHeaders }
+    return this.http.post(this.baseURL + 'availableRoomByDate', dates, options)
   }
 }

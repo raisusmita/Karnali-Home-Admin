@@ -1,21 +1,21 @@
-import { Router } from "@angular/router";
-import { Injectable } from "@angular/core";
+import { Router } from '@angular/router'
+import { Injectable } from '@angular/core'
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class PrintService {
-  isPrinting = false;
+  isPrinting = false
   constructor(private router: Router) {}
 
   printInvoice(documentName: string) {
     this.router.navigate([
-      "/",
+      '/',
       {
         outlets: {
-          print: ["print", documentName],
-        },
-      },
-    ]);
+          print: ['print', documentName]
+        }
+      }
+    ])
   }
 }

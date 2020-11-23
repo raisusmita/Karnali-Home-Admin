@@ -1,49 +1,49 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
+import { HttpClient } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class RoomCategoryService {
   constructor(private http: HttpClient) {}
 
-  private readonly baseURL = environment.apiURL + "room_categories";
+  private readonly baseURL = environment.apiURL + 'room_categories'
 
   getRoomCategory(): Observable<any> {
-    return this.http.get(this.baseURL);
+    return this.http.get(this.baseURL)
   }
 
   getRoomCategoryList(roomCatParams): Observable<any> {
     return this.http.post(
-      environment.apiURL + "roomCategoryList",
+      environment.apiURL + 'roomCategoryList',
       roomCatParams
-    );
+    )
   }
 
   addRoomCategory(roomCategory: any): Observable<any> {
-    const formData = new FormData();
-    formData.append("room_category", roomCategory.room_category);
-    formData.append("room_type", roomCategory.room_type);
-    formData.append("room_price", roomCategory.room_price);
-    formData.append("number_of_rooms", roomCategory.number_of_rooms);
-    formData.append("image", roomCategory.image);
-    return this.http.post(this.baseURL, formData);
+    const formData = new FormData()
+    formData.append('room_category', roomCategory.room_category)
+    formData.append('room_type', roomCategory.room_type)
+    formData.append('room_price', roomCategory.room_price)
+    formData.append('number_of_rooms', roomCategory.number_of_rooms)
+    formData.append('image', roomCategory.image)
+    return this.http.post(this.baseURL, formData)
   }
 
   editRoomCategory(roomCategory: any): Observable<any> {
-    const formData = new FormData();
-    formData.append("id", roomCategory.id);
-    formData.append("room_category", roomCategory.room_category);
-    formData.append("room_type", roomCategory.room_type);
-    formData.append("room_price", roomCategory.room_price);
-    formData.append("number_of_rooms", roomCategory.number_of_rooms);
-    formData.append("image", roomCategory.image);
-    return this.http.post(environment.apiURL + "editRoomCategory", formData);
+    const formData = new FormData()
+    formData.append('id', roomCategory.id)
+    formData.append('room_category', roomCategory.room_category)
+    formData.append('room_type', roomCategory.room_type)
+    formData.append('room_price', roomCategory.room_price)
+    formData.append('number_of_rooms', roomCategory.number_of_rooms)
+    formData.append('image', roomCategory.image)
+    return this.http.post(environment.apiURL + 'editRoomCategory', formData)
   }
 
   deleteRoomCategory(id: any): Observable<any> {
-    return this.http.delete(this.baseURL + "/" + id);
+    return this.http.delete(this.baseURL + '/' + id)
   }
 }

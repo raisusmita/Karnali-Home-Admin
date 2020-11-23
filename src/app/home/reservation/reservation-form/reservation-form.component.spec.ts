@@ -1,25 +1,24 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ReservationFormComponent } from './reservation-form.component';
+import { ReservationFormComponent } from './reservation-form.component'
 
 describe('ReservationFormComponent', () => {
-  let component: ReservationFormComponent;
-  let fixture: ComponentFixture<ReservationFormComponent>;
+  let component: ReservationFormComponent
+  let fixture: ComponentFixture<ReservationFormComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReservationFormComponent ]
-    })
-    .compileComponents();
-  }));
+      declarations: [ReservationFormComponent]
+    }).compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReservationFormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(ReservationFormComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})
