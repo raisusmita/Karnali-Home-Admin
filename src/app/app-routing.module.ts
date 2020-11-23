@@ -17,6 +17,7 @@ import { HomeComponent } from "./home/home.component";
 import { UserComponent } from "./home/user/user.component";
 import { RoomAvailabilityComponent } from "./home/room-availability/room-availability.component";
 import { BarComponent } from './home/bar/bar.component';
+import { FoodOrderDetailComponent } from './home/food-order-detail/food-order-detail.component';
 const routes: Routes = [
   { path: "login", component: LoginComponent, canActivate: [AuthGuard] },
   {
@@ -30,6 +31,7 @@ const routes: Routes = [
       { path: "food", component: FoodComponent },
       { path: "bar", component: BarComponent },
       { path: "food-order", component: FoodOrderComponent },
+      { path: "food-order-detail", component: FoodOrderDetailComponent },
       { path: "reservation", component: ReservationComponent },
       { path: "booking", component: BookingComponent },
       { path: "invoice", component: InvoiceComponent },
