@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { BlockUI, NgBlockUI } from "ng-block-ui";
 import { MatDialog } from "@angular/material/dialog";
-import { FoodService } from '../food/food.service';
-
+import { FoodService } from "../food/food.service";
 
 @Component({
   selector: "app-food-order-detail",
@@ -15,8 +14,8 @@ export class FoodOrderDetailComponent implements OnInit {
     "price",
     "quantity",
     "total_amount",
-    "room_id",
-    "table_id",
+    "room_number",
+    "table_number",
     "invoice",
     "action",
   ];
@@ -53,8 +52,8 @@ export class FoodOrderDetailComponent implements OnInit {
     this.getFoodOrderList();
   }
 
-  getFoodOrderList(){
-this.blockUI.start("Loading...");
+  getFoodOrderList() {
+    this.blockUI.start("Loading...");
     const foodParams = {
       limit: this.limit,
       skip: this.skip,
