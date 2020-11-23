@@ -87,6 +87,7 @@ import { SubBarFormComponent } from "./bar/sub-bar-form/sub-bar-form.component";
 import { BarComponent } from "./bar/bar.component";
 import { BarFormComponent } from "./bar/bar-form/bar-form.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.component';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -125,6 +126,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
     RoomAvailabilityComponent,
     RoomAvailabilityFormComponent,
     RoomTransactionFormComponent,
+    FoodOrderDetailComponent,
   ],
   imports: [
     BrowserModule,

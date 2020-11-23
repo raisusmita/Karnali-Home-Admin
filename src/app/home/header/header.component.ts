@@ -24,6 +24,8 @@ export class HeaderComponent implements OnInit {
     { name: "Bar", path: "bar", icon: "local_bar" },
     { name: "Table", path: "table", icon: "weekend" },
     { name: "Food Order", path: "food-order", icon: "room_service" },
+
+    { name: "Food Order Details", path: "food-order-detail", icon: "room_service" },
     {
       name: "Transaction",
       path: "room-transaction",

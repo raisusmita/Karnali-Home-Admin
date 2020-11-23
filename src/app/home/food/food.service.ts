@@ -86,4 +86,8 @@ export class FoodService {
   addFoodOrder(food: any): Observable<any> {
     return this.http.post(`${environment.apiURL}foodOrder`, food);
   }
+
+  getFoodOrder(foodParams: any): Observable<any> {
+    return this.http.get(`${environment.apiURL}foodOrder`, foodParams);
+  }
 }
