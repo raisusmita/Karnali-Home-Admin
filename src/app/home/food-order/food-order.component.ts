@@ -189,26 +189,32 @@ export class FoodOrderComponent implements OnInit {
 
 
   addFoodOrder(){
-    Object.values(this.foodOrderList).forEach(foodOrderItem=>{
-      if (this.roomSelected) {
-        foodOrderItem["room_id"] = this.actualRoomId || this.getRoomId();
-        delete foodOrderItem['table_id'];
-      } else {
-        foodOrderItem["table_id"] = this.actualTableId || this.getTableId();
-        delete foodOrderItem["room_id"];
-      }
-    })
-    this.foodService.addFoodOrder(Object.values(this.foodOrderList)).subscribe(
-      (foodOrder) => {
-        //TODO: Loader and toaster is required
-        // console.log(foodOrder);
-      },
-      (err) => {
-        // TODO: Toast message is required
-        console.log(err);
-      }
-    );
-  }  
+    if (Object.values(this.foodOrderList).length>0) {
+      Object.values(this.foodOrderList).forEach((foodOrderItem) => {
+        if (this.roomSelected) {
+          foodOrderItem["room_id"] = this.actualRoomId || this.getRoomId();
+          delete foodOrderItem["table_id"];
+        } else {
+          foodOrderItem["table_id"] = this.actualTableId || this.getTableId();
+          delete foodOrderItem["room_id"];
+        }
+      });
+      this.foodService
+        .addFoodOrder(Object.values(this.foodOrderList))
+        .subscribe(
+          (foodOrder) => {
+            //TODO: Loader and toaster is required
+            // console.log(foodOrder);
+            this.mainFoodChecked = {};
+            this.foodOrderList = {};
+          },
+          (err) => {
+            // TODO: Toast message is required
+            console.log(err);
+          }
+        );
+    }  
+  }
 
   setStep(index: number) {
     this.step = index;
