@@ -31,9 +31,9 @@ export class HeaderComponent implements OnInit {
       path: 'room-transaction',
       icon: 'description'
     },
-    // { name: "Invoice", path: "invoice", icon: "payment" },
-    { name: 'User', path: 'user', icon: 'group' }
-  ]
+    { name: "Invoice", path: "invoice", icon: "payment" },
+    { name: "User", path: "user", icon: "group" },
+  ];
 
   constructor(private router: Router) {
     this.selectedPath = router.url.split('/')[1]

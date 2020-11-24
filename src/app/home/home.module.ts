@@ -81,6 +81,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.module";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { RoomCategoryFormComponent } from "./room-category/room-category-form/room-category-form.component";
 import { MainBarFormComponent } from "./bar/main-bar-form/main-bar-form.component";
 import { SubBarFormComponent } from "./bar/sub-bar-form/sub-bar-form.component";
@@ -156,6 +157,7 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
     MatExpansionModule,
     MatTreeModule,
     MatTabsModule,
+    MatTooltipModule,
     MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,

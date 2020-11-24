@@ -10,8 +10,8 @@
   <div class="invoice-detail">
     <div class="row">
       <div class="col-lg-9 col-md-9">
-        <div class="customer-info">
-          <p>Date:</p>
+        <div class="customer-info" *ngFor="let invoice of invoiceData">
+          <p>Date:{{invoice.invoice.created_at| date:'fullDate'}}</p>
           <p>
             Customer Name:{{ firstName }} {{ middleName ? middleName : "" }}
             {{ lastName }}
@@ -32,22 +32,20 @@
       <thead>
         <tr>
           <th scope="col">S.N</th>
-          <th scope="col">Room Category</th>
+          <!-- <th scope="col">Room Category</th> -->
           <th scope="col">Room Number</th>
-          <th scope="col">Room Type</th>
-          <th scope="col">Check In Date</th>
-          <th scope="col">Check Out Date</th>
+          <th scope="col">Check In</th>
+          <th scope="col">Check Out</th>
           <th scope="col">Number of Days</th>
-          <th scope="col">Rate per night</th>
+          <th scope="col">Rate</th>
           <th scope="col">Amount</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let transaction of transactionData; let i = index">
           <td>{{ i + 1 }}</td>
-          <td>{{ transaction.roomDetail.room_category.room_category }}</td>
-          <td>{{ transaction.roomDetail.room_number }}</td>
-          <td>{{ transaction.roomDetail.room_category.room_type }}</td>
+          <!-- <td>{{ transaction.roomDetail.room_category.room_category }}</td> -->
+          <td>{{ transaction.roomNumber }}</td>
           <td>{{ transaction.checkInDate | date }}</td>
           <td>{{ transaction.checkOutDate | date }}</td>
           <td>{{ transaction.numberOfDays }}</td>
@@ -95,10 +93,6 @@
           <td>{{ invoice.invoice.vat }}%</td>
         </tr>
         <tr>
-          <th scope="col">Tax</th>
-          <td>{{ invoice.invoice.tax }}%</td>
-        </tr>
-        <tr>
           <th scope="col">Discount</th>
           <td>{{ invoice.invoice.discount }}%</td>
         </tr>
@@ -110,13 +104,14 @@
         </tr>
       </tbody>
     </table>
-  </div>
 
-  <div class="cashier-detail">
-    <h6>Cashier:</h6>
-  </div>
 
-  <div class="footer">
-    <p class="footer-text">Thank You for your visit in Karnali Home</p>
+    <div class="cashier-detail">
+      <h6>Cashier:Karnali Home</h6>
+    </div>
+
+    <div class="footer">
+      <p class="footer-text">Thank You for your visit in Karnali Home</p>
+    </div>
   </div>
 </div>

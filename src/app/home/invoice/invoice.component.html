@@ -1,1 +1,78 @@
-<p>invoice works!</p>
+<block-ui>
+    <div class="container">
+      
+      <div class="table-container mat-elevation-z8">
+        <table #bookingTable mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="action" >
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                        <mat-icon #tooltip="matTooltip"
+                        matTooltip="Print" (click)="onPrint(element.id)"
+                        >print</mat-icon>
+                </td>
+              </ng-container>
+
+          <ng-container matColumnDef="invoice_number" >
+            <th mat-header-cell *matHeaderCellDef>Invoice Number</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.invoice_number}}
+            </td>
+          </ng-container>
+<!--   
+          <ng-container matColumnDef="room_number">
+            <th mat-header-cell *matHeaderCellDef>Room Number</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.room_number }}
+  
+              <div *ngFor="let room of element.rooms">
+                <p>{{ room.room_number }}</p>
+              </div>
+            </td>
+          </ng-container> -->
+          
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.status }}
+            </td>
+         </ng-container>
+
+         <ng-container matColumnDef="sub_total">
+            <th mat-header-cell *matHeaderCellDef>Sub Total</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.sub_total }}
+            </td>
+          </ng-container>
+  
+
+         <ng-container matColumnDef="discount">
+            <th mat-header-cell *matHeaderCellDef>Discount</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.discount }}
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="grand_total">
+            <th mat-header-cell *matHeaderCellDef>Grand Total</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.grand_total }}
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+      <div class="pagination-footer mat-elevation-z8">
+        <mat-paginator
+          [length]="totalLength"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          (page)="onPageChange($event)"
+          [pageSizeOptions]="pageSizeOptions"
+        >
+        </mat-paginator>
+      </div>
+    </div>
+  </block-ui>
+  

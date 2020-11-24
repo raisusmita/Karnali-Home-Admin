@@ -50,19 +50,22 @@ export class BookingComponent implements OnInit {
   roomAvailableDataSource: any[]
 
   // For Room Availability
-  checkInDate: Date
-  checkOutDate: Date
-  availableRoomsByDate: any[]
-  paramsDate: {}
-  pageSizeOptions = [10, 25, 50, 100]
+  checkInDate: Date;
+  checkOutDate: Date;
+  CI:Date;
+  CO:Date;
+  disableButton:boolean;
+  availableRoomsByDate: any[];
+  paramsDate: {};
+  pageSizeOptions = [10, 25, 50, 100];
 
-  pageSize: number
-  pageIndex: number
-  totalLength: number
-  limit: number
-  skip: number
+  pageSize: number;
+  pageIndex: number;
+  totalLength: number;
+  limit: number;
+  skip: number;
 
-  @BlockUI() blockUI: NgBlockUI
+  @BlockUI() blockUI: NgBlockUI;
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
@@ -158,6 +161,69 @@ export class BookingComponent implements OnInit {
       }
     )
   }
+
+  checkCILessThanCO(){
+    this.disableButton = true;
+    this.toastr.error(
+      "Checkin date should not be greater than checkout date",
+      "Warning!",
+      {
+        closeButton: true,
+        positionClass: "toast-top-right",
+      }
+    );
+  }
+
+  checkCICOWithToday(){
+    this.disableButton = true;
+    this.toastr.error(
+      "Booking cannot be made for past dates.",
+      "Warning!",
+      {
+        closeButton: true,
+        positionClass: "toast-top-right",
+      }
+    );
+  }
+
+  checkCICO(){
+
+    if(this.CI !=null && this.CO !=null){
+      let offsetCIn =this.CI.getTimezoneOffset() * 60000;
+      let offsetCOut = this.CO.getTimezoneOffset() * 60000;
+
+      this.CI = new Date(this.CI.getTime() - offsetCIn);
+      this.CO = new Date(this.CO.getTime() - offsetCOut);
+      
+      if(this.CI > this.CO){
+        this.checkCILessThanCO();
+      }else{
+        this.disableButton=false;
+      }
+    }
+
+    const today = new Date();
+    if(this.CI < today || this.CO <today){
+      this.checkCICOWithToday();
+    }else{
+      this.disableButton=false;
+
+    }
+
+  }
+
+  getCheckInDate(checkInDate){
+    this.CI = checkInDate;
+    this.checkCICO();
+  }
+
+  getCheckOutDate(checkOutDate){
+    this.CO = checkOutDate;
+    this.checkCICO();
+
+  }
+
+
 
   addBooking() {
     const dialogRef = this.dialog.open(BookingFormComponent, {

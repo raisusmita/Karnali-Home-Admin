@@ -48,12 +48,14 @@ export class BookingFormComponent implements OnInit {
   ]
 
   // For Room Availability
-  checkInDate: Date
-  checkOutDate: Date
-  roomCategoryId: Number
-  numberOfRooms: number
-  availableRoomsByDate: any[]
-  paramsDate: {}
+  checkInDate: Date;
+  checkOutDate: Date;
+  CI: Date;
+  CO:Date;
+  roomCategoryId: Number;
+  numberOfRooms: number;
+  availableRoomsByDate: any[];
+  paramsDate: {};
 
   available: any[] = []
   roomList: any[] = []
@@ -231,9 +233,71 @@ export class BookingFormComponent implements OnInit {
     this.getRoomAvailabilityByDate(this.paramsDate)
   }
 
+
+  checkMoreRoomThanAvailable(){
+    if (this.totalAvailableRoomCategory < this.booking.number_of_rooms) {
+      this.disableButton = true;
+      this.toastr.error(
+        "The number of room is greater than available room number",
+        "Warning!",
+        {
+          closeButton: true,
+          positionClass: "toast-top-right",
+        }
+      );
+    }
+  }
+
+  checkRoomCategory(){
+    if (!this.available.includes(true)) {
+      this.disableButton = true;
+      this.toastr.error(
+        "The room category is not available!",
+        "Warning!",
+        {
+          closeButton: true,
+          positionClass: "toast-top-right",
+        }
+      );
+    }
+  }
+
+  checkCILessThanCO(){
+    this.disableButton = true;
+    this.toastr.error(
+      "Checkin date should not be greater than checkout date",
+      "Warning!",
+      {
+        closeButton: true,
+        positionClass: "toast-top-right",
+      }
+    );
+  }
+
+  checkCICOWithToday(){
+    this.disableButton = true;
+    this.toastr.error(
+      "Booking cannot be made for past dates.",
+      "Warning!",
+      {
+        closeButton: true,
+        positionClass: "toast-top-right",
+      }
+    );
+  }
   getRoomAvailabilityByDate(dates) {
     this.disableButton = false
 
+    this.CI = dates.check_in_date;
+    this.CO = dates.check_out_date;
+    if(this.CI > this.CO){
+      this.checkCILessThanCO();
+    }
+
+    const today = new Date();
+    if(this.CI < today || this.CO <today){
+      this.checkCICOWithToday();
+    }
     if (
       dates.check_in_date != null &&
       dates.check_out_date != null &&
@@ -270,34 +334,10 @@ export class BookingFormComponent implements OnInit {
             })
           })
 
-          if (this.totalAvailableRoomCategory < this.booking.number_of_rooms) {
-            this.disableButton = true
-            this.toastr.error(
-              'The number of room is greater than available room number',
-              'Warning!',
-              {
-                closeButton: true,
-                positionClass: 'toast-top-right',
-                disableTimeOut: true
-              }
-            )
-          }
-
-          if (!this.available.includes(true)) {
-            this.disableButton = true
-            this.toastr.error(
-              'The room category is not available!',
-              'Warning!',
-              {
-                closeButton: true,
-                positionClass: 'toast-top-right',
-                disableTimeOut: true
-              }
-            )
-          }
-
-          this.available = []
-        })
+          this.checkMoreRoomThanAvailable();
+          this.checkRoomCategory();
+          this.available = [];
+        });
     }
   }
 
