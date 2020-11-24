@@ -1,46 +1,46 @@
-import { RoomTransactionService } from "./../room-transaction.service";
-import { MvRoomTransaction } from "./../room-transaction.model";
-import { TableService } from "./../../table/table.service";
-import { RoomAvailabilityService } from "src/app/shared/services/room-availability/room-availability.service";
-import { Component, OnInit, Inject } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { RoomService } from "../../room/room.service";
-import { CustomerService } from "../../customer/customer.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { SelectionModel, DataSource } from "@angular/cdk/collections";
-import { FormGroup } from "@angular/forms";
-import { ThemePalette } from "@angular/material/core";
-import { BlockUI, NgBlockUI } from "ng-block-ui";
+import { RoomTransactionService } from './../room-transaction.service'
+import { MvRoomTransaction } from './../room-transaction.model'
+import { TableService } from './../../table/table.service'
+import { RoomAvailabilityService } from 'src/app/shared/services/room-availability/room-availability.service'
+import { Component, OnInit, Inject } from '@angular/core'
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
+import { RoomService } from '../../room/room.service'
+import { CustomerService } from '../../customer/customer.service'
+import { MatTableDataSource } from '@angular/material/table'
+import { SelectionModel, DataSource } from '@angular/cdk/collections'
+import { FormGroup } from '@angular/forms'
+import { ThemePalette } from '@angular/material/core'
+import { BlockUI, NgBlockUI } from 'ng-block-ui'
 
 @Component({
-  selector: "app-room-transaction-form",
-  templateUrl: "./room-transaction-form.component.html",
-  styleUrls: ["./room-transaction-form.component.scss"],
+  selector: 'app-room-transaction-form',
+  templateUrl: './room-transaction-form.component.html',
+  styleUrls: ['./room-transaction-form.component.scss']
 })
 export class RoomTransactionFormComponent implements OnInit {
-  customers: any[] = [];
-  tables: any[] = [];
-  selectedRoom: any[] = [];
+  customers: any[] = []
+  tables: any[] = []
+  selectedRoom: any[] = []
 
-  addForm: boolean;
-  editForm: boolean;
-  roomTransaction: MvRoomTransaction = {} as MvRoomTransaction;
-  roomList: boolean;
+  addForm: boolean
+  editForm: boolean
+  roomTransaction: MvRoomTransaction = {} as MvRoomTransaction
+  roomList: boolean
   displayedColumns: string[] = [
-    "select",
+    'select',
     // "room_id",
-    "room_number",
-    "check_in_date",
-    "room_category",
-    "check_out_date",
-  ];
+    'room_number',
+    'check_in_date',
+    'room_category',
+    'check_out_date'
+  ]
 
-  dataSource: MatTableDataSource<Element>;
-  selection = new SelectionModel<Element>(true, []);
-  primaryColor: ThemePalette = "primary";
-  dateTry: Date;
+  dataSource: MatTableDataSource<Element>
+  selection = new SelectionModel<Element>(true, [])
+  primaryColor: ThemePalette = 'primary'
+  dateTry: Date
 
-  @BlockUI() blockUI: NgBlockUI;
+  @BlockUI() blockUI: NgBlockUI
 
   constructor(
     private customerService: CustomerService,
@@ -52,75 +52,75 @@ export class RoomTransactionFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.dateTry = new Date();
-    if (this.data.formType == "Add") {
-      this.addForm = true;
-      this.getCustomers();
-      this.getTables();
+    this.dateTry = new Date()
+    if (this.data.formType == 'Add') {
+      this.addForm = true
+      this.getCustomers()
+      this.getTables()
     } else {
-      this.editForm = true;
-      this.roomTransaction = this.data.gridData;
+      this.editForm = true
+      this.roomTransaction = this.data.gridData
       this.roomTransaction.check_in_date = new Date(
         this.roomTransaction.check_in_date
-      );
+      )
       this.roomTransaction.check_out_date = new Date(
         this.roomTransaction.check_out_date
-      );
+      )
     }
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+    const numSelected = this.selection.selected.length
+    const numRows = this.dataSource.data.length
+    return numSelected === numRows
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle($e) {
     this.isAllSelected()
       ? this.selection.clear()
-      : this.dataSource.data.forEach((row) => this.selection.select(row));
+      : this.dataSource.data.forEach((row) => this.selection.select(row))
   }
 
   getCustomers() {
     this.customerService.getCustomer().subscribe((result) => {
-      this.customers = result.data;
-    });
+      this.customers = result.data
+    })
   }
 
   getTables() {
-    this.blockUI.start("Loading...");
+    this.blockUI.start('Loading...')
     this.tableService.getTable().subscribe(
       (result) => {
         if (result && result.data) {
-          this.tables = result.data;
+          this.tables = result.data
         } else {
-          this.blockUI.stop();
+          this.blockUI.stop()
         }
-        this.blockUI.stop();
+        this.blockUI.stop()
       },
       (error) => {
-        this.blockUI.stop();
+        this.blockUI.stop()
       }
-    );
+    )
   }
 
   onCustomerSelect(customerId: any) {
     // clear the selected rows for previous customer
-    this.selection.clear();
-    this.roomList = false;
+    this.selection.clear()
+    this.roomList = false
     const paramsCustomerId = {
-      customer_id: customerId,
-    };
+      customer_id: customerId
+    }
 
     this.roomAvailabilityService
       .getRoomListByCustomer(paramsCustomerId)
       .subscribe((result) => {
         if (result.data != null) {
-          this.roomList = true;
+          this.roomList = true
         }
-        const arr = [];
+        const arr = []
         if (result && result.data) {
           result.data.map((x) => {
             arr.push({
@@ -130,72 +130,72 @@ export class RoomTransactionFormComponent implements OnInit {
               room_category_id: x.room_id[0].room_category.id,
               reservation_id: x.reservation_id,
               check_in_date: new Date(x.check_in_date),
-              check_out_date: new Date(x.check_out_date),
-            });
-          });
-          this.dataSource = new MatTableDataSource(arr);
+              check_out_date: new Date(x.check_out_date)
+            })
+          })
+          this.dataSource = new MatTableDataSource(arr)
         }
-      });
+      })
   }
 
   submitRoomTransactionForm() {
-    this.blockUI.start("Loading...");
+    this.blockUI.start('Loading...')
     if (this.addForm) {
-      this.selectedRoom = this.selection.selected;
+      this.selectedRoom = this.selection.selected
       this.selectedRoom.map((data) => {
-        const offsetCIn = data.check_in_date.getTimezoneOffset() * 60000;
-        const offsetCOut = data.check_out_date.getTimezoneOffset() * 60000;
+        const offsetCIn = data.check_in_date.getTimezoneOffset() * 60000
+        const offsetCOut = data.check_out_date.getTimezoneOffset() * 60000
 
-        data.check_in_date = new Date(data.check_in_date.getTime() - offsetCIn);
+        data.check_in_date = new Date(data.check_in_date.getTime() - offsetCIn)
         data.check_out_date = new Date(
           data.check_out_date.getTime() - offsetCOut
-        );
-      });
+        )
+      })
       this.roomTransactionService
         .addRoomTransaction(this.selectedRoom)
         .subscribe(
           (result) => {
             if (result) {
-              this.blockUI.stop();
-              this.dialogRef.close(result);
+              this.blockUI.stop()
+              this.dialogRef.close(result)
             } else {
-              this.blockUI.stop();
+              this.blockUI.stop()
             }
           },
           (error) => {
-            this.blockUI.stop();
+            this.blockUI.stop()
           }
-        );
+        )
     } else if (this.editForm) {
       const offsetCIn =
-        this.roomTransaction.check_in_date.getTimezoneOffset() * 60000;
+        this.roomTransaction.check_in_date.getTimezoneOffset() * 60000
       const offsetCOut =
-        this.roomTransaction.check_out_date.getTimezoneOffset() * 60000;
+        this.roomTransaction.check_out_date.getTimezoneOffset() * 60000
 
       this.roomTransaction.check_in_date = new Date(
         this.roomTransaction.check_in_date.getTime() - offsetCIn
-      );
+      )
       this.roomTransaction.check_out_date = new Date(
         this.roomTransaction.check_out_date.getTime() - offsetCOut
-      );
+      )
       const editTransactionParams = {
         reservation_id: this.roomTransaction.reservation_id,
         check_in_date: this.roomTransaction.check_in_date,
         check_out_date: this.roomTransaction.check_out_date,
-        rate: this.roomTransaction.rate,
-      };
+        rate: this.roomTransaction.rate
+      }
 
       this.roomTransactionService
         .editRoomTransaction(editTransactionParams)
         .subscribe(
           (result) => {
-            this.blockUI.stop();
-            this.dialogRef.close(result);
+            this.blockUI.stop()
+            this.dialogRef.close(result)
           },
           (error) => {
-            this.blockUI.stop();
+            this.blockUI.stop()
           }
-        );
+        )
     }
   }
 }

@@ -1,21 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthTokenService {
-
-  constructor() { }
+  constructor() {}
 
   public getToken(): string {
-    return localStorage.getItem('token');
+    return localStorage.getItem('token')
   }
 
   public isAuthenticated(): boolean {
-    const token = this.getToken();
+    const token = this.getToken()
     if (token) {
-      return true;
+      return true
     }
-    return false;
+    return false
   }
 }
