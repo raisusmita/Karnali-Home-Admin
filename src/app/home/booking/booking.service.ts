@@ -1,41 +1,41 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
+import { Injectable } from '@angular/core'
+import { HttpClient } from '@angular/common/http'
+import { Observable } from 'rxjs'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class BookingService {
-  private readonly baseURL = environment.apiURL;
+  private readonly baseURL = environment.apiURL
 
   constructor(private http: HttpClient) {}
 
   getBooking(): Observable<any> {
-    return this.http.get(this.baseURL + "booking");
+    return this.http.get(this.baseURL + 'booking')
   }
 
   getBookedRoom(): Observable<any> {
-    return this.http.get(this.baseURL + "booked_rooms");
+    return this.http.get(this.baseURL + 'booked_rooms')
   }
 
   addBooking(booking: any): Observable<any> {
-    return this.http.post(this.baseURL + "booking", booking);
+    return this.http.post(this.baseURL + 'booking', booking)
   }
 
   getBookingList(bookingParams: any): Observable<any> {
-    return this.http.post(this.baseURL + "bookingList", bookingParams);
+    return this.http.post(this.baseURL + 'bookingList', bookingParams)
   }
 
   editBooking(booking: any): Observable<any> {
-    return this.http.put(this.baseURL + "booking/" + booking[0].id, booking);
+    return this.http.put(this.baseURL + 'booking/' + booking[0].id, booking)
   }
 
   cancelBooking(booking: any): Observable<any> {
-    return this.http.post(this.baseURL + "bookingCancelled", booking);
+    return this.http.post(this.baseURL + 'bookingCancelled', booking)
   }
 
   deleteBooking(id: any): Observable<any> {
-    return this.http.delete(this.baseURL + "booking/" + id);
+    return this.http.delete(this.baseURL + 'booking/' + id)
   }
 }

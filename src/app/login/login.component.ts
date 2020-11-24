@@ -1,16 +1,16 @@
-import { MvUser } from "./user-model";
-import { Component, OnInit, Inject } from "@angular/core";
-import { LOCAL_STORAGE, WebStorageService } from "angular-webstorage-service";
-import { Router } from "@angular/router";
-import { UserAuthService } from "../user-auth.service";
+import { MvUser } from './user-model'
+import { Component, OnInit, Inject } from '@angular/core'
+import { LOCAL_STORAGE, WebStorageService } from 'angular-webstorage-service'
+import { Router } from '@angular/router'
+import { UserAuthService } from '../user-auth.service'
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.scss"],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  user: MvUser = {} as MvUser;
+  user: MvUser = {} as MvUser
 
   constructor(
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
@@ -24,15 +24,15 @@ export class LoginComponent implements OnInit {
     this.userAuthService.loginUser(this.user).subscribe(
       (e) => {
         if (e.token) {
-          localStorage.setItem("token", e.token.token);
-          this.router.navigate(["/dashboard"]);
+          localStorage.setItem('token', e.token.token)
+          this.router.navigate(['/dashboard'])
         } else {
-          localStorage.setItem("token", "");
+          localStorage.setItem('token', '')
         }
       },
       (error) => {
-        localStorage.setItem("token", "");
+        localStorage.setItem('token', '')
       }
-    );
+    )
   }
 }
