@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { BlockUI, NgBlockUI } from "ng-block-ui";
 import { MatDialog } from "@angular/material/dialog";
 import { FoodService } from "../food/food.service";
+import { RoomService } from "../room/room.service";
+import { TableService } from "../table/table.service";
 
 @Component({
   selector: "app-food-order-detail",
@@ -19,7 +21,7 @@ export class FoodOrderDetailComponent implements OnInit {
     "invoice",
     "action",
   ];
-  dataSource: any[];
+  foodItemList: any[];
 
   @BlockUI() blockUI: NgBlockUI;
 
@@ -31,7 +33,12 @@ export class FoodOrderDetailComponent implements OnInit {
   limit: number;
   skip: number;
 
-  constructor(private foodService: FoodService, private dialog: MatDialog) {}
+  constructor(
+    private foodService: FoodService,
+    private roomService: RoomService,
+    private tableService: TableService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.pageSize = 10;
@@ -62,8 +69,7 @@ export class FoodOrderDetailComponent implements OnInit {
       (result) => {
         if (result && result.data) {
           this.totalLength = result.totalCount;
-          this.dataSource = result.data;
-          console.log(result);
+          this.foodItemList = result.data;
         }
         this.blockUI.stop();
       },
