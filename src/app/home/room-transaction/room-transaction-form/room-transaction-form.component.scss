@@ -18,3 +18,12 @@ table.mat-table {
 .datepickerIO {
   width: 150px;
 }
+
+tr.transaction-detail-row {
+  height: 0;
+}
+
+.transaction-element-detail {
+  overflow: hidden;
+  padding-left: 50px;
+}

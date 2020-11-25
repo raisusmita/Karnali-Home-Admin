@@ -216,7 +216,7 @@ export class RoomTransactionComponent implements OnInit {
 
   onAddClick() {
     const dialogRef = this.dialog.open(RoomTransactionFormComponent, {
-      width: '50%',
+      width: '60%',
       height: '700px',
       data: {
         gridData: null,
@@ -236,7 +236,7 @@ export class RoomTransactionComponent implements OnInit {
 
   editRoomTransaction(transParams) {
     const dialogRef = this.dialog.open(RoomTransactionFormComponent, {
-      width: '50%',
+      width: '60%',
       height: '700px',
       data: {
         gridData: transParams,

@@ -11,11 +11,20 @@ import { SelectionModel, DataSource } from '@angular/cdk/collections'
 import { FormGroup } from '@angular/forms'
 import { ThemePalette } from '@angular/material/core'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
+import { animate, state, style, transition, trigger } from '@angular/animations';
+
 
 @Component({
   selector: 'app-room-transaction-form',
   templateUrl: './room-transaction-form.component.html',
-  styleUrls: ['./room-transaction-form.component.scss']
+  styleUrls: ['./room-transaction-form.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class RoomTransactionFormComponent implements OnInit {
   customers: any[] = []
@@ -32,9 +41,12 @@ export class RoomTransactionFormComponent implements OnInit {
     'room_number',
     'check_in_date',
     'room_category',
-    'check_out_date'
+    'check_out_date',
+    'view_foods'
   ]
-
+  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
+  expandedElement: any;
+  
   dataSource: MatTableDataSource<Element>
   selection = new SelectionModel<Element>(true, [])
   primaryColor: ThemePalette = 'primary'
@@ -123,6 +135,7 @@ export class RoomTransactionFormComponent implements OnInit {
         const arr = []
         if (result && result.data) {
           result.data.map((x) => {
+            console.log(x.room_id[0].food_orders)
             arr.push({
               room_id: x.room_id[0].id,
               room_number: x.room_id[0].room_number,
@@ -130,10 +143,12 @@ export class RoomTransactionFormComponent implements OnInit {
               room_category_id: x.room_id[0].room_category.id,
               reservation_id: x.reservation_id,
               check_in_date: new Date(x.check_in_date),
-              check_out_date: new Date(x.check_out_date)
+              check_out_date: new Date(x.check_out_date),
+              food_details:x.room_id[0].food_orders
             })
           })
           this.dataSource = new MatTableDataSource(arr)
+
         }
       })
   }
