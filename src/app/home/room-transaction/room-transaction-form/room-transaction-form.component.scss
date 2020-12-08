@@ -19,6 +19,7 @@ table.mat-table {
   width: 150px;
 }
 
+// For table expansion
 tr.transaction-detail-row {
   height: 0;
 }
@@ -26,4 +27,21 @@ tr.transaction-detail-row {
 .transaction-element-detail {
   overflow: hidden;
   padding-left: 50px;
+}
+
+// table inside expansion
+.table td,
+.table th {
+  padding: 0.5rem;
+  color: #757575;
+  font-size: 13px;
+}
+
+.noDataFound {
+  height: 80px;
+  padding: 15px 0px;
+  width: 100%;
+  .noRecordsMessage {
+    text-align: center;
+  }
 }

@@ -35,6 +35,8 @@ export class RoomTransactionFormComponent implements OnInit {
   editForm: boolean
   roomTransaction: MvRoomTransaction = {} as MvRoomTransaction
   roomList: boolean
+  food_total_amount:number;
+  displayFood:boolean;
   displayedColumns: string[] = [
     'select',
     // "room_id",
@@ -118,6 +120,7 @@ export class RoomTransactionFormComponent implements OnInit {
     )
   }
 
+
   onCustomerSelect(customerId: any) {
     // clear the selected rows for previous customer
     this.selection.clear()
@@ -134,21 +137,33 @@ export class RoomTransactionFormComponent implements OnInit {
         }
         const arr = []
         if (result && result.data) {
-          result.data.map((x) => {
-            console.log(x.room_id[0].food_orders)
+          this.food_total_amount=0;
+          result.data.map((roomData) => {
+            roomData.room_id[0].food_orders.map(foodData=>{
+              this.food_total_amount = this.food_total_amount + parseFloat(foodData.total_amount);
+            })
+
+            if(roomData.room_id[0].food_orders.length ==0){
+              this.displayFood = false;
+            }else{
+              this.displayFood = true;
+            }
+
+            console.log(this.displayFood)
+
             arr.push({
-              room_id: x.room_id[0].id,
-              room_number: x.room_id[0].room_number,
-              room_category: x.room_id[0].room_category.room_category,
-              room_category_id: x.room_id[0].room_category.id,
-              reservation_id: x.reservation_id,
-              check_in_date: new Date(x.check_in_date),
-              check_out_date: new Date(x.check_out_date),
-              food_details:x.room_id[0].food_orders
+              room_id: roomData.room_id[0].id,
+              room_number: roomData.room_id[0].room_number,
+              room_category: roomData.room_id[0].room_category.room_category,
+              room_category_id: roomData.room_id[0].room_category.id,
+              reservation_id: roomData.reservation_id,
+              check_in_date: new Date(roomData.check_in_date),
+              check_out_date: new Date(roomData.check_out_date),
+              displayFood:this.displayFood,
+              food_details:roomData.room_id[0].food_orders
             })
           })
           this.dataSource = new MatTableDataSource(arr)
-
         }
       })
   }
