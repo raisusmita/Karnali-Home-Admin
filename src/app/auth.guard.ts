@@ -1,28 +1,28 @@
-import { Injectable } from "@angular/core";
-import { CanActivate, Router, CanActivateChild } from "@angular/router";
-import { AuthTokenService } from "./shared/services/auth-token-service/auth-token.service";
+import { Injectable } from '@angular/core'
+import { CanActivate, Router, CanActivateChild } from '@angular/router'
+import { AuthTokenService } from './shared/services/auth-token-service/auth-token.service'
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private authToken: AuthTokenService, private router: Router) {}
 
   canActivate(): boolean {
     if (this.authToken.isAuthenticated()) {
-      this.router.navigate(["/"]);
-      return false;
+      this.router.navigate(['/'])
+      return false
     } else {
-      return true;
+      return true
     }
   }
 
   canActivateChild(): boolean {
     if (this.authToken.isAuthenticated()) {
-      return true;
+      return true
     } else {
-      this.router.navigate(["/login"]);
-      return false;
+      this.router.navigate(['/login'])
+      return false
     }
   }
 }

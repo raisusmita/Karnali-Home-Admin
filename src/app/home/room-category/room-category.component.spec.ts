@@ -1,25 +1,24 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { RoomCategoryComponent } from './room-category.component';
+import { RoomCategoryComponent } from './room-category.component'
 
 describe('RoomCategoryComponent', () => {
-  let component: RoomCategoryComponent;
-  let fixture: ComponentFixture<RoomCategoryComponent>;
+  let component: RoomCategoryComponent
+  let fixture: ComponentFixture<RoomCategoryComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RoomCategoryComponent ]
-    })
-    .compileComponents();
-  }));
+      declarations: [RoomCategoryComponent]
+    }).compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RoomCategoryComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(RoomCategoryComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

@@ -7,9 +7,9 @@ import {RoomService} from '../room/room.service';
 import {FoodService} from '../food/food.service';
 
 @Component({
-  selector: "app-food-order",
-  templateUrl: "./food-order.component.html",
-  styleUrls: ["./food-order.component.scss"],
+  selector: 'app-food-order',
+  templateUrl: './food-order.component.html',
+  styleUrls: ['./food-order.component.scss']
 })
 export class FoodOrderComponent implements OnInit {
   table = [];

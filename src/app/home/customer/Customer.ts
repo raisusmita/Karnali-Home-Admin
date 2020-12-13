@@ -1,4 +1,4 @@
 interface Customer {
-  value: number;
-  viewValue: string;
+  value: number
+  viewValue: string
 }

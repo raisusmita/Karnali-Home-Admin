@@ -1,64 +1,67 @@
-import { NgBlockUI } from "ng-block-ui";
-import { DatePipe } from "@angular/common";
-import { MvReservation } from "./reservation.model";
-import { Component, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { ReservationService } from "./reservation.service";
-import { ReservationFormComponent } from "./reservation-form/reservation-form.component";
-import { ConfirmDeleteComponent } from "src/app/shared/components/confirm-delete/confirm-delete.component";
-import { RoomAvailabilityService } from "src/app/shared/services/room-availability/room-availability.service";
-import { MvRoomAvailable } from "../booking/room-available.model";
-import { MatTableDataSource } from "@angular/material/table";
-import { identifierModuleUrl } from "@angular/compiler";
-import { CustomerFormComponent } from "../customer/customer-form/customer-form.component";
-import { ToastrService } from "ngx-toastr";
-import { BlockUI } from "ng-block-ui";
+import { NgBlockUI } from 'ng-block-ui'
+import { DatePipe } from '@angular/common'
+import { MvReservation } from './reservation.model'
+import { Component, OnInit } from '@angular/core'
+import { MatDialog } from '@angular/material/dialog'
+import { ReservationService } from './reservation.service'
+import { ReservationFormComponent } from './reservation-form/reservation-form.component'
+import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
+import { RoomAvailabilityService } from 'src/app/shared/services/room-availability/room-availability.service'
+import { MvRoomAvailable } from '../booking/room-available.model'
+import { MatTableDataSource } from '@angular/material/table'
+import { identifierModuleUrl } from '@angular/compiler'
+import { CustomerFormComponent } from '../customer/customer-form/customer-form.component'
+import { ToastrService } from 'ngx-toastr'
+import { BlockUI } from 'ng-block-ui'
 
 @Component({
-  selector: "app-reservation",
-  templateUrl: "./reservation.component.html",
-  styleUrls: ["./reservation.component.scss"],
+  selector: 'app-reservation',
+  templateUrl: './reservation.component.html',
+  styleUrls: ['./reservation.component.scss']
 })
 export class ReservationComponent implements OnInit {
   displayedColumns: string[] = [
-    "room_id",
-    "room_category_id",
-    "customer_id",
-    "customer_email",
-    "customer_phone",
-    "check_in_date",
-    "check_out_date",
-    "action",
-  ];
-  addForm: boolean;
-  editForm: boolean;
-  reservation: MvReservation = {} as MvReservation;
+    'room_id',
+    'room_category_id',
+    'customer_id',
+    'customer_email',
+    'customer_phone',
+    'check_in_date',
+    'check_out_date',
+    'action'
+  ]
+  addForm: boolean
+  editForm: boolean
+  reservation: MvReservation = {} as MvReservation
   roomAvailableColumns: string[] = [
-    "room_category",
-    "room_type",
-    "room_number",
-    "room_price",
-  ];
-  roomAvailableDataSource: any[];
-  public dataSource: MatTableDataSource<Element>;
+    'room_category',
+    'room_type',
+    'room_number',
+    'room_price'
+  ]
+  roomAvailableDataSource: any[]
+  public dataSource: MatTableDataSource<Element>
 
-  roomAvailable: MvRoomAvailable = {} as MvRoomAvailable;
+  roomAvailable: MvRoomAvailable = {} as MvRoomAvailable
 
   // For Room Availability
   checkInDate: Date;
   checkOutDate: Date;
+  CI:Date;
+  CO:Date;
+  disableButton:boolean;
   availableRoomsByDate: any[];
   paramsDate: {};
 
-  pageSizeOptions = [10, 25, 50, 100];
+  pageSizeOptions = [10, 25, 50, 100]
 
-  pageSize: number;
-  pageIndex: number;
-  totalLength: number;
-  limit: number;
-  skip: number;
+  pageSize: number
+  pageIndex: number
+  totalLength: number
+  limit: number
+  skip: number
 
-  @BlockUI() blockUI: NgBlockUI;
+  @BlockUI() blockUI: NgBlockUI
 
   constructor(
     private reservationService: ReservationService,
@@ -69,39 +72,39 @@ export class ReservationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pageSize = 10;
-    this.pageIndex = 0;
-    this.totalLength = 0;
+    this.pageSize = 10
+    this.pageIndex = 0
+    this.totalLength = 0
 
-    this.skip = 0;
-    this.limit = this.pageSize;
+    this.skip = 0
+    this.limit = this.pageSize
 
-    this.getReservation();
+    this.getReservation()
   }
 
   onPageChange(e: any) {
     if (e.pageIndex === 0) {
-      this.skip = 0;
+      this.skip = 0
     } else {
-      this.skip = e.pageIndex * e.pageSize;
+      this.skip = e.pageIndex * e.pageSize
     }
-    this.limit = e.pageSize;
+    this.limit = e.pageSize
 
-    this.getReservation();
+    this.getReservation()
   }
 
   getReservation() {
-    this.blockUI.start("Loading...");
+    this.blockUI.start('Loading...')
     const reservationParams = {
       limit: this.limit,
-      skip: this.skip,
-    };
+      skip: this.skip
+    }
 
     this.reservationService.getReservationList(reservationParams).subscribe(
       (result) => {
-        const arr = [];
+        const arr = []
         if (result && result.data) {
-          this.totalLength = result.totalCount;
+          this.totalLength = result.totalCount
 
           result.data.map((x) => {
             arr.push({
@@ -119,107 +122,171 @@ export class ReservationComponent implements OnInit {
               email: x.customer.email,
               phone: x.customer.phone,
               check_in_date: x.check_in_date,
-              check_out_date: x.check_out_date,
-            });
-          });
-          this.dataSource = new MatTableDataSource(arr);
-          this.blockUI.stop();
+              check_out_date: x.check_out_date
+            })
+          })
+          this.dataSource = new MatTableDataSource(arr)
+          this.blockUI.stop()
         } else {
-          this.blockUI.stop();
+          this.blockUI.stop()
         }
       },
       (error) => {
-        this.blockUI.stop();
+        this.blockUI.stop()
+      }
+    )
+  }
+
+  checkCILessThanCO(){
+    this.disableButton = true;
+    this.toastr.error(
+      "Checkin date should not be greater than checkout date",
+      "Warning!",
+      {
+        closeButton: true,
+        positionClass: "toast-top-right",
       }
     );
   }
 
+  checkCICOWithToday(){
+    this.disableButton = true;
+    this.toastr.error(
+      "Reservation cannot be made for past dates.",
+      "Warning!",
+      {
+        closeButton: true,
+        positionClass: "toast-top-right",
+      }
+    );
+  }
+
+  checkCICO(){
+
+    if(this.CI !=null && this.CO !=null){
+      let offsetCIn =this.CI.getTimezoneOffset() * 60000;
+      let offsetCOut = this.CO.getTimezoneOffset() * 60000;
+
+      this.CI = new Date(this.CI.getTime() - offsetCIn);
+      this.CO = new Date(this.CO.getTime() - offsetCOut);
+      
+      if(this.CI > this.CO){
+        this.checkCILessThanCO();
+      }else{
+        this.disableButton=false;
+
+      }
+    }
+
+    const today = new Date();
+    if(this.CI < today || this.CO <today){
+      this.checkCICOWithToday();
+    }else{
+      this.disableButton=false;
+
+    }
+
+  }
+
+  getCheckInDate(checkInDate){
+    this.CI = checkInDate;
+    this.checkCICO();
+  }
+
+  getCheckOutDate(checkOutDate){
+    this.CO = checkOutDate;
+    this.checkCICO();
+
+  }
+
+
+
+
   addReservation() {
     const dialogRef = this.dialog.open(ReservationFormComponent, {
-      width: "50%",
-      height: "700px",
+      width: '50%',
+      height: '700px',
       data: {
         gridData: null,
-        formType: "Add",
-      },
-    });
+        formType: 'Add'
+      }
+    })
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getReservation();
-        this.toastr.success("Reservation added successfully", "Success!", {
-          positionClass: "toast-top-right",
-        });
+        this.getReservation()
+        this.toastr.success('Reservation added successfully', 'Success!', {
+          positionClass: 'toast-top-right'
+        })
       }
-    });
+    })
   }
 
   editReservation(reservationData) {
     const dialogRef = this.dialog.open(ReservationFormComponent, {
-      width: "50%",
-      height: "700px",
+      width: '50%',
+      height: '700px',
       data: {
         gridData: reservationData,
-        formType: "Edit",
-      },
-    });
+        formType: 'Edit'
+      }
+    })
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getReservation();
-        this.toastr.success("Reservation updated successfully", "Success!", {
-          positionClass: "toast-top-right",
-        });
+        this.getReservation()
+        this.toastr.success('Reservation updated successfully', 'Success!', {
+          positionClass: 'toast-top-right'
+        })
       }
-    });
+    })
   }
 
   deleteReservation(index) {
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
-      width: "50%",
-    });
+      width: '50%'
+    })
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
         this.reservationService.deleteReservation(index).subscribe((data) => {
-          this.getReservation();
-        });
+          this.getReservation()
+        })
       }
-    });
+    })
   }
 
   addCustomer() {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
-      width: "50%",
-      height: "700px",
-      data: null,
-    });
+      width: '50%',
+      height: '700px',
+      data: null
+    })
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.toastr.success("Customer is created successfully", "Success!!", {
+        this.toastr.success('Customer is created successfully', 'Success!!', {
           closeButton: true,
-          positionClass: "toast-top-right",
-          disableTimeOut: true,
-        });
+          positionClass: 'toast-top-right',
+          disableTimeOut: true
+        })
       }
-    });
+    })
   }
 
   submitRoomAvailableForm() {
-    let offsetCIn =
-      this.roomAvailable.check_in_date.getTimezoneOffset() * 60000;
+    let offsetCIn = this.roomAvailable.check_in_date.getTimezoneOffset() * 60000
     let offsetCOut =
-      this.roomAvailable.check_out_date.getTimezoneOffset() * 60000;
+      this.roomAvailable.check_out_date.getTimezoneOffset() * 60000
 
     this.roomAvailable.check_in_date = new Date(
       this.roomAvailable.check_in_date.getTime() - offsetCIn
-    );
+    )
     this.roomAvailable.check_out_date = new Date(
       this.roomAvailable.check_out_date.getTime() - offsetCOut
-    );
+    )
     this.roomAvailableByDates
       .getRoomAvailabilityByDate(this.roomAvailable)
       .subscribe((result) => {
-        this.availableRoomsByDate = result.data;
-        const arr = [];
+        this.availableRoomsByDate = result.data
+        const arr = []
 
         const test = Object.values(this.availableRoomsByDate).map((x) => {
           x.map((y) => {
@@ -227,17 +294,17 @@ export class ReservationComponent implements OnInit {
               category: y.room_category.room_category,
               type: y.room_category.room_type,
               room_number: y.room_number,
-              price: y.room_category.room_price,
-            });
-          });
-        });
+              price: y.room_category.room_price
+            })
+          })
+        })
 
-        this.roomAvailableDataSource = arr;
-      });
+        this.roomAvailableDataSource = arr
+      })
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value
+    this.dataSource.filter = filterValue.trim().toLowerCase()
   }
 }

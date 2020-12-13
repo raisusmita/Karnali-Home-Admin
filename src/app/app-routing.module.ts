@@ -19,9 +19,9 @@ import { RoomAvailabilityComponent } from "./home/room-availability/room-availab
 import { BarComponent } from './home/bar/bar.component';
 import { FoodOrderDetailComponent } from './home/food-order-detail/food-order-detail.component';
 const routes: Routes = [
-  { path: "login", component: LoginComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
   {
-    path: "",
+    path: '',
     component: HomeComponent,
     canActivateChild: [AuthGuard],
     children: [
@@ -42,12 +42,12 @@ const routes: Routes = [
       { path: "room-availability", component: RoomAvailabilityComponent },
     ],
   },
-  { path: "dashboard", pathMatch: "full", redirectTo: "" },
-  { path: "**", redirectTo: "/login" },
-];
+  { path: 'dashboard', pathMatch: 'full', redirectTo: '' },
+  { path: '**', redirectTo: '/login' }
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
