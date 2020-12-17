@@ -1,80 +1,113 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import { BlockUI, NgBlockUI } from "ng-block-ui";
-import { MatDialog } from "@angular/material/dialog";
-import { FoodService } from "../food/food.service";
-import { MatSort, MatTableDataSource } from "@angular/material";
+import { Component, OnInit } from '@angular/core'
+import { BlockUI, NgBlockUI } from 'ng-block-ui'
+import { MatDialog } from '@angular/material/dialog'
+import { FoodService } from '../food/food.service'
+import { MatTableDataSource } from '@angular/material'
+import { FoodOrderService } from '../food-order/food-order.service'
+import { ToastrService } from 'ngx-toastr'
 
 @Component({
-  selector: "app-food-order-detail",
-  templateUrl: "./food-order-detail.component.html",
-  styleUrls: ["./food-order-detail.component.scss"],
+  selector: 'app-food-order-detail',
+  templateUrl: './food-order-detail.component.html',
+  styleUrls: ['./food-order-detail.component.scss']
 })
 export class FoodOrderDetailComponent implements OnInit {
   foodOrderListColumns: string[] = [
-    "food_name",
-    "price",
-    "quantity",
-    "total_amount",
-    "action",
-  ];
+    'food_name',
+    'price',
+    'quantity',
+    'total_amount'
+    // This action can be used in future
+    // "action",
+  ]
 
   foodOrderColumns: string[] = [
-    "order_no",
-    "date",
-    "ordered_from",
-    "status",
-    "action",
-  ];
-  foodItemList: MatTableDataSource<Element>;
+    'order_no',
+    'date',
+    'ordered_from',
+    'status',
+    'action'
+  ]
+  foodItemList: MatTableDataSource<Element>
 
-  @BlockUI() blockUI: NgBlockUI;
+  @BlockUI() blockUI: NgBlockUI
 
-  pageSizeOptions = [10, 25, 50, 100];
+  pageSizeOptions = [10, 25, 50, 100]
 
-  pageSize: number;
-  pageIndex: number;
-  totalLength: number;
-  limit: number;
-  skip: number;
+  pageSize: number
+  pageIndex: number
+  totalLength: number
+  limit: number
+  skip: number
 
-  constructor(private foodService: FoodService, private dialog: MatDialog) {}
+  constructor(
+    // private foodService: FoodService,
+    private foodOrderService: FoodOrderService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
-    this.pageSize = 10;
-    this.pageIndex = 0;
-    this.totalLength = 0;
-    this.skip = 0;
-    this.limit = this.pageSize;
-    this.getFoodOrderList();
+    this.pageSize = 10
+    this.pageIndex = 0
+    this.totalLength = 0
+    this.skip = 0
+    this.limit = this.pageSize
+    this.getFoodOrderList()
   }
 
   onPageChange(e: any) {
     if (e.pageIndex === 0) {
-      this.skip = 0;
+      this.skip = 0
     } else {
-      this.skip = e.pageIndex * e.pageSize;
+      this.skip = e.pageIndex * e.pageSize
     }
-    this.limit = e.pageSize;
-    this.getFoodOrderList();
+    this.limit = e.pageSize
+    this.getFoodOrderList()
   }
 
   getFoodOrderList() {
-    this.blockUI.start("Loading...");
+    this.blockUI.start('Loading...')
     const foodParams = {
       limit: this.limit,
-      skip: this.skip,
-    };
-    this.foodService.getFoodOrder(foodParams).subscribe(
+      skip: this.skip
+    }
+    this.foodOrderService.getFoodOrder(foodParams).subscribe(
       (result) => {
         if (result && result.data) {
-          this.totalLength = result.totalCount;
-          this.foodItemList = result.data;
+          this.totalLength = result.totalCount
+          this.foodItemList = result.data
         }
-        this.blockUI.stop();
+        this.blockUI.stop()
       },
       (error) => {
-        this.blockUI.stop();
+        this.blockUI.stop()
       }
-    );
+    )
+  }
+
+  cancelFoodOrder(orderId) {
+    this.foodOrderService.cancelFoodOrder(orderId).subscribe(
+      (result) => {
+        if (result) {
+          this.toastr.success(result.message, 'Success!!', {
+            closeButton: true,
+            positionClass: 'toast-top-right'
+          })
+          this.getFoodOrderList()
+        }
+        this.blockUI.stop()
+      },
+      () => {
+        this.toastr.error('Error while cancelling food order', 'Error!!', {
+          closeButton: true,
+          positionClass: 'toast-top-right'
+        })
+        this.blockUI.stop()
+      }
+    )
+  }
+
+  editFoodOrder(orderId) {
+    console.log('Edit food order', orderId)
   }
 }
