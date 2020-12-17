@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {map, startWith} from 'rxjs/operators';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {TableService} from '../table/table.service';
-import {RoomService} from '../room/room.service';
-import {FoodService} from '../food/food.service';
+import { Component, OnInit } from '@angular/core'
+import { map, startWith } from 'rxjs/operators'
+import { FormControl } from '@angular/forms'
+import { Observable } from 'rxjs'
+import { TableService } from '../table/table.service'
+import { RoomService } from '../room/room.service'
+import { FoodService } from '../food/food.service'
 
 @Component({
   selector: 'app-food-order',
@@ -12,30 +12,30 @@ import {FoodService} from '../food/food.service';
   styleUrls: ['./food-order.component.scss']
 })
 export class FoodOrderComponent implements OnInit {
-  table = [];
-  room = [];
+  table = []
+  room = []
 
-  filteredTables: Observable<string[]>;
-  filteredRooms: Observable<string[]>;
+  filteredTables: Observable<string[]>
+  filteredRooms: Observable<string[]>
 
-  searchedTableValue = new FormControl();
-  searchedRoomValue = new FormControl();
+  searchedTableValue = new FormControl()
+  searchedRoomValue = new FormControl()
 
-  roomSelected = "";
-  tableSelected = "";
-  actualRoomId = null;
+  roomSelected = ''
+  tableSelected = ''
+  actualRoomId = null
   actualTableId = null
 
-  mainFood = [];
-  mainFoodSelectedId: number;
-  foodHeader = {};
-  mainFoodChecked = {};
-  foodList = {};
-  foodOrderList = {};
+  mainFood = []
+  mainFoodSelectedId: number
+  foodHeader = {}
+  mainFoodChecked = {}
+  foodList = {}
+  foodOrderList = {}
 
-  step = 0;
+  step = 0
 
-  subFoodShow = false;
+  subFoodShow = false
 
   constructor(
     public tableService: TableService,
@@ -44,49 +44,49 @@ export class FoodOrderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getTable();
-    this.getRooms();
+    this.getTable()
+    this.getRooms()
     this.filteredTables = this.searchedTableValue.valueChanges.pipe(
-      startWith(""),
+      startWith(''),
       map((value) => this._filterTable(value))
-    );
+    )
     this.filteredRooms = this.searchedRoomValue.valueChanges.pipe(
-      startWith(""),
+      startWith(''),
       map((value) => this._filterRoom(value))
-    );
+    )
 
-    this.getMainFood();
-    this.getFoodHeader();
+    this.getMainFood()
+    this.getFoodHeader()
   }
 
   getTable() {
     this.tableService.getTable().subscribe((result) => {
-      this.table = result.data;
-    });
+      this.table = result.data
+    })
   }
 
   getRooms() {
     this.roomService.getRoom().subscribe((result) => {
-      this.room = result.data;
-    });
+      this.room = result.data
+    })
   }
 
   getMainFood() {
     this.foodService.getMainFood().subscribe((mainFood) => {
-      this.mainFood = mainFood.data;
-    });
+      this.mainFood = mainFood.data
+    })
   }
 
   getFoodHeader() {
     this.foodService.getFoodHeader().subscribe((header) => {
       header.data.forEach((foodHead) => {
-        this.foodHeader[foodHead.id] = foodHead.food_header;
-      });
-    });
+        this.foodHeader[foodHead.id] = foodHead.food_header
+      })
+    })
   }
 
   getSubFoodAndFoodItems(mainFoodValue) {
-    this.mainFoodSelectedId = mainFoodValue.id;
+    this.mainFoodSelectedId = mainFoodValue.id
 
     if (
       !Object.keys(this.foodList).includes(this.mainFoodSelectedId.toString())
@@ -96,127 +96,131 @@ export class FoodOrderComponent implements OnInit {
         .subscribe((subFoodItems) => {
           this.foodList[this.mainFoodSelectedId] = {
             subFood: [],
-            foodItems: {},
-          };
-          this.foodList[this.mainFoodSelectedId]["subFood"].push(
-            ...subFoodItems.data["subFood"]
-          );
-          this.foodList[this.mainFoodSelectedId]["foodItems"] =
-            subFoodItems.data["foodItems"];
-        });
+            foodItems: {}
+          }
+          this.foodList[this.mainFoodSelectedId]['subFood'].push(
+            ...subFoodItems.data['subFood']
+          )
+          this.foodList[this.mainFoodSelectedId]['foodItems'] =
+            subFoodItems.data['foodItems']
+        })
     }
   }
 
   selectRoom(room) {
-    this.searchedTableValue.setValue("");
-    this.tableSelected = null;
-    this.actualRoomId = null;
-    this.actualTableId = null;
-    this.roomSelected = room;
-
+    this.searchedTableValue.setValue('')
+    this.tableSelected = null
+    this.actualRoomId = null
+    this.actualTableId = null
+    this.roomSelected = room
   }
-  
+
   selectTable(table) {
-    this.searchedRoomValue.setValue("");
-    this.roomSelected = null;
-    this.actualRoomId = null;
-    this.actualTableId = null;
-    this.tableSelected = table;
+    this.searchedRoomValue.setValue('')
+    this.roomSelected = null
+    this.actualRoomId = null
+    this.actualTableId = null
+    this.tableSelected = table
   }
 
   private _filterTable(value: string): string[] {
-    const filterValue = value.toLowerCase().trim();
-    if (filterValue == "" || !filterValue) {
-      return this.table;
+    const filterValue = value.toLowerCase().trim()
+    if (filterValue == '' || !filterValue) {
+      return this.table
     }
     return this.table.filter((option) =>
       option.table_number.toLowerCase().includes(filterValue)
-    );
+    )
   }
 
   private _filterRoom(value: string): string[] {
-    const filterValue = value.toLowerCase().trim();
-    if(this.room){
+    const filterValue = value.toLowerCase().trim()
+    if (this.room) {
       return this.room.filter((option) =>
         option.room_number.toLowerCase().includes(filterValue)
-      );
+      )
     }
   }
 
   storeFoodOrder(event, data) {
     if (event.checked) {
-      this.saveNewFoodOrder(data);
+      this.saveNewFoodOrder(data)
       //Todo: Need to handle main food id as well
     } else {
-      delete this.foodOrderList[data.id];
-      this.mainFoodChecked[data.main_food_category_id] -= 1;
+      delete this.foodOrderList[data.id]
+      this.mainFoodChecked[data.main_food_category_id] -= 1
     }
   }
 
   maintainOrderQuantity(event, data) {
-    if(this.foodOrderList[data.id]){
-      this.foodOrderList[data.id]["quantity"] = parseInt(event.target.value);
-      this.foodOrderList[data.id]["total_amount"] = data.price * this.foodOrderList[data.id]["quantity"];
+    if (this.foodOrderList[data.id]) {
+      this.foodOrderList[data.id]['quantity'] = parseInt(event.target.value)
+      this.foodOrderList[data.id]['total_amount'] =
+        data.price * this.foodOrderList[data.id]['quantity']
     } else {
       // Default Order value is 1, so to increase it by 1 on the first click quantity is set as 2
       const quantity = 2
-      this.saveNewFoodOrder(data, quantity);
+      this.saveNewFoodOrder(data, quantity)
     }
   }
 
-  saveNewFoodOrder(data, quantity=1){
-    this.foodOrderList[data.id] = {};
-    this.foodOrderList[data.id]["food_items_id"] = data.id;
-    this.foodOrderList[data.id]["quantity"] = quantity;
-    this.foodOrderList[data.id]["price"] = data.price;
-    this.foodOrderList[data.id]["total_amount"] = data.price * this.foodOrderList[data.id]["quantity"];
+  saveNewFoodOrder(data, quantity = 1) {
+    this.foodOrderList[data.id] = {}
+    this.foodOrderList[data.id]['food_items_id'] = data.id
+    this.foodOrderList[data.id]['quantity'] = quantity
+    this.foodOrderList[data.id]['price'] = data.price
+    this.foodOrderList[data.id]['total_amount'] =
+      data.price * this.foodOrderList[data.id]['quantity']
     if (this.mainFoodChecked[data.main_food_category_id]) {
-      this.mainFoodChecked[data.main_food_category_id] += 1;
+      this.mainFoodChecked[data.main_food_category_id] += 1
     } else {
-      this.mainFoodChecked[data.main_food_category_id] = 1;
+      this.mainFoodChecked[data.main_food_category_id] = 1
     }
   }
 
-  getRoomId(){
-    this.actualRoomId =  this.room.filter(room => room.room_number == this.roomSelected)[0].id;
-    return this.actualRoomId;
+  getRoomId() {
+    this.actualRoomId = this.room.filter(
+      (room) => room.room_number == this.roomSelected
+    )[0].id
+    return this.actualRoomId
   }
 
   getTableId() {
-    this.actualTableId =  this.table.filter(tableData => tableData.table_number == this.tableSelected)[0].id;
-    return this.actualTableId;
+    this.actualTableId = this.table.filter(
+      (tableData) => tableData.table_number == this.tableSelected
+    )[0].id
+    return this.actualTableId
   }
 
-
-  addFoodOrder(){
-    if (Object.values(this.foodOrderList).length>0) {
+  addFoodOrder() {
+    if (Object.values(this.foodOrderList).length > 0) {
       Object.values(this.foodOrderList).forEach((foodOrderItem) => {
         if (this.roomSelected) {
-          foodOrderItem["room_id"] = this.actualRoomId || this.getRoomId();
-          delete foodOrderItem["table_id"];
+          foodOrderItem['room_id'] = this.actualRoomId || this.getRoomId()
+          delete foodOrderItem['table_id']
         } else {
-          foodOrderItem["table_id"] = this.actualTableId || this.getTableId();
-          delete foodOrderItem["room_id"];
+          foodOrderItem['table_id'] = this.actualTableId || this.getTableId()
+          delete foodOrderItem['room_id']
         }
-      });
+      })
       this.foodService
         .addFoodOrder(Object.values(this.foodOrderList))
         .subscribe(
           (foodOrder) => {
             //TODO: Loader and toaster is required
             // console.log(foodOrder);
-            this.mainFoodChecked = {};
-            this.foodOrderList = {};
+            this.mainFoodChecked = {}
+            this.foodOrderList = {}
           },
           (err) => {
             // TODO: Toast message is required
-            console.log(err);
+            console.log(err)
           }
-        );
-    }  
+        )
+    }
   }
 
   setStep(index: number) {
-    this.step = index;
+    this.step = index
   }
 }
