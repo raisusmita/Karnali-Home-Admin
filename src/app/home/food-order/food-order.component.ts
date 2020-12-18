@@ -21,8 +21,8 @@ export class FoodOrderComponent implements OnInit {
   searchedTableValue = new FormControl()
   searchedRoomValue = new FormControl()
 
-  roomSelected = ''
-  tableSelected = ''
+  selectedRoomNo = ''
+  selectedTableNo = ''
   actualRoomId = null
   actualTableId = null
 
@@ -107,20 +107,20 @@ export class FoodOrderComponent implements OnInit {
     }
   }
 
-  selectRoom(room) {
+  selectRoom(roomNumber) {
     this.searchedTableValue.setValue('')
-    this.tableSelected = null
+    this.selectedTableNo = null
     this.actualRoomId = null
     this.actualTableId = null
-    this.roomSelected = room
+    this.selectedRoomNo = roomNumber
   }
 
-  selectTable(table) {
+  selectTable(tableNumber) {
     this.searchedRoomValue.setValue('')
-    this.roomSelected = null
+    this.selectedRoomNo = null
     this.actualRoomId = null
     this.actualTableId = null
-    this.tableSelected = table
+    this.selectedTableNo = tableNumber
   }
 
   private _filterTable(value: string): string[] {
@@ -180,14 +180,14 @@ export class FoodOrderComponent implements OnInit {
 
   getRoomId() {
     this.actualRoomId = this.room.filter(
-      (room) => room.room_number == this.roomSelected
+      (room) => room.room_number == this.selectedRoomNo
     )[0].id
     return this.actualRoomId
   }
 
   getTableId() {
     this.actualTableId = this.table.filter(
-      (tableData) => tableData.table_number == this.tableSelected
+      (tableData) => tableData.table_number == this.selectedTableNo
     )[0].id
     return this.actualTableId
   }
@@ -195,7 +195,7 @@ export class FoodOrderComponent implements OnInit {
   addFoodOrder() {
     if (Object.values(this.foodOrderList).length > 0) {
       Object.values(this.foodOrderList).forEach((foodOrderItem) => {
-        if (this.roomSelected) {
+        if (this.selectedRoomNo) {
           foodOrderItem['room_id'] = this.actualRoomId || this.getRoomId()
           delete foodOrderItem['table_id']
         } else {

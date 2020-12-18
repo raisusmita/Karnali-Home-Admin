@@ -28,7 +28,7 @@ export class FoodOrderDetailComponent implements OnInit {
     'status',
     'action'
   ]
-  foodItemList: MatTableDataSource<Element>
+  foodItemList: MatTableDataSource<Element>[]
 
   @BlockUI() blockUI: NgBlockUI
 
@@ -86,6 +86,7 @@ export class FoodOrderDetailComponent implements OnInit {
   }
 
   cancelFoodOrder(orderId) {
+    // Todo: Show alert box before commiting and then cancel the food order
     this.foodOrderService.cancelFoodOrder(orderId).subscribe(
       (result) => {
         if (result) {
@@ -93,7 +94,9 @@ export class FoodOrderDetailComponent implements OnInit {
             closeButton: true,
             positionClass: 'toast-top-right'
           })
-          this.getFoodOrderList()
+          this.foodItemList = this.foodItemList.filter(
+            (foodOrder) => foodOrder['id'] != orderId
+          )
         }
         this.blockUI.stop()
       },
