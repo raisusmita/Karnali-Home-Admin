@@ -1,19 +1,16 @@
+import { ToastrService } from 'ngx-toastr';
 import { RoomTransactionService } from './../room-transaction.service'
 import { MvRoomTransaction } from './../room-transaction.model'
 import { TableService } from './../../table/table.service'
 import { RoomAvailabilityService } from 'src/app/shared/services/room-availability/room-availability.service'
 import { Component, OnInit, Inject } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
-import { RoomService } from '../../room/room.service'
 import { CustomerService } from '../../customer/customer.service'
 import { MatTableDataSource } from '@angular/material/table'
-import { SelectionModel, DataSource } from '@angular/cdk/collections'
-import { FormGroup } from '@angular/forms'
+import { SelectionModel } from '@angular/cdk/collections'
 import { ThemePalette } from '@angular/material/core'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { animate, state, style, transition, trigger } from '@angular/animations';
-
-
 @Component({
   selector: 'app-room-transaction-form',
   templateUrl: './room-transaction-form.component.html',
@@ -35,11 +32,9 @@ export class RoomTransactionFormComponent implements OnInit {
   editForm: boolean
   roomTransaction: MvRoomTransaction = {} as MvRoomTransaction
   roomList: boolean
-  food_total_amount:number;
   displayFood:boolean;
   displayedColumns: string[] = [
     'select',
-    // "room_id",
     'room_number',
     'check_in_date',
     'room_category',
@@ -54,11 +49,16 @@ export class RoomTransactionFormComponent implements OnInit {
   primaryColor: ThemePalette = 'primary'
   dateTry: Date
 
+  //Food detail
+  foodDetail: any[] = [];
+  food_total_amount:number;
+
   @BlockUI() blockUI: NgBlockUI
 
   constructor(
     private customerService: CustomerService,
     private tableService: TableService,
+    private toastr : ToastrService,
     private roomAvailabilityService: RoomAvailabilityService,
     private roomTransactionService: RoomTransactionService,
     private dialogRef: MatDialogRef<RoomTransactionFormComponent>,
@@ -137,20 +137,7 @@ export class RoomTransactionFormComponent implements OnInit {
         }
         const arr = []
         if (result && result.data) {
-          this.food_total_amount=0;
           result.data.map((roomData) => {
-            roomData.room_id[0].food_orders.map(foodData=>{
-              this.food_total_amount = this.food_total_amount + parseFloat(foodData.total_amount);
-            })
-
-            if(roomData.room_id[0].food_orders.length ==0){
-              this.displayFood = false;
-            }else{
-              this.displayFood = true;
-            }
-
-            console.log(this.displayFood)
-
             arr.push({
               room_id: roomData.room_id[0].id,
               room_number: roomData.room_id[0].room_number,
@@ -159,13 +146,49 @@ export class RoomTransactionFormComponent implements OnInit {
               reservation_id: roomData.reservation_id,
               check_in_date: new Date(roomData.check_in_date),
               check_out_date: new Date(roomData.check_out_date),
-              displayFood:this.displayFood,
-              food_details:roomData.room_id[0].food_orders
+             // food_details:roomData.room_id[0].food_orders
             })
           })
           this.dataSource = new MatTableDataSource(arr)
+        }else{
+          this.toastr.info(result.message, ' Branch Delete')
         }
       })
+  }
+
+  expandTable(element){
+    this.displayFood=false;
+
+    element.isExpanded = !element.isExpanded
+    const params ={
+      roomId:element.room_id,
+      reservationId:element.reservation_id
+    }
+    element.isExpanded ? 
+    this.getFoodDetail(params) : ''
+  }
+
+  getFoodDetail(params){
+    this.blockUI.start('Loading...')
+    this.roomAvailabilityService.getFoodDetailForFood(params).subscribe(result=>{
+      if (result.length!=0) {
+          this.food_total_amount=0;
+          this.foodDetail=result
+          this.displayFood= true;
+
+          // Grand total of food
+          result.map(foodData=>{
+            this.food_total_amount = this.food_total_amount + parseFloat(foodData.total_amount);
+          })
+        } else {
+          this.displayFood=false;
+          this.blockUI.stop()
+        }
+        this.blockUI.stop()
+      },
+      (error) => {
+        this.blockUI.stop()
+    })
   }
 
   submitRoomTransactionForm() {
