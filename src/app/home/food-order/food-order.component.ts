@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { map, startWith } from 'rxjs/operators'
 import { FormControl } from '@angular/forms'
 import { Observable } from 'rxjs'
 import { TableService } from '../table/table.service'
 import { RoomService } from '../room/room.service'
 import { FoodService } from '../food/food.service'
+import { FoodOrderService } from './food-order.service'
+import { ToastrService } from 'ngx-toastr'
+import { BlockUI, NgBlockUI } from 'ng-block-ui'
 
 @Component({
   selector: 'app-food-order',
@@ -14,6 +17,11 @@ import { FoodService } from '../food/food.service'
 export class FoodOrderComponent implements OnInit {
   table = []
   room = []
+
+  @Input() isEdit = false
+  @Input() foodOrderId: number
+
+  OrderId: number
 
   filteredTables: Observable<string[]>
   filteredRooms: Observable<string[]>
@@ -31,16 +39,20 @@ export class FoodOrderComponent implements OnInit {
   foodHeader = {}
   mainFoodChecked = {}
   foodList = {}
-  foodOrderList = {}
-
+  @Input() foodOrderList = {}
   step = 0
-
   subFoodShow = false
+
+  @BlockUI() blockUI: NgBlockUI
+
+  @Output() closeFoodOrder: EventEmitter<any> = new EventEmitter()
 
   constructor(
     public tableService: TableService,
     public roomService: RoomService,
-    public foodService: FoodService
+    public foodService: FoodService,
+    public foodOrderService: FoodOrderService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -54,9 +66,23 @@ export class FoodOrderComponent implements OnInit {
       startWith(''),
       map((value) => this._filterRoom(value))
     )
-
     this.getMainFood()
     this.getFoodHeader()
+
+    if (this.isEdit) {
+      this.checkMainFoodOnEdit(Object.values(this.foodOrderList))
+      if (Object.values(this.foodOrderList)[0]['room_id']) {
+        this.actualRoomId = Object.values(this.foodOrderList)[0]['room_id']
+        this.selectedRoomNo = Object.values(this.foodOrderList)[0]['room'][
+          'room_number'
+        ]
+      } else {
+        this.actualTableId = Object.values(this.foodOrderList)[0]['table_id']
+        this.selectedTableNo = Object.values(this.foodOrderList)[0]['table'][
+          'table_number'
+        ]
+      }
+    }
   }
 
   getTable() {
@@ -87,7 +113,6 @@ export class FoodOrderComponent implements OnInit {
 
   getSubFoodAndFoodItems(mainFoodValue) {
     this.mainFoodSelectedId = mainFoodValue.id
-
     if (
       !Object.keys(this.foodList).includes(this.mainFoodSelectedId.toString())
     ) {
@@ -192,9 +217,30 @@ export class FoodOrderComponent implements OnInit {
     return this.actualTableId
   }
 
-  addFoodOrder() {
+  maintainFoodOrder() {
+    const validFoodLists = [
+      'food_order_id',
+      'food_items_id',
+      'price',
+      'quantity',
+      'room_id',
+      'table_id',
+      'invoice_id',
+      'total_amount',
+      'created_at'
+    ]
     if (Object.values(this.foodOrderList).length > 0) {
       Object.values(this.foodOrderList).forEach((foodOrderItem) => {
+        Object.keys(foodOrderItem).forEach(
+          (key) => validFoodLists.includes(key) || delete foodOrderItem[key]
+        )
+        if (foodOrderItem['food_items']) {
+          delete foodOrderItem['food_items']
+        }
+        delete foodOrderItem['room']
+          ? foodOrderItem['room']
+          : foodOrderItem['table']
+
         if (this.selectedRoomNo) {
           foodOrderItem['room_id'] = this.actualRoomId || this.getRoomId()
           delete foodOrderItem['table_id']
@@ -203,21 +249,101 @@ export class FoodOrderComponent implements OnInit {
           delete foodOrderItem['room_id']
         }
       })
+    }
+  }
+
+  editFoodOrderList() {
+    this.maintainFoodOrder()
+    if (Object.values(this.foodOrderList).length > 0) {
+      this.blockUI.start('Loading...')
+      this.foodOrderService
+        .editFoodOrder(this.foodOrderId, Object.values(this.foodOrderList))
+        .subscribe(
+          (foodOrder) => {
+            this.toastr.success(foodOrder.message, 'Success!!', {
+              closeButton: true,
+              positionClass: 'toast-top-right'
+            })
+            this.mainFoodChecked = {}
+            this.foodOrderList = {}
+            this.closeFoodOrder.emit({ edit: true })
+            this.blockUI.stop()
+          },
+          (err) => {
+            this.blockUI.stop()
+            this.toastr.error(err.message, 'Failed!!', {
+              closeButton: true,
+              positionClass: 'toast-top-right'
+            })
+          }
+        )
+    } else {
+      this.blockUI.stop()
+      this.toastr.info('Unselected all food items.', 'Better to Cancel!!', {
+        closeButton: true,
+        positionClass: 'toast-top-right'
+      })
+    }
+  }
+
+  storeFoodOrderList() {
+    this.blockUI.start('Loading...')
+    this.maintainFoodOrder()
+    if (Object.values(this.foodOrderList).length > 0) {
       this.foodService
         .addFoodOrder(Object.values(this.foodOrderList))
         .subscribe(
           (foodOrder) => {
-            //TODO: Loader and toaster is required
-            // console.log(foodOrder);
+            this.toastr.success(foodOrder.message, 'Success!!', {
+              closeButton: true,
+              positionClass: 'toast-top-right'
+            })
             this.mainFoodChecked = {}
             this.foodOrderList = {}
+            this.blockUI.stop()
           },
           (err) => {
-            // TODO: Toast message is required
-            console.log(err)
+            this.toastr.error(err.message, 'Failed!!', {
+              closeButton: true,
+              positionClass: 'toast-top-right'
+            })
+            this.blockUI.stop()
           }
         )
+    } else {
+      this.blockUI.stop()
+      this.toastr.info('No foods are selected to order', 'Be Careful!!', {
+        closeButton: true,
+        positionClass: 'toast-top-right'
+      })
     }
+  }
+
+  checkMainFoodOnEdit(data) {
+    let mainFoodValue = {}
+    data.forEach((element, index) => {
+      if (index == 0) {
+        mainFoodValue['id'] = element['food_items']['main_food_category_id']
+      }
+      if (
+        this.mainFoodChecked[element['food_items']['main_food_category_id']]
+      ) {
+        this.mainFoodChecked[
+          element['food_items']['main_food_category_id']
+        ] += 1
+      } else {
+        this.mainFoodChecked[element['food_items']['main_food_category_id']] = 1
+      }
+    })
+    this.getSubFoodAndFoodItems(mainFoodValue)
+  }
+
+  editFoodOrder() {
+    this.editFoodOrderList()
+  }
+
+  cancelOrderEdit() {
+    this.closeFoodOrder.emit({ edit: false })
   }
 
   setStep(index: number) {

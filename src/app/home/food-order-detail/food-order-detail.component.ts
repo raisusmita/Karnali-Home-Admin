@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
-import { MatDialog } from '@angular/material/dialog'
-import { FoodService } from '../food/food.service'
 import { MatTableDataSource } from '@angular/material'
 import { FoodOrderService } from '../food-order/food-order.service'
 import { ToastrService } from 'ngx-toastr'
@@ -29,6 +27,10 @@ export class FoodOrderDetailComponent implements OnInit {
     'action'
   ]
   foodItemList: MatTableDataSource<Element>[]
+
+  foodOrderEdit = {}
+  openEditFoodOrder = false
+  foodOrderId: any
 
   @BlockUI() blockUI: NgBlockUI
 
@@ -77,16 +79,17 @@ export class FoodOrderDetailComponent implements OnInit {
           this.totalLength = result.totalCount
           this.foodItemList = result.data
         }
+        this.showFoodOrderDetail()
         this.blockUI.stop()
       },
-      (error) => {
+      () => {
         this.blockUI.stop()
       }
     )
   }
 
   cancelFoodOrder(orderId) {
-    // Todo: Show alert box before commiting and then cancel the food order
+    this.blockUI.start('Loading...')
     this.foodOrderService.cancelFoodOrder(orderId).subscribe(
       (result) => {
         if (result) {
@@ -110,7 +113,26 @@ export class FoodOrderDetailComponent implements OnInit {
     )
   }
 
-  editFoodOrder(orderId) {
-    console.log('Edit food order', orderId)
+  editFoodOrder(orderedItems: [{}]) {
+    this.openEditFoodOrder = true
+    orderedItems.forEach((orderItem, index) => {
+      if (index == 0) {
+        this.foodOrderId = orderItem['food_order_id']
+      }
+      this.foodOrderEdit[orderItem['food_items_id']] = orderItem
+    })
+  }
+
+  hideFoodOrder(data) {
+    if (data['edit']) {
+      this.getFoodOrderList()
+    } else {
+      this.showFoodOrderDetail()
+    }
+  }
+
+  showFoodOrderDetail() {
+    this.openEditFoodOrder = false
+    this.foodOrderEdit = {}
   }
 }

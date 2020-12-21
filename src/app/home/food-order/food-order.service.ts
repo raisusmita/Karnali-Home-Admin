@@ -19,6 +19,10 @@ export class FoodOrderService {
     return this.http.get(this.baseURL, foodParams)
   }
 
+  editFoodOrder(id: number, foodOrderItems: any): Observable<any> {
+    return this.http.put(this.baseURL + `/${id}`, foodOrderItems)
+  }
+
   cancelFoodOrder(id: any): Observable<any> {
     return this.http.delete(this.baseURL + `/${id}`)
   }

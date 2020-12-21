@@ -1,179 +1,115 @@
 <div class="container">
-  <div class="p-3 mt-3">
-    <form class="example-form">
-      <div class="row">
-        <div class="col-sm-6">
-          <mat-form-field class="example-full-width">
-            <input
-              type="text"
-              placeholder="Select Table Number"
-              aria-label="Number"
-              matInput
-              [formControl]="searchedTableValue"
-              [matAutocomplete]="autoTable"
-            />
-            <mat-autocomplete
-              autoActiveFirstOption
-              #autoTable="matAutocomplete"
-              (optionSelected)="selectTable($event.option.value)"
-            >
-              <mat-option
-                *ngFor="let option of filteredTables | async"
-                [value]="option.table_number"
+  <block-ui>
+    <div class="p-3 mt-3" *ngIf="!isEdit">
+      <form class="example-form">
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field class="example-full-width">
+              <input
+                type="text"
+                placeholder="Select Table Number"
+                aria-label="Number"
+                matInput
+                [formControl]="searchedTableValue"
+                [matAutocomplete]="autoTable"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #autoTable="matAutocomplete"
+                (optionSelected)="selectTable($event.option.value)"
               >
-                {{ option.table_number }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
-
-        <div class="col-sm-6">
-          <mat-form-field class="example-full-width">
-            <input
-              type="text"
-              placeholder="Select Room Number"
-              aria-label="Number"
-              matInput
-              [formControl]="searchedRoomValue"
-              [matAutocomplete]="autoRoom"
-            />
-            <mat-autocomplete
-              autoActiveFirstOption
-              #autoRoom="matAutocomplete"
-              (optionSelected)="selectRoom($event.option.value)"
-            >
-              <mat-option
-                *ngFor="let roomOption of filteredRooms | async"
-                [value]="roomOption.room_number"
-              >
-                {{ roomOption.room_number }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
-      </div>
-    </form>
-  </div>
-
-  <div class="row" *ngIf="mainFood">
-    <div class="col-md-3 col-sm-4" *ngIf="selectedTableNo || selectedRoomNo">
-      <div class="mb-2" *ngFor="let mainFoodItem of mainFood">
-        <div
-          class="main-food-card"
-          (click)="getSubFoodAndFoodItems(mainFoodItem)"
-        >
-          <div
-            class="main-food-checked"
-            *ngIf="mainFoodChecked[mainFoodItem.id] > 0"
-          >
-            <img
-              src="../../../assets/images/check_circle_outline-24px.svg"
-              alt="checked"
-            />
+                <mat-option
+                  *ngFor="let option of filteredTables | async"
+                  [value]="option.table_number"
+                >
+                  {{ option.table_number }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
           </div>
-          <h5>
-            {{ mainFoodItem.main_food_name }}
-          </h5>
+
+          <div class="col-sm-6">
+            <mat-form-field class="example-full-width">
+              <input
+                type="text"
+                placeholder="Select Room Number"
+                aria-label="Number"
+                matInput
+                [formControl]="searchedRoomValue"
+                [matAutocomplete]="autoRoom"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #autoRoom="matAutocomplete"
+                (optionSelected)="selectRoom($event.option.value)"
+              >
+                <mat-option
+                  *ngFor="let roomOption of filteredRooms | async"
+                  [value]="roomOption.room_number"
+                >
+                  {{ roomOption.room_number }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
 
-    <!-- *ngIf="subFoodShow" -->
-    <div
-      class="col-md-9 col-sm-8"
-      *ngIf="
-        mainFoodSelectedId &&
-        foodList[mainFoodSelectedId] &&
-        foodList[mainFoodSelectedId]['subFood']
-      "
-    >
-      <div
-        class="mb-2"
-        *ngFor="
-          let subFoodItem of foodList[mainFoodSelectedId]['subFood'];
-          let i = index
-        "
-      >
-        Sub Food:
-        <mat-accordion class="example-headers-align">
-          <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <h5>
-                  {{ subFoodItem.sub_food_name }}
-                </h5>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-
-            <div *ngFor="let foodItem of subFoodItem.foodItems | keyvalue">
-              <h6 class="my-2">
-                {{ foodItem.key ? foodHeader[foodItem.key] : '' }}
-              </h6>
-              <div
-                class="d-flex mb-3"
-                *ngFor="let foodItemDetail of foodItem.value"
-              >
-                <mat-checkbox
-                  [checked]="foodOrderList[foodItemDetail.id]"
-                  color="primary"
-                  (change)="storeFoodOrder($event, foodItemDetail)"
-                >
-                  {{ foodItemDetail.food_name }}
-                </mat-checkbox>
-
-                <div class="border ml-3 p-1 w-5">
-                  <input
-                    matInput
-                    type="number"
-                    [value]="
-                      foodOrderList[foodItemDetail.id]
-                        ? foodOrderList[foodItemDetail.id]['quantity']
-                        : '1'
-                    "
-                    min="1"
-                    (change)="maintainOrderQuantity($event, foodItemDetail)"
-                  />
-                </div>
-              </div>
+    <div class="row" *ngIf="mainFood">
+      <div class="col-md-3 col-sm-4" *ngIf="selectedTableNo || selectedRoomNo">
+        <div class="mb-2" *ngFor="let mainFoodItem of mainFood">
+          <div
+            class="main-food-card"
+            (click)="getSubFoodAndFoodItems(mainFoodItem)"
+          >
+            <div
+              class="main-food-checked"
+              *ngIf="mainFoodChecked[mainFoodItem.id] > 0"
+            >
+              <img
+                src="../../../assets/images/check_circle_outline-24px.svg"
+                alt="checked"
+              />
             </div>
-          </mat-expansion-panel>
-        </mat-accordion>
+            <h5>
+              {{ mainFoodItem.main_food_name }}
+            </h5>
+          </div>
+        </div>
       </div>
 
-      <hr />
-
+      <!-- *ngIf="subFoodShow" -->
       <div
+        class="col-md-9 col-sm-8"
         *ngIf="
           mainFoodSelectedId &&
           foodList[mainFoodSelectedId] &&
-          foodList[mainFoodSelectedId]['foodItems']
+          foodList[mainFoodSelectedId]['subFood']
         "
       >
         <div
-          class="mb-3"
+          class="mb-2"
           *ngFor="
-            let foodItem of foodList[mainFoodSelectedId].foodItems | keyvalue;
+            let subFoodItem of foodList[mainFoodSelectedId]['subFood'];
             let i = index
           "
         >
-          Food Header:
+          Sub Food:
           <mat-accordion class="example-headers-align">
-            <mat-expansion-panel
-              [expanded]="step === i"
-              (opened)="setStep(i)"
-              class="custom-panel"
-            >
+            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)">
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   <h5>
-                    {{
-                      foodItem.key ? foodHeader[foodItem.key] : 'Food Header'
-                    }}
+                    {{ subFoodItem.sub_food_name }}
                   </h5>
                 </mat-panel-title>
               </mat-expansion-panel-header>
 
-              <div *ngIf="foodItem.value">
+              <div *ngFor="let foodItem of subFoodItem.foodItems | keyvalue">
+                <h6 class="my-2">
+                  {{ foodItem.key ? foodHeader[foodItem.key] : '' }}
+                </h6>
                 <div
                   class="d-flex mb-3"
                   *ngFor="let foodItemDetail of foodItem.value"
@@ -185,6 +121,7 @@
                   >
                     {{ foodItemDetail.food_name }}
                   </mat-checkbox>
+
                   <div class="border ml-3 p-1 w-5">
                     <input
                       matInput
@@ -203,10 +140,96 @@
             </mat-expansion-panel>
           </mat-accordion>
         </div>
+
+        <hr />
+
+        <div
+          *ngIf="
+            mainFoodSelectedId &&
+            foodList[mainFoodSelectedId] &&
+            foodList[mainFoodSelectedId]['foodItems']
+          "
+        >
+          <div
+            class="mb-3"
+            *ngFor="
+              let foodItem of foodList[mainFoodSelectedId].foodItems | keyvalue;
+              let i = index
+            "
+          >
+            Food Header:
+            <mat-accordion class="example-headers-align">
+              <mat-expansion-panel
+                [expanded]="step === i"
+                (opened)="setStep(i)"
+                class="custom-panel"
+              >
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <h5>
+                      {{
+                        foodItem.key ? foodHeader[foodItem.key] : 'Food Header'
+                      }}
+                    </h5>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div *ngIf="foodItem.value">
+                  <div
+                    class="d-flex mb-3"
+                    *ngFor="let foodItemDetail of foodItem.value"
+                  >
+                    <mat-checkbox
+                      [checked]="foodOrderList[foodItemDetail.id]"
+                      color="primary"
+                      (change)="storeFoodOrder($event, foodItemDetail)"
+                    >
+                      {{ foodItemDetail.food_name }}
+                    </mat-checkbox>
+                    <div class="border ml-3 p-1 w-5">
+                      <input
+                        matInput
+                        type="number"
+                        [value]="
+                          foodOrderList[foodItemDetail.id]
+                            ? foodOrderList[foodItemDetail.id]['quantity']
+                            : '1'
+                        "
+                        min="1"
+                        (change)="maintainOrderQuantity($event, foodItemDetail)"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+
+        <button
+          *ngIf="!isEdit"
+          class="btn btn-primary"
+          (click)="storeFoodOrderList()"
+        >
+          Save Order
+        </button>
+
+        <button
+          *ngIf="isEdit"
+          class="btn btn-primary"
+          (click)="editFoodOrder()"
+        >
+          Edit Order
+        </button>
+
+        <button
+          *ngIf="isEdit"
+          class="btn btn-warning ml-3"
+          (click)="cancelOrderEdit()"
+        >
+          Go Back
+        </button>
       </div>
-      <button class="btn btn-primary" (click)="addFoodOrder()">
-        Save Order
-      </button>
     </div>
-  </div>
+  </block-ui>
 </div>

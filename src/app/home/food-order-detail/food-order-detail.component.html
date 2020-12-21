@@ -1,5 +1,5 @@
 <block-ui>
-  <div class="container">
+  <div class="container" *ngIf="!openEditFoodOrder">
     <button mat-raised-button class="button-blue">
       <mat-icon>add</mat-icon>
       Food Order
@@ -33,14 +33,16 @@
         <ng-container matColumnDef="ordered_from">
           <th mat-header-cell *matHeaderCellDef>Ordered From</th>
           <td mat-cell *matCellDef="let element" class="bg-test">
-            <div *ngIf="element.food_order_lists[0].room_id; else tableNo">
-              Room No:
-              {{ element.food_order_lists[0].room.room_number }}
+            <div *ngIf="element.food_order_lists">
+              <div *ngIf="element.food_order_lists[0].room_id; else tableNo">
+                Room No:
+                {{ element.food_order_lists[0].room.room_number }}
+              </div>
+              <ng-template #tableNo>
+                Table No:
+                {{ element.food_order_lists[0].table.table_number }}
+              </ng-template>
             </div>
-            <ng-template #tableNo>
-              Table No:
-              {{ element.food_order_lists[0].table.table_number }}
-            </ng-template>
           </td>
         </ng-container>
 
@@ -48,11 +50,13 @@
           <th mat-header-cell *matHeaderCellDef>Action</th>
           <td mat-cell *matCellDef="let element; let i = index" class="bg-test">
             <mat-icon
+              matTooltip="Edit Order"
               class="text-secondary mr-2 pointed"
-              (click)="editFoodOrder(element.id)"
+              (click)="editFoodOrder(element['food_order_lists'])"
               >create</mat-icon
             >
             <mat-icon
+              matTooltip="Cancel Order"
               class="text-danger pointed"
               (click)="cancelFoodOrder(element.id)"
               >delete</mat-icon
@@ -155,5 +159,15 @@
       >
       </mat-paginator>
     </div>
+  </div>
+
+  <div class="container mt-5" *ngIf="openEditFoodOrder">
+    <app-food-order
+      [isEdit]="true"
+      [foodOrderList]="foodOrderEdit"
+      [foodOrderId]="foodOrderId"
+      (closeFoodOrder)="hideFoodOrder($event)"
+    >
+    </app-food-order>
   </div>
 </block-ui>
