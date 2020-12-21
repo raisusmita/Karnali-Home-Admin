@@ -31,7 +31,9 @@ export class RoomTransactionComponent implements OnInit {
     "status"
   ]
   displayedTableColumns:string[]=[
-    'table_number'
+    "select",
+    'table_number',
+    'status'
   ]
   displayedRoomColumns: string[] = [
     "room_number",
@@ -52,10 +54,13 @@ export class RoomTransactionComponent implements OnInit {
   roomDataSource:any={};
   tableDataSource:MatTableDataSource<Element>;
   foodDataSource:MatTableDataSource<Element>;
+  foodTableDataSource:any={};
 
   selectedFoodDetail:any;
   foodTotal:any;
+  grandTotal:any;
   selectedRoom:boolean;
+  selectedTable:boolean;
   selection = new SelectionModel<Element>(true, []);
   primaryColor: ThemePalette = "primary";
 
@@ -302,12 +307,14 @@ export class RoomTransactionComponent implements OnInit {
   }
 
   onToggle(e: MatSlideToggleChange){
+    this.foodDataSource = null;
     if(e.checked){
       this.SlideText="Table Transaction/s"
       this.transactionType =false;
       this.selectedRoom = false;
       this.getTable();
     }else{
+      this.selectedTable=false;
       this.SlideText="Room Transaction/s"
       this.transactionType=true;
       this.getRoomList();
@@ -347,9 +354,19 @@ export class RoomTransactionComponent implements OnInit {
     }
     this.tableService.getTableList(paginationParams).subscribe(
       (result) => {
+        const arr = []
         if (result && result.data) {
-          this.tableDataSource = result.data
-          this.totalLength = result.totalCount
+          result.data.map((table) => {
+            this.totalLength = result.totalCount
+            arr.push({
+              table_number:table.table_number,
+              table_id:table.id,
+              status: table.food_orders[0].invoice_id == null ? 'Due' : 'Paid',
+              callFrom:'tableTransaction'
+            });
+          });
+          this.tableDataSource = new MatTableDataSource(arr);
+          this.blockUI.stop();
         } else {
           this.blockUI.stop()
         }
@@ -362,21 +379,24 @@ export class RoomTransactionComponent implements OnInit {
   }
 
   getTotalFoodCost(){
+    this.foodTotal = 0;
     if(this.selectedFoodDetail){
       this.foodTotal = this.selectedFoodDetail.map(food => food.food_items.price *food.quantity).reduce((acc, value) => acc + value, 0);
-      return parseFloat(this.foodTotal);
     }
+    return parseFloat(this.foodTotal);
   }
 
   getGrandTotal(){
-    return parseFloat(this.foodTotal) + parseFloat(this.roomDataSource.amount);
+    this.grandTotal =0;
+    if(this.roomDataSource.amount && this.selectedRoom){
+      this.grandTotal =parseFloat(this.foodTotal) + parseFloat(this.roomDataSource.amount);
+    }
+     return this.grandTotal;
 
   }
 
   displaySelectedRoomDetail(data){
-    const arr=[]
    data.middle_name= data.middle_name?data.middle_name:''
-   
     this.roomDataSource ={
     room_number:data.room_number,
     room_category:data.room_category,
@@ -389,10 +409,15 @@ export class RoomTransactionComponent implements OnInit {
     }
   }
 
-  getFoodDetailForFood(params){
-    this.foodDataSource = null;
+  displaySelectedTable(data){
+    this.foodTableDataSource ={
+      table_number:data.table_number
+    }
+  }
+
+  getFoodDetailForRoom(params){
     this.blockUI.start('Loading...')
-    this.roomAvailabilityService.getFoodDetailForFood(params).subscribe(result=>{
+    this.roomAvailabilityService.getFoodDetailForRoom(params).subscribe(result=>{
       if (result) {
         const arr =[];
         this.selectedFoodDetail = result;
@@ -416,15 +441,49 @@ export class RoomTransactionComponent implements OnInit {
     })
   }
 
-  selectTransaction(row){
-    this.selectedRoom=true;
-    this.displaySelectedRoomDetail(row);
-    const params ={
-      roomId:row.room_id,
-      reservationId:row.reservation_id
-    }
+  getFoodDetailForTable(params){
+    this.blockUI.start('Loading...')
+    this.roomAvailabilityService.getFoodDetailForTable(params).subscribe(result=>{
+      if (result) {
+        const arr =[];
+        this.selectedFoodDetail = result;
+        result.map(data =>{
+          arr.push({
+            food:data.food_items.food_name,
+            quantity:data.quantity,
+            price:data.price,
+            sub_total: parseFloat(data.price)*data.quantity
+          })
+          this.foodDataSource = new MatTableDataSource(arr);
+        });
+      } else {
+        this.blockUI.stop()
+      }
+        this.blockUI.stop()
+      },
+      (error) => {
+        this.blockUI.stop()
+      });
+  }
 
-    this.getFoodDetailForFood(params);
+  selectTransaction(row){
+    if(row.callFrom =='transaction'){
+      this.selectedRoom=true;
+      this.displaySelectedRoomDetail(row);
+      const params ={
+        roomId:row.room_id,
+        reservationId:row.reservation_id
+      }
+      this.getFoodDetailForRoom(params);
+    }else{
+      this.selectedTable=true;
+      this.displaySelectedTable(row);
+      const params ={
+        table_id:row.table_id,
+      }
+      this.getFoodDetailForTable(params);
+
+    }
     
   }
 

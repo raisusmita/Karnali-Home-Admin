@@ -170,7 +170,7 @@ export class RoomTransactionFormComponent implements OnInit {
 
   getFoodDetail(params){
     this.blockUI.start('Loading...')
-    this.roomAvailabilityService.getFoodDetailForFood(params).subscribe(result=>{
+    this.roomAvailabilityService.getFoodDetailForRoom(params).subscribe(result=>{
       if (result.length!=0) {
           this.food_total_amount=0;
           this.foodDetail=result
