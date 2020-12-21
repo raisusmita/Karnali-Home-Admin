@@ -30,11 +30,22 @@ mat-header-cell:last-of-type {
   overflow: auto;
 }
 
+.mat-card {
+  height: 600px;
+}
+
 .food-detail {
-  margin-top: 7px;
+  margin-top: 15px;
 }
 
 tr.mat-footer-row,
 .room-total {
   font-weight: bold;
+}
+
+.text {
+  margin: 5px;
+}
+.food-table {
+  border: 1px solid #f1f1f1;
 }

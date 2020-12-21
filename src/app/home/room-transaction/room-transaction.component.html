@@ -132,76 +132,149 @@
         </button>
 
         <div class="main-content" *ngIf="selectedRoom">
-          <div class="room-detail">
-            <table mat-table [dataSource]="roomDataSource" class="mat-elevation-z8">
-              <ng-container matColumnDef="room_number">
-                <th mat-header-cell *matHeaderCellDef> Room Number </th>
-                <td mat-cell *matCellDef="let element"> {{element.room_number }} </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="check_in">
-                <th mat-header-cell *matHeaderCellDef> Check In </th>
-                <td mat-cell *matCellDef="let element"> {{element.check_in_date }} </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="check_out">
-                <th mat-header-cell *matHeaderCellDef> Check Out </th>
-                <td mat-cell *matCellDef="let element"> {{element.check_out_date }} </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="number_of_days">
-                <th mat-header-cell *matHeaderCellDef> Number of days </th>
-                <td mat-cell *matCellDef="let element"> {{element.no_of_days }} </td>
-              </ng-container>
-            
-              <ng-container matColumnDef="rate">
-                <th mat-header-cell *matHeaderCellDef> Rate </th>
-                <td mat-cell *matCellDef="let element"> {{element.rate }} </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="amount" >
-                <th mat-header-cell *matHeaderCellDef class="room-total"> Total Amount </th>
-                <td mat-cell *matCellDef="let element" class="room-total"> {{element.amount }} </td>
-              </ng-container>
-  
-              <tr mat-header-row *matHeaderRowDef="displayedRoomColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedRoomColumns;"></tr>
-            </table>
-          </div>
-          <div class="food-detail">
-            <table mat-table [dataSource]="foodDataSource" class="mat-elevation-z8">
-              <ng-container matColumnDef="food">
-                <th mat-header-cell *matHeaderCellDef> Food </th>
-                <td mat-cell *matCellDef="let element"> {{element.food }} </td>
-                <td mat-footer-cell *matFooterCellDef> Total </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="quantity">
-                <th mat-header-cell *matHeaderCellDef> Quantity </th>
-                <td mat-cell *matCellDef="let element"> {{element.quantity }} </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="price">
-                <th mat-header-cell *matHeaderCellDef> Price </th>
-                <td mat-cell *matCellDef="let element"> {{element.price }} </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="sub_total">
-                <th mat-header-cell *matHeaderCellDef> Sub Total </th>
-                <td mat-cell *matCellDef="let element"> {{element.sub_total }} </td>
-                <td mat-footer-cell *matFooterCellDef> Rs, {{getTotalFoodCost() }} </td>
-              </ng-container>
-  
-              <tr mat-header-row *matHeaderRowDef="displayedFoodColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedFoodColumns;"></tr>
-              <tr mat-footer-row *matFooterRowDef="displayedFoodColumns"></tr>
-            </table>
-          </div>
+          <mat-card class="example-card">
+            <mat-card-header>
+              <mat-card-title>Transaction Overview</mat-card-title>
+              <mat-card-subtitle></mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="room-detail">
+                <div class="row">
+                  <div class="col-lg-4">
+                    <p class="text">Customer:
+                      <span> {{roomDataSource.customer_name}}</span> 
+                    </p>
+                    <p class="text">Room Number: 
+                      <span> {{roomDataSource.room_number}}</span>
+                    </p>
+                  </div>
+                  <div class="col-lg-4">
+                    <p class="text">Check In:
+                      <span> {{roomDataSource.check_in_date}}</span>
+                    </p>
+                    <p class="text">Night Stayed:
+                      <span> {{roomDataSource.no_of_days}}</span>
+                    </p>
+                  </div>
+                  <div class="col-lg-4">
+                    <p class="text">Check Out:
+                      <span> {{roomDataSource.check_out_date}}</span>
+                    </p>
+                    <p class="text">Per night: 
+                      <span> {{roomDataSource.rate}}</span>
+                    </p>
+                  </div>
+    
+                </div>
+              </div>
+
+              <div class="food-detail">
+                <table mat-table class="food-table" [dataSource]="foodDataSource" >
+                  <ng-container matColumnDef="food">
+                    <th mat-header-cell *matHeaderCellDef> Food </th>
+                    <td mat-cell *matCellDef="let element"> {{element.food }} </td>
+                  </ng-container>
+      
+                  <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                    <td mat-cell *matCellDef="let element"> {{element.quantity }} </td>
+                  </ng-container>
+      
+                  <ng-container matColumnDef="price">
+                    <th mat-header-cell *matHeaderCellDef> Price </th>
+                    <td mat-cell *matCellDef="let element"> {{element.price }} </td>
+
+                  </ng-container>
+      
+                  <ng-container matColumnDef="sub_total">
+                    <th mat-header-cell *matHeaderCellDef> Sub Total </th>
+                    <td mat-cell *matCellDef="let element"> {{element.sub_total }} </td>
+                  </ng-container>
+
+                  <!-- Total for Food START-->
+                  <ng-container matColumnDef="blankFoodCell_1">
+                    <td mat-footer-cell *matFooterCellDef>
+                    </td>
+                  </ng-container>
+                                  
+                  <ng-container matColumnDef="blankFoodCell_2">
+                    <td mat-footer-cell *matFooterCellDef>
+                    </td>
+                  </ng-container>
+                                  
+                  <ng-container matColumnDef="sub-food">
+                    <td mat-footer-cell *matFooterCellDef>
+                    Food Total
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="food-total">
+                    <td mat-footer-cell *matFooterCellDef>
+                      Rs, {{getTotalFoodCost() }}
+                    </td>
+                  </ng-container>
+                  <!-- Total for Food END-->
+
+                  <!-- Total for Room START-->
+                  <ng-container matColumnDef="blankRoomCell_1">
+                    <td mat-footer-cell *matFooterCellDef>
+                    </td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="blankRoomCell_2">
+                    <td mat-footer-cell *matFooterCellDef>
+                    </td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="sub-room">
+                    <td mat-footer-cell *matFooterCellDef>
+                     Room Total
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="room-total">
+                    <td mat-footer-cell *matFooterCellDef>
+                     Rs, {{roomDataSource.amount}}
+                    </td>
+                  </ng-container>
+                  <!-- Total for Room END-->
+
+                  <!-- Total for Grand Total START-->
+                  <ng-container matColumnDef="blankGrandCell_1">
+                    <td mat-footer-cell *matFooterCellDef>
+                    </td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="blankGrandCell_2">
+                    <td mat-footer-cell *matFooterCellDef>
+                    </td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="grand">
+                    <td mat-footer-cell *matFooterCellDef>
+                     Grand Total
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="grand-total">
+                    <td mat-footer-cell *matFooterCellDef>
+                      Rs, {{getGrandTotal()}}
+                    </td>
+                  </ng-container>
+                  <!-- Total for Grand Total END-->
+      
+                  <tr mat-header-row *matHeaderRowDef="displayedFoodColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedFoodColumns;"></tr>
+                  <tr mat-footer-row *matFooterRowDef="['blankFoodCell_1', 'blankFoodCell_2', 'sub-food', 'food-total']"></tr>
+                  <tr mat-footer-row *matFooterRowDef="['blankRoomCell_1', 'blankRoomCell_2', 'sub-room', 'room-total']"></tr>
+                  <tr mat-footer-row *matFooterRowDef="['blankGrandCell_1', 'blankGrandCell_2', 'grand', 'grand-total']"></tr>
+
+                </table>
+              </div>
+            </mat-card-content>
+            <mat-card-subtitle>
+             <p> NOTE: The grand total amount may vary from the invoice as it does not contain any charges.</p>
+            </mat-card-subtitle>
+          </mat-card>
         </div>
       </div>
-
     </div>
     
 

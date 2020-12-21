@@ -49,11 +49,12 @@ export class RoomTransactionComponent implements OnInit {
   ];
   dataSource: MatTableDataSource<Element>;
   roomTranDataSource:MatTableDataSource<Element>;
-  roomDataSource:MatTableDataSource<Element>;
+  roomDataSource:any={};
   tableDataSource:MatTableDataSource<Element>;
   foodDataSource:MatTableDataSource<Element>;
 
   selectedFoodDetail:any;
+  foodTotal:any;
   selectedRoom:boolean;
   selection = new SelectionModel<Element>(true, []);
   primaryColor: ThemePalette = "primary";
@@ -362,21 +363,30 @@ export class RoomTransactionComponent implements OnInit {
 
   getTotalFoodCost(){
     if(this.selectedFoodDetail){
-      return this.selectedFoodDetail.map(food => food.food_items.price).reduce((acc, value) => acc + value, 0);
+      this.foodTotal = this.selectedFoodDetail.map(food => food.food_items.price *food.quantity).reduce((acc, value) => acc + value, 0);
+      return parseFloat(this.foodTotal);
     }
+  }
+
+  getGrandTotal(){
+    return parseFloat(this.foodTotal) + parseFloat(this.roomDataSource.amount);
+
   }
 
   displaySelectedRoomDetail(data){
     const arr=[]
-    arr.push({
-      room_number:data.room_number,
-      no_of_days: data.no_of_days,
-      rate: data.rate,
-      amount: data.amount,
-      check_in_date: data.check_in_date,
-      check_out_date: data.check_out_date
-    });
-  this.roomDataSource = new MatTableDataSource(arr);
+   data.middle_name= data.middle_name?data.middle_name:''
+   
+    this.roomDataSource ={
+    room_number:data.room_number,
+    room_category:data.room_category,
+    no_of_days: data.no_of_days,
+    rate: data.rate,
+    amount: data.amount,
+    check_in_date: data.check_in_date,
+    check_out_date: data.check_out_date,
+    customer_name:data.first_name + ' '+ data.middle_name+' '+ data.last_name
+    }
   }
 
   getFoodDetailForFood(params){
