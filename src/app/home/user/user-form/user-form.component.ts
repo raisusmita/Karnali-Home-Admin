@@ -13,6 +13,14 @@ export class UserFormComponent implements OnInit {
   user: MvUser = {} as MvUser
   isEdit = false
 
+  roleList = {
+    owner: 'Owner',
+    manager: 'Manager',
+    operator: 'Operator',
+    chef: 'Chef',
+    waiter: 'Waiter'
+  }
+
   @BlockUI() blockUI: NgBlockUI
 
   constructor(
