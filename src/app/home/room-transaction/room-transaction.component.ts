@@ -1,15 +1,15 @@
-import { InvoiceDataService } from "./../../shared/services/invoice-data-service/invoice-data.service";
-import { ConfirmCommonDialogComponent } from "./../../shared/components/confirm-common-dialog/confirm-common-dialog.component";
-import { RoomTransactionService } from "./room-transaction.service";
-import { RoomTransactionFormComponent } from "./room-transaction-form/room-transaction-form.component";
-import { Component, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { ToastrService } from "ngx-toastr";
-import { MatTableDataSource } from "@angular/material/table";
-import { SelectionModel } from "@angular/cdk/collections";
-import { ThemePalette } from "@angular/material/core";
-import { InvoiceService } from "../invoice/invoice.service";
-import { BlockUI, NgBlockUI } from "ng-block-ui";
+import { InvoiceDataService } from './../../shared/services/invoice-data-service/invoice-data.service'
+import { ConfirmCommonDialogComponent } from './../../shared/components/confirm-common-dialog/confirm-common-dialog.component'
+import { RoomTransactionService } from './room-transaction.service'
+import { RoomTransactionFormComponent } from './room-transaction-form/room-transaction-form.component'
+import { Component, OnInit } from '@angular/core'
+import { MatDialog } from '@angular/material/dialog'
+import { ToastrService } from 'ngx-toastr'
+import { MatTableDataSource } from '@angular/material/table'
+import { SelectionModel } from '@angular/cdk/collections'
+import { ThemePalette } from '@angular/material/core'
+import { InvoiceService } from '../invoice/invoice.service'
+import { BlockUI, NgBlockUI } from 'ng-block-ui'
 
 @Component({
   selector: 'app-room-transaction',
@@ -18,24 +18,24 @@ import { BlockUI, NgBlockUI } from "ng-block-ui";
 })
 export class RoomTransactionComponent implements OnInit {
   displayedColumns: string[] = [
-    "select",
-    "invoice_number",
-    "full_name",
-    "phone_number",
-    "address",
-    "room_category",
-    "room_number",
-    "no_of_days",
-    "rate",
-    "amount",
-    "status",
-    "check_in_date",
-    "check_out_date",
+    'select',
+    'invoice_number',
+    'full_name',
+    'phone_number',
+    'address',
+    'room_category',
+    'room_number',
+    'no_of_days',
+    'rate',
+    'amount',
+    'status',
+    'check_in_date',
+    'check_out_date'
     // "action",
-  ];
-  dataSource: MatTableDataSource<Element>;
-  selection = new SelectionModel<Element>(true, []);
-  primaryColor: ThemePalette = "primary";
+  ]
+  dataSource: MatTableDataSource<Element>
+  selection = new SelectionModel<Element>(true, [])
+  primaryColor: ThemePalette = 'primary'
 
   invoiceData: any
   allData: any
@@ -85,8 +85,8 @@ export class RoomTransactionComponent implements OnInit {
     } else {
       this.skip = e.pageIndex * e.pageSize
     }
-    this.limit = e.pageSize;
-    this.getRoomTransaction();
+    this.limit = e.pageSize
+    this.getRoomTransaction()
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -121,7 +121,8 @@ export class RoomTransactionComponent implements OnInit {
             result.data.map((x) => {
               arr.push({
                 transaction_id: x.id,
-                invoice_number: x.invoice_id == null ? "":x.invoice.invoice_number,
+                invoice_number:
+                  x.invoice_id == null ? '' : x.invoice.invoice_number,
                 first_name: x.customer.first_name,
                 middle_name: x.customer.middle_name,
                 last_name: x.customer.last_name,
@@ -136,17 +137,17 @@ export class RoomTransactionComponent implements OnInit {
                 check_in_date: x.reservation.check_in_date,
                 check_out_date: x.reservation.check_out_date,
                 reservation_id: x.reservation.id,
-                callFrom:'transaction'
-              });
-            });
-            this.dataSource = new MatTableDataSource(arr);
-            this.blockUI.stop();
+                callFrom: 'transaction'
+              })
+            })
+            this.dataSource = new MatTableDataSource(arr)
+            this.blockUI.stop()
           } else {
             this.blockUI.stop()
           }
         },
         () => {
-          this.blockUI.stop();
+          this.blockUI.stop()
         }
       )
   }
@@ -208,8 +209,8 @@ export class RoomTransactionComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        window.print();
-        this.initialize();
+        window.print()
+        this.initialize()
       }
     })
   }

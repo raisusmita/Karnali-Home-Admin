@@ -20,20 +20,24 @@ export class HeaderComponent implements OnInit {
     //   path: "room-availability",
     //   icon: "event_available",
     // },
-    { name: "Food", path: "food", icon: "fastfood" },
-    { name: "Bar", path: "bar", icon: "local_bar" },
-    { name: "Table", path: "table", icon: "weekend" },
-    { name: "Food Order", path: "food-order", icon: "room_service" },
+    { name: 'Food', path: 'food', icon: 'fastfood' },
+    { name: 'Bar', path: 'bar', icon: 'local_bar' },
+    { name: 'Table', path: 'table', icon: 'weekend' },
+    { name: 'Food Order', path: 'food-order', icon: 'room_service' },
 
-    { name: "Food Order Details", path: "food-order-detail", icon: "room_service" },
+    {
+      name: 'Food Order Details',
+      path: 'food-order-detail',
+      icon: 'room_service'
+    },
     {
       name: 'Transaction',
       path: 'room-transaction',
       icon: 'description'
     },
-    { name: "Invoice", path: "invoice", icon: "payment" },
-    { name: "User", path: "user", icon: "group" },
-  ];
+    { name: 'Invoice', path: 'invoice', icon: 'payment' },
+    { name: 'User', path: 'user', icon: 'group' }
+  ]
 
   constructor(private router: Router) {
     this.selectedPath = router.url.split('/')[1]
