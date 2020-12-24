@@ -22,16 +22,19 @@ export class LoginComponent implements OnInit {
 
   submitLogin() {
     this.userAuthService.loginUser(this.user).subscribe(
-      (e) => {
-        if (e.token) {
-          localStorage.setItem('token', e.token.token)
+      (userData) => {
+        if (userData.token) {
+          this.userAuthService.setLocalStorage(
+            userData.data,
+            userData.token.token
+          )
           this.router.navigate(['/dashboard'])
         } else {
-          localStorage.setItem('token', '')
+          this.userAuthService.clearLocalStorage()
         }
       },
       (error) => {
-        localStorage.setItem('token', '')
+        this.userAuthService.clearLocalStorage()
       }
     )
   }

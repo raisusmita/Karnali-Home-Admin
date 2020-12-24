@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
+import { UserAuthService } from 'src/app/user-auth.service'
 
 @Component({
   selector: 'app-header',
@@ -39,14 +40,17 @@ export class HeaderComponent implements OnInit {
     { name: 'User', path: 'user', icon: 'group' }
   ]
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private userAuthService: UserAuthService
+  ) {
     this.selectedPath = router.url.split('/')[1]
   }
 
   ngOnInit() {}
 
   logout() {
-    localStorage.removeItem('token')
+    this.userAuthService.clearLocalStorage()
     this.router.navigate(['/login'])
   }
 
