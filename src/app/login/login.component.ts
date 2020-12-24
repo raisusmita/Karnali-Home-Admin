@@ -11,6 +11,7 @@ import { UserAuthService } from '../user-auth.service'
 })
 export class LoginComponent implements OnInit {
   user: MvUser = {} as MvUser
+  passwordHide = true
 
   constructor(
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
