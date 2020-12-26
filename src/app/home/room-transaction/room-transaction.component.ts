@@ -356,7 +356,8 @@ export class RoomTransactionComponent implements OnInit {
       (result) => {
         const arr = []
         if (result && result.data) {
-          result.data.map((table) => {
+          const filterTable = result.data.filter(data=>data.food_orders[0].invoice_id ==null);
+          filterTable.map((table) => {
             this.totalLength = result.totalCount
             arr.push({
               table_number:table.table_number,
