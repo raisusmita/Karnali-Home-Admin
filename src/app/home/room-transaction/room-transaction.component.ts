@@ -450,12 +450,11 @@ export class RoomTransactionComponent implements OnInit {
 
   getFoodDetailForRoom(params){
     this.blockUI.start('Loading...')
-    this.foodDataSource = null;
     this.roomAvailabilityService.getFoodDetailForRoom(params).subscribe(result=>{
-      if (result) {
+      if (result && result.data) {
         const arr =[];
         this.selectedFoodDetail = result;
-        result.map(data =>{
+        result.data.map(data =>{
           arr.push({
             food:data.food_items.food_name,
             quantity:data.quantity,
@@ -478,12 +477,11 @@ export class RoomTransactionComponent implements OnInit {
 
   getFoodDetailForTable(params){
     this.blockUI.start('Loading...')
-    this.foodDataSource= null;
     this.roomAvailabilityService.getFoodDetailForTable(params).subscribe(result=>{
-      if (result) {
+      if (result && result.data) {
         const arr =[];
         this.selectedFoodDetail = result;
-        result.map(data =>{
+        result.data.map(data =>{
           arr.push({
             food:data.food_items.food_name,
             quantity:data.quantity,
