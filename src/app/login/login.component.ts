@@ -3,6 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core'
 import { LOCAL_STORAGE, WebStorageService } from 'angular-webstorage-service'
 import { Router } from '@angular/router'
 import { UserAuthService } from '../user-auth.service'
+import { ToastrService } from 'ngx-toastr'
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
     private userAuthService: UserAuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {}
@@ -31,6 +33,10 @@ export class LoginComponent implements OnInit {
           )
           this.router.navigate(['/dashboard'])
         } else {
+          this.toastr.error('Invalid credentials', 'Error!', {
+            closeButton: true,
+            positionClass: 'toast-top-right'
+          })
           this.userAuthService.clearLocalStorage()
         }
       },
