@@ -10,10 +10,11 @@ export class InvoiceReportComponent implements OnInit {
   invoiceData: any
   transactionData: any
   customerData: any
+  foodData:any;
   firstName: string
   middleName: string
   lastName: string
-
+  transactionType:boolean
   constructor(private data: InvoiceDataService) {}
 
   ngOnInit() {}
@@ -27,6 +28,14 @@ export class InvoiceReportComponent implements OnInit {
 
       this.data.currentTransactionData.subscribe((transactionData) => {
         this.transactionData = transactionData
+      })
+
+      this.data.currentFoodData.subscribe((foodData)=>{
+        this.foodData = foodData
+      })
+
+      this.data.currentTransactionTypeData.subscribe((transactionType)=>{
+        this.transactionType = transactionType;
       })
 
       this.data.currentCustomer.subscribe((customer) => {

@@ -63,7 +63,6 @@ export class FoodOrderDetailComponent implements OnInit {
         if (result && result.data) {
           this.totalLength = result.totalCount;
           this.dataSource = result.data;
-          console.log(result);
         }
         this.blockUI.stop();
       },
