@@ -55,38 +55,7 @@
                 </button>
               </form>
             </mat-card-content>
-            <!-- <mat-card-actions>
-            <div class="example-container mat-elevation-z8">
-              <table
-                #roomAvailableTable
-                mat-table
-                [dataSource]="roomAvailableDataSource"
-              >
-                <ng-container matColumnDef="room_category">
-                  <th mat-header-cell *matHeaderCellDef>Room Category</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{ element.category }}
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="number_of_rooms">
-                  <th mat-header-cell *matHeaderCellDef>Number of Rooms</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{ element.totalNumber }}
-                  </td>
-                </ng-container>
-
-                <tr
-                  mat-header-row
-                  *matHeaderRowDef="roomAvailableColumns; sticky: true"
-                ></tr>
-                <tr
-                  mat-row
-                  *matRowDef="let row; columns: roomAvailableColumns"
-                ></tr>
-              </table>
-            </div>
-          </mat-card-actions> -->
+           
           </mat-card>
           <div class="example-container mat-elevation-z8">
             <table
@@ -228,25 +197,16 @@
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef>Action</th>
                 <td mat-cell *matCellDef="let element; let i = index">
-                  <button mat-icon-button [matMenuTriggerFor]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button
-                      class="mat-menu-item"
-                      (click)="editBooking(element)"
-                    >
-                      <mat-icon>create</mat-icon>
-                      <span>Edit</span>
-                    </button>
-                    <button
-                      class="mat-menu-item"
-                      (click)="cancelBooking(element.id)"
-                    >
-                      <mat-icon>delete</mat-icon>
-                      <span>Cancel</span>
-                    </button>
-                  </mat-menu>
+                  <mat-icon
+                  matTooltip="Edit Booking"
+                  class="text-secondary mr-2 pointed"
+                  (click)="editBooking(element)"
+                  >create</mat-icon>
+                  <mat-icon
+                  matTooltip="Cancel Booking"
+                  class="text-secondary mr-2 pointed"
+                  (click)="cancelBooking(element.id)"
+                  >delete</mat-icon>
                 </td>
               </ng-container>
 
