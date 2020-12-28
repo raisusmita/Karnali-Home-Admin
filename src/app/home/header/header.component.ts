@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
+import { UserRoleManagementService } from 'src/app/shared/services/user-role-service/user-role-management.service'
+import { UserAuthService } from 'src/app/user-auth.service'
 
 @Component({
   selector: 'app-header',
@@ -8,8 +10,10 @@ import { Router } from '@angular/router'
 })
 export class HeaderComponent implements OnInit {
   selectedPath = ''
+  userName = ''
+
   components: any[] = [
-    // { name: "Dashboard", path: "", icon: "dashboard" },
+    { name: 'Dashboard', path: '', icon: 'dashboard' },
     { name: 'Room Category', path: 'room-category', icon: 'category' },
     { name: 'Room', path: 'room', icon: 'meeting_room' },
     { name: 'Customer', path: 'customer', icon: 'perm_identity' },
@@ -23,7 +27,7 @@ export class HeaderComponent implements OnInit {
     { name: 'Food', path: 'food', icon: 'fastfood' },
     { name: 'Bar', path: 'bar', icon: 'local_bar' },
     { name: 'Table', path: 'table', icon: 'weekend' },
-    { name: 'Food Order', path: 'food-order', icon: 'room_service' },
+    { name: 'Food Order', path: 'food-order', icon: 'alarm' },
 
     {
       name: 'Food Order Details',
@@ -39,14 +43,27 @@ export class HeaderComponent implements OnInit {
     { name: 'User', path: 'user', icon: 'group' }
   ]
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private userAuthService: UserAuthService,
+    private userRoleManagement: UserRoleManagementService
+  ) {
     this.selectedPath = router.url.split('/')[1]
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    const user = localStorage.getItem('userRole')
+    this.userName = localStorage.getItem('userName')
+
+    if (this.userRoleManagement.userVisibleRoutes[user]) {
+      this.components = this.components.filter((com) =>
+        this.userRoleManagement.userVisibleRoutes[user].includes(com.path)
+      )
+    }
+  }
 
   logout() {
-    localStorage.removeItem('token')
+    this.userAuthService.clearLocalStorage()
     this.router.navigate(['/login'])
   }
 

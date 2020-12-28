@@ -19,6 +19,7 @@
         name="email"
         placeholder="Enter User Email"
         [(ngModel)]="user.email"
+        required
       />
     </mat-form-field>
 
@@ -35,13 +36,12 @@
 
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>User Role</mat-label>
-      <input
-        matInput
-        name="role"
-        placeholder="Enter Customer Role"
-        [(ngModel)]="user.role"
-        required
-      />
+
+      <mat-select [(ngModel)]="user.role" name="role">
+        <mat-option *ngFor="let role of roleList | keyvalue" [value]="role.key">
+          {{ role.value }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <button
