@@ -6,8 +6,13 @@
       <!-- <span >Aqore</span> -->
       <!-- </mat-list-item> -->
       <mat-list-item *ngFor="let component of components">
-        <button mat-button class="btn-color" [ngClass]="{'activeLink': component.path == selectedPath}"
-          routerLink="/{{ component.path }}" (click)="selectButton(component.path)">
+        <button
+          mat-button
+          class="btn-color"
+          [ngClass]="{ activeLink: component.path == selectedPath }"
+          routerLink="/{{ component.path }}"
+          (click)="selectButton(component.path)"
+        >
           <mat-icon>{{ component.icon }}</mat-icon>
           {{ component.name }}
         </button>
@@ -22,6 +27,9 @@
         </button>
         <span> Karnali Home</span>
         <span class="spacer"></span>
+        <span class="text-dark">
+          {{ userName }}
+        </span>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>account_circle</mat-icon>
         </button>

@@ -38,8 +38,8 @@ const routes: Routes = [
       { path: 'room', component: RoomComponent },
       { path: 'customer', component: CustomerComponent },
       { path: 'table', component: TableComponent },
-      { path: 'user', component: UserComponent },
-      { path: 'room-availability', component: RoomAvailabilityComponent }
+      { path: 'user', component: UserComponent }
+      // { path: 'room-availability', component: RoomAvailabilityComponent }
     ]
   },
   { path: 'dashboard', pathMatch: 'full', redirectTo: '' },

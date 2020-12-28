@@ -12,6 +12,8 @@ import { AuthGuard } from './auth.guard'
 import { UserAuthService } from './user-auth.service'
 import { HTTP_INTERCEPTORS } from '@angular/common/http'
 import { TokenInterceptor } from './shared/token.interceptor'
+import { ServiceWorkerModule } from '@angular/service-worker'
+import { environment } from '../environments/environment'
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +23,10 @@ import { TokenInterceptor } from './shared/token.interceptor'
     RouterModule,
     HomeModule,
     ToastrModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production
+    })
   ],
   providers: [
     UserAuthService,

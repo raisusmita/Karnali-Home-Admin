@@ -15,7 +15,6 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui'
 export class UserComponent implements OnInit {
   displayedColumns: string[] = ['name', 'email', 'role', 'action']
   dataSource: any[]
-
   @BlockUI() blockUI: NgBlockUI
   pageSizeOptions = [10, 25, 50, 100]
 

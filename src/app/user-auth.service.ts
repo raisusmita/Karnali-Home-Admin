@@ -14,4 +14,16 @@ export class UserAuthService {
   loginUser(user: any): Observable<any> {
     return this.http.post(this.baseURL + 'login', user)
   }
+
+  setLocalStorage(data, token) {
+    localStorage.setItem('token', token)
+    localStorage.setItem('userRole', data.role)
+    localStorage.setItem('userName', data.name)
+  }
+
+  clearLocalStorage() {
+    localStorage.removeItem('token')
+    localStorage.removeItem('userRole')
+    localStorage.removeItem('userName')
+  }
 }
