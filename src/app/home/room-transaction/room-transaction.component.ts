@@ -56,6 +56,7 @@ export class RoomTransactionComponent implements OnInit {
   foodTableDataSource:any={};
   invoiceParams:any;
   foodData:any;
+  foodParams:any;
   
   selectedFoodDetail:any;
   foodTotal:any;
@@ -261,8 +262,13 @@ export class RoomTransactionComponent implements OnInit {
       ]).then(
         ([response]) => {
           if(this.foodData){
-            this.data.changeFoodData(this.foodData);
+            this.foodParams =this.foodData
+          }else{
+            this.foodParams ={message:'No Food Order has been made.'}
           }
+
+          this.data.changeFoodData(this.foodParams);
+
           resolve(true);
         },
         reject
@@ -393,6 +399,7 @@ export class RoomTransactionComponent implements OnInit {
     window.print()
   })
   this.selection.clear();
+  this.foodData=null;
   }
   
   onAddClick() {

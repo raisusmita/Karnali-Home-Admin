@@ -15,6 +15,7 @@ export class InvoiceReportComponent implements OnInit, AfterViewInit {
   middleName: string
   lastName: string
   transactionType:boolean
+  showFoodData:boolean
   constructor(private data: InvoiceDataService) {}
 
   ngOnInit() {
@@ -31,8 +32,12 @@ export class InvoiceReportComponent implements OnInit, AfterViewInit {
       })
 
       this.data.currentFoodData.subscribe((foodData)=>{
-        console.log(foodData)
-        this.foodData = foodData
+        if(foodData.hasOwnProperty('message')){
+          this.showFoodData = false;
+        }else{
+          this.showFoodData = true;
+          this.foodData = foodData
+        }
       })
 
       this.data.currentTransactionTypeData.subscribe((transactionType)=>{

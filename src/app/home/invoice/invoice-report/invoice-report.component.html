@@ -12,7 +12,7 @@
       <div class="col-lg-9 col-md-9">
         <div class="customer-info" *ngFor="let invoice of invoiceData">
           <p>Date:{{invoice.invoice.created_at| date:'fullDate'}}</p>
-          <p *ngIf="customerData">
+          <p *ngIf="transactionType">
             Customer Name:{{ firstName }} {{ middleName ? middleName : "" }}
             {{ lastName }}
           </p>
@@ -62,7 +62,7 @@
       </table>
     </div>
 
-    <div class="tableTran">
+    <div class="tableTran" *ngIf="showFoodData">
       <p><strong>Food Charge:</strong></p>
       <table class="food-table">
         <thead>
