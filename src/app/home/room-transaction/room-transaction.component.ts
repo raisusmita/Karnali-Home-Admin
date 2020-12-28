@@ -54,7 +54,7 @@ export class RoomTransactionComponent implements OnInit {
   tableDataSource:MatTableDataSource<Element>;
   foodDataSource:MatTableDataSource<Element>;
   foodTableDataSource:any={};
-
+  invoiceParams:any;
   foodData:any;
   
   selectedFoodDetail:any;
@@ -105,22 +105,30 @@ export class RoomTransactionComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.selectedRoom=false;
+    this.transactionType=true;
     this.initialize()
+    this.SlideText ="Room Transaction/s"
   }
 
   initialize() {
     this.pageSize = 10
     this.pageIndex = 0
     this.totalLength = 0
-    this.transactionType=true;
+
+    // if(this.selectedRoom){
+    //   this.transactionType=true;
+    //   this.SlideText="Room Transaction/s"
+    // }else{
+    //   this.transactionType=false;
+    //   this.SlideText="Table Transaction/s"
+    // }
 
     this.skip = 0
     this.limit = this.pageSize
 
-    this.SlideText ="Room Transaction/s"
 
     this.getRoomTransaction()
-    this.transactionType=true;
     this.getRoomList();
 
     this.data.currentInvoiceData.subscribe(
@@ -138,19 +146,23 @@ export class RoomTransactionComponent implements OnInit {
     this.getRoomTransaction();
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length
-    const numRows = this.dataSource.data.length
-    return numSelected === numRows
-  }
+  // /** Whether the number of selected elements matches the total number of rows. */
+  // isAllSelected() {
+  //   const numSelected = this.selection.selected.length
+  //   const numRows = this.dataSource.data.length
+  //   return numSelected === numRows
+  // }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.dataSource.data.forEach((row) => this.selection.select(row))
-  }
+  // /** Selects all rows if they are not all selected; otherwise clear selection. */
+  // masterToggle() {
+  //   this.isAllSelected()
+  //     ? this.selection.clear()
+  //     : this.dataSource.data.forEach((row) => this.selection.select(row))
+  // }
+
+  // onSelection(event, selection, row){
+  //   event ? selection.toggle(row) : null
+  // }
 
   getRoomTransaction() {
     this.blockUI.start('Loading...')
@@ -202,7 +214,7 @@ export class RoomTransactionComponent implements OnInit {
       )
   }
 
-  generateInvoice() {
+   generateInvoice():Promise<any> {
     if (this.selection.selected.length == 0) {
       this.toastr.info(
         'Please select atleast one transaction to proceed',
@@ -212,64 +224,144 @@ export class RoomTransactionComponent implements OnInit {
         }
       )
     } else {
-      const invoiceParams = this.selection.selected
+      this.invoiceParams=null;
+      this.invoiceParams = this.selection.selected
       const customerName = {
-        firstName: invoiceParams[0]['first_name'],
-        middleName: invoiceParams[0]['middle_name'],
-        lastName: invoiceParams[0]['last_name']
+        firstName: this.invoiceParams[0]['first_name'],
+        middleName: this.invoiceParams[0]['middle_name'],
+        lastName: this.invoiceParams[0]['last_name']
       }
+
       this.data.changeCustomer(customerName)
-      this.createInvoice(invoiceParams);
-      if(this.transactionType==true){
-        this.data.changeTransactionType(true)
-        const params ={
-          roomId:invoiceParams[0]['room_id'],
-          reservationId:invoiceParams[0]['reservation_id']
-        }
-        this.changeFoodForRoom(params);
+      this.transactionRelatedData=null;
+      this.invoicelRelatedData=null;
 
-      }else{
-        this.data.changeTransactionType(false)
-        const params ={
-          table_id:invoiceParams[0]['table_id'],
-        }
-        this.changeFoodForTable(params);
-      }
+      // tslint:disable-next-line: no-unused-expression
+      return new Promise((resolve, reject) => {
+        Promise.all([
+          this.createInvoice(this.invoiceParams)
+          ]).then(
+          ([response]) => {
+            this.onInvoiceGenerate()
+            return resolve(true);
+          },
+          reject
+        );
+      });
+      
      
-        this.onInvoiceGenerate()
     }
   }
 
-  changeFoodForRoom(params){
-    this.getFoodDetailForRoom(params);
-    if(this.foodData){
-      this.data.changeFoodData(this.foodData);
-    }
-  }
-
-  changeFoodForTable(params){
-    this.getFoodDetailForTable(params);
-    if(this.foodData){
-      this.data.changeFoodData(this.foodData);
-    }
-  }
-
-
-  createInvoice(invoiceParams){
-    this.invoiceService.addInvoice(invoiceParams).subscribe((result) => {
-      if (result) {
-        this.allData = result.data
-        this.invoicelRelatedData = this.allData.filter(
-          (invoice) => invoice.invoice
-        )
-        this.allData.pop()
-        this.transactionRelatedData = this.allData
-
-        this.data.changeInvoiceData(this.invoicelRelatedData)
-        this.data.changeTransactionData(this.transactionRelatedData)
-
-      }
+  changeFoodForRoom(params):Promise<any>{
+    // tslint:disable-next-line: no-unused-expression
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        this.getFoodDetailForRoom(params)
+      ]).then(
+        ([response]) => {
+          if(this.foodData){
+            this.data.changeFoodData(this.foodData);
+          }
+          resolve(true);
+        },
+        reject
+      );
     });
+    
+  }
+
+  changeFoodForTable(params):Promise<any>{
+    // tslint:disable-next-line: no-unused-expression
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        this.getFoodDetailForTable(params)
+      ]).then(
+        ([response]) => {
+          if(this.foodData){
+            this.data.changeFoodData(this.foodData);
+          }
+          resolve(true);
+        },
+        reject
+      );
+    });
+  }
+
+  changeFoodData():Promise<any>{
+    if(this.transactionType==true){
+      this.data.changeTransactionType(true)
+      const params ={
+        roomId:this.invoiceParams[0]['room_id'],
+        reservationId:this.invoiceParams[0]['reservation_id']
+      }
+       // tslint:disable-next-line: no-unused-expression
+       return new Promise((resolve, reject) => {
+        Promise.all([
+          this.changeFoodForRoom(params)
+        ]).then(
+          ([response]) => {
+            resolve(true);
+          },
+          reject
+        );
+      });
+  
+    }else{
+      this.data.changeTransactionType(false)
+      const params ={
+        table_id:this.invoiceParams[0]['table_id'],
+      }
+       // tslint:disable-next-line: no-unused-expression
+       return new Promise((resolve, reject) => {
+        Promise.all([
+          this.changeFoodForTable(params)
+        ]).then(
+          ([response]) => {
+            resolve(true);
+          },
+          reject
+        );
+      });
+    }
+  }
+
+
+  createInvoice(invoiceParams):Promise<any>{
+    return new Promise((resolve1, reject) => {
+      this.invoiceService.addInvoice(invoiceParams).subscribe((result) => {
+        // if (!result) { resolve1(false); }
+
+        if (result) {
+          this.allData = result.data
+          this.invoicelRelatedData = this.allData.filter(
+            (invoice) => invoice.invoice
+          )
+          this.allData.pop()
+          this.transactionRelatedData = this.allData
+
+          this.data.changeInvoiceData(this.invoicelRelatedData)
+          this.data.changeTransactionData(this.transactionRelatedData)
+
+           // tslint:disable-next-line: no-unused-expression
+           return new Promise((resolve, reject) => {
+            Promise.all([
+              this.changeFoodData()
+            ]).then(
+              ([response]) => {
+                resolve(true);
+                return resolve1(result);
+              },
+              reject
+            );
+          });
+
+        }
+        return resolve1(result);
+
+      });
+    });
+
   }
 
   onInvoiceGenerate() {
@@ -286,15 +378,23 @@ export class RoomTransactionComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        window.print();
+      window.onbeforeprint = (e) =>{ 
+        if (result) {
+          this.selection.selected.length=0;
+          if(this.transactionType){
+          this.getRoomList();
+        }else{
+          this.getTable();
+          this.SlideText="Table Transaction/s"
+        }
         this.initialize();
-        this.transactionType =false;
-        this.selectedRoom = false;
       }
-    })
+    }
+    window.print()
+  })
+  this.selection.clear();
   }
-
+  
   onAddClick() {
     const dialogRef = this.dialog.open(RoomTransactionFormComponent, {
       width: '60%',
@@ -340,6 +440,7 @@ export class RoomTransactionComponent implements OnInit {
 
   onToggle(e: MatSlideToggleChange){
     this.foodDataSource = null;
+    this.selection.clear();
     if(e.checked){
       this.SlideText="Table Transaction/s"
       this.transactionType =false;
@@ -448,57 +549,76 @@ export class RoomTransactionComponent implements OnInit {
     }
   }
 
-  getFoodDetailForRoom(params){
-    this.blockUI.start('Loading...')
-    this.roomAvailabilityService.getFoodDetailForRoom(params).subscribe(result=>{
-      if (result && result.data) {
-        const arr =[];
-        this.selectedFoodDetail = result;
-        result.data.map(data =>{
-          arr.push({
-            food:data.food_items.food_name,
-            quantity:data.quantity,
-            price:data.price,
-            sub_total: parseFloat(data.price)*data.quantity
-          })
-          this.foodDataSource = new MatTableDataSource(arr);
-          this.foodData=result;
+  getFoodDetailForRoom(params):Promise<any>{
+    return new Promise((resolve1, reject) => {
+      this.blockUI.start('Loading...')
+      this.foodDataSource = null;
+      this.roomAvailabilityService.getFoodDetailForRoom(params).subscribe(result=>{
+        // if (!result) { resolve1(false); }
+        if (result.length) {
+          const arr =[];
+          this.selectedFoodDetail = result;
+          result.map(data =>{
+            arr.push({
+              food:data.food_items.food_name,
+              quantity:data.quantity,
+              price:data.price,
+              sub_total: parseFloat(data.price)*data.quantity
+            })
+            this.foodDataSource = new MatTableDataSource(arr);
+            this.foodData=null;
+            this.foodData=result;
 
-        });
-      } else {
+            resolve1(true);
+
+          });
+        } else {
+            this.blockUI.stop()
+            resolve1(true);
+
+        }
           this.blockUI.stop()
-      }
-        this.blockUI.stop()
-      },
-      (error) => {
-        this.blockUI.stop()
+        },
+        (error) => {
+          this.blockUI.stop()
+      })
     })
+
   }
 
-  getFoodDetailForTable(params){
-    this.blockUI.start('Loading...')
-    this.roomAvailabilityService.getFoodDetailForTable(params).subscribe(result=>{
-      if (result && result.data) {
-        const arr =[];
-        this.selectedFoodDetail = result;
-        result.data.map(data =>{
-          arr.push({
-            food:data.food_items.food_name,
-            quantity:data.quantity,
-            price:data.price,
-            sub_total: parseFloat(data.price)*data.quantity
-          })
-          this.foodDataSource = new MatTableDataSource(arr);
-          this.foodData=result;
+  getFoodDetailForTable(params):Promise<any>{
+    return new Promise((resolve1, reject) => {
+      this.blockUI.start('Loading...')
+      this.foodDataSource= null;
+      this.roomAvailabilityService.getFoodDetailForTable(params).subscribe(result=>{
+        // if (!result) { resolve1(false); }
 
+        if (result.length) {
+          const arr =[];
+          this.selectedFoodDetail = result;
+          result.map(data =>{
+            arr.push({
+              food:data.food_items.food_name,
+              quantity:data.quantity,
+              price:data.price,
+              sub_total: parseFloat(data.price)*data.quantity
+            })
+            this.foodDataSource = new MatTableDataSource(arr);
+            this.foodData=null;
+            this.foodData=result;
+            resolve1(true);
+
+          });
+        } else {
+          this.blockUI.stop()
+          resolve1(true);
+
+        }
+          this.blockUI.stop()
+        },
+        (error) => {
+          this.blockUI.stop()
         });
-      } else {
-        this.blockUI.stop()
-      }
-        this.blockUI.stop()
-      },
-      (error) => {
-        this.blockUI.stop()
       });
   }
 

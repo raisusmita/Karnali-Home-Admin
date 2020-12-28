@@ -77,10 +77,10 @@
         <tbody>
           <tr *ngFor="let roomFood of foodData; let i = index">
             <td>{{ i + 1 }}</td>
-            <td>{{ roomFood.food }}</td>
+            <td>{{ roomFood.food_items.food_name }}</td>
             <td>{{ roomFood.price }}</td>
             <td>{{ roomFood.quantity }}</td>
-            <td>{{ roomFood.sub_total }}</td>
+            <td>{{ roomFood.total_amount }}</td>
           </tr>
         </tbody>
       </table>
