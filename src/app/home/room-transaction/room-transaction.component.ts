@@ -377,9 +377,9 @@ export class RoomTransactionComponent implements OnInit {
         formType: 'Add',
         callFor: 'Invoice Generate',
         confirmationText:
-          'The invoice has been generated successfully. Do you want to print it further?',
-        positiveResponse: 'Yes Print',
-        negativeResponse: 'Cancel the Print'
+          'The invoice has been generated successfully. Print the invoice here.',
+        positiveResponse: 'Print the invoice'
+        // negativeResponse: 'Cancel the Print'
       }
     })
 
@@ -496,7 +496,7 @@ export class RoomTransactionComponent implements OnInit {
       (result) => {
         const arr = []
         if (result && result.data) {
-          const filterTable = result.data.filter(data=>data.foodOrders.length);
+          const filterTable = result.data.filter(data=>data.foodOrderLists.length);
           filterTable.map((table) => {
             this.totalLength = result.totalCount
             arr.push({

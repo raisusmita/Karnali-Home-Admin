@@ -19,8 +19,8 @@
                       (change)="$event ? selection.toggle(row) : null"
                       [checked]="selection.isSelected(row)"
                       [color]="primaryColor"
+                      [disabled]="row.status == 'Paid' ? true : false"
                       >
-                      <!-- [disabled]="row.status == 'Paid' ? true : false" -->
                     </mat-checkbox>
                   </mat-cell>
                 </ng-container>
@@ -98,9 +98,8 @@
                       (change)="$event ? selection.toggle(row) : null"
                       [checked]="selection.isSelected(row)"
                       [color]="primaryColor"
-                      
+                      [disabled]="row.status == 'Paid' ? true : false"
                       >
-                      <!-- [disabled]="row.status == 'Paid' ? true : false" -->
                     </mat-checkbox>
                   </mat-cell>
                 </ng-container>
