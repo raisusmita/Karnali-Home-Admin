@@ -31,6 +31,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivateChild(route: ActivatedRouteSnapshot): boolean {
+    this.userRole = localStorage.getItem('userRole')
     if (this.authToken.isAuthenticated()) {
       if (
         this.userRoleManagement.userVisibleRoutes[this.userRole] &&
@@ -39,9 +40,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         )
       ) {
         return true
+      } else {
+        this.router.navigate(['/'])
+        return false
       }
-      this.router.navigate(['/'])
-      return true
     } else {
       this.router.navigate(['/login'])
       return false
