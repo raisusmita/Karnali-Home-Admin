@@ -245,7 +245,6 @@ export class FoodComponent implements OnInit {
   }
 
   editFoodHeader(FoodEditData) {
-    console.log(FoodEditData)
     const dialogRef = this.dialog.open(FoodHeaderFormComponent, {
       width: '50%',
       data: {

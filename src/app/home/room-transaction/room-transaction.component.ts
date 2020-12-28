@@ -143,8 +143,8 @@ export class RoomTransactionComponent implements OnInit {
     } else {
       this.skip = e.pageIndex * e.pageSize
     }
-    this.limit = e.pageSize;
-    this.getRoomTransaction();
+    this.limit = e.pageSize
+    this.getRoomTransaction()
   }
 
   // /** Whether the number of selected elements matches the total number of rows. */
@@ -200,17 +200,17 @@ export class RoomTransactionComponent implements OnInit {
                 check_in_date: x.reservation.check_in_date,
                 check_out_date: x.reservation.check_out_date,
                 reservation_id: x.reservation.id,
-                callFrom:'transaction'
-              });
-            });
-            this.dataSource = new MatTableDataSource(arr);
-            this.blockUI.stop();
+                callFrom: 'transaction'
+              })
+            })
+            this.dataSource = new MatTableDataSource(arr)
+            this.blockUI.stop()
           } else {
             this.blockUI.stop()
           }
         },
         () => {
-          this.blockUI.stop();
+          this.blockUI.stop()
         }
       )
   }

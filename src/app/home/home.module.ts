@@ -61,28 +61,28 @@ import { UserAuthService } from '../user-auth.service'
 import { UserService } from './user/user.service'
 
 //Toast
-import { ToastrModule } from "ngx-toastr";
-import { MatCardModule } from "@angular/material/card";
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ToastrModule } from 'ngx-toastr'
+import { MatCardModule } from '@angular/material/card'
+import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  MatMomentDateModule,
-} from "@angular/material-moment-adapter";
-import { BlockUIModule } from "ng-block-ui";
-import { ReservationFormComponent } from "./reservation/reservation-form/reservation-form.component";
-import { DatePipe } from "@angular/common";
-import { RoomAvailabilityComponent } from "./room-availability/room-availability.component";
-import { RoomAvailabilityFormComponent } from "./room-availability/room-availability-form/room-availability-form.component";
-import { MatExpansionModule } from "@angular/material/expansion";
-import { RoomTransactionFormComponent } from "./room-transaction/room-transaction-form/room-transaction-form.component";
+  MatMomentDateModule
+} from '@angular/material-moment-adapter'
+import { BlockUIModule } from 'ng-block-ui'
+import { ReservationFormComponent } from './reservation/reservation-form/reservation-form.component'
+import { DatePipe } from '@angular/common'
+import { RoomAvailabilityComponent } from './room-availability/room-availability.component'
+import { RoomAvailabilityFormComponent } from './room-availability/room-availability-form/room-availability-form.component'
+import { MatExpansionModule } from '@angular/material/expansion'
+import { RoomTransactionFormComponent } from './room-transaction/room-transaction-form/room-transaction-form.component'
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.module";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatTooltipModule} from '@angular/material/tooltip';
+import { MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { RoomCategoryFormComponent } from "./room-category/room-category-form/room-category-form.component";
 import { MainBarFormComponent } from "./bar/main-bar-form/main-bar-form.component";
 import { SubBarFormComponent } from "./bar/sub-bar-form/sub-bar-form.component";
@@ -128,7 +128,7 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
     RoomAvailabilityComponent,
     RoomAvailabilityFormComponent,
     RoomTransactionFormComponent,
-    FoodOrderDetailComponent,
+    FoodOrderDetailComponent
   ],
   imports: [
     BrowserModule,

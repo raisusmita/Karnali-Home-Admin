@@ -85,7 +85,6 @@ export class FoodFormComponent implements OnInit {
       this.foodService.addFood(this.food).subscribe(
         (e) => {
           this.blockUI.stop()
-
           this.dialogRef.close(this.food)
         },
         (error) => {
