@@ -100,16 +100,19 @@ export class InvoiceComponent implements OnInit {
     )
   }
 
-  onPrint(invoiceDetail) {
-    const invoiceParams = { invoiceId: invoiceDetail }
-    this.invoiceService.invoiceDetail(invoiceParams).subscribe((result) => {
-      const invoiceParams = result.data
-      const customerName = {
-        firstName: invoiceParams[0]['first_name'],
-        middleName: invoiceParams[0]['middle_name'],
-        lastName: invoiceParams[0]['last_name']
+  onPrint(invoiceDetail){
+    const invoiceParams ={"invoiceId": invoiceDetail}
+    this.invoiceService.invoiceDetail(invoiceParams).subscribe(result=>{
+      
+      const invoiceParams = result.data;
+      if(invoiceParams.length){
+        const customerName = {
+          firstName: invoiceParams[0]["first_name"],
+          middleName: invoiceParams[0]["middle_name"],
+          lastName: invoiceParams[0]["last_name"],
+        };
+        this.data.changeCustomer(customerName);
       }
-      this.data.changeCustomer(customerName)
 
       this.invoiceService.addInvoice(invoiceParams).subscribe((result) => {
         if (result) {

@@ -1,21 +1,27 @@
+import { ToastrService } from 'ngx-toastr';
 import { RoomTransactionService } from './../room-transaction.service'
 import { MvRoomTransaction } from './../room-transaction.model'
 import { TableService } from './../../table/table.service'
 import { RoomAvailabilityService } from 'src/app/shared/services/room-availability/room-availability.service'
 import { Component, OnInit, Inject } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
-import { RoomService } from '../../room/room.service'
 import { CustomerService } from '../../customer/customer.service'
 import { MatTableDataSource } from '@angular/material/table'
-import { SelectionModel, DataSource } from '@angular/cdk/collections'
-import { FormGroup } from '@angular/forms'
+import { SelectionModel } from '@angular/cdk/collections'
 import { ThemePalette } from '@angular/material/core'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
-
+import { animate, state, style, transition, trigger } from '@angular/animations';
 @Component({
   selector: 'app-room-transaction-form',
   templateUrl: './room-transaction-form.component.html',
-  styleUrls: ['./room-transaction-form.component.scss']
+  styleUrls: ['./room-transaction-form.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class RoomTransactionFormComponent implements OnInit {
   customers: any[] = []
@@ -26,25 +32,33 @@ export class RoomTransactionFormComponent implements OnInit {
   editForm: boolean
   roomTransaction: MvRoomTransaction = {} as MvRoomTransaction
   roomList: boolean
+  displayFood:boolean;
   displayedColumns: string[] = [
     'select',
-    // "room_id",
     'room_number',
     'check_in_date',
     'room_category',
-    'check_out_date'
+    'check_out_date',
+    'view_foods'
   ]
-
+  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
+  expandedElement: any;
+  
   dataSource: MatTableDataSource<Element>
   selection = new SelectionModel<Element>(true, [])
   primaryColor: ThemePalette = 'primary'
   dateTry: Date
+
+  //Food detail
+  foodDetail: any[] = [];
+  food_total_amount:number;
 
   @BlockUI() blockUI: NgBlockUI
 
   constructor(
     private customerService: CustomerService,
     private tableService: TableService,
+    private toastr : ToastrService,
     private roomAvailabilityService: RoomAvailabilityService,
     private roomTransactionService: RoomTransactionService,
     private dialogRef: MatDialogRef<RoomTransactionFormComponent>,
@@ -106,6 +120,7 @@ export class RoomTransactionFormComponent implements OnInit {
     )
   }
 
+
   onCustomerSelect(customerId: any) {
     // clear the selected rows for previous customer
     this.selection.clear()
@@ -122,20 +137,58 @@ export class RoomTransactionFormComponent implements OnInit {
         }
         const arr = []
         if (result && result.data) {
-          result.data.map((x) => {
+          result.data.map((roomData) => {
             arr.push({
-              room_id: x.room_id[0].id,
-              room_number: x.room_id[0].room_number,
-              room_category: x.room_id[0].room_category.room_category,
-              room_category_id: x.room_id[0].room_category.id,
-              reservation_id: x.reservation_id,
-              check_in_date: new Date(x.check_in_date),
-              check_out_date: new Date(x.check_out_date)
+              room_id: roomData.room_id[0].id,
+              room_number: roomData.room_id[0].room_number,
+              room_category: roomData.room_id[0].room_category.room_category,
+              room_category_id: roomData.room_id[0].room_category.id,
+              reservation_id: roomData.reservation_id,
+              check_in_date: new Date(roomData.check_in_date),
+              check_out_date: new Date(roomData.check_out_date),
+             // food_details:roomData.room_id[0].food_orders
             })
           })
           this.dataSource = new MatTableDataSource(arr)
+        }else{
+          this.toastr.info(result.message, ' Branch Delete')
         }
       })
+  }
+
+  expandTable(element){
+    this.displayFood=false;
+
+    element.isExpanded = !element.isExpanded
+    const params ={
+      roomId:element.room_id,
+      reservationId:element.reservation_id
+    }
+    element.isExpanded ? 
+    this.getFoodDetail(params) : ''
+  }
+
+  getFoodDetail(params){
+    this.blockUI.start('Loading...')
+    this.roomAvailabilityService.getFoodDetailForRoom(params).subscribe(result=>{
+      if (result.length!=0) {
+          this.food_total_amount=0;
+          this.foodDetail=result
+          this.displayFood= true;
+
+          // Grand total of food
+          result.map(foodData=>{
+            this.food_total_amount = this.food_total_amount + parseFloat(foodData.total_amount);
+          })
+        } else {
+          this.displayFood=false;
+          this.blockUI.stop()
+        }
+        this.blockUI.stop()
+      },
+      (error) => {
+        this.blockUI.stop()
+    })
   }
 
   submitRoomTransactionForm() {

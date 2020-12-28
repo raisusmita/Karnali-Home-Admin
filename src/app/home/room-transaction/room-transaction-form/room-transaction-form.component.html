@@ -40,7 +40,7 @@
       <div class="main-content" *ngIf="roomList">
         <section class="row">
           <!-- <p>{{ room.room_id[0].room_number }}</p> -->
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" multiTemplateDataRows>
             <!-- Checkbox Column -->
             <ng-container matColumnDef="select">
               <mat-header-cell *matHeaderCellDef>
@@ -134,12 +134,71 @@
               </td> -->
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            
+            <ng-container matColumnDef="view_foods">
+              <th mat-header-cell *matHeaderCellDef>View Foods</th>
+              <td mat-cell *matCellDef="let element">
+                <a mat-button href="javascript:void()" (click)="expandTable(element)">View
+                  Foods </a>
+              </td>
+            </ng-container>
+
+             <!-- Expanded Content Column - The detail row is made up of this one column -->
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let detail" [attr.colspan]="displayedColumns.length"> 
+                <div class="row transaction-element-detail" [@detailExpand]="detail.isExpanded ? 'expanded' : 'collapsed'">
+                  <!-- <mat-list>
+                    <div mat-subheader>Food Details of room number:  {{detail.room_number}}</div>
+                    <mat-list-item *ngFor="let subject of let food_detail of detail.food_details">
+                      <div mat-line>{{food_detail.food_items_id}}</div>
+                      <div mat-line> {{food_detail.price}} </div>
+                    </mat-list-item>
+                  </mat-list> -->
+                  <table class="table table-striped" *ngIf="displayFood; else noOrder">
+                    <thead>
+                      <tr >
+                        <th >Food</th>
+                        <th >Quantity</th>
+                        <th >Price</th>
+                        <th >Sub Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr  *ngFor="let food_detail of foodDetail">
+                        <td >{{food_detail.food_items.food_name}}</td>
+                        <td >{{food_detail.quantity}}</td>
+                        <td >{{food_detail.price}}</td>
+                        <td >{{food_detail.total_amount}}</td>
+                      </tr>
+                    </tbody>
+                    <tfoot >
+                      <tr>
+                        <th colspan="3" style="text-align:right">Total:</th>
+                        <th>{{food_total_amount}}</th>
+                    </tr>
+                    </tfoot>
+                  </table>
+
+                  <ng-template #noOrder>
+                    <div class="noDataFound">
+                      <p class="noRecordsMessage">No food order is made.</p>
+                    </div>
+                  </ng-template>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
             <tr
               mat-row
-              *matRowDef="let row; columns: displayedColumns"
-              (click)="selection.toggle(row)"
+              *matRowDef="let element columns: displayedColumns" class="transaction-element-row"
+              [class.transaction-expanded-row]="element.isExpanded"
             ></tr>
+
+             <!-- Extra row to show detail content column -->
+             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="transaction-detail-row"></tr>
+
+           
           </table>
         </section>
       </div>

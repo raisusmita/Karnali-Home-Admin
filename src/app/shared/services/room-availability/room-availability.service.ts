@@ -55,6 +55,20 @@ export class RoomAvailabilityService {
     )
   }
 
+  getFoodDetailForRoom(params: any): Observable<any> {
+    return this.http.post(
+      this.baseURL + 'foodDetailForRoom',
+      params
+    )
+  }
+
+  getFoodDetailForTable(params: any): Observable<any> {
+    return this.http.post(
+      this.baseURL + 'foodDetailForTable',
+      params
+    )
+  }
+
   addRoomUnavailable(unavailableRoom: any): Observable<any> {
     const httpHeaders = new HttpHeaders().set(
       'Content-Type',
