@@ -240,7 +240,7 @@ export class RoomTransactionComponent implements OnInit {
       // tslint:disable-next-line: no-unused-expression
       return new Promise((resolve, reject) => {
         Promise.all([
-          this.createInvoice(this.invoiceParams)
+          this.getInvoiceRelatedData(this.invoiceParams)
           ]).then(
           ([response]) => {
             this.onInvoiceGenerate()
@@ -307,6 +307,7 @@ export class RoomTransactionComponent implements OnInit {
           this.changeFoodForRoom(params)
         ]).then(
           ([response]) => {
+            this.getTotalFoodCost()
             resolve(true);
           },
           reject
@@ -332,12 +333,27 @@ export class RoomTransactionComponent implements OnInit {
     }
   }
 
+  getInvoiceRelatedData(invoiceParams):Promise<any>{
+    // tslint:disable-next-line: no-unused-expression
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        this.changeFoodData()
+        ]).then(
+        ([response]) => {
+          this.createInvoice(this.invoiceParams)
+          return resolve(true);
+        },
+        reject
+      );
+    });
+  }
+
 
   createInvoice(invoiceParams):Promise<any>{
     return new Promise((resolve1, reject) => {
       this.invoiceService.addInvoice(invoiceParams).subscribe((result) => {
         // if (!result) { resolve1(false); }
-
+ 
         if (result) {
           this.allData = result.data
           this.invoicelRelatedData = this.allData.filter(
@@ -349,18 +365,18 @@ export class RoomTransactionComponent implements OnInit {
           this.data.changeInvoiceData(this.invoicelRelatedData)
           this.data.changeTransactionData(this.transactionRelatedData)
 
-           // tslint:disable-next-line: no-unused-expression
-           return new Promise((resolve, reject) => {
-            Promise.all([
-              this.changeFoodData()
-            ]).then(
-              ([response]) => {
-                resolve(true);
-                return resolve1(result);
-              },
-              reject
-            );
-          });
+          //  // tslint:disable-next-line: no-unused-expression
+          //  return new Promise((resolve, reject) => {
+          //   Promise.all([
+          //     this.changeFoodData()
+          //   ]).then(
+          //     ([response]) => {
+          //       resolve(true);
+          //       return resolve1(result);
+          //     },
+          //     reject
+          //   );
+          // });
 
         }
         return resolve1(result);
