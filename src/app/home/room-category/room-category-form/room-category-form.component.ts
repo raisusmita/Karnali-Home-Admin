@@ -56,7 +56,7 @@ export class RoomCategoryFormComponent implements OnInit {
     }
     if (this.isEdit) {
       if (!this.category.image) {
-        delete this.category.image
+        this.category.image = null
       }
       this.blockUI.start('Loading...')
       this.roomCategoryService.editRoomCategory(this.category).subscribe(
