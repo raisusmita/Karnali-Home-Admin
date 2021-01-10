@@ -8,6 +8,10 @@ import { MainFoodFormComponent } from './main-food-form/main-food-form.component
 import { SubFoodFormComponent } from './sub-food-form/sub-food-form.component'
 import { FoodHeaderFormComponent } from './food-header-form/food-header-form.component'
 import { BlockUI } from 'ng-block-ui'
+import {
+  UserActionPermission,
+  UserRoleManagementService
+} from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
   selector: 'app-food',
@@ -48,10 +52,35 @@ export class FoodComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI
 
-  constructor(private foodService: FoodService, private dialog: MatDialog) {}
+  ActionPermissions: UserActionPermission = {} as UserActionPermission
+
+  constructor(
+    private foodService: FoodService,
+    private userRoleManagementService: UserRoleManagementService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.initialize()
+    this.manageUserPermission()
+  }
+
+  manageUserPermission() {
+    if (
+      !this.userRoleManagementService.isActionExists(
+        this.userRoleManagementService.allRoutes.Food
+      )
+    ) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (columns) => columns != 'action'
+      )
+    }
+    this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
+      this.userRoleManagementService.allRoutes.Food
+    )
+    this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
+      this.userRoleManagementService.allRoutes.Food
+    )
   }
 
   initialize() {

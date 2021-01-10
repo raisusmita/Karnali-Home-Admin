@@ -6,6 +6,10 @@ import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete
 import { MainBarFormComponent } from './main-bar-form/main-bar-form.component'
 import { SubBarFormComponent } from './sub-bar-form/sub-bar-form.component'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
+import {
+  UserActionPermission,
+  UserRoleManagementService
+} from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
   selector: 'app-bar',
@@ -44,10 +48,35 @@ export class BarComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI
 
-  constructor(private barService: BarService, private dialog: MatDialog) {}
+  ActionPermissions: UserActionPermission = {} as UserActionPermission
+
+  constructor(
+    private barService: BarService,
+    private userRoleManagementService: UserRoleManagementService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.initialize()
+    this.manageUserPermission()
+  }
+
+  manageUserPermission() {
+    if (
+      !this.userRoleManagementService.isActionExists(
+        this.userRoleManagementService.allRoutes.Bar
+      )
+    ) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (columns) => columns != 'action'
+      )
+    }
+    this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
+      this.userRoleManagementService.allRoutes.Bar
+    )
+    this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
+      this.userRoleManagementService.allRoutes.Bar
+    )
   }
 
   initialize() {

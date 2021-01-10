@@ -14,6 +14,10 @@ import { CustomerFormComponent } from '../customer/customer-form/customer-form.c
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { blockInstanceGuid } from 'ng-block-ui/decorators/block-ui.decorator'
 import { PageEvent } from '@angular/material'
+import {
+  UserActionPermission,
+  UserRoleManagementService
+} from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
   selector: 'app-booking',
@@ -66,11 +70,15 @@ export class BookingComponent implements OnInit {
   skip: number
 
   @BlockUI() blockUI: NgBlockUI
+
+  ActionPermissions: UserActionPermission = {} as UserActionPermission
+
   constructor(
     private bookingService: BookingService,
     private dialog: MatDialog,
     private roomAvailableByDates: RoomAvailabilityService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private userRoleManagementService: UserRoleManagementService
   ) {}
 
   ngOnInit() {
@@ -82,6 +90,25 @@ export class BookingComponent implements OnInit {
     this.limit = this.pageSize
 
     this.getBookedRoom()
+    this.manageUserPermission()
+  }
+
+  manageUserPermission() {
+    if (
+      !this.userRoleManagementService.isActionExists(
+        this.userRoleManagementService.allRoutes.Booking
+      )
+    ) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (columns) => columns != 'action'
+      )
+    }
+    this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
+      this.userRoleManagementService.allRoutes.Booking
+    )
+    this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
+      this.userRoleManagementService.allRoutes.Booking
+    )
   }
 
   onPageChange(e: any) {

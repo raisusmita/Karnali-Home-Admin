@@ -4,6 +4,10 @@ import { MatDialog } from '@angular/material/dialog'
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { RoomCategoryFormComponent } from './room-category-form/room-category-form.component'
+import {
+  UserActionPermission,
+  UserRoleManagementService
+} from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
   selector: 'app-room-category',
@@ -32,8 +36,11 @@ export class RoomCategoryComponent implements OnInit {
   limit: number
   skip: number
 
+  ActionPermissions: UserActionPermission = {} as UserActionPermission
+
   constructor(
     private roomCategoryService: RoomCategoryService,
+    private userRoleManagementService: UserRoleManagementService,
     private dialog: MatDialog
   ) {}
 
@@ -45,6 +52,25 @@ export class RoomCategoryComponent implements OnInit {
     this.skip = 0
     this.limit = this.pageSize
     this.getRoomCategoryList()
+    this.manageUserPermission()
+  }
+
+  manageUserPermission() {
+    if (
+      !this.userRoleManagementService.isActionExists(
+        this.userRoleManagementService.allRoutes.RoomCategory
+      )
+    ) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (columns) => columns != 'action'
+      )
+    }
+    this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
+      this.userRoleManagementService.allRoutes.RoomCategory
+    )
+    this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
+      this.userRoleManagementService.allRoutes.RoomCategory
+    )
   }
 
   onPageChange(e: any) {

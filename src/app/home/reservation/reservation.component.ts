@@ -13,6 +13,10 @@ import { identifierModuleUrl } from '@angular/compiler'
 import { CustomerFormComponent } from '../customer/customer-form/customer-form.component'
 import { ToastrService } from 'ngx-toastr'
 import { BlockUI } from 'ng-block-ui'
+import {
+  UserActionPermission,
+  UserRoleManagementService
+} from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
   selector: 'app-reservation',
@@ -63,12 +67,15 @@ export class ReservationComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI
 
+  ActionPermissions: UserActionPermission = {} as UserActionPermission
+
   constructor(
     private reservationService: ReservationService,
     private dialog: MatDialog,
     public datepipe: DatePipe,
     private toastr: ToastrService,
-    private roomAvailableByDates: RoomAvailabilityService
+    private roomAvailableByDates: RoomAvailabilityService,
+    private userRoleManagementService: UserRoleManagementService
   ) {}
 
   ngOnInit() {
@@ -80,6 +87,25 @@ export class ReservationComponent implements OnInit {
     this.limit = this.pageSize
 
     this.getReservation()
+    this.manageUserPermission()
+  }
+
+  manageUserPermission() {
+    if (
+      !this.userRoleManagementService.isActionExists(
+        this.userRoleManagementService.allRoutes.Reservation
+      )
+    ) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (columns) => columns != 'action'
+      )
+    }
+    this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
+      this.userRoleManagementService.allRoutes.Reservation
+    )
+    this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
+      this.userRoleManagementService.allRoutes.Reservation
+    )
   }
 
   onPageChange(e: any) {

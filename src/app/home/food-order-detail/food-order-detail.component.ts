@@ -3,6 +3,10 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { MatTableDataSource } from '@angular/material'
 import { FoodOrderService } from '../food-order/food-order.service'
 import { ToastrService } from 'ngx-toastr'
+import {
+  UserActionPermission,
+  UserRoleManagementService
+} from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
   selector: 'app-food-order-detail',
@@ -42,9 +46,12 @@ export class FoodOrderDetailComponent implements OnInit {
   limit: number
   skip: number
 
+  ActionPermissions: UserActionPermission = {} as UserActionPermission
+
   constructor(
     // private foodService: FoodService,
     private foodOrderService: FoodOrderService,
+    private userRoleManagementService: UserRoleManagementService,
     private toastr: ToastrService
   ) {}
 
@@ -55,6 +62,25 @@ export class FoodOrderDetailComponent implements OnInit {
     this.skip = 0
     this.limit = this.pageSize
     this.getFoodOrderList()
+    this.manageUserPermission()
+  }
+
+  manageUserPermission() {
+    if (
+      !this.userRoleManagementService.isActionExists(
+        this.userRoleManagementService.allRoutes.FoodOrderDetail
+      )
+    ) {
+      this.foodOrderColumns = this.foodOrderColumns.filter(
+        (columns) => columns != 'action'
+      )
+    }
+    this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
+      this.userRoleManagementService.allRoutes.FoodOrderDetail
+    )
+    this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
+      this.userRoleManagementService.allRoutes.FoodOrderDetail
+    )
   }
 
   onPageChange(e: any) {
