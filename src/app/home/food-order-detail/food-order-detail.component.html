@@ -50,12 +50,14 @@
           <th mat-header-cell *matHeaderCellDef>Action</th>
           <td mat-cell *matCellDef="let element; let i = index" class="bg-test">
             <mat-icon
+              *ngIf="ActionPermissions.Edit"
               matTooltip="Edit Order"
               class="text-secondary mr-2 pointed"
               (click)="editFoodOrder(element['food_order_lists'])"
               >create</mat-icon
             >
             <mat-icon
+              *ngIf="ActionPermissions.Delete"
               matTooltip="Cancel Order"
               class="text-danger pointed"
               (click)="cancelFoodOrder(element.id)"

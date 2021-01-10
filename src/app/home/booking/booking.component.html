@@ -21,7 +21,6 @@
                     required
                     [(ngModel)]="roomAvailable.check_in_date"
                     (ngModelChange)="getCheckInDate($event)"
-
                   />
                   <mat-datepicker-toggle
                     matSuffix
@@ -39,7 +38,6 @@
                     required
                     [(ngModel)]="roomAvailable.check_out_date"
                     (ngModelChange)="getCheckOutDate($event)"
-
                   />
                   <mat-datepicker-toggle
                     matSuffix
@@ -47,15 +45,16 @@
                   ></mat-datepicker-toggle>
                   <mat-datepicker #picker2></mat-datepicker>
                 </mat-form-field>
-                <button mat-raised-button 
-                [disabled]="disableButton == true"
-                class="button-blue">
+                <button
+                  mat-raised-button
+                  [disabled]="disableButton == true"
+                  class="button-blue"
+                >
                   <mat-icon>view_list</mat-icon>
                   Available Room
                 </button>
               </form>
             </mat-card-content>
-           
           </mat-card>
           <div class="example-container mat-elevation-z8">
             <table
@@ -175,21 +174,21 @@
               <ng-container matColumnDef="check_in_date">
                 <th mat-header-cell *matHeaderCellDef>Start Date</th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.check_in_date | date: "MM/dd/yyyy" }}
+                  {{ element.check_in_date | date: 'MM/dd/yyyy' }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="check_out_date">
                 <th mat-header-cell *matHeaderCellDef>End Date</th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.check_out_date | date: "MM/dd/yyyy" }}
+                  {{ element.check_out_date | date: 'MM/dd/yyyy' }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="created_at">
                 <th mat-header-cell *matHeaderCellDef>Booking Date</th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.created_at | date: "MM/dd/yyyy" }}
+                  {{ element.created_at | date: 'MM/dd/yyyy' }}
                 </td>
                 <td mat-footer-cell *matFooterCellDef>Total</td>
               </ng-container>
@@ -198,15 +197,19 @@
                 <th mat-header-cell *matHeaderCellDef>Action</th>
                 <td mat-cell *matCellDef="let element; let i = index">
                   <mat-icon
-                  matTooltip="Edit Booking"
-                  class="text-secondary mr-2 pointed"
-                  (click)="editBooking(element)"
-                  >create</mat-icon>
+                    *ngIf="ActionPermissions.Edit"
+                    matTooltip="Edit Booking"
+                    class="text-secondary mr-2 pointed"
+                    (click)="editBooking(element)"
+                    >create</mat-icon
+                  >
                   <mat-icon
-                  matTooltip="Cancel Booking"
-                  class="text-secondary mr-2 pointed"
-                  (click)="cancelBooking(element.id)"
-                  >delete</mat-icon>
+                    *ngIf="ActionPermissions.Delete"
+                    matTooltip="Cancel Booking"
+                    class="text-secondary mr-2 pointed"
+                    (click)="cancelBooking(element.id)"
+                    >delete</mat-icon
+                  >
                 </td>
               </ng-container>
 

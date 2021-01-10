@@ -6,6 +6,10 @@ import { UserFormComponent } from './user-form/user-form.component'
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
 import { UserService } from 'src/app/home/user/user.service'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
+import {
+  UserActionPermission,
+  UserRoleManagementService
+} from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
   selector: 'app-user',
@@ -23,10 +27,36 @@ export class UserComponent implements OnInit {
   totalLength: number
   limit: number
   skip: number
-  constructor(private userService: UserService, private dialog: MatDialog) {}
+
+  ActionPermissions: UserActionPermission = {} as UserActionPermission
+
+  constructor(
+    private userService: UserService,
+    private userRoleManagementService: UserRoleManagementService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.initialize()
+    this.manageUserPermission()
+  }
+
+  manageUserPermission() {
+    if (
+      !this.userRoleManagementService.isActionExists(
+        this.userRoleManagementService.allRoutes.User
+      )
+    ) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (columns) => columns != 'action'
+      )
+    }
+    this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
+      this.userRoleManagementService.allRoutes.User
+    )
+    this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
+      this.userRoleManagementService.allRoutes.User
+    )
   }
 
   initialize() {

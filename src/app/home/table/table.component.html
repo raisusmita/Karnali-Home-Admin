@@ -26,10 +26,12 @@
           <th mat-header-cell *matHeaderCellDef>Action</th>
           <td mat-cell *matCellDef="let element; let i = index">
             <mat-icon
-            matTooltip="Edit Table"
-            class="text-secondary mr-2 pointed"
-            (click)="editTable(element)"
-            >create</mat-icon>
+              *ngIf="ActionPermissions.Edit"
+              matTooltip="Edit Table"
+              class="text-secondary mr-2 pointed"
+              (click)="editTable(element)"
+              >create</mat-icon
+            >
           </td>
         </ng-container>
 

@@ -5,6 +5,10 @@ import { MatDialog } from '@angular/material/dialog'
 import { CustomerFormComponent } from './customer-form/customer-form.component'
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
 import { BlockUI } from 'ng-block-ui'
+import {
+  UserActionPermission,
+  UserRoleManagementService
+} from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
   selector: 'app-customer',
@@ -34,8 +38,12 @@ export class CustomerComponent implements OnInit {
   totalLength: number
   limit: number
   skip: number
+
+  ActionPermissions: UserActionPermission = {} as UserActionPermission
+
   constructor(
     private customerService: CustomerService,
+    private userRoleManagementService: UserRoleManagementService,
     private dialog: MatDialog
   ) {}
 
@@ -43,10 +51,28 @@ export class CustomerComponent implements OnInit {
     this.pageSize = 10
     this.pageIndex = 0
     this.totalLength = 0
-
     this.skip = 0
     this.limit = this.pageSize
     this.getCustomerList()
+    this.manageUserPermission()
+  }
+
+  manageUserPermission() {
+    if (
+      !this.userRoleManagementService.isActionExists(
+        this.userRoleManagementService.allRoutes.Customer
+      )
+    ) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (columns) => columns != 'action'
+      )
+    }
+    this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
+      this.userRoleManagementService.allRoutes.Customer
+    )
+    this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
+      this.userRoleManagementService.allRoutes.Customer
+    )
   }
 
   onPageChange(e: any) {

@@ -4,6 +4,10 @@ import { TableService } from './table.service'
 import { Component, OnInit } from '@angular/core'
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
+import {
+  UserActionPermission,
+  UserRoleManagementService
+} from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
   selector: 'app-table',
@@ -26,10 +30,35 @@ export class TableComponent implements OnInit {
   limit: number
   skip: number
 
-  constructor(private tableService: TableService, private dialog: MatDialog) {}
+  ActionPermissions: UserActionPermission = {} as UserActionPermission
+
+  constructor(
+    private tableService: TableService,
+    private userRoleManagementService: UserRoleManagementService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.initialize()
+    this.manageUserPermission()
+  }
+
+  manageUserPermission() {
+    if (
+      !this.userRoleManagementService.isActionExists(
+        this.userRoleManagementService.allRoutes.Table
+      )
+    ) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (columns) => columns != 'action'
+      )
+    }
+    this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
+      this.userRoleManagementService.allRoutes.Table
+    )
+    this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
+      this.userRoleManagementService.allRoutes.Table
+    )
   }
 
   initialize() {

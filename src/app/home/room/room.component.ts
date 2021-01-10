@@ -1,10 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { RoomService } from './room.service'
 import { MatDialog } from '@angular/material/dialog'
 import { AddRoomComponent } from './add-room/add-room.component'
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
 import { MatPaginator } from '@angular/material'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
+import {
+  UserActionPermission,
+  UserRoleManagementService
+} from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
   selector: 'app-room',
@@ -32,7 +36,13 @@ export class RoomComponent implements OnInit {
   limit: number
   skip: number
 
-  constructor(private roomService: RoomService, private dialog: MatDialog) {}
+  ActionPermissions: UserActionPermission = {} as UserActionPermission
+
+  constructor(
+    private roomService: RoomService,
+    private userRoleManagementService: UserRoleManagementService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.pageSize = 10
@@ -42,7 +52,27 @@ export class RoomComponent implements OnInit {
     this.skip = 0
     this.limit = this.pageSize
     this.getRoomList()
+    this.manageUserPermission()
   }
+
+  manageUserPermission() {
+    if (
+      !this.userRoleManagementService.isActionExists(
+        this.userRoleManagementService.allRoutes.Room
+      )
+    ) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (columns) => columns != 'action'
+      )
+    }
+    this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
+      this.userRoleManagementService.allRoutes.Room
+    )
+    this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
+      this.userRoleManagementService.allRoutes.Room
+    )
+  }
+
   onPageChange(e: any) {
     if (e.pageIndex === 0) {
       this.skip = 0

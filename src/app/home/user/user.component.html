@@ -31,11 +31,19 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button class="mat-menu-item" (click)="editUser(element)">
+              <button
+                class="mat-menu-item"
+                *ngIf="ActionPermissions.Edit"
+                (click)="editUser(element)"
+              >
                 <mat-icon>create</mat-icon>
                 <span>Edit</span>
               </button>
-              <button class="mat-menu-item" (click)="deleteUser(element.id)">
+              <button
+                class="mat-menu-item"
+                *ngIf="ActionPermissions.Delete"
+                (click)="deleteUser(element.id)"
+              >
                 <mat-icon>delete</mat-icon>
                 <span>Delete</span>
               </button>
