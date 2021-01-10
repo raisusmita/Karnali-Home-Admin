@@ -20,7 +20,10 @@ export class RoomTransactionService {
   }
 
   getRoomTransactionDetailByRoomId(params): Observable<any> {
-    return this.http.post(this.baseURL + 'roomTransactionDetailByRoomId', params)
+    return this.http.post(
+      this.baseURL + 'roomTransactionDetailByRoomId',
+      params
+    )
   }
 
   getRoomTransaction(): Observable<any> {

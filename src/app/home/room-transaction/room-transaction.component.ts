@@ -1,19 +1,19 @@
-import { RoomAvailabilityService } from './../../shared/services/room-availability/room-availability.service';
-import { InvoiceDataService } from "./../../shared/services/invoice-data-service/invoice-data.service";
-import { ConfirmCommonDialogComponent } from "./../../shared/components/confirm-common-dialog/confirm-common-dialog.component";
-import { RoomTransactionService } from "./room-transaction.service";
-import { RoomTransactionFormComponent } from "./room-transaction-form/room-transaction-form.component";
-import { Component, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { ToastrService } from "ngx-toastr";
-import { MatTableDataSource } from "@angular/material/table";
-import { SelectionModel } from "@angular/cdk/collections";
-import { ThemePalette } from "@angular/material/core";
-import { InvoiceService } from "../invoice/invoice.service";
-import { BlockUI, NgBlockUI } from "ng-block-ui";
-import { MatSlideToggleChange } from '@angular/material';
-import { RoomService } from "../room/room.service";
-import { TableService } from "../table/table.service";
+import { RoomAvailabilityService } from './../../shared/services/room-availability/room-availability.service'
+import { InvoiceDataService } from './../../shared/services/invoice-data-service/invoice-data.service'
+import { ConfirmCommonDialogComponent } from './../../shared/components/confirm-common-dialog/confirm-common-dialog.component'
+import { RoomTransactionService } from './room-transaction.service'
+import { RoomTransactionFormComponent } from './room-transaction-form/room-transaction-form.component'
+import { Component, OnInit } from '@angular/core'
+import { MatDialog } from '@angular/material/dialog'
+import { ToastrService } from 'ngx-toastr'
+import { MatTableDataSource } from '@angular/material/table'
+import { SelectionModel } from '@angular/cdk/collections'
+import { ThemePalette } from '@angular/material/core'
+import { InvoiceService } from '../invoice/invoice.service'
+import { BlockUI, NgBlockUI } from 'ng-block-ui'
+import { MatSlideToggleChange } from '@angular/material'
+import { RoomService } from '../room/room.service'
+import { TableService } from '../table/table.service'
 
 @Component({
   selector: 'app-room-transaction',
@@ -21,50 +21,40 @@ import { TableService } from "../table/table.service";
   styleUrls: ['./room-transaction.component.scss']
 })
 export class RoomTransactionComponent implements OnInit {
-
-  displayedRoomTranColumns:string[]=[
-    "select",
-    "full_name",
-    "room_number",
-    "room_category",
-    "status"
-  ]
-  displayedTableColumns:string[]=[
-    "select",
-    'table_number',
+  displayedRoomTranColumns: string[] = [
+    'select',
+    'full_name',
+    'room_number',
+    'room_category',
     'status'
   ]
+  displayedTableColumns: string[] = ['select', 'table_number', 'status']
   displayedRoomColumns: string[] = [
-    "room_number",
-    "check_in",
-    "check_out",
-    "number_of_days",
-    "rate",
-    "amount"
-  ];
-  displayedFoodColumns: string[] = [
-    "food",
-    "quantity",
-    "price",
-    "sub_total",
-  ];
-  dataSource: MatTableDataSource<Element>;
-  roomTranDataSource:MatTableDataSource<Element>;
-  roomDataSource:any={};
-  tableDataSource:MatTableDataSource<Element>;
-  foodDataSource:MatTableDataSource<Element>;
-  foodTableDataSource:any={};
-  invoiceParams:any;
-  foodData:any;
-  foodParams:any;
-  
-  selectedFoodDetail:any;
-  foodTotal:any;
-  grandTotal:any;
-  selectedRoom:boolean;
-  selectedTable:boolean;
-  selection = new SelectionModel<Element>(true, []);
-  primaryColor: ThemePalette = "primary";
+    'room_number',
+    'check_in',
+    'check_out',
+    'number_of_days',
+    'rate',
+    'amount'
+  ]
+  displayedFoodColumns: string[] = ['food', 'quantity', 'price', 'sub_total']
+  dataSource: MatTableDataSource<Element>
+  roomTranDataSource: MatTableDataSource<Element>
+  roomDataSource: any = {}
+  tableDataSource: MatTableDataSource<Element>
+  foodDataSource: MatTableDataSource<Element>
+  foodTableDataSource: any = {}
+  invoiceParams: any
+  foodData: any
+  foodParams: any
+
+  selectedFoodDetail: any
+  foodTotal: any
+  grandTotal: any
+  selectedRoom: boolean
+  selectedTable: boolean
+  selection = new SelectionModel<Element>(true, [])
+  primaryColor: ThemePalette = 'primary'
 
   invoiceData: any
   allData: any
@@ -82,17 +72,17 @@ export class RoomTransactionComponent implements OnInit {
   limit: number
   skip: number
 
-  SlideText : string;
+  SlideText: string
 
   // For room/table toggle
-  transactionType: boolean;
+  transactionType: boolean
 
-  highlighted: boolean;
-  hovered: boolean;
+  highlighted: boolean
+  hovered: boolean
 
-   //Food detail
-   foodDetail: any[] = [];
-   food_total_amount:number;
+  //Food detail
+  foodDetail: any[] = []
+  food_total_amount: number
 
   constructor(
     private dialog: MatDialog,
@@ -102,14 +92,14 @@ export class RoomTransactionComponent implements OnInit {
     private data: InvoiceDataService,
     private roomService: RoomService,
     private tableService: TableService,
-    private roomAvailabilityService:RoomAvailabilityService
+    private roomAvailabilityService: RoomAvailabilityService
   ) {}
 
   ngOnInit() {
-    this.selectedRoom=false;
-    this.transactionType=true;
+    this.selectedRoom = false
+    this.transactionType = true
     this.initialize()
-    this.SlideText ="Room Transaction/s"
+    this.SlideText = 'Room Transaction/s'
   }
 
   initialize() {
@@ -128,9 +118,8 @@ export class RoomTransactionComponent implements OnInit {
     this.skip = 0
     this.limit = this.pageSize
 
-
     this.getRoomTransaction()
-    this.getRoomList();
+    this.getRoomList()
 
     this.data.currentInvoiceData.subscribe(
       (invoiceData) => (this.invoiceData = invoiceData)
@@ -183,8 +172,9 @@ export class RoomTransactionComponent implements OnInit {
             result.data.map((x) => {
               arr.push({
                 transaction_id: x.id,
-                invoice_number: x.invoice_id == null ? "":x.invoice.invoice_number,
-                customer_id:x.customer.id,
+                invoice_number:
+                  x.invoice_id == null ? '' : x.invoice.invoice_number,
+                customer_id: x.customer.id,
                 first_name: x.customer.first_name,
                 middle_name: x.customer.middle_name,
                 last_name: x.customer.last_name,
@@ -215,7 +205,7 @@ export class RoomTransactionComponent implements OnInit {
       )
   }
 
-   generateInvoice():Promise<any> {
+  generateInvoice(): Promise<any> {
     if (this.selection.selected.length == 0) {
       this.toastr.info(
         'Please select atleast one transaction to proceed',
@@ -225,7 +215,7 @@ export class RoomTransactionComponent implements OnInit {
         }
       )
     } else {
-      this.invoiceParams=null;
+      this.invoiceParams = null
       this.invoiceParams = this.selection.selected
       const customerName = {
         firstName: this.invoiceParams[0]['first_name'],
@@ -234,106 +224,79 @@ export class RoomTransactionComponent implements OnInit {
       }
 
       this.data.changeCustomer(customerName)
-      this.transactionRelatedData=null;
-      this.invoicelRelatedData=null;
+      this.transactionRelatedData = null
+      this.invoicelRelatedData = null
 
       // tslint:disable-next-line: no-unused-expression
       return new Promise((resolve, reject) => {
-        Promise.all([
-          this.createInvoice(this.invoiceParams)
-          ]).then(
+        Promise.all([this.createInvoice(this.invoiceParams)]).then(
           ([response]) => {
             this.onInvoiceGenerate()
-            return resolve(true);
+            return resolve(true)
           },
           reject
-        );
-      });
-      
-     
+        )
+      })
     }
   }
 
-  changeFoodForRoom(params):Promise<any>{
+  changeFoodForRoom(params): Promise<any> {
     // tslint:disable-next-line: no-unused-expression
     return new Promise((resolve, reject) => {
-      Promise.all([
-        this.getFoodDetailForRoom(params)
-      ]).then(
-        ([response]) => {
-          if(this.foodData){
-            this.foodParams =this.foodData
-          }else{
-            this.foodParams ={message:'No Food Order has been made.'}
-          }
+      Promise.all([this.getFoodDetailForRoom(params)]).then(([response]) => {
+        if (this.foodData) {
+          this.foodParams = this.foodData
+        } else {
+          this.foodParams = { message: 'No Food Order has been made.' }
+        }
 
-          this.data.changeFoodData(this.foodParams);
+        this.data.changeFoodData(this.foodParams)
 
-          resolve(true);
-        },
-        reject
-      );
-    });
-    
+        resolve(true)
+      }, reject)
+    })
   }
 
-  changeFoodForTable(params):Promise<any>{
+  changeFoodForTable(params): Promise<any> {
     // tslint:disable-next-line: no-unused-expression
     return new Promise((resolve, reject) => {
-      Promise.all([
-        this.getFoodDetailForTable(params)
-      ]).then(
-        ([response]) => {
-          if(this.foodData){
-            this.data.changeFoodData(this.foodData);
-          }
-          resolve(true);
-        },
-        reject
-      );
-    });
+      Promise.all([this.getFoodDetailForTable(params)]).then(([response]) => {
+        if (this.foodData) {
+          this.data.changeFoodData(this.foodData)
+        }
+        resolve(true)
+      }, reject)
+    })
   }
 
-  changeFoodData():Promise<any>{
-    if(this.transactionType==true){
+  changeFoodData(): Promise<any> {
+    if (this.transactionType == true) {
       this.data.changeTransactionType(true)
-      const params ={
-        roomId:this.invoiceParams[0]['room_id'],
-        reservationId:this.invoiceParams[0]['reservation_id']
+      const params = {
+        roomId: this.invoiceParams[0]['room_id'],
+        reservationId: this.invoiceParams[0]['reservation_id']
       }
-       // tslint:disable-next-line: no-unused-expression
-       return new Promise((resolve, reject) => {
-        Promise.all([
-          this.changeFoodForRoom(params)
-        ]).then(
-          ([response]) => {
-            resolve(true);
-          },
-          reject
-        );
-      });
-  
-    }else{
+      // tslint:disable-next-line: no-unused-expression
+      return new Promise((resolve, reject) => {
+        Promise.all([this.changeFoodForRoom(params)]).then(([response]) => {
+          resolve(true)
+        }, reject)
+      })
+    } else {
       this.data.changeTransactionType(false)
-      const params ={
-        table_id:this.invoiceParams[0]['table_id'],
+      const params = {
+        table_id: this.invoiceParams[0]['table_id']
       }
-       // tslint:disable-next-line: no-unused-expression
-       return new Promise((resolve, reject) => {
-        Promise.all([
-          this.changeFoodForTable(params)
-        ]).then(
-          ([response]) => {
-            resolve(true);
-          },
-          reject
-        );
-      });
+      // tslint:disable-next-line: no-unused-expression
+      return new Promise((resolve, reject) => {
+        Promise.all([this.changeFoodForTable(params)]).then(([response]) => {
+          resolve(true)
+        }, reject)
+      })
     }
   }
 
-
-  createInvoice(invoiceParams):Promise<any>{
+  createInvoice(invoiceParams): Promise<any> {
     return new Promise((resolve1, reject) => {
       this.invoiceService.addInvoice(invoiceParams).subscribe((result) => {
         // if (!result) { resolve1(false); }
@@ -349,25 +312,17 @@ export class RoomTransactionComponent implements OnInit {
           this.data.changeInvoiceData(this.invoicelRelatedData)
           this.data.changeTransactionData(this.transactionRelatedData)
 
-           // tslint:disable-next-line: no-unused-expression
-           return new Promise((resolve, reject) => {
-            Promise.all([
-              this.changeFoodData()
-            ]).then(
-              ([response]) => {
-                resolve(true);
-                return resolve1(result);
-              },
-              reject
-            );
-          });
-
+          // tslint:disable-next-line: no-unused-expression
+          return new Promise((resolve, reject) => {
+            Promise.all([this.changeFoodData()]).then(([response]) => {
+              resolve(true)
+              return resolve1(result)
+            }, reject)
+          })
         }
-        return resolve1(result);
-
-      });
-    });
-
+        return resolve1(result)
+      })
+    })
   }
 
   onInvoiceGenerate() {
@@ -384,24 +339,24 @@ export class RoomTransactionComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe((result) => {
-      window.onbeforeprint = (e) =>{ 
+      window.onbeforeprint = (e) => {
         if (result) {
-          this.selection.selected.length=0;
-          if(this.transactionType){
-          this.getRoomList();
-        }else{
-          this.getTable();
-          this.SlideText="Table Transaction/s"
+          this.selection.selected.length = 0
+          if (this.transactionType) {
+            this.getRoomList()
+          } else {
+            this.getTable()
+            this.SlideText = 'Table Transaction/s'
+          }
+          this.initialize()
         }
-        this.initialize();
       }
-    }
-    window.print()
-  })
-  this.selection.clear();
-  this.foodData=null;
+      window.print()
+    })
+    this.selection.clear()
+    this.foodData = null
   }
-  
+
   onAddClick() {
     const dialogRef = this.dialog.open(RoomTransactionFormComponent, {
       width: '60%',
@@ -445,22 +400,20 @@ export class RoomTransactionComponent implements OnInit {
     })
   }
 
-  onToggle(e: MatSlideToggleChange){
-    this.foodDataSource = null;
-    this.selection.clear();
-    if(e.checked){
-      this.SlideText="Table Transaction/s"
-      this.transactionType =false;
-      this.selectedRoom = false;
-      this.getTable();
-    }else{
-      this.selectedTable=false;
-      this.SlideText="Room Transaction/s"
-      this.transactionType=true;
-      this.getRoomList();
+  onToggle(e: MatSlideToggleChange) {
+    this.foodDataSource = null
+    this.selection.clear()
+    if (e.checked) {
+      this.SlideText = 'Table Transaction/s'
+      this.transactionType = false
+      this.selectedRoom = false
+      this.getTable()
+    } else {
+      this.selectedTable = false
+      this.SlideText = 'Room Transaction/s'
+      this.transactionType = true
+      this.getRoomList()
     }
-
-
   }
 
   getRoomList() {
@@ -485,7 +438,6 @@ export class RoomTransactionComponent implements OnInit {
     )
   }
 
-  
   getTable() {
     this.blockUI.start('Loading...')
     const paginationParams = {
@@ -496,18 +448,20 @@ export class RoomTransactionComponent implements OnInit {
       (result) => {
         const arr = []
         if (result && result.data) {
-          const filterTable = result.data.filter(data=>data.foodOrderLists.length);
+          const filterTable = result.data.filter(
+            (data) => data.foodOrderLists.length
+          )
           filterTable.map((table) => {
             this.totalLength = result.totalCount
             arr.push({
-              table_number:table.table_number,
-              table_id:table.id,
-              status:  'Due' ,
-              callFrom:'tableTransaction'
-            });
-          });
-          this.tableDataSource = new MatTableDataSource(arr);
-          this.blockUI.stop();
+              table_number: table.table_number,
+              table_id: table.id,
+              status: 'Due',
+              callFrom: 'tableTransaction'
+            })
+          })
+          this.tableDataSource = new MatTableDataSource(arr)
+          this.blockUI.stop()
         } else {
           this.blockUI.stop()
         }
@@ -519,138 +473,134 @@ export class RoomTransactionComponent implements OnInit {
     )
   }
 
-  getTotalFoodCost(){
-    this.foodTotal = 0;
-    if(this.selectedFoodDetail){
-      this.foodTotal = this.selectedFoodDetail.map(food => food.food_items.price *food.quantity).reduce((acc, value) => acc + value, 0);
+  getTotalFoodCost() {
+    this.foodTotal = 0
+    if (this.selectedFoodDetail) {
+      this.foodTotal = this.selectedFoodDetail
+        .map((food) => food.food_items.price * food.quantity)
+        .reduce((acc, value) => acc + value, 0)
     }
-    return parseFloat(this.foodTotal);
+    return parseFloat(this.foodTotal)
   }
 
-  getGrandTotal(){
-    this.grandTotal =0;
-    if(this.roomDataSource.amount && this.selectedRoom){
-      this.grandTotal =parseFloat(this.foodTotal) + parseFloat(this.roomDataSource.amount);
+  getGrandTotal() {
+    this.grandTotal = 0
+    if (this.roomDataSource.amount && this.selectedRoom) {
+      this.grandTotal =
+        parseFloat(this.foodTotal) + parseFloat(this.roomDataSource.amount)
     }
-     return this.grandTotal;
-
+    return this.grandTotal
   }
 
-  displaySelectedRoomDetail(data){
-   data.middle_name= data.middle_name?data.middle_name:''
-    this.roomDataSource ={
-    room_number:data.room_number,
-    room_category:data.room_category,
-    no_of_days: data.no_of_days,
-    rate: data.rate,
-    amount: data.amount,
-    check_in_date: data.check_in_date,
-    check_out_date: data.check_out_date,
-    customer_name:data.first_name + ' '+ data.middle_name+' '+ data.last_name
-    }
-  }
-
-  displaySelectedTable(data){
-    this.foodTableDataSource ={
-      table_number:data.table_number
+  displaySelectedRoomDetail(data) {
+    data.middle_name = data.middle_name ? data.middle_name : ''
+    this.roomDataSource = {
+      room_number: data.room_number,
+      room_category: data.room_category,
+      no_of_days: data.no_of_days,
+      rate: data.rate,
+      amount: data.amount,
+      check_in_date: data.check_in_date,
+      check_out_date: data.check_out_date,
+      customer_name:
+        data.first_name + ' ' + data.middle_name + ' ' + data.last_name
     }
   }
 
-  getFoodDetailForRoom(params):Promise<any>{
+  displaySelectedTable(data) {
+    this.foodTableDataSource = {
+      table_number: data.table_number
+    }
+  }
+
+  getFoodDetailForRoom(params): Promise<any> {
     return new Promise((resolve1, reject) => {
       this.blockUI.start('Loading...')
-      this.foodDataSource = null;
-      this.roomAvailabilityService.getFoodDetailForRoom(params).subscribe(result=>{
-        // if (!result) { resolve1(false); }
-        if (result.length) {
-          const arr =[];
-          this.selectedFoodDetail = result;
-          result.map(data =>{
-            arr.push({
-              food:data.food_items.food_name,
-              quantity:data.quantity,
-              price:data.price,
-              sub_total: parseFloat(data.price)*data.quantity
+      this.foodDataSource = null
+      this.roomAvailabilityService.getFoodDetailForRoom(params).subscribe(
+        (result) => {
+          // if (!result) { resolve1(false); }
+          if (result.length) {
+            const arr = []
+            this.selectedFoodDetail = result
+            result.map((data) => {
+              arr.push({
+                food: data.food_items.food_name,
+                quantity: data.quantity,
+                price: data.price,
+                sub_total: parseFloat(data.price) * data.quantity
+              })
+              this.foodDataSource = new MatTableDataSource(arr)
+              this.foodData = null
+              this.foodData = result
+
+              resolve1(true)
             })
-            this.foodDataSource = new MatTableDataSource(arr);
-            this.foodData=null;
-            this.foodData=result;
-
-            resolve1(true);
-
-          });
-        } else {
+          } else {
             this.blockUI.stop()
-            resolve1(true);
-
-        }
+            resolve1(true)
+          }
           this.blockUI.stop()
         },
         (error) => {
           this.blockUI.stop()
-      })
+        }
+      )
     })
-
   }
 
-  getFoodDetailForTable(params):Promise<any>{
+  getFoodDetailForTable(params): Promise<any> {
     return new Promise((resolve1, reject) => {
       this.blockUI.start('Loading...')
-      this.foodDataSource= null;
-      this.roomAvailabilityService.getFoodDetailForTable(params).subscribe(result=>{
-        // if (!result) { resolve1(false); }
+      this.foodDataSource = null
+      this.roomAvailabilityService.getFoodDetailForTable(params).subscribe(
+        (result) => {
+          // if (!result) { resolve1(false); }
 
-        if (result.length) {
-          const arr =[];
-          this.selectedFoodDetail = result;
-          result.map(data =>{
-            arr.push({
-              food:data.food_items.food_name,
-              quantity:data.quantity,
-              price:data.price,
-              sub_total: parseFloat(data.price)*data.quantity
+          if (result.length) {
+            const arr = []
+            this.selectedFoodDetail = result
+            result.map((data) => {
+              arr.push({
+                food: data.food_items.food_name,
+                quantity: data.quantity,
+                price: data.price,
+                sub_total: parseFloat(data.price) * data.quantity
+              })
+              this.foodDataSource = new MatTableDataSource(arr)
+              this.foodData = null
+              this.foodData = result
+              resolve1(true)
             })
-            this.foodDataSource = new MatTableDataSource(arr);
-            this.foodData=null;
-            this.foodData=result;
-            resolve1(true);
-
-          });
-        } else {
-          this.blockUI.stop()
-          resolve1(true);
-
-        }
+          } else {
+            this.blockUI.stop()
+            resolve1(true)
+          }
           this.blockUI.stop()
         },
         (error) => {
           this.blockUI.stop()
-        });
-      });
+        }
+      )
+    })
   }
 
-  selectTransaction(row){
-    if(row.callFrom =='transaction'){
-      this.selectedRoom=true;
-      this.displaySelectedRoomDetail(row);
-      const params ={
-        roomId:row.room_id,
-        reservationId:row.reservation_id
+  selectTransaction(row) {
+    if (row.callFrom == 'transaction') {
+      this.selectedRoom = true
+      this.displaySelectedRoomDetail(row)
+      const params = {
+        roomId: row.room_id,
+        reservationId: row.reservation_id
       }
-      this.getFoodDetailForRoom(params);
-    }else{
-      this.selectedTable=true;
-      this.displaySelectedTable(row);
-      const params ={
-        table_id:row.table_id,
+      this.getFoodDetailForRoom(params)
+    } else {
+      this.selectedTable = true
+      this.displaySelectedTable(row)
+      const params = {
+        table_id: row.table_id
       }
-      this.getFoodDetailForTable(params);
-
+      this.getFoodDetailForTable(params)
     }
-    
   }
-
-
-
-
 }
