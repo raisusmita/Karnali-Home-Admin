@@ -125,7 +125,8 @@ export class CustomerComponent implements OnInit {
       }
     })
   }
-  editCustomer(customerEditData) {
+  editCustomer(editData) {
+    const customerEditData = JSON.parse(JSON.stringify(editData))
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       width: '50%',
       height: '700px',

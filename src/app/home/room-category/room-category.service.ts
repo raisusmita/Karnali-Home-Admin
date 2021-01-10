@@ -39,7 +39,9 @@ export class RoomCategoryService {
     formData.append('room_type', roomCategory.room_type)
     formData.append('room_price', roomCategory.room_price)
     formData.append('number_of_rooms', roomCategory.number_of_rooms)
-    formData.append('image', roomCategory.image)
+    if (roomCategory.image) {
+      formData.append('image', roomCategory.image)
+    }
     return this.http.post(environment.apiURL + 'editRoomCategory', formData)
   }
 

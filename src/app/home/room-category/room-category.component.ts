@@ -123,11 +123,12 @@ export class RoomCategoryComponent implements OnInit {
   }
 
   onEditClick(element) {
+    const editData = JSON.parse(JSON.stringify(element))
     const dialogRef = this.dialog.open(RoomCategoryFormComponent, {
       width: '50%',
       height: '700px',
       data: {
-        gridData: element,
+        gridData: editData,
         formType: 'Edit'
       }
     })
