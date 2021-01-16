@@ -49,7 +49,6 @@ import { CustomerFormComponent } from './customer/customer-form/customer-form.co
 import { FoodFormComponent } from './food/food-form/food-form.component'
 import { MainFoodFormComponent } from './food/main-food-form/main-food-form.component'
 import { SubFoodFormComponent } from './food/sub-food-form/sub-food-form.component'
-import { FoodHeaderFormComponent } from './food/food-header-form/food-header-form.component'
 import { TableComponent } from './table/table.component'
 import { AddTableComponent } from './table/add-table/add-table.component'
 import { BookingFormComponent } from './booking/booking-form/booking-form.component'
@@ -77,19 +76,19 @@ import { RoomAvailabilityFormComponent } from './room-availability/room-availabi
 import { MatExpansionModule } from '@angular/material/expansion'
 import { RoomTransactionFormComponent } from './room-transaction/room-transaction-form/room-transaction-form.component'
 
-import { ReactiveFormsModule } from '@angular/forms';
-import { InvoiceReportModule } from "./invoice/invoice-report/invoice-report.module";
-import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatSortModule } from "@angular/material/sort";
-import { MatTooltipModule} from '@angular/material/tooltip';
-import { MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { RoomCategoryFormComponent } from "./room-category/room-category-form/room-category-form.component";
-import { MainBarFormComponent } from "./bar/main-bar-form/main-bar-form.component";
-import { SubBarFormComponent } from "./bar/sub-bar-form/sub-bar-form.component";
-import { BarComponent } from "./bar/bar.component";
-import { BarFormComponent } from "./bar/bar-form/bar-form.component";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.component';
+import { ReactiveFormsModule } from '@angular/forms'
+import { InvoiceReportModule } from './invoice/invoice-report/invoice-report.module'
+import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatSortModule } from '@angular/material/sort'
+import { MatTooltipModule } from '@angular/material/tooltip'
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
+import { RoomCategoryFormComponent } from './room-category/room-category-form/room-category-form.component'
+import { MainBarFormComponent } from './bar/main-bar-form/main-bar-form.component'
+import { SubBarFormComponent } from './bar/sub-bar-form/sub-bar-form.component'
+import { BarComponent } from './bar/bar.component'
+import { BarFormComponent } from './bar/bar-form/bar-form.component'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.component'
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -112,7 +111,6 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
     FoodFormComponent,
     MainFoodFormComponent,
     SubFoodFormComponent,
-    FoodHeaderFormComponent,
     BarFormComponent,
     MainBarFormComponent,
     SubBarFormComponent,
@@ -184,7 +182,6 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
     FoodFormComponent,
     MainFoodFormComponent,
     SubFoodFormComponent,
-    FoodHeaderFormComponent,
     BarFormComponent,
     MainBarFormComponent,
     SubBarFormComponent,
