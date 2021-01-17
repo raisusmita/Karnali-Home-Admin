@@ -24,6 +24,7 @@ export class TableService {
   }
 
   editTable(table: any): Observable<any> {
+    console.log(table.id)
     return this.http.put(this.baseURL + '/' + table.id, table)
   }
 

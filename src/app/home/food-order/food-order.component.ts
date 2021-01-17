@@ -23,11 +23,11 @@ export class FoodOrderComponent implements OnInit {
 
   OrderId: number
 
-  // filteredTables: Observable<string[]>
-  // filteredRooms: Observable<string[]>
+  filteredTables: Observable<string[]>
+  filteredRooms: Observable<string[]>
 
-  // searchedTableValue = new FormControl()
-  // searchedRoomValue = new FormControl()
+  searchedTableValue = new FormControl()
+  searchedRoomValue = new FormControl()
 
   selectedRoomNo = ''
   selectedTableNo = ''
@@ -36,6 +36,7 @@ export class FoodOrderComponent implements OnInit {
 
   mainFood = []
   mainFoodSelectedId: number
+  foodHeader = {}
   mainFoodChecked = {}
   foodList = {}
   @Input() foodOrderList = {}
@@ -57,15 +58,16 @@ export class FoodOrderComponent implements OnInit {
   ngOnInit() {
     this.getTable()
     this.getRooms()
-    // this.filteredTables = this.searchedTableValue.valueChanges.pipe(
-    //   startWith(''),
-    //   map((value) => this._filterTable(value))
-    // )
-    // this.filteredRooms = this.searchedRoomValue.valueChanges.pipe(
-    //   startWith(''),
-    //   map((value) => this._filterRoom(value))
-    // )
+    this.filteredTables = this.searchedTableValue.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filterTable(value))
+    )
+    this.filteredRooms = this.searchedRoomValue.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filterRoom(value))
+    )
     this.getMainFood()
+    this.getFoodHeader()
 
     if (this.isEdit) {
       this.checkMainFoodOnEdit(Object.values(this.foodOrderList))
@@ -101,6 +103,14 @@ export class FoodOrderComponent implements OnInit {
     })
   }
 
+  getFoodHeader() {
+    this.foodService.getFoodHeader().subscribe((header) => {
+      header.data.forEach((foodHead) => {
+        this.foodHeader[foodHead.id] = foodHead.food_header
+      })
+    })
+  }
+
   getSubFoodAndFoodItems(mainFoodValue) {
     this.mainFoodSelectedId = mainFoodValue.id
     if (
@@ -123,7 +133,7 @@ export class FoodOrderComponent implements OnInit {
   }
 
   selectRoom(roomNumber) {
-    // this.searchedTableValue.setValue('')
+    this.searchedTableValue.setValue('')
     this.selectedTableNo = null
     this.actualRoomId = null
     this.actualTableId = null
@@ -131,31 +141,31 @@ export class FoodOrderComponent implements OnInit {
   }
 
   selectTable(tableNumber) {
-    // this.searchedRoomValue.setValue('')
+    this.searchedRoomValue.setValue('')
     this.selectedRoomNo = null
     this.actualRoomId = null
     this.actualTableId = null
     this.selectedTableNo = tableNumber
   }
 
-  // private _filterTable(value: string): string[] {
-  //   const filterValue = value.toLowerCase().trim()
-  //   if (filterValue == '' || !filterValue) {
-  //     return this.table
-  //   }
-  //   return this.table.filter((option) =>
-  //     option.table_number.toLowerCase().includes(filterValue)
-  //   )
-  // }
+  private _filterTable(value: string): string[] {
+    const filterValue = value.toLowerCase().trim()
+    if (filterValue == '' || !filterValue) {
+      return this.table
+    }
+    return this.table.filter((option) =>
+      option.table_number.toLowerCase().includes(filterValue)
+    )
+  }
 
-  // private _filterRoom(value: string): string[] {
-  //   const filterValue = value.toLowerCase().trim()
-  //   if (this.room) {
-  //     return this.room.filter((option) =>
-  //       option.room_number.toLowerCase().includes(filterValue)
-  //     )
-  //   }
-  // }
+  private _filterRoom(value: string): string[] {
+    const filterValue = value.toLowerCase().trim()
+    if (this.room) {
+      return this.room.filter((option) =>
+        option.room_number.toLowerCase().includes(filterValue)
+      )
+    }
+  }
 
   storeFoodOrder(event, data) {
     if (event.checked) {

@@ -154,12 +154,14 @@ export class RoomCategoryComponent implements OnInit {
           .subscribe(
             (data) => {
               this.getRoomCategoryList()
+              // console.log(result);
               // const newArray = [...this.dataSource];
               // newArray.splice(this.selectedRowIndex, 1);
               // this.dataSource = newArray;
               // this.toastr.success('Successfully Removed!!', ' Branch Delete');
             }
             // err => {
+            //   console.log(err);
             //   this.handleError(err.error);
             // }
           )
