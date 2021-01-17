@@ -1,0 +1,52 @@
+<block-ui>
+  <h2>Add New Coffee</h2>
+  <form #formHotel="ngForm" (ngSubmit)="submitCoffeeForm()">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Main Coffee Category</mat-label>
+      <mat-select
+        [(ngModel)]="coffee.main_coffee_category_id"
+        name="mainCoffeeCategory"
+        required
+      >
+        <mat-option
+          *ngFor="let mainCoffeeCategory of mainCoffee"
+          [value]="mainCoffeeCategory.id"
+        >
+          {{ mainCoffeeCategory.main_coffee_name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Coffee Name</mat-label>
+      <input
+        matInput
+        name="name"
+        placeholder="Enter Coffee Name"
+        [(ngModel)]="coffee.coffee_name"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Coffee Price</mat-label>
+      <input
+        matInput
+        type="number"
+        name="price"
+        placeholder="Enter Coffee Price"
+        [(ngModel)]="coffee.price"
+        required
+      />
+    </mat-form-field>
+
+    <button
+      [disabled]="!formHotel.valid"
+      mat-raised-button
+      type="submit"
+      color="primary"
+    >
+      CREATE
+    </button>
+  </form>
+</block-ui>

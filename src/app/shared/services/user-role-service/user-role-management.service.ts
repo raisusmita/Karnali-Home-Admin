@@ -13,6 +13,7 @@ export class UserRoleManagementService {
     Reservation: 'reservation',
     Food: 'food',
     Bar: 'bar',
+    Coffee: 'coffee',
     Table: 'table',
     FoodOrder: 'food-order',
     FoodOrderDetail: 'food-order-detail',

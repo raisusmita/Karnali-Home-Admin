@@ -1,0 +1,23 @@
+<block-ui>
+  <h2>Add Main Coffee</h2>
+  <form #formHotel="ngForm" (ngSubmit)="submitCoffeeForm()">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Main Coffee Name</mat-label>
+      <input
+        matInput
+        name="main_coffee_name"
+        placeholder="Enter main coffee name"
+        [(ngModel)]="coffee.main_coffee_name"
+      />
+    </mat-form-field>
+
+    <button
+      [disabled]="!formHotel.valid"
+      mat-raised-button
+      type="submit"
+      color="primary"
+    >
+      CREATE
+    </button>
+  </form>
+</block-ui>

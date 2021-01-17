@@ -1,0 +1,116 @@
+<block-ui>
+  <mat-tab-group>
+    <mat-tab label="Coffee Items">
+      <div class="container">
+        <button mat-raised-button class="button-blue" (click)="addCoffee()">
+          <mat-icon>add</mat-icon>
+          Add Coffee Items
+        </button>
+
+        <div class="table-container mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="mainCoffeeCategory">
+              <th mat-header-cell *matHeaderCellDef>Main Coffee Category</th>
+              <td mat-cell *matCellDef="let element">
+                {{
+                  element.main_coffee_category_id
+                    ? element.main_coffee_category.main_coffee_name
+                    : element.sub_coffee_category.main_coffee_category
+                        .main_coffee_name
+                }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="coffeeName">
+              <th mat-header-cell *matHeaderCellDef>Coffee Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.coffee_name }}
+              </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef>Price</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.price | currency: 'NPR ':'symbol' }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <mat-icon
+                  *ngIf="ActionPermissions.Edit"
+                  matTooltip="Edit Coffee"
+                  class="text-secondary mr-2 pointed"
+                  (click)="editCoffee(element)"
+                  >create</mat-icon
+                >
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+        <div class="pagination-footer mat-elevation-z8">
+          <mat-paginator
+            [length]="coffeeTotalLength"
+            [pageSize]="pageSize"
+            [pageIndex]="pageIndex"
+            (page)="onPageChange($event)"
+            [pageSizeOptions]="pageSizeOptions"
+          >
+          </mat-paginator>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Main Coffee">
+      <div class="container">
+        <button mat-raised-button class="button-blue" (click)="addMainCoffee()">
+          <mat-icon>add</mat-icon>
+          Add Main Coffee Category
+        </button>
+        <div class="table-container mat-elevation-z8">
+          <table mat-table [dataSource]="mainCoffee">
+            <ng-container matColumnDef="mainCoffeeCategory">
+              <th mat-header-cell *matHeaderCellDef>Main Coffee Category</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.main_coffee_name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <mat-icon
+                  matTooltip="Edit Main Coffee"
+                  class="text-secondary mr-2 pointed"
+                  (click)="editMainCoffee(element)"
+                  >create</mat-icon
+                >
+              </td>
+            </ng-container>
+            <tr
+              mat-header-row
+              *matHeaderRowDef="mainCoffeeDisplayedColumns"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: mainCoffeeDisplayedColumns"
+            ></tr>
+          </table>
+        </div>
+        <div class="pagination-footer mat-elevation-z8">
+          <mat-paginator
+            [length]="mainCoffeeTotalLength"
+            [pageSize]="pageSize"
+            [pageIndex]="pageIndex"
+            (page)="onPageChange($event)"
+            [pageSizeOptions]="pageSizeOptions"
+          >
+          </mat-paginator>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</block-ui>
