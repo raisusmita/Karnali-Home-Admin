@@ -10,45 +10,44 @@ export class InvoiceReportComponent implements OnInit, AfterViewInit {
   invoiceData: any
   transactionData: any
   customerData: any
-  foodData:any;
+  foodData: any
   firstName: string
   middleName: string
   lastName: string
-  transactionType:boolean
-  showFoodData:boolean
+  transactionType: boolean
+  showFoodData: boolean
   constructor(private data: InvoiceDataService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
-      this.data.currentInvoiceData.subscribe((invoiceData) => {
-        this.invoiceData = invoiceData
-      })
+    this.data.currentInvoiceData.subscribe((invoiceData) => {
+      this.invoiceData = invoiceData
+    })
 
-      this.data.currentTransactionData.subscribe((transactionData) => {
-        this.transactionData = transactionData
-      })
+    this.data.currentTransactionData.subscribe((transactionData) => {
+      this.transactionData = transactionData
+    })
 
-      this.data.currentFoodData.subscribe((foodData)=>{
-        if(foodData.hasOwnProperty('message')){
-          this.showFoodData = false;
-        }else{
-          this.showFoodData = true;
-          this.foodData = foodData
-        }
-      })
+    this.data.currentFoodData.subscribe((foodData) => {
+      if (foodData.hasOwnProperty('message')) {
+        this.showFoodData = false
+      } else {
+        this.showFoodData = true
+        this.foodData = foodData
+      }
+    })
 
-      this.data.currentTransactionTypeData.subscribe((transactionType)=>{
-        this.transactionType = transactionType;
-      })
+    this.data.currentTransactionTypeData.subscribe((transactionType) => {
+      this.transactionType = transactionType
+    })
 
-      this.data.currentCustomer.subscribe((customer) => {
-        this.customerData = customer
-        this.firstName = this.customerData.firstName
-        this.middleName = this.customerData.middleName
-        this.lastName = this.customerData.lastName
-      })
+    this.data.currentCustomer.subscribe((customer) => {
+      this.customerData = customer
+      this.firstName = this.customerData.firstName
+      this.middleName = this.customerData.middleName
+      this.lastName = this.customerData.lastName
+    })
   }
 }
