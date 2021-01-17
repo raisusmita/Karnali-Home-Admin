@@ -4,7 +4,26 @@
       <form class="example-form">
         <div class="row">
           <div class="col-sm-6">
-            <mat-form-field class="example-full-width">
+            <div class="text-center m-3">
+              <h3>Table</h3>
+            </div>
+            <button
+              *ngFor="let tableData of table"
+              type="button"
+              class="btn btn-outline-info m-2"
+              [ngClass]="{
+                'btn-info':
+                  selectedTableNo &&
+                  selectedTableNo == tableData['table_number'],
+                'text-white':
+                  selectedTableNo &&
+                  selectedTableNo == tableData['table_number']
+              }"
+              (click)="selectTable(tableData['table_number'])"
+            >
+              {{ tableData['table_number'] }}
+            </button>
+            <!-- <mat-form-field class="example-full-width">
               <input
                 type="text"
                 placeholder="Select Table Number"
@@ -25,11 +44,28 @@
                   {{ option.table_number }}
                 </mat-option>
               </mat-autocomplete>
-            </mat-form-field>
+            </mat-form-field> -->
           </div>
 
           <div class="col-sm-6">
-            <mat-form-field class="example-full-width">
+            <div class="text-center m-3">
+              <h3>Room</h3>
+            </div>
+            <button
+              *ngFor="let roomData of room"
+              type="button"
+              class="btn btn-outline-info m-2"
+              [ngClass]="{
+                'btn-info':
+                  selectedRoomNo && selectedRoomNo == roomData['room_number'],
+                'text-white':
+                  selectedRoomNo && selectedRoomNo == roomData['room_number']
+              }"
+              (click)="selectRoom(roomData['room_number'])"
+            >
+              {{ roomData['room_number'] }}
+            </button>
+            <!-- <mat-form-field class="example-full-width">
               <input
                 type="text"
                 placeholder="Select Room Number"
@@ -50,13 +86,13 @@
                   {{ roomOption.room_number }}
                 </mat-option>
               </mat-autocomplete>
-            </mat-form-field>
+            </mat-form-field> -->
           </div>
         </div>
       </form>
     </div>
 
-    <div class="row" *ngIf="mainFood">
+    <div class="row mt-4" *ngIf="mainFood">
       <div class="col-md-3 col-sm-4" *ngIf="selectedTableNo || selectedRoomNo">
         <div class="mb-2" *ngFor="let mainFoodItem of mainFood">
           <div
@@ -106,20 +142,17 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
 
-              <div *ngFor="let foodItem of subFoodItem.foodItems | keyvalue">
+              <div *ngFor="let foodItem of subFoodItem.foodItems">
                 <h6 class="my-2">
-                  {{ foodItem.key ? foodHeader[foodItem.key] : '' }}
+                  <!-- {{ foodItem | json }} -->
                 </h6>
-                <div
-                  class="d-flex mb-3"
-                  *ngFor="let foodItemDetail of foodItem.value"
-                >
+                <div class="d-flex mb-3">
                   <mat-checkbox
-                    [checked]="foodOrderList[foodItemDetail.id]"
+                    [checked]="foodOrderList[foodItem.id]"
                     color="primary"
-                    (change)="storeFoodOrder($event, foodItemDetail)"
+                    (change)="storeFoodOrder($event, foodItem)"
                   >
-                    {{ foodItemDetail.food_name }}
+                    {{ foodItem.food_name }}
                   </mat-checkbox>
 
                   <div class="border ml-3 p-1 w-5">
@@ -127,12 +160,12 @@
                       matInput
                       type="number"
                       [value]="
-                        foodOrderList[foodItemDetail.id]
-                          ? foodOrderList[foodItemDetail.id]['quantity']
+                        foodOrderList[foodItem.id]
+                          ? foodOrderList[foodItem.id]['quantity']
                           : '1'
                       "
                       min="1"
-                      (change)="maintainOrderQuantity($event, foodItemDetail)"
+                      (change)="maintainOrderQuantity($event, foodItem)"
                     />
                   </div>
                 </div>
@@ -157,8 +190,7 @@
               let i = index
             "
           >
-            Food Header:
-            <mat-accordion class="example-headers-align">
+            <!-- <mat-accordion class="example-headers-align">
               <mat-expansion-panel
                 [expanded]="step === i"
                 (opened)="setStep(i)"
@@ -166,11 +198,7 @@
               >
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    <h5>
-                      {{
-                        foodItem.key ? foodHeader[foodItem.key] : 'Food Header'
-                      }}
-                    </h5>
+                    <h5></h5>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
 
@@ -202,7 +230,7 @@
                   </div>
                 </div>
               </mat-expansion-panel>
-            </mat-accordion>
+            </mat-accordion> -->
           </div>
         </div>
 

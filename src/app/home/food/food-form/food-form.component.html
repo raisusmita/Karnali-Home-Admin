@@ -33,18 +33,6 @@
     </mat-form-field>
 
     <mat-form-field class="example-full-width" appearance="outline">
-      <mat-label>Enter Food Header</mat-label>
-      <mat-select [(ngModel)]="food.food_header_id" name="food_header">
-        <mat-option
-          *ngFor="let foodHeader of foodHeader"
-          [value]="foodHeader.id"
-        >
-          {{ foodHeader.food_header }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Food Name</mat-label>
       <input
         matInput
@@ -54,11 +42,6 @@
         required
       />
     </mat-form-field>
-
-    <!-- <mat-form-field class="example-full-width" appearance="outline">
-      <mat-label>Food Header</mat-label>
-      <input matInput name="header" placeholder="Enter Food Header" [(ngModel)]="food.food_header_id" />
-    </mat-form-field> -->
 
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Food Price</mat-label>
