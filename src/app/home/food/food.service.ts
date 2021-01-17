@@ -27,6 +27,10 @@ export class FoodService {
     return this.http.post(environment.apiURL + 'subFoodById', id)
   }
 
+  getFoodHeader(): Observable<any> {
+    return this.http.get(environment.apiURL + 'foodHeader')
+  }
+
   getFoodList(foodParams): Observable<any> {
     return this.http.post(environment.apiURL + 'foodItemList', foodParams)
   }
@@ -37,6 +41,10 @@ export class FoodService {
 
   getSubFoodList(foodParams): Observable<any> {
     return this.http.post(environment.apiURL + 'subFoodList', foodParams)
+  }
+
+  getFoodHeaderList(foodParams): Observable<any> {
+    return this.http.post(environment.apiURL + 'headerFoodList', foodParams)
   }
 
   addFood(food: any): Observable<any> {
@@ -51,6 +59,10 @@ export class FoodService {
     return this.http.post(`${environment.apiURL}subFood`, food)
   }
 
+  addFoodHeader(food: any): Observable<any> {
+    return this.http.post(`${environment.apiURL}foodHeader`, food)
+  }
+
   editFood(food: any): Observable<any> {
     return this.http.put(this.baseURL + '/' + food.id, food)
   }
@@ -61,6 +73,10 @@ export class FoodService {
 
   editSubFood(food: any): Observable<any> {
     return this.http.put(`${environment.apiURL}subFood/${food.id}`, food)
+  }
+
+  editFoodHeader(food: any): Observable<any> {
+    return this.http.put(`${environment.apiURL}foodHeader/${food.id}`, food)
   }
 
   deleteFood(id: any): Observable<any> {

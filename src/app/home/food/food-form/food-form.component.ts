@@ -15,6 +15,7 @@ export class FoodFormComponent implements OnInit {
 
   mainFood = []
   subFood = []
+  foodHeader = []
   @BlockUI() blockUI: NgBlockUI
 
   constructor(
@@ -27,6 +28,7 @@ export class FoodFormComponent implements OnInit {
     this.getFood()
     this.getMainFood()
     this.getSubFood()
+    this.getFoodheader()
   }
 
   getFood() {
@@ -48,6 +50,23 @@ export class FoodFormComponent implements OnInit {
     this.foodService.getSubFood().subscribe((data) => {
       this.subFood = data.data
     })
+  }
+
+  getFoodheader() {
+    this.blockUI.start('Loading...')
+    this.foodService.getFoodHeader().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.foodHeader = result.data
+        } else {
+          this.blockUI.stop()
+        }
+        this.blockUI.stop()
+      },
+      (error) => {
+        this.blockUI.stop()
+      }
+    )
   }
 
   submitFoodForm() {
