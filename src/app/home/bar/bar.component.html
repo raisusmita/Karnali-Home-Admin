@@ -20,17 +20,6 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="subBarCategory">
-              <th mat-header-cell *matHeaderCellDef>Sub Bar Category</th>
-              <td mat-cell *matCellDef="let element">
-                {{
-                  element.sub_bar_category_id
-                    ? element.sub_bar_category.sub_bar_name
-                    : '-'
-                }}
-              </td>
-            </ng-container>
-
             <ng-container matColumnDef="barName">
               <th mat-header-cell *matHeaderCellDef>Bar Name</th>
               <td mat-cell *matCellDef="let element">{{ element.bar_name }}</td>
@@ -115,50 +104,6 @@
         <div class="pagination-footer mat-elevation-z8">
           <mat-paginator
             [length]="mainBarTotalLength"
-            [pageSize]="pageSize"
-            [pageIndex]="pageIndex"
-            (page)="onPageChange($event)"
-            [pageSizeOptions]="pageSizeOptions"
-          >
-          </mat-paginator>
-        </div>
-      </div>
-    </mat-tab>
-    <mat-tab label="Sub Bar">
-      <div class="container">
-        <button mat-raised-button class="button-blue" (click)="addSubBar()">
-          <mat-icon>add</mat-icon>
-          Add Sub Bar Category
-        </button>
-        <div class="table-container mat-elevation-z8">
-          <table mat-table [dataSource]="subBar">
-            <ng-container matColumnDef="subBarCategory">
-              <th mat-header-cell *matHeaderCellDef>Sub Bar Category</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.sub_bar_name }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="action">
-              <th mat-header-cell *matHeaderCellDef>Action</th>
-              <td mat-cell *matCellDef="let element; let i = index">
-                <mat-icon
-                  matTooltip="Edit Sub Bar"
-                  class="text-secondary mr-2 pointed"
-                  (click)="editSubBar(element)"
-                  >create</mat-icon
-                >
-              </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="subBarDisplayedColumns"></tr>
-            <tr
-              mat-row
-              *matRowDef="let row; columns: subBarDisplayedColumns"
-            ></tr>
-          </table>
-        </div>
-        <div class="pagination-footer mat-elevation-z8">
-          <mat-paginator
-            [length]="subBarTotalLength"
             [pageSize]="pageSize"
             [pageIndex]="pageIndex"
             (page)="onPageChange($event)"

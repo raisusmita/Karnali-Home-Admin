@@ -84,7 +84,6 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { RoomCategoryFormComponent } from './room-category/room-category-form/room-category-form.component'
 import { MainBarFormComponent } from './bar/main-bar-form/main-bar-form.component'
-import { SubBarFormComponent } from './bar/sub-bar-form/sub-bar-form.component'
 import { BarComponent } from './bar/bar.component'
 import { BarFormComponent } from './bar/bar-form/bar-form.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
@@ -113,7 +112,6 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
     SubFoodFormComponent,
     BarFormComponent,
     MainBarFormComponent,
-    SubBarFormComponent,
     TableComponent,
     AddTableComponent,
     BookingFormComponent,
@@ -184,7 +182,6 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
     SubFoodFormComponent,
     BarFormComponent,
     MainBarFormComponent,
-    SubBarFormComponent,
     ConfirmDeleteComponent,
     ConfirmCommonDialogComponent,
     CustomerFormComponent,

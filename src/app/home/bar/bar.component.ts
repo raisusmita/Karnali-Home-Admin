@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog'
 import { BarFormComponent } from './bar-form/bar-form.component'
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
 import { MainBarFormComponent } from './main-bar-form/main-bar-form.component'
-import { SubBarFormComponent } from './sub-bar-form/sub-bar-form.component'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import {
   UserActionPermission,
@@ -19,18 +18,14 @@ import {
 export class BarComponent implements OnInit {
   displayedColumns: string[] = [
     'mainBarCategory',
-    'subBarCategory',
     'barName',
     'quantity',
     'price',
     'action'
   ]
   mainBarDisplayedColumns: string[] = ['mainBarCategory', 'action']
-  subBarDisplayedColumns: string[] = ['subBarCategory', 'action']
-
   dataSource: any[]
   mainBar: any[]
-  subBar: any[]
   barHeader: any[]
 
   pageSizeOptions = [10, 25, 50, 100]
@@ -39,7 +34,6 @@ export class BarComponent implements OnInit {
   pageIndex: number
   barTotalLength: number
   mainBarTotalLength: number
-  subBarTotalLength: number
 
   limit: number
   skip: number
@@ -84,14 +78,12 @@ export class BarComponent implements OnInit {
     this.pageIndex = 0
     this.mainBarTotalLength = 0
     this.barTotalLength = 0
-    this.subBarTotalLength = 0
 
     this.skip = 0
     this.limit = this.pageSize
     this.tabLabel = 'Bar Items'
     this.getBar()
     this.getMainBar()
-    this.getSubBar()
   }
 
   onPageChange(e: any) {
@@ -106,8 +98,6 @@ export class BarComponent implements OnInit {
       this.getBar()
     } else if (this.tabLabel == 'Main Bar') {
       this.getMainBar()
-    } else if (this.tabLabel == 'Sub Bar') {
-      this.getSubBar()
     }
   }
 
@@ -131,28 +121,6 @@ export class BarComponent implements OnInit {
       this.mainBar = result.data
       this.mainBarTotalLength = result.totalCount
     })
-  }
-
-  getSubBar() {
-    const paginationParams = {
-      limit: this.limit,
-      skip: this.skip
-    }
-    this.blockUI.start('Loading...')
-    this.barService.getSubBarList(paginationParams).subscribe(
-      (result) => {
-        if (result && result.data) {
-          this.subBar = result.data
-          this.subBarTotalLength = result.totalCount
-        } else {
-          this.blockUI.stop()
-        }
-        this.blockUI.stop()
-      },
-      (error) => {
-        this.blockUI.stop()
-      }
-    )
   }
 
   addBar() {
@@ -181,19 +149,6 @@ export class BarComponent implements OnInit {
     })
   }
 
-  addSubBar() {
-    const dialogRef = this.dialog.open(SubBarFormComponent, {
-      width: '50%',
-      data: null
-    })
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.getSubBar()
-      }
-    })
-  }
-
   editBar(BarEditData) {
     const dialogRef = this.dialog.open(BarFormComponent, {
       width: '50%',
@@ -203,13 +158,6 @@ export class BarComponent implements OnInit {
 
   editMainBar(BarEditData) {
     const dialogRef = this.dialog.open(MainBarFormComponent, {
-      width: '50%',
-      data: BarEditData
-    })
-  }
-
-  editSubBar(BarEditData) {
-    const dialogRef = this.dialog.open(SubBarFormComponent, {
       width: '50%',
       data: BarEditData
     })

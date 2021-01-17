@@ -14,7 +14,6 @@ export class BarFormComponent implements OnInit {
   isEdit = false
 
   mainBar = []
-  subBar = []
   barQuantity = {
     '30ML': '30 ML',
     '60ML': '60 ML',
@@ -37,7 +36,6 @@ export class BarFormComponent implements OnInit {
   ngOnInit() {
     this.getBar()
     this.getMainBar()
-    this.getSubBar()
   }
 
   getBar() {
@@ -53,23 +51,6 @@ export class BarFormComponent implements OnInit {
     this.barService.getMainBar().subscribe((data) => {
       this.mainBar = data.data
     })
-  }
-
-  getSubBar() {
-    this.blockUI.start('Loading...')
-    this.barService.getSubBar().subscribe(
-      (result) => {
-        if (result && result.data) {
-          this.subBar = result.data
-        } else {
-          this.blockUI.stop()
-        }
-        this.blockUI.stop()
-      },
-      (error) => {
-        this.blockUI.stop()
-      }
-    )
   }
 
   submitBarForm() {
