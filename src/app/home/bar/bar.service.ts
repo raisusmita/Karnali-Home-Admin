@@ -27,6 +27,10 @@ export class BarService {
     return this.http.post(environment.apiURL + 'mainBarList', barParams)
   }
 
+  getBarItemsById(id): Observable<any> {
+    return this.http.post(environment.apiURL + 'barItemById', id)
+  }
+
   addBar(bar: any): Observable<any> {
     return this.http.post(this.baseURL, bar)
   }

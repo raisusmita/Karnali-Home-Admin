@@ -23,6 +23,10 @@ export class CoffeeService {
     return this.http.post(environment.apiURL + 'coffeeItemList', coffeeParams)
   }
 
+  getCoffeeItemsById(id): Observable<any> {
+    return this.http.post(environment.apiURL + 'coffeeItemById', id)
+  }
+
   getMainCoffeeList(coffeeParams): Observable<any> {
     return this.http.post(environment.apiURL + 'mainCoffeeList', coffeeParams)
   }
