@@ -85,11 +85,13 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { RoomCategoryFormComponent } from './room-category/room-category-form/room-category-form.component'
 import { MainBarFormComponent } from './bar/main-bar-form/main-bar-form.component'
-import { SubBarFormComponent } from './bar/sub-bar-form/sub-bar-form.component'
 import { BarComponent } from './bar/bar.component'
 import { BarFormComponent } from './bar/bar-form/bar-form.component'
+import { CoffeeFormComponent } from './coffee/coffee-form/coffee-form.component'
+import { MainCoffeeFormComponent } from './coffee/main-coffee-form/main-coffee-form.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.component'
+import { CoffeeComponent } from './coffee/coffee.component'
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -101,6 +103,7 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
     RoomTransactionComponent,
     FoodComponent,
     BarComponent,
+    CoffeeComponent,
     FoodOrderComponent,
     InvoiceComponent,
     RoomCategoryFormComponent,
@@ -115,7 +118,8 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
     FoodHeaderFormComponent,
     BarFormComponent,
     MainBarFormComponent,
-    SubBarFormComponent,
+    CoffeeFormComponent,
+    MainCoffeeFormComponent,
     TableComponent,
     AddTableComponent,
     BookingFormComponent,
@@ -187,7 +191,8 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
     FoodHeaderFormComponent,
     BarFormComponent,
     MainBarFormComponent,
-    SubBarFormComponent,
+    CoffeeFormComponent,
+    MainCoffeeFormComponent,
     ConfirmDeleteComponent,
     ConfirmCommonDialogComponent,
     CustomerFormComponent,

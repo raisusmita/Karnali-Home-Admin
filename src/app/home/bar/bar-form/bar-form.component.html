@@ -18,18 +18,6 @@
     </mat-form-field>
 
     <mat-form-field class="example-full-width" appearance="outline">
-      <mat-label>Sub Bar Category</mat-label>
-      <mat-select [(ngModel)]="bar.sub_bar_category_id" name="subBarCategory">
-        <mat-option
-          *ngFor="let subBarCategory of subBar"
-          [value]="subBarCategory.id"
-        >
-          {{ subBarCategory.sub_bar_name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Bar Name</mat-label>
       <input
         matInput

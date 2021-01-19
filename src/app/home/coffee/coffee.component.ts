@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core'
-import { BarService } from './bar.service'
+import { CoffeeService } from './coffee.service'
 import { MatDialog } from '@angular/material/dialog'
-import { BarFormComponent } from './bar-form/bar-form.component'
+import { CoffeeFormComponent } from './coffee-form/coffee-form.component'
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
-import { MainBarFormComponent } from './main-bar-form/main-bar-form.component'
+import { MainCoffeeFormComponent } from './main-coffee-form/main-coffee-form.component'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import {
   UserActionPermission,
@@ -11,29 +11,28 @@ import {
 } from 'src/app/shared/services/user-role-service/user-role-management.service'
 
 @Component({
-  selector: 'app-bar',
-  templateUrl: './bar.component.html',
-  styleUrls: ['./bar.component.scss']
+  selector: 'app-coffee',
+  templateUrl: './coffee.component.html',
+  styleUrls: ['./coffee.component.scss']
 })
-export class BarComponent implements OnInit {
+export class CoffeeComponent implements OnInit {
   displayedColumns: string[] = [
-    'mainBarCategory',
-    'barName',
-    'quantity',
+    'mainCoffeeCategory',
+    'coffeeName',
     'price',
     'action'
   ]
-  mainBarDisplayedColumns: string[] = ['mainBarCategory', 'action']
+  mainCoffeeDisplayedColumns: string[] = ['mainCoffeeCategory', 'action']
   dataSource: any[]
-  mainBar: any[]
-  barHeader: any[]
+  mainCoffee: any[]
+  coffeeHeader: any[]
 
   pageSizeOptions = [10, 25, 50, 100]
 
   pageSize: number
   pageIndex: number
-  barTotalLength: number
-  mainBarTotalLength: number
+  coffeeTotalLength: number
+  mainCoffeeTotalLength: number
 
   limit: number
   skip: number
@@ -45,7 +44,7 @@ export class BarComponent implements OnInit {
   ActionPermissions: UserActionPermission = {} as UserActionPermission
 
   constructor(
-    private barService: BarService,
+    private coffeeService: CoffeeService,
     private userRoleManagementService: UserRoleManagementService,
     private dialog: MatDialog
   ) {}
@@ -58,7 +57,7 @@ export class BarComponent implements OnInit {
   manageUserPermission() {
     if (
       !this.userRoleManagementService.isActionExists(
-        this.userRoleManagementService.allRoutes.Bar
+        this.userRoleManagementService.allRoutes.Coffee
       )
     ) {
       this.displayedColumns = this.displayedColumns.filter(
@@ -66,24 +65,24 @@ export class BarComponent implements OnInit {
       )
     }
     this.ActionPermissions.Edit = this.userRoleManagementService.isEditExists(
-      this.userRoleManagementService.allRoutes.Bar
+      this.userRoleManagementService.allRoutes.Coffee
     )
     this.ActionPermissions.Delete = this.userRoleManagementService.isDeleteExists(
-      this.userRoleManagementService.allRoutes.Bar
+      this.userRoleManagementService.allRoutes.Coffee
     )
   }
 
   initialize() {
     this.pageSize = 10
     this.pageIndex = 0
-    this.mainBarTotalLength = 0
-    this.barTotalLength = 0
+    this.mainCoffeeTotalLength = 0
+    this.coffeeTotalLength = 0
 
     this.skip = 0
     this.limit = this.pageSize
-    this.tabLabel = 'Bar Items'
-    this.getBar()
-    this.getMainBar()
+    this.tabLabel = 'Coffee Items'
+    this.getCoffee()
+    this.getMainCoffee()
   }
 
   onPageChange(e: any) {
@@ -94,84 +93,86 @@ export class BarComponent implements OnInit {
     }
     this.limit = e.pageSize
 
-    if (this.tabLabel == 'Bar Items') {
-      this.getBar()
-    } else if (this.tabLabel == 'Main Bar') {
-      this.getMainBar()
+    if (this.tabLabel == 'Coffee Items') {
+      this.getCoffee()
+    } else if (this.tabLabel == 'Main Coffee') {
+      this.getMainCoffee()
     }
   }
 
-  getBar() {
+  getCoffee() {
     const paginationParams = {
       limit: this.limit,
       skip: this.skip
     }
-    this.barService.getBarList(paginationParams).subscribe((result) => {
+    this.coffeeService.getCoffeeList(paginationParams).subscribe((result) => {
       this.dataSource = result.data
-      this.barTotalLength = result.totalCount
+      this.coffeeTotalLength = result.totalCount
     })
   }
 
-  getMainBar() {
+  getMainCoffee() {
     const paginationParams = {
       limit: this.limit,
       skip: this.skip
     }
-    this.barService.getMainBarList(paginationParams).subscribe((result) => {
-      this.mainBar = result.data
-      this.mainBarTotalLength = result.totalCount
-    })
+    this.coffeeService
+      .getMainCoffeeList(paginationParams)
+      .subscribe((result) => {
+        this.mainCoffee = result.data
+        this.mainCoffeeTotalLength = result.totalCount
+      })
   }
 
-  addBar() {
-    const dialogRef = this.dialog.open(BarFormComponent, {
+  addCoffee() {
+    const dialogRef = this.dialog.open(CoffeeFormComponent, {
       width: '50%',
       data: null
     })
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getBar()
+        this.getCoffee()
       }
     })
   }
 
-  addMainBar() {
-    const dialogRef = this.dialog.open(MainBarFormComponent, {
+  addMainCoffee() {
+    const dialogRef = this.dialog.open(MainCoffeeFormComponent, {
       width: '50%',
       data: null
     })
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getMainBar()
+        this.getMainCoffee()
       }
     })
   }
 
-  editBar(BarEditData) {
-    const dialogRef = this.dialog.open(BarFormComponent, {
+  editCoffee(CoffeeEditData) {
+    const dialogRef = this.dialog.open(CoffeeFormComponent, {
       width: '50%',
-      data: BarEditData
+      data: CoffeeEditData
     })
   }
 
-  editMainBar(BarEditData) {
-    const dialogRef = this.dialog.open(MainBarFormComponent, {
+  editMainCoffee(CoffeeEditData) {
+    const dialogRef = this.dialog.open(MainCoffeeFormComponent, {
       width: '50%',
-      data: BarEditData
+      data: CoffeeEditData
     })
   }
 
-  deleteBar(index) {
+  deleteCoffee(index) {
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
       width: '50%'
     })
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.barService.deleteBar(index).subscribe((data) => {
-          this.getBar()
+        this.coffeeService.deleteCoffee(index).subscribe((data) => {
+          this.getCoffee()
         })
       }
     })

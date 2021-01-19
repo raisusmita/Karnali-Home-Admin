@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { SubBarFormComponent } from './sub-bar-form.component'
+import { CoffeeFormComponent } from './coffee-form.component'
 
-describe('SubBarFormComponent', () => {
-  let component: SubBarFormComponent
-  let fixture: ComponentFixture<SubBarFormComponent>
+describe('CoffeeFormComponent', () => {
+  let component: CoffeeFormComponent
+  let fixture: ComponentFixture<CoffeeFormComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SubBarFormComponent]
+      declarations: [CoffeeFormComponent]
     }).compileComponents()
   }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SubBarFormComponent)
+    fixture = TestBed.createComponent(CoffeeFormComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })
