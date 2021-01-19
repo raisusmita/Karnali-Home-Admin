@@ -6,6 +6,7 @@ import { FoodFormComponent } from './food-form/food-form.component'
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
 import { MainFoodFormComponent } from './main-food-form/main-food-form.component'
 import { SubFoodFormComponent } from './sub-food-form/sub-food-form.component'
+import { FoodHeaderFormComponent } from './food-header-form/food-header-form.component'
 import { BlockUI } from 'ng-block-ui'
 import {
   UserActionPermission,
@@ -22,15 +23,18 @@ export class FoodComponent implements OnInit {
     'mainFoodCategory',
     'subFoodCategory',
     'foodName',
+    'header',
     'price',
     'action'
   ]
   mainFoodDisplayedColumns: string[] = ['mainFoodCategory', 'action']
   subFoodDisplayedColumns: string[] = ['subFoodCategory', 'action']
+  FoodHeaderDisplayedColumns: string[] = ['foodHeader', 'action']
 
   dataSource: any[]
   mainFood: any[]
   subFood: any[]
+  foodHeader: any[]
 
   pageSizeOptions = [10, 25, 50, 100]
 
@@ -39,6 +43,7 @@ export class FoodComponent implements OnInit {
   foodTotalLength: number
   mainFoodTotalLength: number
   subFoodTotalLength: number
+  foodHeaderTotalLength: number
 
   limit: number
   skip: number
@@ -84,6 +89,7 @@ export class FoodComponent implements OnInit {
     this.mainFoodTotalLength = 0
     this.foodTotalLength = 0
     this.subFoodTotalLength = 0
+    this.foodHeaderTotalLength = 0
 
     this.skip = 0
     this.limit = this.pageSize
@@ -91,6 +97,7 @@ export class FoodComponent implements OnInit {
     this.getFood()
     this.getMainFood()
     this.getSubFood()
+    this.getFoodHeader()
   }
   onPageChange(e: any) {
     if (e.pageIndex === 0) {
@@ -104,6 +111,8 @@ export class FoodComponent implements OnInit {
       this.getMainFood()
     } else if (this.tabLabel == 'Sub Food') {
       this.getSubFood()
+    } else if (this.tabLabel == 'Food Header') {
+      this.getFoodHeader()
     } else if (this.tabLabel == 'Food Items') {
       this.getFood()
     }
@@ -144,6 +153,29 @@ export class FoodComponent implements OnInit {
 
       this.subFood = result.data
     })
+  }
+
+  getFoodHeader() {
+    this.blockUI.start('Loading...')
+
+    const paginationParams = {
+      limit: this.limit,
+      skip: this.skip
+    }
+    this.foodService.getFoodHeaderList(paginationParams).subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.foodHeaderTotalLength = result.totalCount
+          this.foodHeader = result.data
+        } else {
+          this.blockUI.stop()
+        }
+        this.blockUI.stop()
+      },
+      (error) => {
+        this.blockUI.stop()
+      }
+    )
   }
 
   addFood() {
@@ -195,6 +227,22 @@ export class FoodComponent implements OnInit {
     })
   }
 
+  addFoodHeader() {
+    const dialogRef = this.dialog.open(FoodHeaderFormComponent, {
+      width: '50%',
+      data: {
+        gridData: null,
+        formType: 'Add'
+      }
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getFoodHeader()
+      }
+    })
+  }
+
   editFood(FoodEditData) {
     const dialogRef = this.dialog.open(FoodFormComponent, {
       width: '50%',
@@ -217,6 +265,16 @@ export class FoodComponent implements OnInit {
 
   editSubFood(FoodEditData) {
     const dialogRef = this.dialog.open(SubFoodFormComponent, {
+      width: '50%',
+      data: {
+        gridData: FoodEditData,
+        formType: 'Add'
+      }
+    })
+  }
+
+  editFoodHeader(FoodEditData) {
+    const dialogRef = this.dialog.open(FoodHeaderFormComponent, {
       width: '50%',
       data: {
         gridData: FoodEditData,

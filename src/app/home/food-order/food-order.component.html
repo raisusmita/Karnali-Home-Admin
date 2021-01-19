@@ -96,11 +96,7 @@
             >
               <div *ngIf="coffeeList[mainCoffeeSelectedId]['coffeeItems']">
                 <mat-accordion class="example-headers-align">
-                  <mat-expansion-panel
-                    [expanded]="step === i"
-                    (opened)="setStep(i)"
-                    class="custom-panel"
-                  >
+                  <mat-expansion-panel class="custom-panel">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         <h5>Test</h5>
@@ -313,11 +309,8 @@
             >
               <div *ngIf="barList[mainBarSelectedId]['barItems']">
                 <mat-accordion class="example-headers-align">
-                  <mat-expansion-panel
-                    [expanded]="step === i"
-                    (opened)="setStep(i)"
-                    class="custom-panel"
-                  >
+                  <!-- (opened)="setStep(i)" -->
+                  <mat-expansion-panel class="custom-panel">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         <h5>Test</h5>
