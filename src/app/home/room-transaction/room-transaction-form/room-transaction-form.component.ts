@@ -58,6 +58,8 @@ export class RoomTransactionFormComponent implements OnInit {
 
   //Food detail
   foodDetail: any[] = []
+  itemDetails: any[] = []
+
   food_total_amount: number
 
   @BlockUI() blockUI: NgBlockUI
@@ -175,11 +177,36 @@ export class RoomTransactionFormComponent implements OnInit {
 
   getFoodDetail(params) {
     this.blockUI.start('Loading...')
+    this.itemDetails = []
     this.roomAvailabilityService.getFoodDetailForRoom(params).subscribe(
       (result) => {
         if (result.length != 0) {
           this.food_total_amount = 0
-          this.foodDetail = result
+
+          result.map((item) => {
+            if (item.food_items) {
+              this.itemDetails.push({
+                item_name: item.food_items.food_name,
+                price: item.food_items.price,
+                quantity: item.quantity,
+                total_amount: item.total_amount
+              })
+            } else if (item.bar_items) {
+              this.itemDetails.push({
+                item_name: item.bar_items.bar_name,
+                price: item.bar_items.price,
+                quantity: item.quantity,
+                total_amount: item.total_amount
+              })
+            } else if (item.coffee_items) {
+              this.itemDetails.push({
+                item_name: item.coffee_items.coffee_name,
+                price: item.coffee_items.price,
+                quantity: item.quantity,
+                total_amount: item.total_amount
+              })
+            }
+          })
           this.displayFood = true
 
           // Grand total of food

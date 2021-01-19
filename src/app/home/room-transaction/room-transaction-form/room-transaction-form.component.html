@@ -19,7 +19,7 @@
                 >
                   {{ customer.first_name }}
                   {{ customer.middle_name }}
-                  {{ customer.last_name + "  ( " + customer.phone + " )" }}
+                  {{ customer.last_name + '  ( ' + customer.phone + ' )' }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -40,7 +40,12 @@
       <div class="main-content" *ngIf="roomList">
         <section class="row">
           <!-- <p>{{ room.room_id[0].room_number }}</p> -->
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" multiTemplateDataRows>
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            class="mat-elevation-z8"
+            multiTemplateDataRows
+          >
             <!-- Checkbox Column -->
             <ng-container matColumnDef="select">
               <mat-header-cell *matHeaderCellDef>
@@ -134,19 +139,29 @@
               </td> -->
             </ng-container>
 
-            
             <ng-container matColumnDef="view_foods">
               <th mat-header-cell *matHeaderCellDef>View Foods</th>
               <td mat-cell *matCellDef="let element">
-                <a mat-button href="javascript:void()" (click)="expandTable(element)">View
-                  Foods </a>
+                <a
+                  mat-button
+                  href="javascript:void()"
+                  (click)="expandTable(element)"
+                  >View Foods
+                </a>
               </td>
             </ng-container>
 
-             <!-- Expanded Content Column - The detail row is made up of this one column -->
+            <!-- Expanded Content Column - The detail row is made up of this one column -->
             <ng-container matColumnDef="expandedDetail">
-              <td mat-cell *matCellDef="let detail" [attr.colspan]="displayedColumns.length"> 
-                <div class="row transaction-element-detail" [@detailExpand]="detail.isExpanded ? 'expanded' : 'collapsed'">
+              <td
+                mat-cell
+                *matCellDef="let detail"
+                [attr.colspan]="displayedColumns.length"
+              >
+                <div
+                  class="row transaction-element-detail"
+                  [@detailExpand]="detail.isExpanded ? 'expanded' : 'collapsed'"
+                >
                   <!-- <mat-list>
                     <div mat-subheader>Food Details of room number:  {{detail.room_number}}</div>
                     <mat-list-item *ngFor="let subject of let food_detail of detail.food_details">
@@ -154,28 +169,31 @@
                       <div mat-line> {{food_detail.price}} </div>
                     </mat-list-item>
                   </mat-list> -->
-                  <table class="table table-striped" *ngIf="displayFood; else noOrder">
+                  <table
+                    class="table table-striped"
+                    *ngIf="displayFood; else noOrder"
+                  >
                     <thead>
-                      <tr >
-                        <th >Food</th>
-                        <th >Quantity</th>
-                        <th >Price</th>
-                        <th >Sub Total</th>
+                      <tr>
+                        <th>Food</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Sub Total</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr  *ngFor="let food_detail of foodDetail">
-                        <td >{{food_detail.food_items.food_name}}</td>
-                        <td >{{food_detail.quantity}}</td>
-                        <td >{{food_detail.price}}</td>
-                        <td >{{food_detail.total_amount}}</td>
+                      <tr *ngFor="let itemDetail of itemDetails">
+                        <td>{{ itemDetail.item_name }}</td>
+                        <td>{{ itemDetail.quantity }}</td>
+                        <td>{{ itemDetail.price }}</td>
+                        <td>{{ itemDetail.total_amount }}</td>
                       </tr>
                     </tbody>
-                    <tfoot >
+                    <tfoot>
                       <tr>
-                        <th colspan="3" style="text-align:right">Total:</th>
-                        <th>{{food_total_amount}}</th>
-                    </tr>
+                        <th colspan="3" style="text-align: right">Total:</th>
+                        <th>{{ food_total_amount }}</th>
+                      </tr>
                     </tfoot>
                   </table>
 
@@ -188,17 +206,23 @@
               </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns; sticky: true"
+            ></tr>
             <tr
               mat-row
-              *matRowDef="let element columns: displayedColumns" class="transaction-element-row"
+              *matRowDef="let element; columns: displayedColumns"
+              class="transaction-element-row"
               [class.transaction-expanded-row]="element.isExpanded"
             ></tr>
 
-             <!-- Extra row to show detail content column -->
-             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="transaction-detail-row"></tr>
-
-           
+            <!-- Extra row to show detail content column -->
+            <tr
+              mat-row
+              *matRowDef="let row; columns: ['expandedDetail']"
+              class="transaction-detail-row"
+            ></tr>
           </table>
         </section>
       </div>
@@ -210,10 +234,10 @@
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Room No: {{ " " + roomTransaction.room_number }}
+                Room No: {{ ' ' + roomTransaction.room_number }}
               </mat-panel-title>
               <mat-panel-description>
-                Room Category: {{ " " + roomTransaction.room_category + " " }}
+                Room Category: {{ ' ' + roomTransaction.room_category + ' ' }}
               </mat-panel-description>
             </mat-expansion-panel-header>
 
