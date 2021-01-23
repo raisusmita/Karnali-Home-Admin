@@ -245,8 +245,32 @@ export class RoomTransactionComponent implements OnInit {
     // tslint:disable-next-line: no-unused-expression
     return new Promise((resolve, reject) => {
       Promise.all([this.getFoodDetailForRoom(params)]).then(([response]) => {
+        this.foodParams = []
         if (this.foodData) {
-          this.foodParams = this.foodData
+          this.foodData.map((item) => {
+            if (item.food_items) {
+              this.foodParams.push({
+                item_name: item.food_items.food_name,
+                price: item.food_items.price,
+                quantity: item.quantity,
+                sub_total: parseFloat(item.price) * item.quantity
+              })
+            } else if (item.bar_items) {
+              this.foodParams.push({
+                item_name: item.bar_items.bar_name,
+                price: item.bar_items.price,
+                quantity: item.quantity,
+                sub_total: parseFloat(item.price) * item.quantity
+              })
+            } else if (item.coffee_items) {
+              this.foodParams.push({
+                item_name: item.coffee_items.coffee_name,
+                price: item.coffee_items.price,
+                quantity: item.quantity,
+                sub_total: parseFloat(item.price) * item.quantity
+              })
+            }
+          })
         } else {
           this.foodParams = { message: 'No Food Order has been made.' }
         }
