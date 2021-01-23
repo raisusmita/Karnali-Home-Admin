@@ -635,6 +635,7 @@ export class RoomTransactionComponent implements OnInit {
         roomId: row.room_id,
         reservationId: row.reservation_id
       }
+
       this.getFoodDetailForRoom(params)
     } else {
       this.selectedTable = true
