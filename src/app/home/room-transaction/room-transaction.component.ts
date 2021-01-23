@@ -83,6 +83,7 @@ export class RoomTransactionComponent implements OnInit {
   //Food detail
   foodDetail: any[] = []
   food_total_amount: number
+  itemDetails: any[] = []
 
   constructor(
     private dialog: MatDialog,
@@ -490,11 +491,12 @@ export class RoomTransactionComponent implements OnInit {
   }
 
   getTotalFoodCost() {
-    this.foodTotal = 0
     if (this.selectedFoodDetail) {
       this.foodTotal = this.selectedFoodDetail
-        .map((food) => food.food_items.price * food.quantity)
+        .map((item) => parseFloat(item.price) * item.quantity)
         .reduce((acc, value) => acc + value, 0)
+    } else {
+      this.foodTotal = 0
     }
     return parseFloat(this.foodTotal)
   }
@@ -533,20 +535,39 @@ export class RoomTransactionComponent implements OnInit {
     return new Promise((resolve1, reject) => {
       this.blockUI.start('Loading...')
       this.foodDataSource = null
+      this.itemDetails = []
+      this.selectedFoodDetail = null
+
       this.roomAvailabilityService.getFoodDetailForRoom(params).subscribe(
         (result) => {
-          // if (!result) { resolve1(false); }
           if (result.length) {
             const arr = []
             this.selectedFoodDetail = result
-            result.map((data) => {
-              arr.push({
-                food: data.food_items.food_name,
-                quantity: data.quantity,
-                price: data.price,
-                sub_total: parseFloat(data.price) * data.quantity
-              })
-              this.foodDataSource = new MatTableDataSource(arr)
+
+            result.map((item) => {
+              if (item.food_items) {
+                this.itemDetails.push({
+                  item_name: item.food_items.food_name,
+                  price: item.food_items.price,
+                  quantity: item.quantity,
+                  sub_total: parseFloat(item.price) * item.quantity
+                })
+              } else if (item.bar_items) {
+                this.itemDetails.push({
+                  item_name: item.bar_items.bar_name,
+                  price: item.bar_items.price,
+                  quantity: item.quantity,
+                  sub_total: parseFloat(item.price) * item.quantity
+                })
+              } else if (item.coffee_items) {
+                this.itemDetails.push({
+                  item_name: item.coffee_items.coffee_name,
+                  price: item.coffee_items.price,
+                  quantity: item.quantity,
+                  sub_total: parseFloat(item.price) * item.quantity
+                })
+              }
+              this.foodDataSource = new MatTableDataSource(this.itemDetails)
               this.foodData = null
               this.foodData = result
 
@@ -609,6 +630,7 @@ export class RoomTransactionComponent implements OnInit {
         roomId: row.room_id,
         reservationId: row.reservation_id
       }
+
       this.getFoodDetailForRoom(params)
     } else {
       this.selectedTable = true
