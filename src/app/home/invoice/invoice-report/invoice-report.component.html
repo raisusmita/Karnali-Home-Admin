@@ -11,9 +11,9 @@
     <div class="row">
       <div class="col-lg-9 col-md-9">
         <div class="customer-info" *ngFor="let invoice of invoiceData">
-          <p>Date:{{invoice.invoice.created_at| date:'fullDate'}}</p>
+          <p>Date:{{ invoice.invoice.created_at | date: 'fullDate' }}</p>
           <p *ngIf="transactionType">
-            Customer Name:{{ firstName }} {{ middleName ? middleName : "" }}
+            Customer Name:{{ firstName }} {{ middleName ? middleName : '' }}
             {{ lastName }}
           </p>
         </div>
@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div  class="main-content">
+  <div class="main-content">
     <div *ngIf="transactionType" class="roomTran">
       <p><strong>Room Charge:</strong></p>
       <table class="room-table">
@@ -77,10 +77,10 @@
         <tbody>
           <tr *ngFor="let roomFood of foodData; let i = index">
             <td>{{ i + 1 }}</td>
-            <td>{{ roomFood.food_items.food_name }}</td>
+            <td>{{ roomFood.item_name }}</td>
             <td>{{ roomFood.price }}</td>
             <td>{{ roomFood.quantity }}</td>
-            <td>{{ roomFood.total_amount }}</td>
+            <td>{{ roomFood.sub_total }}</td>
           </tr>
         </tbody>
       </table>
@@ -100,10 +100,12 @@
           <th scope="col">Discount</th>
           <td>{{ invoice.invoice.discount }}%</td>
         </tr>
-        <tr >
+        <tr>
           <th scope="col">Sub-Total</th>
           <td>{{ invoice.invoice.sub_total }}</td>
           <!-- <td>{{ transactionData.invoice.sub_total }}</td>  -->
+        </tr>
+
         <tr>
           <th scope="col">Grand Total</th>
           <th class="total-amount">
@@ -112,7 +114,6 @@
         </tr>
       </tbody>
     </table>
-
 
     <div class="cashier-detail">
       <h6>Cashier:Karnali Home</h6>
