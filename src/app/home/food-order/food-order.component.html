@@ -1,6 +1,6 @@
 <div class="container">
   <block-ui>
-    <div class="p-3 mt-3" *ngIf="!isEdit">
+    <div class="p-3 mt-3">
       <form class="example-form">
         <div class="row">
           <div class="col-sm-6">
@@ -52,13 +52,52 @@
       <div class="row mt-4">
         <!-- Add three different Div -->
         <div class="col-md-2">
-          <div class="main-food-card mb-2" (click)="selectCafeCard()">
+          <div
+            class="main-food-card mb-2"
+            [ngClass]="{ 'main-food-card-selected': isCoffeeCardSelected }"
+            (click)="selectCafeCard()"
+          >
+            <div
+              class="main-food-checked"
+              *ngIf="coffeeCardChecked['checked'] > 0"
+            >
+              <img
+                src="../../../assets/images/check_circle_outline-24px.svg"
+                alt="checked"
+              />
+            </div>
             <h4>Cafe</h4>
           </div>
-          <div class="main-food-card mb-2" (click)="selectBarCard()">
+          <div
+            class="main-food-card mb-2"
+            [ngClass]="{ 'main-food-card-selected': isBarCardSelected }"
+            (click)="selectBarCard()"
+          >
+            <div
+              class="main-food-checked"
+              *ngIf="barCardChecked['checked'] > 0"
+            >
+              <img
+                src="../../../assets/images/check_circle_outline-24px.svg"
+                alt="checked"
+              />
+            </div>
             <h4>Bar</h4>
           </div>
-          <div class="main-food-card mb-2" (click)="selectFoodCard()">
+          <div
+            class="main-food-card mb-2"
+            [ngClass]="{ 'main-food-card-selected': isFoodCardSelected }"
+            (click)="selectFoodCard()"
+          >
+            <div
+              class="main-food-checked"
+              *ngIf="foodCardChecked['checked'] > 0"
+            >
+              <img
+                src="../../../assets/images/check_circle_outline-24px.svg"
+                alt="checked"
+              />
+            </div>
             <h4>Food</h4>
           </div>
         </div>
@@ -69,6 +108,10 @@
               <div class="mb-2" *ngFor="let mainCoffeeItem of mainCoffee">
                 <div
                   class="main-food-card"
+                  [ngClass]="{
+                    'main-food-card-selected':
+                      mainCoffeeSelectedId == mainCoffeeItem.id
+                  }"
                   (click)="fetchCoffeeItem(mainCoffeeItem.id)"
                 >
                   <div
@@ -95,51 +138,48 @@
               "
             >
               <div *ngIf="coffeeList[mainCoffeeSelectedId]['coffeeItems']">
-                <mat-accordion class="example-headers-align">
+                <div
+                  class="mb-3"
+                  *ngFor="
+                    let coffeeItem of coffeeList[mainCoffeeSelectedId]
+                      .coffeeItems;
+                    let i = index
+                  "
+                >
+                  <div class="d-flex mb-3">
+                    <mat-checkbox
+                      [checked]="foodOrderList['coffee'][coffeeItem.id]"
+                      color="primary"
+                      (change)="storeCoffeeOrder($event, coffeeItem)"
+                    >
+                      {{ coffeeItem.coffee_name }}
+                    </mat-checkbox>
+                    <div class="border ml-3 p-1 w-5">
+                      <input
+                        matInput
+                        type="number"
+                        [value]="
+                          foodOrderList['coffee'][coffeeItem.id]
+                            ? foodOrderList['coffee'][coffeeItem.id]['quantity']
+                            : '1'
+                        "
+                        min="1"
+                        (change)="
+                          maintainCoffeeOrderQuantity($event, coffeeItem)
+                        "
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- <mat-accordion class="example-headers-align">
                   <mat-expansion-panel class="custom-panel">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         <h5>Test</h5>
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-
-                    <div
-                      class="mb-3"
-                      *ngFor="
-                        let coffeeItem of coffeeList[mainCoffeeSelectedId]
-                          .coffeeItems;
-                        let i = index
-                      "
-                    >
-                      <div class="d-flex mb-3">
-                        <mat-checkbox
-                          [checked]="foodOrderList['coffee'][coffeeItem.id]"
-                          color="primary"
-                          (change)="storeCoffeeOrder($event, coffeeItem)"
-                        >
-                          {{ coffeeItem.coffee_name }}
-                        </mat-checkbox>
-                        <div class="border ml-3 p-1 w-5">
-                          <input
-                            matInput
-                            type="number"
-                            [value]="
-                              foodOrderList['coffee'][coffeeItem.id]
-                                ? foodOrderList['coffee'][coffeeItem.id][
-                                    'quantity'
-                                  ]
-                                : '1'
-                            "
-                            min="1"
-                            (change)="
-                              maintainCoffeeOrderQuantity($event, coffeeItem)
-                            "
-                          />
-                        </div>
-                      </div>
-                    </div>
                   </mat-expansion-panel>
-                </mat-accordion>
+                </mat-accordion> -->
               </div>
             </div>
           </div>
@@ -149,6 +189,10 @@
               <div class="mb-2" *ngFor="let mainFoodItem of mainFood">
                 <div
                   class="main-food-card"
+                  [ngClass]="{
+                    'main-food-card-selected':
+                      mainFoodSelectedId == mainFoodItem.id
+                  }"
                   (click)="fetchSubFoodAndFoodItemsOfFood(mainFoodItem)"
                 >
                   <div
@@ -282,6 +326,10 @@
               <div class="mb-2" *ngFor="let mainBarItem of mainBar">
                 <div
                   class="main-food-card"
+                  [ngClass]="{
+                    'main-food-card-selected':
+                      mainBarSelectedId == mainBarItem.id
+                  }"
                   (click)="fetchBarItem(mainBarItem.id)"
                 >
                   <div
@@ -308,47 +356,45 @@
               "
             >
               <div *ngIf="barList[mainBarSelectedId]['barItems']">
-                <mat-accordion class="example-headers-align">
-                  <!-- (opened)="setStep(i)" -->
+                <div
+                  class="mb-3"
+                  *ngFor="
+                    let barItem of barList[mainBarSelectedId].barItems;
+                    let i = index
+                  "
+                >
+                  <div class="d-flex mb-3">
+                    <mat-checkbox
+                      [checked]="foodOrderList['bar'][barItem.id]"
+                      color="primary"
+                      (change)="storeBarOrder($event, barItem)"
+                    >
+                      {{ barItem.bar_name }}
+                    </mat-checkbox>
+                    <div class="border ml-3 p-1 w-5">
+                      <input
+                        matInput
+                        type="number"
+                        [value]="
+                          foodOrderList['bar'][barItem.id]
+                            ? foodOrderList['bar'][barItem.id]['quantity']
+                            : '1'
+                        "
+                        min="1"
+                        (change)="maintainBarOrderQuantity($event, barItem)"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- <mat-accordion class="example-headers-align">
                   <mat-expansion-panel class="custom-panel">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         <h5>Test</h5>
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-
-                    <div
-                      class="mb-3"
-                      *ngFor="
-                        let barItem of barList[mainBarSelectedId].barItems;
-                        let i = index
-                      "
-                    >
-                      <div class="d-flex mb-3">
-                        <mat-checkbox
-                          [checked]="foodOrderList['bar'][barItem.id]"
-                          color="primary"
-                          (change)="storeBarOrder($event, barItem)"
-                        >
-                          {{ barItem.bar_name }}
-                        </mat-checkbox>
-                        <div class="border ml-3 p-1 w-5">
-                          <input
-                            matInput
-                            type="number"
-                            [value]="
-                              foodOrderList['bar'][barItem.id]
-                                ? foodOrderList['bar'][barItem.id]['quantity']
-                                : '1'
-                            "
-                            min="1"
-                            (change)="maintainBarOrderQuantity($event, barItem)"
-                          />
-                        </div>
-                      </div>
-                    </div>
                   </mat-expansion-panel>
-                </mat-accordion>
+                </mat-accordion> -->
               </div>
             </div>
           </div>

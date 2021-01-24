@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { MatTableDataSource } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
 import { FoodOrderService } from '../food-order/food-order.service'
 import { ToastrService } from 'ngx-toastr'
 import {
   UserActionPermission,
   UserRoleManagementService
 } from 'src/app/shared/services/user-role-service/user-role-management.service'
+import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
 
 @Component({
   selector: 'app-food-order-detail',
@@ -18,9 +20,8 @@ export class FoodOrderDetailComponent implements OnInit {
     'food_name',
     'price',
     'quantity',
-    'total_amount'
-    // This action can be used in future
-    // "action",
+    'total_amount',
+    'action'
   ]
 
   foodOrderColumns: string[] = [
@@ -30,6 +31,8 @@ export class FoodOrderDetailComponent implements OnInit {
     'status',
     'action'
   ]
+  actualFoodOrderData: []
+
   foodItemList: MatTableDataSource<Element>[]
 
   foodOrderEdit = {}
@@ -52,7 +55,8 @@ export class FoodOrderDetailComponent implements OnInit {
     // private foodService: FoodService,
     private foodOrderService: FoodOrderService,
     private userRoleManagementService: UserRoleManagementService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -103,7 +107,10 @@ export class FoodOrderDetailComponent implements OnInit {
       (result) => {
         if (result && result.data) {
           this.totalLength = result.totalCount
-          this.foodItemList = result.data
+          this.actualFoodOrderData = JSON.parse(JSON.stringify(result.data))
+          this.foodItemList = this.formatFoodDetails(
+            JSON.parse(JSON.stringify(result.data))
+          )
         }
         this.showFoodOrderDetail()
         this.blockUI.stop()
@@ -115,38 +122,101 @@ export class FoodOrderDetailComponent implements OnInit {
   }
 
   cancelFoodOrder(orderId) {
-    this.blockUI.start('Loading...')
-    this.foodOrderService.cancelFoodOrder(orderId).subscribe(
-      (result) => {
-        if (result) {
-          this.toastr.success(result.message, 'Success!!', {
-            closeButton: true,
-            positionClass: 'toast-top-right'
-          })
-          this.foodItemList = this.foodItemList.filter(
-            (foodOrder) => foodOrder['id'] != orderId
-          )
-        }
-        this.blockUI.stop()
-      },
-      () => {
-        this.toastr.error('Error while cancelling food order', 'Error!!', {
-          closeButton: true,
-          positionClass: 'toast-top-right'
-        })
-        this.blockUI.stop()
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+      width: '50%'
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.blockUI.start('Loading...')
+        this.foodOrderService.cancelFoodOrder(orderId).subscribe(
+          (result) => {
+            if (result) {
+              this.toastr.success(result.message, 'Success!!', {
+                closeButton: true,
+                positionClass: 'toast-top-right'
+              })
+              this.foodItemList = this.foodItemList.filter(
+                (foodOrder) => foodOrder['id'] != orderId
+              )
+            }
+            this.blockUI.stop()
+          },
+          () => {
+            this.toastr.error('Error while cancelling food order', 'Error!!', {
+              closeButton: true,
+              positionClass: 'toast-top-right'
+            })
+            this.blockUI.stop()
+          }
+        )
       }
-    )
+    })
   }
 
-  editFoodOrder(orderedItems: [{}]) {
-    this.openEditFoodOrder = true
-    orderedItems.forEach((orderItem, index) => {
-      if (index == 0) {
-        this.foodOrderId = orderItem['food_order_id']
-      }
-      this.foodOrderEdit[orderItem['food_items_id']] = orderItem
+  cancelSingleFoodOrder(foodItem) {
+    let deleteFood = {}
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+      width: '50%'
     })
+
+    if (foodItem['coffee_items_id']) {
+      deleteFood['coffee'] = foodItem.id
+    } else if (foodItem['bar_items_id']) {
+      deleteFood['bar'] = foodItem.id
+    } else {
+      deleteFood['food'] = foodItem.id
+    }
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.blockUI.start('Loading...')
+        this.foodOrderService.cancelSIngleFoodOrder(deleteFood).subscribe(
+          (result) => {
+            if (result) {
+              this.toastr.success(result.message, 'Success!!', {
+                closeButton: true,
+                positionClass: 'toast-top-right'
+              })
+              // Todo: Remove item through filter could be better
+              this.getFoodOrderList()
+            }
+            this.blockUI.stop()
+          },
+          () => {
+            this.toastr.error(
+              'Error while cancelling single food order',
+              'Error!!',
+              {
+                closeButton: true,
+                positionClass: 'toast-top-right'
+              }
+            )
+            this.blockUI.stop()
+          }
+        )
+      }
+    })
+  }
+
+  editFoodOrder(orderId) {
+    this.openEditFoodOrder = true
+    this.foodOrderId = orderId
+    this.foodOrderEdit = this.actualFoodOrderData.filter(
+      (food) => food['id'] == orderId
+    )[0]
+  }
+
+  formatFoodDetails(data) {
+    const foodDetail = data
+    foodDetail.map((foodList) => {
+      foodList['food_order_lists'] = [
+        ...foodList['food_order_lists'],
+        ...foodList['bar_order_lists'],
+        ...foodList['coffee_order_lists']
+      ]
+    })
+    return foodDetail
   }
 
   hideFoodOrder(data) {
