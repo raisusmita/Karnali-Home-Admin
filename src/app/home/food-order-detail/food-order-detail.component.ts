@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { MatTableDataSource } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
 import { FoodOrderService } from '../food-order/food-order.service'
 import { ToastrService } from 'ngx-toastr'
 import {
   UserActionPermission,
   UserRoleManagementService
 } from 'src/app/shared/services/user-role-service/user-role-management.service'
+import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component'
 
 @Component({
   selector: 'app-food-order-detail',
@@ -54,7 +56,8 @@ export class FoodOrderDetailComponent implements OnInit {
     // private foodService: FoodService,
     private foodOrderService: FoodOrderService,
     private userRoleManagementService: UserRoleManagementService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -120,28 +123,36 @@ export class FoodOrderDetailComponent implements OnInit {
   }
 
   cancelFoodOrder(orderId) {
-    this.blockUI.start('Loading...')
-    this.foodOrderService.cancelFoodOrder(orderId).subscribe(
-      (result) => {
-        if (result) {
-          this.toastr.success(result.message, 'Success!!', {
-            closeButton: true,
-            positionClass: 'toast-top-right'
-          })
-          this.foodItemList = this.foodItemList.filter(
-            (foodOrder) => foodOrder['id'] != orderId
-          )
-        }
-        this.blockUI.stop()
-      },
-      () => {
-        this.toastr.error('Error while cancelling food order', 'Error!!', {
-          closeButton: true,
-          positionClass: 'toast-top-right'
-        })
-        this.blockUI.stop()
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+      width: '50%'
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.blockUI.start('Loading...')
+        this.foodOrderService.cancelFoodOrder(orderId).subscribe(
+          (result) => {
+            if (result) {
+              this.toastr.success(result.message, 'Success!!', {
+                closeButton: true,
+                positionClass: 'toast-top-right'
+              })
+              this.foodItemList = this.foodItemList.filter(
+                (foodOrder) => foodOrder['id'] != orderId
+              )
+            }
+            this.blockUI.stop()
+          },
+          () => {
+            this.toastr.error('Error while cancelling food order', 'Error!!', {
+              closeButton: true,
+              positionClass: 'toast-top-right'
+            })
+            this.blockUI.stop()
+          }
+        )
       }
-    )
+    })
   }
 
   editFoodOrder(orderId) {

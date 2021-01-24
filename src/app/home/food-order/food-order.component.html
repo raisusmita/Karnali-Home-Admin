@@ -1,6 +1,6 @@
 <div class="container">
   <block-ui>
-    <div class="p-3 mt-3" *ngIf="!isEdit">
+    <div class="p-3 mt-3">
       <form class="example-form">
         <div class="row">
           <div class="col-sm-6">
@@ -52,13 +52,52 @@
       <div class="row mt-4">
         <!-- Add three different Div -->
         <div class="col-md-2">
-          <div class="main-food-card mb-2" (click)="selectCafeCard()">
+          <div
+            class="main-food-card mb-2"
+            [ngClass]="{ 'main-food-card-selected': isCoffeeCardSelected }"
+            (click)="selectCafeCard()"
+          >
+            <div
+              class="main-food-checked"
+              *ngIf="coffeeCardChecked['checked'] > 0"
+            >
+              <img
+                src="../../../assets/images/check_circle_outline-24px.svg"
+                alt="checked"
+              />
+            </div>
             <h4>Cafe</h4>
           </div>
-          <div class="main-food-card mb-2" (click)="selectBarCard()">
+          <div
+            class="main-food-card mb-2"
+            [ngClass]="{ 'main-food-card-selected': isBarCardSelected }"
+            (click)="selectBarCard()"
+          >
+            <div
+              class="main-food-checked"
+              *ngIf="barCardChecked['checked'] > 0"
+            >
+              <img
+                src="../../../assets/images/check_circle_outline-24px.svg"
+                alt="checked"
+              />
+            </div>
             <h4>Bar</h4>
           </div>
-          <div class="main-food-card mb-2" (click)="selectFoodCard()">
+          <div
+            class="main-food-card mb-2"
+            [ngClass]="{ 'main-food-card-selected': isFoodCardSelected }"
+            (click)="selectFoodCard()"
+          >
+            <div
+              class="main-food-checked"
+              *ngIf="foodCardChecked['checked'] > 0"
+            >
+              <img
+                src="../../../assets/images/check_circle_outline-24px.svg"
+                alt="checked"
+              />
+            </div>
             <h4>Food</h4>
           </div>
         </div>
@@ -69,6 +108,10 @@
               <div class="mb-2" *ngFor="let mainCoffeeItem of mainCoffee">
                 <div
                   class="main-food-card"
+                  [ngClass]="{
+                    'main-food-card-selected':
+                      mainCoffeeSelectedId == mainCoffeeItem.id
+                  }"
                   (click)="fetchCoffeeItem(mainCoffeeItem.id)"
                 >
                   <div
@@ -146,6 +189,10 @@
               <div class="mb-2" *ngFor="let mainFoodItem of mainFood">
                 <div
                   class="main-food-card"
+                  [ngClass]="{
+                    'main-food-card-selected':
+                      mainFoodSelectedId == mainFoodItem.id
+                  }"
                   (click)="fetchSubFoodAndFoodItemsOfFood(mainFoodItem)"
                 >
                   <div
@@ -279,6 +326,10 @@
               <div class="mb-2" *ngFor="let mainBarItem of mainBar">
                 <div
                   class="main-food-card"
+                  [ngClass]="{
+                    'main-food-card-selected':
+                      mainBarSelectedId == mainBarItem.id
+                  }"
                   (click)="fetchBarItem(mainBarItem.id)"
                 >
                   <div

@@ -40,6 +40,15 @@ export class FoodOrderComponent implements OnInit {
   foodList = {}
   coffeeList = {}
   barList = {}
+  foodCardChecked = {
+    checked: 0
+  }
+  coffeeCardChecked = {
+    checked: 0
+  }
+  barCardChecked = {
+    checked: 0
+  }
 
   @Input() foodOrderList = {
     food: [],
@@ -185,7 +194,7 @@ export class FoodOrderComponent implements OnInit {
   }
 
   fetchSubFoodAndFoodItemsOfFood(mainFoodId) {
-    this.mainFoodSelectedId = mainFoodId
+    this.mainFoodSelectedId = mainFoodId.id
     if (
       !Object.keys(this.foodList).includes(this.mainFoodSelectedId.toString())
     ) {
@@ -262,6 +271,7 @@ export class FoodOrderComponent implements OnInit {
     } else {
       delete this.foodOrderList['food'][data.id]
       this.mainFoodChecked[data.main_food_category_id] -= 1
+      this.foodCardChecked['checked'] -= 1
     }
   }
 
@@ -272,6 +282,7 @@ export class FoodOrderComponent implements OnInit {
     } else {
       delete this.foodOrderList['coffee'][data.id]
       this.mainCoffeeChecked[data.main_coffee_category_id] -= 1
+      this.coffeeCardChecked['checked'] -= 1
     }
   }
 
@@ -282,6 +293,7 @@ export class FoodOrderComponent implements OnInit {
     } else {
       delete this.foodOrderList['bar'][data.id]
       this.mainBarChecked[data.main_bar_category_id] -= 1
+      this.barCardChecked['checked'] -= 1
     }
   }
 
@@ -336,6 +348,7 @@ export class FoodOrderComponent implements OnInit {
     } else {
       this.mainFoodChecked[data.main_food_category_id] = 1
     }
+    this.foodCardChecked['checked'] += 1
   }
 
   saveNewCoffeeOrder(data, quantity = 1) {
@@ -350,6 +363,7 @@ export class FoodOrderComponent implements OnInit {
     } else {
       this.mainCoffeeChecked[data.main_coffee_category_id] = 1
     }
+    this.coffeeCardChecked['checked'] += 1
   }
 
   saveNewBarOrder(data, quantity = 1) {
@@ -364,6 +378,7 @@ export class FoodOrderComponent implements OnInit {
     } else {
       this.mainBarChecked[data.main_bar_category_id] = 1
     }
+    this.barCardChecked['checked'] += 1
   }
 
   getRoomId() {
@@ -609,6 +624,7 @@ export class FoodOrderComponent implements OnInit {
         this.mainFoodChecked[element['food_items']['main_food_category_id']] = 1
       }
       foodData[element['food_items_id']] = element
+      this.foodCardChecked['checked'] += 1
     })
     data['food'] = foodData
 
@@ -630,6 +646,7 @@ export class FoodOrderComponent implements OnInit {
           element['coffee_items']['main_coffee_category_id']
         ] = 1
       }
+      this.coffeeCardChecked['checked'] += 1
       coffeeData[element['coffee_items_id']] = element
     })
     data['coffee'] = coffeeData
@@ -643,6 +660,7 @@ export class FoodOrderComponent implements OnInit {
       } else {
         this.mainBarChecked[element['bar_items']['main_bar_category_id']] = 1
       }
+      this.barCardChecked['checked'] += 1
       barData[element['bar_items_id']] = element
     })
     data['bar'] = barData

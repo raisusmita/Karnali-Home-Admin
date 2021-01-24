@@ -30,7 +30,10 @@
 }
 
 .main-food-card:hover {
-  box-shadow: 5px 8px 10px #88888890;
+  box-shadow: 10px 10px 10px #88888890;
+}
+.main-food-card-selected {
+  background-color: #73879c;
 }
 
 // Give color to header
