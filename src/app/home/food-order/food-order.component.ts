@@ -42,9 +42,9 @@ export class FoodOrderComponent implements OnInit {
   barList = {}
 
   @Input() foodOrderList = {
-    food: {},
-    coffee: {},
-    bar: {}
+    food: [],
+    coffee: [],
+    bar: []
   }
 
   step = 0
@@ -72,35 +72,88 @@ export class FoodOrderComponent implements OnInit {
     this.getTable()
     this.getRooms()
     if (this.isEdit) {
-      this.checkMainFoodOnEdit(Object.values(this.foodOrderList['food']))
-      if (Object.values(this.foodOrderList['food'])[0]['room_id']) {
-        this.actualRoomId = Object.values(this.foodOrderList['food'])[0][
-          'room_id'
-        ]
-        this.selectedRoomNo = Object.values(this.foodOrderList['food'])[0][
-          'room'
-        ]['room_number']
+      this.foodOrderList = this.formatEditFood()
+      if (this.foodOrderList['food'].length > 0) {
+        if (this.foodOrderList['food'][0]['room_id']) {
+          this.actualRoomId = Object.values(this.foodOrderList['food'])[0][
+            'room_id'
+          ]
+          this.selectedRoomNo = Object.values(this.foodOrderList['food'])[0][
+            'room'
+          ]['room_number']
+        } else {
+          this.actualTableId = Object.values(this.foodOrderList['food'])[0][
+            'table_id'
+          ]
+          this.selectedTableNo = Object.values(this.foodOrderList['food'])[0][
+            'table'
+          ]['table_number']
+        }
+      } else if (this.foodOrderList['bar'].length > 0) {
+        if (this.foodOrderList['bar'][0]['room_id']) {
+          this.actualRoomId = Object.values(this.foodOrderList['bar'])[0][
+            'room_id'
+          ]
+          this.selectedRoomNo = Object.values(this.foodOrderList['bar'])[0][
+            'room'
+          ]['room_number']
+        } else {
+          this.actualTableId = Object.values(this.foodOrderList['bar'])[0][
+            'table_id'
+          ]
+          this.selectedTableNo = Object.values(this.foodOrderList['bar'])[0][
+            'table'
+          ]['table_number']
+        }
       } else {
-        this.actualTableId = Object.values(this.foodOrderList['food'])[0][
-          'table_id'
-        ]
-        this.selectedTableNo = Object.values(this.foodOrderList['food'])[0][
-          'table'
-        ]['table_number']
+        if (this.foodOrderList['coffee'][0]['room_id']) {
+          this.actualRoomId = Object.values(this.foodOrderList['coffee'])[0][
+            'room_id'
+          ]
+          this.selectedRoomNo = Object.values(this.foodOrderList['coffee'])[0][
+            'room'
+          ]['room_number']
+        } else {
+          this.actualTableId = Object.values(this.foodOrderList['coffee'])[0][
+            'table_id'
+          ]
+          this.selectedTableNo = Object.values(this.foodOrderList['coffee'])[0][
+            'table'
+          ]['table_number']
+        }
       }
+      this.checkMainFoodOnEdit(this.foodOrderList)
     }
   }
 
   getTable() {
-    this.tableService.getTable().subscribe((result) => {
-      this.table = result.data
-    })
+    this.blockUI.start('Loading...')
+    this.tableService.getTable().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.table = result.data
+        }
+      },
+      () => {
+        this.table = []
+      }
+    )
+    this.blockUI.stop()
   }
 
   getRooms() {
-    this.roomService.getRoom().subscribe((result) => {
-      this.room = result.data
-    })
+    this.blockUI.start('Loading...')
+    this.roomService.getRoom().subscribe(
+      (result) => {
+        if (result && result.data) {
+          this.room = result.data
+        }
+      },
+      () => {
+        this.room = []
+      }
+    )
+    this.blockUI.stop()
   }
 
   getMainFood() {
@@ -431,11 +484,19 @@ export class FoodOrderComponent implements OnInit {
   }
 
   editFoodOrderList() {
-    this.maintainFoodOrder()
     if (Object.values(this.foodOrderList).length > 0) {
+      this.maintainFoodOrder()
+      this.maintainBarOrder()
+      this.maintainCoffeeOrder()
+
+      const orderList = {}
+      orderList['coffee'] = Object.values(this.foodOrderList['coffee'])
+      orderList['bar'] = Object.values(this.foodOrderList['bar'])
+      orderList['food'] = Object.values(this.foodOrderList['food'])
+
       this.blockUI.start('Loading...')
       this.foodOrderService
-        .editFoodOrder(this.foodOrderId, Object.values(this.foodOrderList))
+        .editFoodOrder(this.foodOrderId, orderList)
         .subscribe(
           (foodOrder) => {
             this.toastr.success(foodOrder.message, 'Success!!', {
@@ -444,9 +505,9 @@ export class FoodOrderComponent implements OnInit {
             })
             this.mainFoodChecked = {}
             this.foodOrderList = {
-              food: {},
-              bar: {},
-              coffee: {}
+              food: [],
+              bar: [],
+              coffee: []
             }
             this.closeFoodOrder.emit({ edit: true })
             this.blockUI.stop()
@@ -466,6 +527,18 @@ export class FoodOrderComponent implements OnInit {
         positionClass: 'toast-top-right'
       })
     }
+  }
+
+  formatEditFood() {
+    let foodOrderFormat = this.foodOrderList
+    foodOrderFormat['food'] = foodOrderFormat['food_order_lists']
+    foodOrderFormat['coffee'] = foodOrderFormat['coffee_order_lists']
+    foodOrderFormat['bar'] = foodOrderFormat['bar_order_lists']
+    delete foodOrderFormat['food_order_lists']
+    delete foodOrderFormat['coffee_order_lists']
+    delete foodOrderFormat['bar_order_lists']
+
+    return foodOrderFormat
   }
 
   storeFoodOrderList() {
@@ -490,9 +563,9 @@ export class FoodOrderComponent implements OnInit {
           this.mainCoffeeChecked = {}
           this.mainBarChecked = {}
           this.foodOrderList = {
-            coffee: {},
-            bar: {},
-            food: {}
+            coffee: [],
+            bar: [],
+            food: []
           }
           this.selectedRoomNo = ''
           this.selectedTableNo = ''
@@ -517,7 +590,12 @@ export class FoodOrderComponent implements OnInit {
 
   checkMainFoodOnEdit(data) {
     let mainFoodValue = {}
-    data.forEach((element, index) => {
+    let mainCoffeeValue = {}
+    let mainBarValue = {}
+    let foodData = {}
+    let barData = {}
+    let coffeeData = {}
+    data['food'].forEach((element, index) => {
       if (index == 0) {
         mainFoodValue['id'] = element['food_items']['main_food_category_id']
       }
@@ -530,8 +608,54 @@ export class FoodOrderComponent implements OnInit {
       } else {
         this.mainFoodChecked[element['food_items']['main_food_category_id']] = 1
       }
+      foodData[element['food_items_id']] = element
     })
-    this.getSubFoodAndFoodItems(mainFoodValue)
+    data['food'] = foodData
+
+    data['coffee'].forEach((element, index) => {
+      if (index == 0) {
+        mainCoffeeValue['id'] =
+          element['coffee_items']['main_coffee_category_id']
+      }
+      if (
+        this.mainCoffeeChecked[
+          element['coffee_items']['main_coffee_category_id']
+        ]
+      ) {
+        this.mainCoffeeChecked[
+          element['coffee_items']['main_coffee_category_id']
+        ] += 1
+      } else {
+        this.mainCoffeeChecked[
+          element['coffee_items']['main_coffee_category_id']
+        ] = 1
+      }
+      coffeeData[element['coffee_items_id']] = element
+    })
+    data['coffee'] = coffeeData
+
+    data['bar'].forEach((element, index) => {
+      if (index == 0) {
+        mainBarValue['id'] = element['bar_items']['main_bar_category_id']
+      }
+      if (this.mainBarChecked[element['bar_items']['main_bar_category_id']]) {
+        this.mainBarChecked[element['bar_items']['main_bar_category_id']] += 1
+      } else {
+        this.mainBarChecked[element['bar_items']['main_bar_category_id']] = 1
+      }
+      barData[element['bar_items_id']] = element
+    })
+    data['bar'] = barData
+
+    if (mainFoodValue['id']) {
+      this.getSubFoodAndFoodItems(mainFoodValue)
+    }
+    if (mainCoffeeValue['id']) {
+      this.fetchCoffeeItem(mainCoffeeValue)
+    }
+    if (mainBarValue['id']) {
+      this.fetchBarItem(mainBarValue)
+    }
   }
 
   selectCafeCard() {

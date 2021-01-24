@@ -95,51 +95,48 @@
               "
             >
               <div *ngIf="coffeeList[mainCoffeeSelectedId]['coffeeItems']">
-                <mat-accordion class="example-headers-align">
+                <div
+                  class="mb-3"
+                  *ngFor="
+                    let coffeeItem of coffeeList[mainCoffeeSelectedId]
+                      .coffeeItems;
+                    let i = index
+                  "
+                >
+                  <div class="d-flex mb-3">
+                    <mat-checkbox
+                      [checked]="foodOrderList['coffee'][coffeeItem.id]"
+                      color="primary"
+                      (change)="storeCoffeeOrder($event, coffeeItem)"
+                    >
+                      {{ coffeeItem.coffee_name }}
+                    </mat-checkbox>
+                    <div class="border ml-3 p-1 w-5">
+                      <input
+                        matInput
+                        type="number"
+                        [value]="
+                          foodOrderList['coffee'][coffeeItem.id]
+                            ? foodOrderList['coffee'][coffeeItem.id]['quantity']
+                            : '1'
+                        "
+                        min="1"
+                        (change)="
+                          maintainCoffeeOrderQuantity($event, coffeeItem)
+                        "
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- <mat-accordion class="example-headers-align">
                   <mat-expansion-panel class="custom-panel">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         <h5>Test</h5>
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-
-                    <div
-                      class="mb-3"
-                      *ngFor="
-                        let coffeeItem of coffeeList[mainCoffeeSelectedId]
-                          .coffeeItems;
-                        let i = index
-                      "
-                    >
-                      <div class="d-flex mb-3">
-                        <mat-checkbox
-                          [checked]="foodOrderList['coffee'][coffeeItem.id]"
-                          color="primary"
-                          (change)="storeCoffeeOrder($event, coffeeItem)"
-                        >
-                          {{ coffeeItem.coffee_name }}
-                        </mat-checkbox>
-                        <div class="border ml-3 p-1 w-5">
-                          <input
-                            matInput
-                            type="number"
-                            [value]="
-                              foodOrderList['coffee'][coffeeItem.id]
-                                ? foodOrderList['coffee'][coffeeItem.id][
-                                    'quantity'
-                                  ]
-                                : '1'
-                            "
-                            min="1"
-                            (change)="
-                              maintainCoffeeOrderQuantity($event, coffeeItem)
-                            "
-                          />
-                        </div>
-                      </div>
-                    </div>
                   </mat-expansion-panel>
-                </mat-accordion>
+                </mat-accordion> -->
               </div>
             </div>
           </div>
@@ -308,47 +305,45 @@
               "
             >
               <div *ngIf="barList[mainBarSelectedId]['barItems']">
-                <mat-accordion class="example-headers-align">
-                  <!-- (opened)="setStep(i)" -->
+                <div
+                  class="mb-3"
+                  *ngFor="
+                    let barItem of barList[mainBarSelectedId].barItems;
+                    let i = index
+                  "
+                >
+                  <div class="d-flex mb-3">
+                    <mat-checkbox
+                      [checked]="foodOrderList['bar'][barItem.id]"
+                      color="primary"
+                      (change)="storeBarOrder($event, barItem)"
+                    >
+                      {{ barItem.bar_name }}
+                    </mat-checkbox>
+                    <div class="border ml-3 p-1 w-5">
+                      <input
+                        matInput
+                        type="number"
+                        [value]="
+                          foodOrderList['bar'][barItem.id]
+                            ? foodOrderList['bar'][barItem.id]['quantity']
+                            : '1'
+                        "
+                        min="1"
+                        (change)="maintainBarOrderQuantity($event, barItem)"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- <mat-accordion class="example-headers-align">
                   <mat-expansion-panel class="custom-panel">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         <h5>Test</h5>
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-
-                    <div
-                      class="mb-3"
-                      *ngFor="
-                        let barItem of barList[mainBarSelectedId].barItems;
-                        let i = index
-                      "
-                    >
-                      <div class="d-flex mb-3">
-                        <mat-checkbox
-                          [checked]="foodOrderList['bar'][barItem.id]"
-                          color="primary"
-                          (change)="storeBarOrder($event, barItem)"
-                        >
-                          {{ barItem.bar_name }}
-                        </mat-checkbox>
-                        <div class="border ml-3 p-1 w-5">
-                          <input
-                            matInput
-                            type="number"
-                            [value]="
-                              foodOrderList['bar'][barItem.id]
-                                ? foodOrderList['bar'][barItem.id]['quantity']
-                                : '1'
-                            "
-                            min="1"
-                            (change)="maintainBarOrderQuantity($event, barItem)"
-                          />
-                        </div>
-                      </div>
-                    </div>
                   </mat-expansion-panel>
-                </mat-accordion>
+                </mat-accordion> -->
               </div>
             </div>
           </div>

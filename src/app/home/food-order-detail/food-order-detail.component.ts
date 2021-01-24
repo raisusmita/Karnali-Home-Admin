@@ -30,6 +30,8 @@ export class FoodOrderDetailComponent implements OnInit {
     'status',
     'action'
   ]
+  actualFoodOrderData: []
+
   foodItemList: MatTableDataSource<Element>[]
 
   foodOrderEdit = {}
@@ -103,7 +105,10 @@ export class FoodOrderDetailComponent implements OnInit {
       (result) => {
         if (result && result.data) {
           this.totalLength = result.totalCount
-          this.foodItemList = result.data
+          this.actualFoodOrderData = JSON.parse(JSON.stringify(result.data))
+          this.foodItemList = this.formatFoodDetails(
+            JSON.parse(JSON.stringify(result.data))
+          )
         }
         this.showFoodOrderDetail()
         this.blockUI.stop()
@@ -139,14 +144,24 @@ export class FoodOrderDetailComponent implements OnInit {
     )
   }
 
-  editFoodOrder(orderedItems: [{}]) {
+  editFoodOrder(orderId) {
     this.openEditFoodOrder = true
-    orderedItems.forEach((orderItem, index) => {
-      if (index == 0) {
-        this.foodOrderId = orderItem['food_order_id']
-      }
-      this.foodOrderEdit[orderItem['food_items_id']] = orderItem
+    this.foodOrderId = orderId
+    this.foodOrderEdit = this.actualFoodOrderData.filter(
+      (food) => food['id'] == orderId
+    )[0]
+  }
+
+  formatFoodDetails(data) {
+    const foodDetail = data
+    foodDetail.map((foodList) => {
+      foodList['food_order_lists'] = [
+        ...foodList['food_order_lists'],
+        ...foodList['bar_order_lists'],
+        ...foodList['coffee_order_lists']
+      ]
     })
+    return foodDetail
   }
 
   hideFoodOrder(data) {
