@@ -17,8 +17,3 @@ export interface MvSubFood {
   main_food_category_id: number
   sub_food_name: string
 }
-
-export interface MvFoodHeader {
-  id: number
-  food_header: string
-}
