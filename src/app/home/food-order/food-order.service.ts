@@ -26,4 +26,8 @@ export class FoodOrderService {
   cancelFoodOrder(id: any): Observable<any> {
     return this.http.delete(this.baseURL + `/${id}`)
   }
+
+  cancelSIngleFoodOrder(data: any): Observable<any> {
+    return this.http.post(environment.apiURL + 'singleFoodOrder', data)
+  }
 }

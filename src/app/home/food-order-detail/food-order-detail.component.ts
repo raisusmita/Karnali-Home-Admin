@@ -20,9 +20,8 @@ export class FoodOrderDetailComponent implements OnInit {
     'food_name',
     'price',
     'quantity',
-    'total_amount'
-    // This action can be used in future
-    // "action",
+    'total_amount',
+    'action'
   ]
 
   foodOrderColumns: string[] = [
@@ -148,6 +147,51 @@ export class FoodOrderDetailComponent implements OnInit {
               closeButton: true,
               positionClass: 'toast-top-right'
             })
+            this.blockUI.stop()
+          }
+        )
+      }
+    })
+  }
+
+  cancelSingleFoodOrder(foodItem) {
+    let deleteFood = {}
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+      width: '50%'
+    })
+
+    if (foodItem['coffee_items_id']) {
+      deleteFood['coffee'] = foodItem.id
+    } else if (foodItem['bar_items_id']) {
+      deleteFood['bar'] = foodItem.id
+    } else {
+      deleteFood['food'] = foodItem.id
+    }
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.blockUI.start('Loading...')
+        this.foodOrderService.cancelSIngleFoodOrder(deleteFood).subscribe(
+          (result) => {
+            if (result) {
+              this.toastr.success(result.message, 'Success!!', {
+                closeButton: true,
+                positionClass: 'toast-top-right'
+              })
+              // Todo: Remove item through filter could be better
+              this.getFoodOrderList()
+            }
+            this.blockUI.stop()
+          },
+          () => {
+            this.toastr.error(
+              'Error while cancelling single food order',
+              'Error!!',
+              {
+                closeButton: true,
+                positionClass: 'toast-top-right'
+              }
+            )
             this.blockUI.stop()
           }
         )

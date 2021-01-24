@@ -518,12 +518,7 @@ export class FoodOrderComponent implements OnInit {
               closeButton: true,
               positionClass: 'toast-top-right'
             })
-            this.mainFoodChecked = {}
-            this.foodOrderList = {
-              food: [],
-              bar: [],
-              coffee: []
-            }
+            this.resetAll()
             this.closeFoodOrder.emit({ edit: true })
             this.blockUI.stop()
           },
@@ -574,16 +569,7 @@ export class FoodOrderComponent implements OnInit {
             closeButton: true,
             positionClass: 'toast-top-right'
           })
-          this.mainFoodChecked = {}
-          this.mainCoffeeChecked = {}
-          this.mainBarChecked = {}
-          this.foodOrderList = {
-            coffee: [],
-            bar: [],
-            food: []
-          }
-          this.selectedRoomNo = ''
-          this.selectedTableNo = ''
+          this.resetAll()
           this.blockUI.stop()
         },
         (err) => {
@@ -703,6 +689,25 @@ export class FoodOrderComponent implements OnInit {
 
   cancelOrderEdit() {
     this.closeFoodOrder.emit({ edit: false })
+  }
+
+  resetAll() {
+    this.mainFoodChecked = {}
+    this.mainCoffeeChecked = {}
+    this.mainBarChecked = {}
+    this.foodOrderList = {
+      coffee: [],
+      bar: [],
+      food: []
+    }
+    this.foodCardChecked = { checked: 0 }
+    this.barCardChecked = { checked: 0 }
+    this.coffeeCardChecked = { checked: 0 }
+    this.isCoffeeCardSelected = false
+    this.isBarCardSelected = false
+    this.isFoodCardSelected = false
+    this.selectedRoomNo = ''
+    this.selectedTableNo = ''
   }
 
   setStep(index: number) {
