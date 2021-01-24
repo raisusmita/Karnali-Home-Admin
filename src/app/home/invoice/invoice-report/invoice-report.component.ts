@@ -22,32 +22,34 @@ export class InvoiceReportComponent implements OnInit, AfterViewInit {
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
-    this.data.currentInvoiceData.subscribe((invoiceData) => {
-      this.invoiceData = invoiceData
-    })
+    setTimeout(() => {
+      this.data.currentInvoiceData.subscribe((invoiceData) => {
+        this.invoiceData = invoiceData
+      })
 
-    this.data.currentTransactionData.subscribe((transactionData) => {
-      this.transactionData = transactionData
-    })
+      this.data.currentTransactionData.subscribe((transactionData) => {
+        this.transactionData = transactionData
+      })
 
-    this.data.currentFoodData.subscribe((foodData) => {
-      if (foodData.hasOwnProperty('message')) {
-        this.showFoodData = false
-      } else {
-        this.showFoodData = true
-        this.foodData = foodData
-      }
-    })
+      this.data.currentFoodData.subscribe((foodData) => {
+        if (foodData.hasOwnProperty('message')) {
+          this.showFoodData = false
+        } else {
+          this.showFoodData = true
+          this.foodData = foodData
+        }
+      })
 
-    this.data.currentTransactionTypeData.subscribe((transactionType) => {
-      this.transactionType = transactionType
-    })
+      this.data.currentTransactionTypeData.subscribe((transactionType) => {
+        this.transactionType = transactionType
+      })
 
-    this.data.currentCustomer.subscribe((customer) => {
-      this.customerData = customer
-      this.firstName = this.customerData.firstName
-      this.middleName = this.customerData.middleName
-      this.lastName = this.customerData.lastName
+      this.data.currentCustomer.subscribe((customer) => {
+        this.customerData = customer
+        this.firstName = this.customerData.firstName
+        this.middleName = this.customerData.middleName
+        this.lastName = this.customerData.lastName
+      })
     })
   }
 }
