@@ -1,0 +1,21 @@
+.example-card {
+  height: 100%;
+  margin: 5px;
+}
+
+.mat-card {
+  border-radius: 0;
+  .mat-list {
+    .mat-list-item {
+      h4,
+      h5,
+      h2 {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+  .mat-card-footer {
+    text-align: center;
+  }
+}

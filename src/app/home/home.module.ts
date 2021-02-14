@@ -93,6 +93,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.component'
 import { CoffeeComponent } from './coffee/coffee.component'
 import { StaffListComponent } from './staff-list/staff-list.component'
+import { CalenderTodayComponent } from './calender-today/calender-today.component'
+import { AvailableDetailComponent } from './available-detail/available-detail.component'
 
 @NgModule({
   declarations: [

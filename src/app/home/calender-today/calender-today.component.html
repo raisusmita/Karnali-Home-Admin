@@ -1,0 +1,26 @@
+<mat-card class="example-card">
+  <mat-card-content>
+    <mat-list
+      role="list"
+      class="d-flex flex-column justify-content-center-align-items-center"
+    >
+      <mat-list-item role="listitem">
+        <h4>{{ month }}</h4>
+      </mat-list-item>
+      <mat-list-item role="listitem">
+        <h2>
+          <strong>{{ day }}</strong>
+        </h2>
+      </mat-list-item>
+      <mat-list-item role="listitem">
+        <h5>{{ year }}</h5>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+
+  <mat-card-footer>
+    <h6>{{ time | date: 'hh:mm:ss a' }}</h6>
+  </mat-card-footer>
+</mat-card>
+
+<!-- class="d-flex justify-content-center-align-items-center" -->
