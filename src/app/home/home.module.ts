@@ -1,3 +1,4 @@
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonService } from './../shared/services/common-service/common.service'
 import { InvoiceDataService } from './../shared/services/invoice-data-service/invoice-data.service'
 import { RoomAvailabilityService } from './../shared/services/room-availability/room-availability.service'
@@ -90,7 +91,6 @@ import { CoffeeFormComponent } from './coffee/coffee-form/coffee-form.component'
 import { MainCoffeeFormComponent } from './coffee/main-coffee-form/main-coffee-form.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.component'
-import { FlexLayoutModule } from '@angular/flex-layout'
 import { CoffeeComponent } from './coffee/coffee.component'
 @NgModule({
   declarations: [
@@ -169,7 +169,8 @@ import { CoffeeComponent } from './coffee/coffee.component'
     MatPaginatorModule,
     MatSortModule,
     InvoiceReportModule,
-    NgbModule
+    NgbModule,
+    FlexLayoutModule
   ],
   providers: [
     UserAuthService,
