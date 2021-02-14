@@ -1,4 +1,4 @@
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout'
 import { CommonService } from './../shared/services/common-service/common.service'
 import { InvoiceDataService } from './../shared/services/invoice-data-service/invoice-data.service'
 import { RoomAvailabilityService } from './../shared/services/room-availability/room-availability.service'
@@ -92,6 +92,8 @@ import { MainCoffeeFormComponent } from './coffee/main-coffee-form/main-coffee-f
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.component'
 import { CoffeeComponent } from './coffee/coffee.component'
+import { StaffListComponent } from './staff-list/staff-list.component'
+
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -131,7 +133,10 @@ import { CoffeeComponent } from './coffee/coffee.component'
     RoomAvailabilityComponent,
     RoomAvailabilityFormComponent,
     RoomTransactionFormComponent,
-    FoodOrderDetailComponent
+    FoodOrderDetailComponent,
+    StaffListComponent,
+    CalenderTodayComponent,
+    AvailableDetailComponent
   ],
   imports: [
     BrowserModule,
