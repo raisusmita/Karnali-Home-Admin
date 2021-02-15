@@ -21,11 +21,16 @@
       <div fxFlex="30" class="available-detail">
         <app-available-detail></app-available-detail>
       </div>
-      <div
-        fxFlex="70"
-        class="overview-transaction-detail"
-        style="background-color: red"
-      ></div>
+      <div fxFlex="70" class="overview-transaction-detail" fxLayout="row">
+        <div class="revenue" fxFlex="50">
+          <app-revenue-today></app-revenue-today>
+        </div>
+        <div
+          class="revenue-chart"
+          fxFlex="50"
+          style="background-color: yellow"
+        ></div>
+      </div>
     </div>
   </div>
 </div>

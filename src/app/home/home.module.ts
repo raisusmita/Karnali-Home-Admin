@@ -94,7 +94,8 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
 import { CoffeeComponent } from './coffee/coffee.component'
 import { StaffListComponent } from './staff-list/staff-list.component'
 import { CalenderTodayComponent } from './calender-today/calender-today.component'
-import { AvailableDetailComponent } from './available-detail/available-detail.component'
+import { AvailableDetailComponent } from './available-detail/available-detail.component';
+import { RevenueTodayComponent } from './revenue-today/revenue-today.component'
 
 @NgModule({
   declarations: [
@@ -138,7 +139,8 @@ import { AvailableDetailComponent } from './available-detail/available-detail.co
     FoodOrderDetailComponent,
     StaffListComponent,
     CalenderTodayComponent,
-    AvailableDetailComponent
+    AvailableDetailComponent,
+    RevenueTodayComponent
   ],
   imports: [
     BrowserModule,
