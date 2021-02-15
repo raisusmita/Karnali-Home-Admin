@@ -32,6 +32,7 @@ import { MatTreeModule } from '@angular/material/tree'
 
 import { MatTabsModule } from '@angular/material/tabs'
 import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatButtonToggleModule } from '@angular/material/button-toggle'
 //  ---------------------------------------------------------------------
 
 import { FormsModule } from '@angular/forms'
@@ -163,6 +164,7 @@ import { CoffeeComponent } from './coffee/coffee.component'
     MatTabsModule,
     MatTooltipModule,
     MatCheckboxModule,
+    MatButtonToggleModule,
     FormsModule,
     ReactiveFormsModule,
     MatPaginatorModule,

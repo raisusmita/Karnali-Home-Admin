@@ -30,4 +30,8 @@ export class FoodOrderService {
   cancelSIngleFoodOrder(data: any): Observable<any> {
     return this.http.post(environment.apiURL + 'singleFoodOrder', data)
   }
+
+  updateOrderStatus(data: any): Observable<any> {
+    return this.http.post(environment.apiURL + 'orderStatus', data)
+  }
 }
