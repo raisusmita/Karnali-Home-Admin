@@ -97,7 +97,8 @@ import { CalenderTodayComponent } from './calender-today/calender-today.componen
 import { AvailableDetailComponent } from './available-detail/available-detail.component';
 import { RevenueTodayComponent } from './revenue-today/revenue-today.component';
 import { SideOrderOverviewComponent } from './side-order-overview/side-order-overview.component';
-import { AvailableTableComponent } from './available-table/available-table.component'
+import { AvailableTableComponent } from './available-table/available-table.component';
+import { AvailableRoomComponent } from './available-room/available-room.component'
 
 @NgModule({
   declarations: [
@@ -144,7 +145,8 @@ import { AvailableTableComponent } from './available-table/available-table.compo
     AvailableDetailComponent,
     RevenueTodayComponent,
     SideOrderOverviewComponent,
-    AvailableTableComponent
+    AvailableTableComponent,
+    AvailableRoomComponent
   ],
   imports: [
     BrowserModule,

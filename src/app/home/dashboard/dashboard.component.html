@@ -20,7 +20,13 @@
         ></app-side-order-overview>
       </div>
     </div>
-    <div fxFlex="75" class="right-section" fxLayout="column" fxLayoutGap="15px">
+    <div
+      fxFlex="75"
+      class="right-section-1"
+      *ngIf="showManagerSection || showReceptionSection"
+      fxLayout="column"
+      fxLayoutGap="15px"
+    >
       <div fxFlex="30" class="available-detail">
         <app-available-detail
           *ngIf="showManagerSection || showReceptionSection"
@@ -29,6 +35,7 @@
       <div fxFlex="70" class="overview-transaction-detail" fxLayout="row">
         <div class="revenue" fxFlex="50">
           <app-revenue-today *ngIf="showManagerSection"></app-revenue-today>
+          <app-available-room *ngIf="showReceptionSection"></app-available-room>
         </div>
         <div class="revenue-chart" fxFlex="50">
           <app-available-table
@@ -37,5 +44,13 @@
         </div>
       </div>
     </div>
+    <div
+      fxFlex="75"
+      class="right-section-2"
+      *ngIf="showWaiterSection"
+      fxLayout="column"
+      fxLayoutGap="15px"
+      style="background-color: red"
+    ></div>
   </div>
 </div>
