@@ -30,11 +30,11 @@
         <div class="revenue" fxFlex="50">
           <app-revenue-today *ngIf="showManagerSection"></app-revenue-today>
         </div>
-        <div
-          class="revenue-chart"
-          fxFlex="50"
-          style="background-color: yellow"
-        ></div>
+        <div class="revenue-chart" fxFlex="50">
+          <app-available-table
+            *ngIf="showReceptionSection"
+          ></app-available-table>
+        </div>
       </div>
     </div>
   </div>

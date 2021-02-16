@@ -21,4 +21,8 @@ export class ReportService {
   getOrderDetails(): Observable<any> {
     return this.http.get(this.baseURL + 'orderDetails')
   }
+
+  getAvailableTables(): Observable<any> {
+    return this.http.get(this.baseURL + 'availableTables')
+  }
 }

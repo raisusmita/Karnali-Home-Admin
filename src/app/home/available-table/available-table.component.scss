@@ -1,0 +1,17 @@
+.example-card {
+  height: 100%;
+  margin: 5px;
+}
+
+.mat-card {
+  border-radius: 0;
+  .mat-card-header {
+    .mat-card-title {
+      margin: 0;
+    }
+    ::ng-deep .mat-card-header-text {
+      text-align: center;
+      width: 100%;
+    }
+  }
+}

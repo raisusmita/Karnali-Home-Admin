@@ -96,7 +96,8 @@ import { StaffListComponent } from './staff-list/staff-list.component'
 import { CalenderTodayComponent } from './calender-today/calender-today.component'
 import { AvailableDetailComponent } from './available-detail/available-detail.component';
 import { RevenueTodayComponent } from './revenue-today/revenue-today.component';
-import { SideOrderOverviewComponent } from './side-order-overview/side-order-overview.component'
+import { SideOrderOverviewComponent } from './side-order-overview/side-order-overview.component';
+import { AvailableTableComponent } from './available-table/available-table.component'
 
 @NgModule({
   declarations: [
@@ -142,7 +143,8 @@ import { SideOrderOverviewComponent } from './side-order-overview/side-order-ove
     CalenderTodayComponent,
     AvailableDetailComponent,
     RevenueTodayComponent,
-    SideOrderOverviewComponent
+    SideOrderOverviewComponent,
+    AvailableTableComponent
   ],
   imports: [
     BrowserModule,
