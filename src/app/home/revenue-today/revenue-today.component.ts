@@ -25,11 +25,9 @@ export class RevenueTodayComponent implements OnInit {
           revenue_name: key,
           revenue_amount: result.data[key]
         })
+        this.totalRevenueAmount =
+          this.totalRevenueAmount + parseFloat(result.data[key])
       })
-    })
-
-    this.revenues.map((revenue) => {
-      this.totalRevenueAmount = this.totalRevenueAmount + revenue.revenue_amount
     })
   }
 }

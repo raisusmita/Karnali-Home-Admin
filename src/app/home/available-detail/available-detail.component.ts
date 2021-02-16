@@ -25,12 +25,12 @@ export class AvailableDetailComponent implements OnInit {
         } else if (key == 'totalReservation') {
           this.availableDetail.push({
             count: result.data[key],
-            count_type: 'Booking'
+            count_type: 'Reservation'
           })
         } else {
           this.availableDetail.push({
             count: result.data[key],
-            count_type: 'Reservation'
+            count_type: 'Booking'
           })
         }
       })
