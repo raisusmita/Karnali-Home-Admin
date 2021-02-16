@@ -13,4 +13,8 @@ export class ReportService {
   getAvailableRoomCount(): Observable<any> {
     return this.http.get(this.baseURL + 'availableRoomCount')
   }
+
+  getCurrentRevenue(): Observable<any> {
+    return this.http.get(this.baseURL + 'revenue')
+  }
 }
