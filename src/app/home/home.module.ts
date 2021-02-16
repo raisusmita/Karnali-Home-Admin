@@ -95,7 +95,8 @@ import { CoffeeComponent } from './coffee/coffee.component'
 import { StaffListComponent } from './staff-list/staff-list.component'
 import { CalenderTodayComponent } from './calender-today/calender-today.component'
 import { AvailableDetailComponent } from './available-detail/available-detail.component';
-import { RevenueTodayComponent } from './revenue-today/revenue-today.component'
+import { RevenueTodayComponent } from './revenue-today/revenue-today.component';
+import { SideOrderOverviewComponent } from './side-order-overview/side-order-overview.component'
 
 @NgModule({
   declarations: [
@@ -140,7 +141,8 @@ import { RevenueTodayComponent } from './revenue-today/revenue-today.component'
     StaffListComponent,
     CalenderTodayComponent,
     AvailableDetailComponent,
-    RevenueTodayComponent
+    RevenueTodayComponent,
+    SideOrderOverviewComponent
   ],
   imports: [
     BrowserModule,

@@ -17,4 +17,8 @@ export class ReportService {
   getCurrentRevenue(): Observable<any> {
     return this.http.get(this.baseURL + 'revenue')
   }
+
+  getOrderDetails(): Observable<any> {
+    return this.http.get(this.baseURL + 'orderDetails')
+  }
 }
