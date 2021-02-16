@@ -41,6 +41,16 @@ export class UserRoleManagementService {
       'room-transaction',
       'invoice'
     ],
+    reception: [
+      '',
+      'customer',
+      'booking',
+      'reservation',
+      'food-order',
+      'food-order-detail',
+      'room-transaction',
+      'invoice'
+    ],
     chef: ['', 'food-order-detail'],
     waiter: ['', 'food-order', 'food-order-detail']
   }

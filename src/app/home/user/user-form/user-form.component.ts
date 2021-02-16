@@ -19,7 +19,8 @@ export class UserFormComponent implements OnInit {
     manager: 'Manager',
     operator: 'Operator',
     chef: 'Chef',
-    waiter: 'Waiter'
+    waiter: 'Waiter',
+    reception: 'Reception'
   }
 
   @BlockUI() blockUI: NgBlockUI
