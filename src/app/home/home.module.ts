@@ -91,6 +91,7 @@ import { CoffeeFormComponent } from './coffee/coffee-form/coffee-form.component'
 import { MainCoffeeFormComponent } from './coffee/main-coffee-form/main-coffee-form.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.component'
+import { FlexLayoutModule } from '@angular/flex-layout'
 import { CoffeeComponent } from './coffee/coffee.component'
 @NgModule({
   declarations: [
