@@ -1,6 +1,6 @@
 <block-ui>
   <div class="container" *ngIf="!openEditFoodOrder">
-    <button mat-raised-button class="button-blue">
+    <button mat-raised-button class="button-blue" *ngIf="allowAddNewOrder">
       <mat-icon>add</mat-icon>
       Food Order
     </button>
