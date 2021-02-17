@@ -1,0 +1,19 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Available Rooms</mat-card-title>
+  </mat-card-header>
+  <hr />
+  <mat-card-content>
+    <div class="content">
+      <div fxLayout="row wrap" fxLayoutGap="16px grid">
+        <div fxFlex="30%" *ngFor="let room of availableRooms">
+          <mat-card class="mat-elevation-z4">
+            <mat-card-content>
+              <p>Room: {{ room.room_number }}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

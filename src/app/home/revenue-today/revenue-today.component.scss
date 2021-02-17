@@ -16,6 +16,7 @@ hr {
   .mat-card-content {
     .revenue {
       color: $green;
+      text-transform: capitalize;
     }
   }
 }

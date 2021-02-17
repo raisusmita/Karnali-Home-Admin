@@ -1,3 +1,4 @@
+import { ReportService } from './../../shared/services/report-service/report.service'
 import { Component, OnInit } from '@angular/core'
 
 @Component({
@@ -7,18 +8,37 @@ import { Component, OnInit } from '@angular/core'
 })
 export class AvailableDetailComponent implements OnInit {
   availableDetail: any[] = []
-  constructor() {}
+  constructor(private reportService: ReportService) {}
 
   ngOnInit() {
     this.initialize()
   }
 
   initialize() {
-    this.availableDetail = [
-      { count: 6, count_type: 'Available Room' },
-      { count: 10, count_type: 'Booking' },
-      { count: 7, count_type: 'Reservation' },
-      { count: 12, count_type: "Guest's Number" }
-    ]
+    this.reportService.getAvailableRoomCount().subscribe((result) => {
+      Object.keys(result.data).map((key) => {
+        if (key == 'totalAvailableRoom') {
+          this.availableDetail.push({
+            count: result.data[key],
+            count_type: 'Available Room'
+          })
+        } else if (key == 'totalReservation') {
+          this.availableDetail.push({
+            count: result.data[key],
+            count_type: 'Reservation'
+          })
+        } else if (key == 'totalBooking') {
+          this.availableDetail.push({
+            count: result.data[key],
+            count_type: 'Booking'
+          })
+        } else {
+          this.availableDetail.push({
+            count: result.data[key],
+            count_type: 'Guest'
+          })
+        }
+      })
+    })
   }
 }

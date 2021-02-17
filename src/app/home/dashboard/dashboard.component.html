@@ -14,23 +14,43 @@
         <app-calender-today></app-calender-today>
       </div>
       <div class="side-detail" fxFlex="60">
-        <app-staff-list></app-staff-list>
+        <app-staff-list *ngIf="showManagerSection"></app-staff-list>
+        <app-side-order-overview
+          *ngIf="showReceptionSection || showWaiterSection"
+        ></app-side-order-overview>
       </div>
     </div>
-    <div fxFlex="75" class="right-section" fxLayout="column" fxLayoutGap="15px">
+    <div
+      fxFlex="75"
+      class="right-section-1"
+      *ngIf="showManagerSection || showReceptionSection"
+      fxLayout="column"
+      fxLayoutGap="15px"
+    >
       <div fxFlex="30" class="available-detail">
-        <app-available-detail></app-available-detail>
+        <app-available-detail
+          *ngIf="showManagerSection || showReceptionSection"
+        ></app-available-detail>
       </div>
       <div fxFlex="70" class="overview-transaction-detail" fxLayout="row">
         <div class="revenue" fxFlex="50">
-          <app-revenue-today></app-revenue-today>
+          <app-revenue-today *ngIf="showManagerSection"></app-revenue-today>
+          <app-available-room *ngIf="showReceptionSection"></app-available-room>
         </div>
-        <div
-          class="revenue-chart"
-          fxFlex="50"
-          style="background-color: yellow"
-        ></div>
+        <div class="revenue-chart" fxFlex="50">
+          <app-available-table
+            *ngIf="showReceptionSection"
+          ></app-available-table>
+        </div>
       </div>
     </div>
+    <div
+      fxFlex="75"
+      class="right-section-2"
+      *ngIf="showWaiterSection"
+      fxLayout="column"
+      fxLayoutGap="15px"
+      style="background-color: red"
+    ></div>
   </div>
 </div>
