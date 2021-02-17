@@ -1,0 +1,28 @@
+$green: green;
+$orange: orange;
+
+.example-card {
+  height: 100%;
+  margin: 5px;
+}
+
+hr {
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.mat-card {
+  border-radius: 0;
+  .mat-card-content {
+    .revenue {
+      color: $green;
+    }
+  }
+}
+
+.grand-total {
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
+  color: $orange;
+}

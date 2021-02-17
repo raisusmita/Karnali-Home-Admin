@@ -1,0 +1,37 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Revenue Today</mat-card-title>
+  </mat-card-header>
+  <hr />
+
+  <mat-card-content>
+    <!-- <mat-list role="list" *ngFor="let revenue of revenues; let i = index">
+      <mat-list-item role="listitem"
+        ><h5 class="revenue">
+          {{ revenue.revenue_name }} &emsp; &emsp;&emsp;&emsp; :
+        </h5>
+      </mat-list-item>
+    </mat-list> -->
+
+    <table class="table table-borderless">
+      <tbody>
+        <tr *ngFor="let revenue of revenues; let i = index">
+          <td>
+            <h5 class="revenue">{{ revenue.revenue_name }}</h5>
+          </td>
+          <td><h5 class="revenue">:</h5></td>
+          <td>
+            <h6>Rs, {{ revenue.revenue_amount }}</h6>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <strong>
+          <p class="grand-total">
+            Grand Total: Rs, {{ totalRevenueAmount }}
+          </p></strong
+        >
+      </tfoot>
+    </table>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,13 @@
+<div class="main-section" fxLayout="row" fxLayoutGap="25px">
+  <div class="count-section" fxFlex *ngFor="let available of availableDetail">
+    <mat-card class="example-card">
+      <mat-card-content>
+        <p class="count">{{ available.count }}</p>
+      </mat-card-content>
+      <mat-card-footer>
+        <hr />
+        <h5>{{ available.count_type }}</h5></mat-card-footer
+      >
+    </mat-card>
+  </div>
+</div>

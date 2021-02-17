@@ -1,1 +1,36 @@
-<h2 class="text-center pt-3">Welcome to Karnali Home!</h2>
+<div class="main-div">
+  <div class="top-section">
+    <h3>Karnali Home</h3>
+    <h4>Restaurant and Bar</h4>
+  </div>
+  <div fxLayout="row" class="main-content">
+    <div
+      fxFlex="25"
+      class="left-section mx-2"
+      fxLayout="column"
+      fxLayoutGap="7px"
+    >
+      <div class="calender" fxFlex="40">
+        <app-calender-today></app-calender-today>
+      </div>
+      <div class="side-detail" fxFlex="60">
+        <app-staff-list></app-staff-list>
+      </div>
+    </div>
+    <div fxFlex="75" class="right-section" fxLayout="column" fxLayoutGap="15px">
+      <div fxFlex="30" class="available-detail">
+        <app-available-detail></app-available-detail>
+      </div>
+      <div fxFlex="70" class="overview-transaction-detail" fxLayout="row">
+        <div class="revenue" fxFlex="50">
+          <app-revenue-today></app-revenue-today>
+        </div>
+        <div
+          class="revenue-chart"
+          fxFlex="50"
+          style="background-color: yellow"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>

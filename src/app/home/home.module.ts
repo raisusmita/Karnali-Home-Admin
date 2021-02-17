@@ -1,3 +1,4 @@
+import { FlexLayoutModule } from '@angular/flex-layout'
 import { CommonService } from './../shared/services/common-service/common.service'
 import { InvoiceDataService } from './../shared/services/invoice-data-service/invoice-data.service'
 import { RoomAvailabilityService } from './../shared/services/room-availability/room-availability.service'
@@ -91,8 +92,12 @@ import { CoffeeFormComponent } from './coffee/coffee-form/coffee-form.component'
 import { MainCoffeeFormComponent } from './coffee/main-coffee-form/main-coffee-form.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.component'
-import { FlexLayoutModule } from '@angular/flex-layout'
 import { CoffeeComponent } from './coffee/coffee.component'
+import { StaffListComponent } from './staff-list/staff-list.component'
+import { CalenderTodayComponent } from './calender-today/calender-today.component'
+import { AvailableDetailComponent } from './available-detail/available-detail.component';
+import { RevenueTodayComponent } from './revenue-today/revenue-today.component'
+
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -132,7 +137,11 @@ import { CoffeeComponent } from './coffee/coffee.component'
     RoomAvailabilityComponent,
     RoomAvailabilityFormComponent,
     RoomTransactionFormComponent,
-    FoodOrderDetailComponent
+    FoodOrderDetailComponent,
+    StaffListComponent,
+    CalenderTodayComponent,
+    AvailableDetailComponent,
+    RevenueTodayComponent
   ],
   imports: [
     BrowserModule,
@@ -171,7 +180,8 @@ import { CoffeeComponent } from './coffee/coffee.component'
     MatPaginatorModule,
     MatSortModule,
     InvoiceReportModule,
-    NgbModule
+    NgbModule,
+    FlexLayoutModule
   ],
   providers: [
     UserAuthService,
