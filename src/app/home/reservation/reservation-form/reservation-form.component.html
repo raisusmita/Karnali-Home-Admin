@@ -13,7 +13,7 @@
         <mat-option *ngFor="let customer of customers" [value]="customer.id">
           {{ customer.first_name }}
           {{ customer.middle_name }}
-          {{ customer.last_name + "  ( " + customer.phone + " )" }}
+          {{ customer.last_name + '  ( ' + customer.phone + ' )' }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -33,9 +33,9 @@
             >
               {{
                 roomCategory.room_category +
-                  " ( " +
+                  ' ( ' +
                   roomCategory.room_type +
-                  " ) "
+                  ' ) '
               }}
             </mat-option>
           </mat-select>
@@ -107,6 +107,33 @@
           <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
       </div>
+
+      <div class="col-md-6">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Number of Adult</mat-label>
+          <input
+            type="number"
+            matInput
+            name="number_of_adult"
+            placeholder="Number of Adult"
+            [(ngModel)]="reservation.number_of_adult"
+            required
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Number of Child</mat-label>
+          <input
+            type="number"
+            matInput
+            name="number_of_child"
+            placeholder="Number of Child"
+            [(ngModel)]="reservation.number_of_child"
+            required
+          />
+        </mat-form-field>
+      </div>
     </section>
 
     <div *ngFor="let room of availableRoom; let i = index">
@@ -117,10 +144,10 @@
         >
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Room No: {{ " " + room.room_number }}
+              Room No: {{ ' ' + room.room_number }}
             </mat-panel-title>
             <mat-panel-description>
-              Room Category: {{ " " + room.room_category.room_category + " " }}
+              Room Category: {{ ' ' + room.room_category.room_category + ' ' }}
               <div
                 *ngIf="
                   reservationDates[i].check_in_date.getDate != undefined &&
@@ -171,119 +198,38 @@
                 <mat-datepicker #i_picker></mat-datepicker>
               </mat-form-field>
             </div>
+
+            <div class="col-md-6">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Number of Adult</mat-label>
+                <input
+                  type="number"
+                  matInput
+                  name="number_of_adult"
+                  placeholder="Number of Adult"
+                  [(ngModel)]="reservation.number_of_adult"
+                  required
+                />
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Number of Child</mat-label>
+                <input
+                  type="number"
+                  matInput
+                  name="number_of_child"
+                  placeholder="Number of Child"
+                  [(ngModel)]="reservation.number_of_child"
+                  required
+                />
+              </mat-form-field>
+            </div>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
 
-    <!-- <div *ngFor="let room of roomsByBooking; let i = index">
-      <mat-accordion>
-        <mat-expansion-panel
-          (opened)="panelOpenState = true"
-          (closed)="panelOpenState = false"
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Room No: {{ " " + room.room.room_number }}
-            </mat-panel-title>
-            <mat-panel-description>
-              {{ room.room.room_category.room_category }}
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>CheckIn Date {{ i }}</mat-label>
-            <input
-              matInput
-              [matDatepicker]="picker_i"
-              name="reservationDates[{{ i + 1 }}].check_in_date"
-              required
-              [(ngModel)]="reservationDates[i].check_in_date"
-              (ngModelChange)="getCheckInDate($event)"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="picker_i"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #picker_i></mat-datepicker>
-          </mat-form-field>
-  
-          <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>CheckOut Date</mat-label>
-            <input
-              matInput
-              [matDatepicker]="i_picker"
-              name="reservationDates[{{ i + 1 }}].check_out_date"
-              required
-              [(ngModel)]="reservationDates[i].check_out_date"
-              (ngModelChange)="getCheckOutDate($event)"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="i_picker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #i_picker></mat-datepicker>
-          </mat-form-field>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div> -->
-
-    <!-- <mat-form-field class="example-full-width" appearance="outline">
-      <mat-label>Room Number</mat-label>
-  
-      <mat-select
-        name="room_id"
-        [(ngModel)]="reservation.room_id"
-        (ngModelChange)="getRoomNumber($event)"
-      >
-        <div *ngIf="byAvailable">
-          <mat-option *ngFor="let room of availableRoom" [value]="room.id">
-            {{ room.room_number }}
-          </mat-option>
-        </div>
-        <div *ngIf="byBooking">
-          <mat-option *ngFor="let room of roomsByBooking" [value]="room.room.id">
-            {{ room.room.room_number }}
-          </mat-option>
-        </div>
-      </mat-select>
-    </mat-form-field>
-  
-    <mat-form-field class="example-full-width" appearance="outline">
-      <mat-label>CheckIn Date</mat-label>
-      <input
-        matInput
-        [matDatepicker]="picker1"
-        name="check_in_date"
-        required
-        [(ngModel)]="reservation.check_in_date"
-        (ngModelChange)="getCheckInDate($event)"
-      />
-      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-      <mat-datepicker #picker1></mat-datepicker>
-    </mat-form-field>
-  
-    <mat-form-field class="example-full-width" appearance="outline">
-      <mat-label>CheckOut Date</mat-label>
-      <input
-        matInput
-        [matDatepicker]="picker2"
-        name="check_out_date"
-        required
-        [(ngModel)]="reservation.check_out_date"
-        (ngModelChange)="getCheckOutDate($event)"
-      />
-      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-      <mat-datepicker #picker2></mat-datepicker>
-    </mat-form-field> -->
-
-    <!-- <button
-  [disabled]="!formReservation.valid || disableButton == true"
-  mat-raised-button
-  type="submit"
-  color="primary"
-  >
-  CREATE
-  </button> -->
     <button
       [disabled]="disableButton == true"
       mat-raised-button

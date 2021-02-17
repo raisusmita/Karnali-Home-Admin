@@ -440,6 +440,8 @@ export class ReservationFormComponent implements OnInit {
             customer_id: this.reservation.customer_id,
             check_in_date: new Date(this.selectedCheckInDate),
             check_out_date: new Date(this.selectedCheckOutDate),
+            number_of_adult: this.reservation.number_of_adult,
+            number_of_child: this.reservation.number_of_child,
             room_id: data.room_id
           })
         }
