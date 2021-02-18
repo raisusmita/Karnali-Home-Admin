@@ -10,6 +10,8 @@ export class DashboardComponent implements OnInit {
   showWaiterSection: boolean
   showReceptionSection: boolean
 
+  dashboard: string = 'dashboard'
+
   constructor() {}
 
   ngOnInit() {

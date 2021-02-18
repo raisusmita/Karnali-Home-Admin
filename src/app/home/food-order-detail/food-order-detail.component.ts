@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { MatTableDataSource } from '@angular/material'
 import { MatDialog } from '@angular/material/dialog'
@@ -50,7 +50,11 @@ export class FoodOrderDetailComponent implements OnInit {
   limit: number
   skip: number
 
+  allowAddNewOrder: boolean = true
+
   ActionPermissions: UserActionPermission = {} as UserActionPermission
+
+  @Input() callFrom: string
 
   constructor(
     // private foodService: FoodService,
@@ -66,8 +70,15 @@ export class FoodOrderDetailComponent implements OnInit {
     this.totalLength = 0
     this.skip = 0
     this.limit = this.pageSize
+    this.getNavigation()
     this.getFoodOrderList()
     this.manageUserPermission()
+  }
+
+  getNavigation() {
+    if (this.callFrom == 'dashboard') {
+      this.allowAddNewOrder = false
+    }
   }
 
   manageUserPermission() {

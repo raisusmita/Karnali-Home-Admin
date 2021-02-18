@@ -51,7 +51,8 @@
       *ngIf="showWaiterSection"
       fxLayout="column"
       fxLayoutGap="15px"
-      style="background-color: red"
-    ></div>
+    >
+      <app-food-order-detail [callFrom]="dashboard"></app-food-order-detail>
+    </div>
   </div>
 </div>
