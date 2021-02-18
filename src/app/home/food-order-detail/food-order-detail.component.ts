@@ -21,6 +21,7 @@ export class FoodOrderDetailComponent implements OnInit {
     'price',
     'quantity',
     'total_amount',
+    'food_status',
     'action'
   ]
 
@@ -241,5 +242,36 @@ export class FoodOrderDetailComponent implements OnInit {
   showFoodOrderDetail() {
     this.openEditFoodOrder = false
     this.foodOrderEdit = {}
+  }
+
+  updateOrderStatus(orderStatusValue, orderItemData) {
+    let payload = {}
+    if (orderItemData['coffee_items_id']) {
+      payload['coffee'] = orderItemData.id
+    } else if (orderItemData['food_items_id']) {
+      payload['food'] = orderItemData.id
+    } else {
+      payload['bar'] = orderItemData.id
+    }
+    payload['order_status'] = orderStatusValue
+
+    this.foodOrderService.updateOrderStatus(payload).subscribe(
+      (result) => {
+        if (result) {
+          this.toastr.success(result.message, 'Success!!', {
+            closeButton: true,
+            positionClass: 'toast-top-right'
+          })
+        }
+        this.blockUI.stop()
+      },
+      () => {
+        this.toastr.error('Error while updating order status', 'Error!!', {
+          closeButton: true,
+          positionClass: 'toast-top-right'
+        })
+        this.blockUI.stop()
+      }
+    )
   }
 }

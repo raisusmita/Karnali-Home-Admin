@@ -33,6 +33,7 @@ import { MatTreeModule } from '@angular/material/tree'
 
 import { MatTabsModule } from '@angular/material/tabs'
 import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatButtonToggleModule } from '@angular/material/button-toggle'
 //  ---------------------------------------------------------------------
 
 import { FormsModule } from '@angular/forms'
@@ -94,11 +95,13 @@ import { FoodOrderDetailComponent } from './food-order-detail/food-order-detail.
 import { CoffeeComponent } from './coffee/coffee.component'
 import { StaffListComponent } from './staff-list/staff-list.component'
 import { CalenderTodayComponent } from './calender-today/calender-today.component'
-import { AvailableDetailComponent } from './available-detail/available-detail.component';
-import { RevenueTodayComponent } from './revenue-today/revenue-today.component';
-import { SideOrderOverviewComponent } from './side-order-overview/side-order-overview.component';
-import { AvailableTableComponent } from './available-table/available-table.component';
+import { AvailableDetailComponent } from './available-detail/available-detail.component'
+import { RevenueTodayComponent } from './revenue-today/revenue-today.component'
+import { SideOrderOverviewComponent } from './side-order-overview/side-order-overview.component'
+import { AvailableTableComponent } from './available-table/available-table.component'
 import { AvailableRoomComponent } from './available-room/available-room.component'
+import { ChartsModule } from 'ng2-charts'
+import { RevenueGraphComponent } from '../shared/components/revenue-graph/revenue-graph.component'
 
 @NgModule({
   declarations: [
@@ -146,7 +149,8 @@ import { AvailableRoomComponent } from './available-room/available-room.componen
     RevenueTodayComponent,
     SideOrderOverviewComponent,
     AvailableTableComponent,
-    AvailableRoomComponent
+    AvailableRoomComponent,
+    RevenueGraphComponent
   ],
   imports: [
     BrowserModule,
@@ -179,13 +183,15 @@ import { AvailableRoomComponent } from './available-room/available-room.componen
     MatTabsModule,
     MatTooltipModule,
     MatCheckboxModule,
+    MatButtonToggleModule,
     FormsModule,
     ReactiveFormsModule,
     MatPaginatorModule,
     MatSortModule,
     InvoiceReportModule,
     NgbModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ChartsModule
   ],
   providers: [
     UserAuthService,
