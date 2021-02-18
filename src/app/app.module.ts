@@ -14,10 +14,12 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http'
 import { TokenInterceptor } from './shared/token.interceptor'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { environment } from '../environments/environment'
+import { ChartsModule, ThemeService } from 'ng2-charts'
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    ChartsModule,
     BrowserModule,
     AppRoutingModule,
     RouterModule,
@@ -30,6 +32,7 @@ import { environment } from '../environments/environment'
   ],
   providers: [
     UserAuthService,
+    ThemeService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
