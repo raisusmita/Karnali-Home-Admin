@@ -477,7 +477,9 @@ export class ReservationFormComponent implements OnInit {
         reservation_id: this.reservation.id,
         check_in_date: new Date(this.selectedCheckInDate),
         check_out_date: new Date(this.selectedCheckOutDate),
-        room_id: this.reservation.room_id
+        room_id: this.reservation.room_id,
+        number_of_adult: this.reservation.number_of_adult,
+        number_of_child: this.reservation.number_of_child
       })
 
       // Remaining are rows for roomAvailabilities

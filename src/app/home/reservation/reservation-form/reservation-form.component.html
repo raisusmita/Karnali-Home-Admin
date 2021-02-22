@@ -117,7 +117,6 @@
             name="number_of_adult"
             placeholder="Number of Adult"
             [(ngModel)]="reservation.number_of_adult"
-            required
           />
         </mat-form-field>
       </div>
@@ -130,7 +129,6 @@
             name="number_of_child"
             placeholder="Number of Child"
             [(ngModel)]="reservation.number_of_child"
-            required
           />
         </mat-form-field>
       </div>
@@ -160,32 +158,71 @@
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
-
-            <div class="col-md-6">
-              <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Number of Adult</mat-label>
-                <input
-                  type="number"
-                  matInput
-                  name="reservationDates[{{ i + 1 }}].number_of_adult"
-                  placeholder="Number of Adult"
-                  [(ngModel)]="reservationDates[i].number_of_adult"
-                  required
-                />
-              </mat-form-field>
+            <div class="row">
+              <div class="col-lg-6">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>CheckIn Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker_i"
+                    name="reservationDates[{{ i + 1 }}].check_in_date"
+                    [(ngModel)]="reservationDates[i].check_in_date"
+                    (ngModelChange)="
+                      getCheckInDate($event, room.id, room.room_number, i)
+                    "
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker_i"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #picker_i></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-6">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>CheckOut Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="i_picker"
+                    name="reservationDates[{{ i + 1 }}].check_out_date"
+                    [(ngModel)]="reservationDates[i].check_out_date"
+                    (ngModelChange)="
+                      getCheckOutDate($event, room.id, room.room_number, i)
+                    "
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="i_picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #i_picker></mat-datepicker>
+                </mat-form-field>
+              </div>
             </div>
-            <div class="col-md-6">
-              <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Number of Child</mat-label>
-                <input
-                  type="number"
-                  matInput
-                  name="reservationDates[{{ i + 1 }}].number_of_child"
-                  placeholder="Number of Child"
-                  [(ngModel)]="reservationDates[i].number_of_child"
-                  required
-                />
-              </mat-form-field>
+            <div class="row">
+              <div class="col-lg-6">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Number of Adult</mat-label>
+                  <input
+                    type="number"
+                    matInput
+                    name="reservationDates[{{ i + 1 }}].number_of_adult"
+                    placeholder="Number of Adult"
+                    [(ngModel)]="reservationDates[i].number_of_adult"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-lg-6">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Number of Child</mat-label>
+                  <input
+                    type="number"
+                    matInput
+                    name="reservationDates[{{ i + 1 }}].number_of_child"
+                    placeholder="Number of Child"
+                    [(ngModel)]="reservationDates[i].number_of_child"
+                  />
+                </mat-form-field>
+              </div>
             </div>
           </mat-expansion-panel>
         </mat-accordion>

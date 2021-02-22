@@ -1,7 +1,6 @@
 import { ToastrService } from 'ngx-toastr'
 import { RoomTransactionService } from './../room-transaction.service'
 import { MvRoomTransaction } from './../room-transaction.model'
-import { TableService } from './../../table/table.service'
 import { RoomAvailabilityService } from 'src/app/shared/services/room-availability/room-availability.service'
 import { Component, OnInit, Inject } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
@@ -66,7 +65,6 @@ export class RoomTransactionFormComponent implements OnInit {
 
   constructor(
     private customerService: CustomerService,
-    private tableService: TableService,
     private toastr: ToastrService,
     private roomAvailabilityService: RoomAvailabilityService,
     private roomTransactionService: RoomTransactionService,
@@ -79,7 +77,6 @@ export class RoomTransactionFormComponent implements OnInit {
     if (this.data.formType == 'Add') {
       this.addForm = true
       this.getCustomers()
-      this.getTables()
     } else {
       this.editForm = true
       this.roomTransaction = this.data.gridData
@@ -110,23 +107,6 @@ export class RoomTransactionFormComponent implements OnInit {
     this.customerService.getCustomer().subscribe((result) => {
       this.customers = result.data
     })
-  }
-
-  getTables() {
-    this.blockUI.start('Loading...')
-    this.tableService.getTable().subscribe(
-      (result) => {
-        if (result && result.data) {
-          this.tables = result.data
-        } else {
-          this.blockUI.stop()
-        }
-        this.blockUI.stop()
-      },
-      (error) => {
-        this.blockUI.stop()
-      }
-    )
   }
 
   onCustomerSelect(customerId: any) {
