@@ -1,4 +1,4 @@
-<div class="main-div">
+<div class="container-fluid main-div">
   <div class="top-section">
     <h3>Karnali Home</h3>
     <h4>Restaurant and Bar</h4>
@@ -38,6 +38,7 @@
           <app-available-room *ngIf="showReceptionSection"></app-available-room>
         </div>
         <div class="revenue-chart" fxFlex="50">
+          <app-revenue-graph *ngIf="showManagerSection"></app-revenue-graph>
           <app-available-table
             *ngIf="showReceptionSection"
           ></app-available-table>
@@ -50,7 +51,8 @@
       *ngIf="showWaiterSection"
       fxLayout="column"
       fxLayoutGap="15px"
-      style="background-color: red"
-    ></div>
+    >
+      <app-food-order-detail [callFrom]="dashboard"></app-food-order-detail>
+    </div>
   </div>
 </div>
