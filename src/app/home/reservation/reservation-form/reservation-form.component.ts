@@ -40,7 +40,7 @@ export class ReservationFormComponent implements OnInit {
   roomNumber: number
 
   available: any[] = []
-  disableButton: boolean
+  disableButton: boolean = false
   roomsByBooking: any[] = []
   availableRoom: any[] = []
   byAvailable: boolean
@@ -100,14 +100,17 @@ export class ReservationFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.disableButton = true
-
+    if (this.data.formType == 'Add') {
+      this.disableButton = true
+    }
     this.getReservations()
     if (this.data.formType == 'Add') {
       this.addForm = true
     } else {
       this.editForm = true
-      this.disableButton = false
+      if (this.data.formType == 'Add') {
+        this.disableButton = false
+      }
       this.reservation.room_category_id = this.data.gridData.room_category_id
       this.selectedRoom = this.data.gridData.room_id
     }
@@ -259,16 +262,18 @@ export class ReservationFormComponent implements OnInit {
         // For direct reservation show all the available rooms
         this.getAvailableRoom()
         this.byAvailable = true
-        this.disableButton = true
+        if (this.data.formType == 'Add') {
+          this.disableButton = true
+        }
         this.byBooking = false
-        this.reservation.check_in_date = null
-        this.reservation.check_out_date = null
       } else {
         // For booked room
         this.bookingId = bookingCustomer[0].id
         this.byAvailable = false
         this.byBooking = true
-        this.disableButton = false
+        if (this.data.formType == 'Add') {
+          this.disableButton = false
+        }
       }
     } else {
       // For direct reservation show all the available rooms
@@ -276,8 +281,6 @@ export class ReservationFormComponent implements OnInit {
       this.byAvailable = true
       this.disableButton = true
       this.byBooking = false
-      this.reservation.check_in_date = null
-      this.reservation.check_out_date = null
     }
   }
 
@@ -290,7 +293,6 @@ export class ReservationFormComponent implements OnInit {
       this.selectedRoomId = $roomId
       this.reservationDates[$index].isSelect = true
       this.reservationDates[$index].check_in_date = new Date($checkInDate)
-
       this.paramsDate = {
         check_in_date: this.checkInDate,
         check_out_date: this.checkOutDate,
@@ -308,13 +310,11 @@ export class ReservationFormComponent implements OnInit {
       this.checkOutDate = $checkOutDate
       this.reservationDates[$index].isSelect = true
       this.reservationDates[$index].check_out_date = new Date($checkOutDate)
-
       this.paramsDate = {
         check_in_date: this.checkInDate,
         check_out_date: this.checkOutDate,
         room_number: $roomNumber
       }
-
       this.getRoomAvailabilityByDate(this.paramsDate)
     }
   }
@@ -338,7 +338,9 @@ export class ReservationFormComponent implements OnInit {
 
   checkRoomCategory() {
     if (!this.available.includes(true)) {
-      this.disableButton = true
+      if (this.data.formType == 'Add') {
+        this.disableButton = true
+      }
       this.toastr.error('The room category is not available!', 'Warning!', {
         closeButton: true,
         positionClass: 'toast-top-right'
@@ -347,7 +349,9 @@ export class ReservationFormComponent implements OnInit {
   }
 
   checkCILessThanCO() {
-    this.disableButton = true
+    if (this.data.formType == 'Add') {
+      this.disableButton = true
+    }
     this.toastr.error(
       'Checkin date should not be greater than checkout date',
       'Warning!',
@@ -359,7 +363,9 @@ export class ReservationFormComponent implements OnInit {
   }
 
   checkCICOWithToday() {
-    this.disableButton = true
+    if (this.data.formType == 'Add') {
+      this.disableButton = true
+    }
     this.toastr.error('Booking cannot be made for past dates.', 'Warning!', {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -381,7 +387,9 @@ export class ReservationFormComponent implements OnInit {
     if (dates.check_in_date == undefined && this.data.formType == 'Edit') {
     }
     if (dates.check_in_date != null && dates.check_out_date != null) {
-      this.disableButton = false
+      if (this.data.formType == 'Add') {
+        this.disableButton = false
+      }
       if (!this.byBooking) {
         if (dates.room_number != null) {
           this.roomAvailableService
@@ -415,43 +423,43 @@ export class ReservationFormComponent implements OnInit {
     } else {
       this.reservationParams.push({ byBooking: false })
     }
-    this.reservationDates.map((data) => {
-      if (data.isSelect == true) {
-        let offsetCIn = data.check_in_date.getTimezoneOffset() * 60000
-        let offsetCOut = data.check_out_date.getTimezoneOffset() * 60000
+    if (this.data.formType == 'Add') {
+      this.reservationDates.map((data) => {
+        if (data.isSelect == true) {
+          let offsetCIn = data.check_in_date.getTimezoneOffset() * 60000
+          let offsetCOut = data.check_out_date.getTimezoneOffset() * 60000
 
-        this.selectedCheckInDate = new Date(
-          data.check_in_date.getTime() - offsetCIn
-        )
-        this.selectedCheckOutDate = new Date(
-          data.check_out_date.getTime() - offsetCOut
-        )
+          this.selectedCheckInDate = new Date(
+            data.check_in_date.getTime() - offsetCIn
+          )
+          this.selectedCheckOutDate = new Date(
+            data.check_out_date.getTime() - offsetCOut
+          )
 
-        if (this.roomsByBooking.length > 0) {
-          this.reservationParams.push({
-            customer_id: this.reservation.customer_id,
-            check_in_date: new Date(this.selectedCheckInDate),
-            check_out_date: new Date(this.selectedCheckOutDate),
-            room_id: data.room_id,
-            booking_id: this.roomsByBooking[0].booking_id,
-            number_of_child: data.number_of_child,
-            number_of_adult: data.number_of_adult
-          })
-        } else {
-          this.reservationParams.push({
-            customer_id: this.reservation.customer_id,
-            check_in_date: new Date(this.selectedCheckInDate),
-            check_out_date: new Date(this.selectedCheckOutDate),
-            number_of_adult: data.number_of_adult,
-            number_of_child: data.number_of_child,
-            room_id: data.room_id
-          })
+          if (this.roomsByBooking.length > 0) {
+            this.reservationParams.push({
+              customer_id: this.reservation.customer_id,
+              check_in_date: new Date(this.selectedCheckInDate),
+              check_out_date: new Date(this.selectedCheckOutDate),
+              room_id: data.room_id,
+              booking_id: this.roomsByBooking[0].booking_id,
+              number_of_child: data.number_of_child,
+              number_of_adult: data.number_of_adult
+            })
+          } else {
+            this.reservationParams.push({
+              customer_id: this.reservation.customer_id,
+              check_in_date: new Date(this.selectedCheckInDate),
+              check_out_date: new Date(this.selectedCheckOutDate),
+              number_of_adult: data.number_of_adult,
+              number_of_child: data.number_of_child,
+              room_id: data.room_id
+            })
+          }
         }
-      }
-    })
-
+      })
+    }
     this.reservation.status = 'active'
-
     if (this.editForm) {
       let offsetCIn = this.reservation.check_in_date.getTimezoneOffset() * 60000
       let offsetCOut =
