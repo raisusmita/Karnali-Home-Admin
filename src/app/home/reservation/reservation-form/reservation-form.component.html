@@ -205,9 +205,9 @@
                 <input
                   type="number"
                   matInput
-                  name="number_of_adult"
+                  name="reservationDates[{{ i + 1 }}].number_of_adult"
                   placeholder="Number of Adult"
-                  [(ngModel)]="reservation.number_of_adult"
+                  [(ngModel)]="reservationDates[i].number_of_adult"
                   required
                 />
               </mat-form-field>
@@ -218,9 +218,9 @@
                 <input
                   type="number"
                   matInput
-                  name="number_of_child"
+                  name="reservationDates[{{ i + 1 }}].number_of_child"
                   placeholder="Number of Child"
-                  [(ngModel)]="reservation.number_of_child"
+                  [(ngModel)]="reservationDates[i].number_of_child"
                   required
                 />
               </mat-form-field>
