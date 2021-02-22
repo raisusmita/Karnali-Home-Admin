@@ -28,10 +28,10 @@ export class HeaderComponent implements OnInit {
     { name: 'Bar', path: 'bar', icon: 'local_bar' },
     { name: 'Coffee', path: 'coffee', icon: 'local_cafe' },
     { name: 'Table', path: 'table', icon: 'weekend' },
-    { name: 'Food Order', path: 'food-order', icon: 'alarm' },
+    { name: 'Order', path: 'food-order', icon: 'alarm' },
 
     {
-      name: 'Food Order Details',
+      name: 'Order Details',
       path: 'food-order-detail',
       icon: 'room_service'
     },
