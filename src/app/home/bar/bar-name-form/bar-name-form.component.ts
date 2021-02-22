@@ -1,57 +1,41 @@
 import { Component, OnInit, Inject } from '@angular/core'
-import { MvBar } from '../bar-model'
+import { MvBarName } from '../bar-model'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 import { BarService } from '../bar.service'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 
 @Component({
-  selector: 'app-bar-form',
-  templateUrl: './bar-form.component.html',
-  styleUrls: ['./bar-form.component.scss']
+  selector: 'app-bar-name-form',
+  templateUrl: './bar-name-form.component.html',
+  styleUrls: ['./bar-name-form.component.scss']
 })
-export class BarFormComponent implements OnInit {
-  bar: MvBar = {} as MvBar
+export class BarNameFormComponent implements OnInit {
+  bar: MvBarName = {} as MvBarName
   isEdit = false
-
-  mainBar = []
   barName = []
-  barQuantity = {
-    '30ML': '30 ML',
-    '60ML': '60 ML',
-    QTR: 'QTR',
-    HALF: 'Half',
-    FULL: 'Full',
-    GLASS: 'Glass',
-    'PER PC': 'Per Piece',
-    PACKET: 'Packet'
-  }
 
   @BlockUI() blockUI: NgBlockUI
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private barService: BarService,
-    private dialogRef: MatDialogRef<BarFormComponent>
-  ) {}
+    private dialogRef: MatDialogRef<BarNameFormComponent>
+  ) {
+    if (data) {
+      this.isEdit = true
+    }
+  }
 
   ngOnInit() {
     this.getBar()
-    this.getMainBar()
     this.getBarName()
   }
 
   getBar() {
     this.barService.getBar().subscribe((data) => {
       if (this.data) {
-        this.isEdit = true
         this.bar = this.data
       }
-    })
-  }
-
-  getMainBar() {
-    this.barService.getMainBar().subscribe((data) => {
-      this.mainBar = data.data
     })
   }
 
@@ -64,7 +48,7 @@ export class BarFormComponent implements OnInit {
   submitBarForm() {
     this.blockUI.start('Loading...')
     if (this.isEdit) {
-      this.barService.editBar(this.bar).subscribe(
+      this.barService.editBarName(this.bar).subscribe(
         (e) => {
           this.dialogRef.close(this.bar)
           this.blockUI.stop()
@@ -74,7 +58,7 @@ export class BarFormComponent implements OnInit {
         }
       )
     } else {
-      this.barService.addBar(this.bar).subscribe(
+      this.barService.addBarName(this.bar).subscribe(
         (e) => {
           this.dialogRef.close(this.bar)
           this.blockUI.stop()
