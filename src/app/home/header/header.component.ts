@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit {
       icon: 'room_service'
     },
     {
-      name: 'Transaction',
+      name: 'Billing',
       path: 'room-transaction',
       icon: 'description'
     },

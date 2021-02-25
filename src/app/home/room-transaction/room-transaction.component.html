@@ -1,34 +1,58 @@
 <block-ui>
   <div class="container">
     <div class="row">
-      <div class="col-lg-4">
-        <mat-slide-toggle [color]="primaryColor" (change)="onToggle($event)">{{
-          SlideText
-        }}</mat-slide-toggle>
+      <div class="col-lg-5">
+        <div
+          class="action-section"
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+        >
+          <mat-slide-toggle
+            fxFlex
+            [color]="primaryColor"
+            (change)="onToggle($event)"
+            >{{ SlideText }}</mat-slide-toggle
+          >
+
+          <div class="action-btn" fxFlex>
+            <div *ngIf="transactionType">
+              <button
+                mat-raised-button
+                class="button-blue"
+                (click)="onAddClick()"
+              >
+                <mat-icon>receipt</mat-icon>
+                Generate Room Bill
+              </button>
+            </div>
+
+            <div *ngIf="!transactionType">
+              <button
+                mat-raised-button
+                class="button-orange"
+                (click)="generateInvoice()"
+              >
+                <mat-icon>receipt</mat-icon>
+                Generate Table Bill
+              </button>
+            </div>
+          </div>
+        </div>
 
         <div class="transactionType">
           <div *ngIf="transactionType; else tableType">
             <div class="table-container mat-elevation-z8">
               <table #bookingTable mat-table [dataSource]="dataSource">
                 <!-- Checkbox Column -->
-                <ng-container matColumnDef="select">
-                  <mat-header-cell *matHeaderCellDef>
-                    <span>Select </span>
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row">
-                    <mat-checkbox
-                      (click)="$event.stopPropagation()"
-                      (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)"
-                      [color]="primaryColor"
-                      [disabled]="row.status == 'Paid' ? true : false"
-                    >
-                    </mat-checkbox>
-                  </mat-cell>
+                <ng-container matColumnDef="invoice_number">
+                  <th mat-header-cell *matHeaderCellDef>Invoice No.</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.invoice_number }}
+                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="full_name">
-                  <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+                  <th mat-header-cell *matHeaderCellDef>Customer</th>
                   <td mat-cell *matCellDef="let element">
                     {{ element.first_name }}
                     {{ element.middle_name ? element.middle_name : '' }}
@@ -37,7 +61,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="room_category">
-                  <th mat-header-cell *matHeaderCellDef>Room Category</th>
+                  <th mat-header-cell *matHeaderCellDef>Category</th>
                   <td mat-cell *matCellDef="let element">
                     {{ element.room_category }}
                   </td>
@@ -151,21 +175,7 @@
           </ng-template>
         </div>
       </div>
-      <div class="col-lg-8">
-        <button
-          mat-raised-button
-          class="button-blue"
-          (click)="generateInvoice()"
-        >
-          <mat-icon>receipt</mat-icon>
-          Generate Bill
-        </button>
-
-        <button mat-raised-button class="button-blue" (click)="onAddClick()">
-          <mat-icon>add</mat-icon>
-          Add New Transaction
-        </button>
-
+      <div class="col-lg-7">
         <div class="main-content" *ngIf="selectedRoom">
           <mat-card class="example-card">
             <mat-card-header>
@@ -188,7 +198,11 @@
                   <div class="col-lg-4">
                     <p class="text">
                       <b>Check In:</b>
-                      <span> {{ roomDataSource.check_in_date }}</span>
+                      <span>
+                        {{
+                          roomDataSource.check_in_date | date: 'mediumDate'
+                        }}</span
+                      >
                     </p>
                     <p class="text">
                       <b>Night Stayed:</b>
@@ -198,7 +212,11 @@
                   <div class="col-lg-4">
                     <p class="text">
                       <b>Check Out:</b>
-                      <span> {{ roomDataSource.check_out_date }}</span>
+                      <span>
+                        {{
+                          roomDataSource.check_out_date | date: 'mediumDate'
+                        }}</span
+                      >
                     </p>
                     <p class="text">
                       <b>Per night:</b>
