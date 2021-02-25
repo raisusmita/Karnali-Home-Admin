@@ -1,3 +1,4 @@
+import { ConfirmCommonDialogService } from './../../../shared/components/confirm-common-dialog/confirm-common-dialog.service'
 import { InvoiceDataService } from 'src/app/shared/services/invoice-data-service/invoice-data.service'
 import { MatDialog } from '@angular/material/dialog'
 // import { RoomTransactionComponent } from './../room-transaction.component'
@@ -14,7 +15,6 @@ import { ThemePalette } from '@angular/material/core'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { animate, state, style, transition, trigger } from '@angular/animations'
 import { RoomTransactionComponent } from '../room-transaction.component'
-import { ConfirmCommonDialogComponent } from 'src/app/shared/components/confirm-common-dialog/confirm-common-dialog.component'
 @Component({
   selector: 'app-room-transaction-form',
   templateUrl: './room-transaction-form.component.html',
@@ -77,6 +77,7 @@ export class RoomTransactionFormComponent implements OnInit {
     private roomAvailabilityService: RoomAvailabilityService,
     private roomTransactionService: RoomTransactionService,
     private dialogRef: MatDialogRef<RoomTransactionFormComponent>,
+    private confrimCommonDialogService: ConfirmCommonDialogService,
     private dialog: MatDialog,
     private invoiceService: InvoiceDataService,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -235,7 +236,7 @@ export class RoomTransactionFormComponent implements OnInit {
           (result) => {
             if (result.data) {
               const detail = result.data
-
+              this.confrimCommonDialogService.callFrom = 'room'
               this.invoiceParams = []
               detail.map((detail) => {
                 this.invoiceParams.push({
@@ -257,7 +258,13 @@ export class RoomTransactionFormComponent implements OnInit {
                   room_id: detail.reservation[0].room.id,
                   room_number: detail.reservation[0].room.room_number,
                   status: 'Due',
-                  transaction_id: detail.transaction.id
+                  transaction_id: detail.transaction.id,
+                  discount: this.roomTransaction.discount
+                    ? this.roomTransaction.discount
+                    : 0,
+                  service_tax: this.roomTransaction.service_tax
+                    ? this.roomTransaction.service_tax
+                    : 0
                 })
               })
 
@@ -317,20 +324,6 @@ export class RoomTransactionFormComponent implements OnInit {
           }
         }, reject)
       })
-
-      this.roomTransactionService
-        .editRoomTransaction(editTransactionParams)
-        .subscribe(
-          (result) => {
-            this.blockUI.stop()
-            this.dialogRef.close(result)
-            return true
-          },
-          (error) => {
-            this.blockUI.stop()
-            return true
-          }
-        )
     }
   }
 }

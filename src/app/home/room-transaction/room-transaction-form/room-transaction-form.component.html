@@ -23,6 +23,35 @@
         </mat-form-field>
       </div>
       <div class="main-content" *ngIf="roomList">
+        <div class="charges" fxLayout="row" fxLayoutGap="20px">
+          <div class="discount" fxFlex>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Discount in (%)</mat-label>
+              <input
+                type="number"
+                matInput
+                name="discount"
+                placeholder="Discount"
+                [(ngModel)]="roomTransaction.discount"
+                min="0"
+              />
+            </mat-form-field>
+          </div>
+          <div class="service-tax" fxFlex>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Service charge in (%)</mat-label>
+              <input
+                type="number"
+                matInput
+                name="service-tax"
+                placeholder="Service Charge"
+                [(ngModel)]="roomTransaction.service_tax"
+                min="0"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+
         <section class="row">
           <table
             mat-table

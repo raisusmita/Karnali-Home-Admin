@@ -1,3 +1,4 @@
+import { ConfirmCommonDialogService } from './../../shared/components/confirm-common-dialog/confirm-common-dialog.service'
 import { RoomAvailabilityService } from './../../shared/services/room-availability/room-availability.service'
 import { InvoiceDataService } from './../../shared/services/invoice-data-service/invoice-data.service'
 import { ConfirmCommonDialogComponent } from './../../shared/components/confirm-common-dialog/confirm-common-dialog.component'
@@ -61,6 +62,7 @@ export class RoomTransactionComponent implements OnInit {
   invoicelRelatedData: any
   transactionRelatedData: any
   valueInitialized: boolean = false
+  showStepper: boolean
 
   @BlockUI() blockUI: NgBlockUI
 
@@ -94,7 +96,8 @@ export class RoomTransactionComponent implements OnInit {
     private data: InvoiceDataService,
     private roomService: RoomService,
     private tableService: TableService,
-    private roomAvailabilityService: RoomAvailabilityService
+    private roomAvailabilityService: RoomAvailabilityService,
+    private confirmCommonDialogService: ConfirmCommonDialogService
   ) {}
 
   ngOnInit() {
@@ -207,6 +210,23 @@ export class RoomTransactionComponent implements OnInit {
       )
   }
 
+  openStepper() {
+    const dialogRef = this.dialog.open(ConfirmCommonDialogComponent, {
+      data: {
+        callFrom: 'table',
+        callFor: 'Apply Charges',
+        confirmationText: 'Fill the charges if applicable.',
+        positiveResponse: 'Next'
+        // negativeResponse: 'Cancel the Print'
+      }
+    })
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.generateInvoice()
+      }
+    })
+  }
+
   generateInvoice(e?): Promise<any> {
     if (e && e.length != 0) {
       this.selected = e
@@ -224,6 +244,16 @@ export class RoomTransactionComponent implements OnInit {
     } else {
       this.invoiceParams = null
       this.invoiceParams = this.selected
+      if (this.confirmCommonDialogService.callFrom == 'table') {
+        this.invoiceParams.map((data) => {
+          data['discount'] = this.confirmCommonDialogService.discount
+            ? this.confirmCommonDialogService.discount
+            : 0
+          data['service_tax'] = this.confirmCommonDialogService.service_tax
+            ? this.confirmCommonDialogService.service_tax
+            : 0
+        })
+      }
       const customerName = {
         firstName: this.invoiceParams[0]['first_name'],
         middleName: this.invoiceParams[0]['middle_name'],
@@ -373,7 +403,7 @@ export class RoomTransactionComponent implements OnInit {
           )
           this.allData.pop()
           this.transactionRelatedData = this.allData
-
+          this.confirmCommonDialogService.callFrom = null
           this.data.changeInvoiceData(this.invoicelRelatedData)
           this.data.changeTransactionData(this.transactionRelatedData)
         }
