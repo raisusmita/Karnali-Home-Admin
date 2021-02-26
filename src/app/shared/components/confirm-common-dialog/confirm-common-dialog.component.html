@@ -1,9 +1,41 @@
 <h3>{{ confirmationText }}</h3>
+
+<div
+  *ngIf="callFrom == 'table'"
+  class="charges"
+  fxLayout="row"
+  fxLayoutGap="20px"
+>
+  <div class="discount" fxFlex>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Discount in (%)</mat-label>
+      <input
+        type="number"
+        matInput
+        name="discount"
+        placeholder="Discount"
+        [(ngModel)]="confirmCommonDialog.discount"
+        min="0"
+      />
+    </mat-form-field>
+  </div>
+  <div class="service-tax" fxFlex>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Service charge in (%)</mat-label>
+      <input
+        type="number"
+        matInput
+        name="service-tax"
+        placeholder="Service Charge"
+        [(ngModel)]="confirmCommonDialog.service_tax"
+        min="0"
+      />
+    </mat-form-field>
+  </div>
+</div>
 <button mat-raised-button class="button-blue" (click)="onConfirmed()">
   {{ positiveResponse }}
 </button>
 <button mat-raised-button class="button-gray" (click)="onCancelled()">
   {{ negativeResponse }}
 </button>
-
-<!-- <router-outlet name="print"></router-outlet> -->

@@ -1,3 +1,4 @@
+import { ConfirmCommonDialogService } from './../../shared/components/confirm-common-dialog/confirm-common-dialog.service'
 import { RoomAvailabilityService } from './../../shared/services/room-availability/room-availability.service'
 import { InvoiceDataService } from './../../shared/services/invoice-data-service/invoice-data.service'
 import { ConfirmCommonDialogComponent } from './../../shared/components/confirm-common-dialog/confirm-common-dialog.component'
@@ -22,7 +23,7 @@ import { TableService } from '../table/table.service'
 })
 export class RoomTransactionComponent implements OnInit {
   displayedRoomTranColumns: string[] = [
-    'select',
+    'invoice_number',
     'full_name',
     'room_number',
     'room_category',
@@ -61,6 +62,7 @@ export class RoomTransactionComponent implements OnInit {
   invoicelRelatedData: any
   transactionRelatedData: any
   valueInitialized: boolean = false
+  showStepper: boolean
 
   @BlockUI() blockUI: NgBlockUI
 
@@ -84,6 +86,7 @@ export class RoomTransactionComponent implements OnInit {
   foodDetail: any[] = []
   food_total_amount: number
   itemDetails: any[] = []
+  selected: any
 
   constructor(
     private dialog: MatDialog,
@@ -93,7 +96,8 @@ export class RoomTransactionComponent implements OnInit {
     private data: InvoiceDataService,
     private roomService: RoomService,
     private tableService: TableService,
-    private roomAvailabilityService: RoomAvailabilityService
+    private roomAvailabilityService: RoomAvailabilityService,
+    private confirmCommonDialogService: ConfirmCommonDialogService
   ) {}
 
   ngOnInit() {
@@ -206,8 +210,30 @@ export class RoomTransactionComponent implements OnInit {
       )
   }
 
-  generateInvoice(): Promise<any> {
-    if (this.selection.selected.length == 0) {
+  openStepper() {
+    const dialogRef = this.dialog.open(ConfirmCommonDialogComponent, {
+      data: {
+        callFrom: 'table',
+        callFor: 'Apply Charges',
+        confirmationText: 'Fill the charges if applicable.',
+        positiveResponse: 'Next'
+        // negativeResponse: 'Cancel the Print'
+      }
+    })
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.generateInvoice()
+      }
+    })
+  }
+
+  generateInvoice(e?): Promise<any> {
+    if (e && e.length != 0) {
+      this.selected = e
+    } else {
+      this.selected = this.selection.selected
+    }
+    if (this.selected.length == 0) {
       this.toastr.info(
         'Please select atleast one transaction to proceed',
         'Info!',
@@ -217,7 +243,17 @@ export class RoomTransactionComponent implements OnInit {
       )
     } else {
       this.invoiceParams = null
-      this.invoiceParams = this.selection.selected
+      this.invoiceParams = this.selected
+      if (this.confirmCommonDialogService.callFrom == 'table') {
+        this.invoiceParams.map((data) => {
+          data['discount'] = this.confirmCommonDialogService.discount
+            ? this.confirmCommonDialogService.discount
+            : 0
+          data['service_tax'] = this.confirmCommonDialogService.service_tax
+            ? this.confirmCommonDialogService.service_tax
+            : 0
+        })
+      }
       const customerName = {
         firstName: this.invoiceParams[0]['first_name'],
         middleName: this.invoiceParams[0]['middle_name'],
@@ -367,7 +403,7 @@ export class RoomTransactionComponent implements OnInit {
           )
           this.allData.pop()
           this.transactionRelatedData = this.allData
-
+          this.confirmCommonDialogService.callFrom = null
           this.data.changeInvoiceData(this.invoicelRelatedData)
           this.data.changeTransactionData(this.transactionRelatedData)
         }
@@ -379,7 +415,7 @@ export class RoomTransactionComponent implements OnInit {
   onInvoiceGenerate() {
     const dialogRef = this.dialog.open(ConfirmCommonDialogComponent, {
       data: {
-        gridData: this.selection.selected,
+        gridData: this.selected,
         formType: 'Add',
         callFor: 'Invoice Generate',
         confirmationText:
@@ -392,7 +428,7 @@ export class RoomTransactionComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       window.onbeforeprint = (e) => {
         if (result) {
-          this.selection.selected.length = 0
+          this.selected.length = 0
           if (this.transactionType) {
             this.getRoomList()
           } else {
@@ -421,9 +457,9 @@ export class RoomTransactionComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getRoomTransaction()
-        this.toastr.success('Room Transaction added successfully', 'Success!', {
-          positionClass: 'toast-top-right'
-        })
+        // this.toastr.success('Room Transaction added successfully', 'Success!', {
+        //   positionClass: 'toast-top-right'
+        // })
       }
     })
   }

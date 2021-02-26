@@ -102,6 +102,7 @@ import { AvailableTableComponent } from './available-table/available-table.compo
 import { AvailableRoomComponent } from './available-room/available-room.component'
 import { ChartsModule } from 'ng2-charts'
 import { RevenueGraphComponent } from '../shared/components/revenue-graph/revenue-graph.component'
+import { MatStepperModule } from '@angular/material'
 
 @NgModule({
   declarations: [
@@ -191,7 +192,8 @@ import { RevenueGraphComponent } from '../shared/components/revenue-graph/revenu
     InvoiceReportModule,
     NgbModule,
     FlexLayoutModule,
-    ChartsModule
+    ChartsModule,
+    MatStepperModule
   ],
   providers: [
     UserAuthService,
