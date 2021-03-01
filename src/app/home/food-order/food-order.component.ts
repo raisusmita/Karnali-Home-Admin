@@ -56,6 +56,14 @@ export class FoodOrderComponent implements OnInit {
     bar: []
   }
 
+  checkBoxBarOrderList = {
+    bar: []
+  }
+
+  quantityBarOrderList = {
+    bar: []
+  }
+
   step = 0
   subFoodShow = false
 
@@ -247,6 +255,8 @@ export class FoodOrderComponent implements OnInit {
           this.barList[this.mainBarSelectedId]['barItems'] =
             barItems.data['barItems']
         })
+
+      console.log('test' + this.barList[this.mainBarSelectedId])
     }
   }
 
@@ -288,11 +298,31 @@ export class FoodOrderComponent implements OnInit {
 
   toggleBarItems(event, data) {
     if (event.checked) {
+      // When checkbox is checked, set default first capacity with quantity to 1
+      this.checkBoxBarOrderList['bar'][data.id] = data.bar_items[0].quantity
+      this.quantityBarOrderList['bar'][data.id] = 1
+      this.changeMainBarChecked(data)
       // store barItems first data
       this.saveNewBarOrder(data['bar_items'][0])
+      // this.mainBarChecked[data['bar_items'][0]['main_bar_category_id']] += 1
     } else {
+      // When checkbox is unchecked, remove all the selected data
+      // this.quantityBarOrderList['bar'][data.id] = 0
+      delete this.checkBoxBarOrderList['bar'][data.id]
+      delete this.foodOrderList['bar'][data.id]
+      this.changeMainBarChecked(data)
       // check and remove barItems all data id
+
+      if (!this.foodOrderList['bar'].some((x) => x !== '')) {
+        this.barCardChecked['checked'] = 0
+      }
     }
+  }
+
+  changeMainBarChecked(data) {
+    this.mainBarChecked[
+      data['bar_items'][0]['main_bar_category_id']
+    ] = this.foodOrderList['bar'].filter(Boolean).length
   }
 
   storeBarOrder(event, data) {
@@ -334,13 +364,30 @@ export class FoodOrderComponent implements OnInit {
   }
 
   maintainBarOrderQuantity(event, data) {
-    if (this.foodOrderList['bar'][event.id]) {
-      this.foodOrderList['bar'][event.id]['quantity'] = 1
-      this.foodOrderList['bar'][event.id]['total_amount'] =
-        event.price * this.foodOrderList['bar'][event.id]['quantity']
+    const capacity = event.value
+    if (Object.keys(data).includes('bar_name_id')) {
+      this.quantityBarOrderList['bar'][data.bar_name_id] = parseInt(
+        event.target.value
+      )
+      this.checkBoxBarOrderList['bar'][data.bar_name_id] = data.quantity
+
+      if (this.foodOrderList['bar'][data.id]) {
+        this.foodOrderList['bar'][data.id]['quantity'] = parseInt(
+          event.target.value
+        )
+        this.foodOrderList['bar'][data.id]['total_amount'] =
+          data.price * this.foodOrderList['bar'][data.id]['quantity']
+      } else {
+        const quantity = 1
+        this.saveNewBarOrder(data, quantity, capacity)
+      }
     } else {
+      this.quantityBarOrderList['bar'][data.id] = 1
+      // this.checkBoxBarOrderList['bar'][data.id] = 1
+      this.checkBoxBarOrderList['bar'][data.id] = capacity
+
       const quantity = 1
-      this.saveNewBarOrder(event, quantity)
+      this.saveNewBarOrder(data, quantity, capacity)
     }
 
     console.log(this.foodOrderList['bar'])
@@ -376,18 +423,36 @@ export class FoodOrderComponent implements OnInit {
     this.coffeeCardChecked['checked'] += 1
   }
 
-  saveNewBarOrder(dataItem, quantity = 1) {
-    this.foodOrderList['bar'][dataItem.id] = {}
-    this.foodOrderList['bar'][dataItem.id]['bar_items_id'] = dataItem.id
-    this.foodOrderList['bar'][dataItem.id]['quantity'] = quantity
-    this.foodOrderList['bar'][dataItem.id]['price'] = dataItem.price
-    this.foodOrderList['bar'][dataItem.id]['total_amount'] =
-      dataItem.price * this.foodOrderList['bar'][dataItem.id]['quantity']
-    if (this.mainBarChecked[dataItem.main_bar_category_id]) {
-      this.mainBarChecked[dataItem.main_bar_category_id] += 1
+  saveNewBarOrder(dataItem, quantity = 1, capacity?) {
+    if (Object.keys(dataItem).includes('bar_name_id')) {
+      this.foodOrderList['bar'][dataItem.bar_name_id] = {}
+      this.foodOrderList['bar'][dataItem.bar_name_id]['bar_items_id'] =
+        dataItem.id
+      this.foodOrderList['bar'][dataItem.bar_name_id]['quantity'] = quantity
+      this.foodOrderList['bar'][dataItem.bar_name_id]['price'] = dataItem.price
+      this.foodOrderList['bar'][dataItem.bar_name_id]['total_amount'] =
+        dataItem.price *
+        this.foodOrderList['bar'][dataItem.bar_name_id]['quantity']
+      this.mainBarChecked[dataItem.main_bar_category_id] = this.foodOrderList[
+        'bar'
+      ].filter(Boolean).length
     } else {
-      this.mainBarChecked[dataItem.main_bar_category_id] = 1
+      this.foodOrderList['bar'][dataItem.id] = {}
+      this.foodOrderList['bar'][dataItem.id]['bar_items_id'] = dataItem.id
+      this.foodOrderList['bar'][dataItem.id]['quantity'] = quantity
+      dataItem.bar_items.map((item) => {
+        if (item.quantity == capacity) {
+          this.foodOrderList['bar'][dataItem.id]['price'] = item.price
+          this.foodOrderList['bar'][dataItem.id]['total_amount'] =
+            item.price * this.foodOrderList['bar'][dataItem.id]['quantity']
+        }
+      })
+
+      this.mainBarChecked[
+        dataItem['bar_items'][0]['main_bar_category_id']
+      ] = this.foodOrderList['bar'].filter(Boolean).length
     }
+
     this.barCardChecked['checked'] += 1
   }
 
@@ -572,7 +637,11 @@ export class FoodOrderComponent implements OnInit {
     orderList['bar'] = Object.values(orderList['bar'])
     orderList['food'] = Object.values(orderList['food'])
 
-    if (Object.values(orderList).length > 0) {
+    if (
+      orderList['coffee'].length > 0 ||
+      orderList['bar'].length > 0 ||
+      orderList['food'].length > 0
+    ) {
       this.foodService.addFoodOrder(orderList).subscribe(
         (foodOrder) => {
           this.toastr.success(foodOrder.message, 'Success!!', {
@@ -704,6 +773,8 @@ export class FoodOrderComponent implements OnInit {
   resetAll() {
     this.mainFoodChecked = {}
     this.mainCoffeeChecked = {}
+    this.checkBoxBarOrderList['bar'] = []
+    this.quantityBarOrderList['bar'] = []
     this.mainBarChecked = {}
     this.foodOrderList = {
       coffee: [],

@@ -365,15 +365,16 @@
                 >
                   <div class="d-flex mb-3" *ngIf="barItem.bar_items.length > 0">
                     <mat-checkbox
-                      [checked]="foodOrderList['bar'][barItem.id]"
+                      [checked]="checkBoxBarOrderList['bar'][barItem.id]"
                       color="primary"
                       (change)="toggleBarItems($event, barItem)"
                     >
                       {{ barItem.bar_name }}
+                      {{ barItem.id }}
                     </mat-checkbox>
                     <mat-form-field>
                       <mat-select
-                        [(ngModel)]="foodOrderList['bar'][barItem.id]"
+                        [(ngModel)]="checkBoxBarOrderList['bar'][barItem.id]"
                         name="barQuantity"
                         required
                         (selectionChange)="
@@ -394,9 +395,9 @@
                         matInput
                         type="number"
                         [value]="
-                          foodOrderList['bar'][barItem.id]
-                            ? foodOrderList['bar'][barItem.id]['quantity']
-                            : '0'
+                          quantityBarOrderList['bar'][barItem.id]
+                            ? quantityBarOrderList['bar'][barItem.id]
+                            : '1'
                         "
                         min="1"
                         (change)="
