@@ -286,9 +286,19 @@ export class FoodOrderComponent implements OnInit {
     }
   }
 
-  storeBarOrder(event, data) {
+  toggleBarItems(event, data) {
     if (event.checked) {
-      this.saveNewBarOrder(data)
+      // store barItems first data
+      this.saveNewBarOrder(data['bar_items'][0])
+    } else {
+      // check and remove barItems all data id
+    }
+  }
+
+  storeBarOrder(event, data) {
+    console.log(data)
+    if (event.checked) {
+      this.saveNewBarOrder(data['bar_items'])
       //Todo: Need to handle main food id as well
     } else {
       delete this.foodOrderList['bar'][data.id]
@@ -324,16 +334,16 @@ export class FoodOrderComponent implements OnInit {
   }
 
   maintainBarOrderQuantity(event, data) {
-    if (this.foodOrderList['bar'][data.id]) {
-      this.foodOrderList['bar'][data.id]['quantity'] = parseInt(
-        event.target.value
-      )
-      this.foodOrderList['bar'][data.id]['total_amount'] =
-        data.price * this.foodOrderList['bar'][data.id]['quantity']
+    if (this.foodOrderList['bar'][event.id]) {
+      this.foodOrderList['bar'][event.id]['quantity'] = 1
+      this.foodOrderList['bar'][event.id]['total_amount'] =
+        event.price * this.foodOrderList['bar'][event.id]['quantity']
     } else {
-      const quantity = parseInt(event.target.value)
-      this.saveNewBarOrder(data, quantity)
+      const quantity = 1
+      this.saveNewBarOrder(event, quantity)
     }
+
+    console.log(this.foodOrderList['bar'])
   }
 
   saveNewFoodOrder(data, quantity = 1) {
@@ -366,17 +376,17 @@ export class FoodOrderComponent implements OnInit {
     this.coffeeCardChecked['checked'] += 1
   }
 
-  saveNewBarOrder(data, quantity = 1) {
-    this.foodOrderList['bar'][data.id] = {}
-    this.foodOrderList['bar'][data.id]['bar_items_id'] = data.id
-    this.foodOrderList['bar'][data.id]['quantity'] = quantity
-    this.foodOrderList['bar'][data.id]['price'] = data.price
-    this.foodOrderList['bar'][data.id]['total_amount'] =
-      data.price * this.foodOrderList['bar'][data.id]['quantity']
-    if (this.mainBarChecked[data.main_bar_category_id]) {
-      this.mainBarChecked[data.main_bar_category_id] += 1
+  saveNewBarOrder(dataItem, quantity = 1) {
+    this.foodOrderList['bar'][dataItem.id] = {}
+    this.foodOrderList['bar'][dataItem.id]['bar_items_id'] = dataItem.id
+    this.foodOrderList['bar'][dataItem.id]['quantity'] = quantity
+    this.foodOrderList['bar'][dataItem.id]['price'] = dataItem.price
+    this.foodOrderList['bar'][dataItem.id]['total_amount'] =
+      dataItem.price * this.foodOrderList['bar'][dataItem.id]['quantity']
+    if (this.mainBarChecked[dataItem.main_bar_category_id]) {
+      this.mainBarChecked[dataItem.main_bar_category_id] += 1
     } else {
-      this.mainBarChecked[data.main_bar_category_id] = 1
+      this.mainBarChecked[dataItem.main_bar_category_id] = 1
     }
     this.barCardChecked['checked'] += 1
   }
