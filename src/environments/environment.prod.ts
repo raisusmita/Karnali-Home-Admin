@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiURL: 'https://api.karnalihome.com/'
+  apiURL: 'https://karnalihome.com/api/'
 }
