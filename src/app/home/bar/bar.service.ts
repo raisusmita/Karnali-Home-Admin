@@ -19,12 +19,20 @@ export class BarService {
     return this.http.get(environment.apiURL + 'mainBar')
   }
 
+  getBarName(): Observable<any> {
+    return this.http.get(environment.apiURL + 'barName')
+  }
+
   getBarList(barParams): Observable<any> {
     return this.http.post(environment.apiURL + 'barItemList', barParams)
   }
 
   getMainBarList(barParams): Observable<any> {
     return this.http.post(environment.apiURL + 'mainBarList', barParams)
+  }
+
+  getBarNameList(barParams): Observable<any> {
+    return this.http.post(environment.apiURL + 'barNameList', barParams)
   }
 
   getBarItemsById(id): Observable<any> {
@@ -39,12 +47,20 @@ export class BarService {
     return this.http.post(`${environment.apiURL}mainBar`, bar)
   }
 
+  addBarName(bar: any): Observable<any> {
+    return this.http.post(`${environment.apiURL}barName`, bar)
+  }
+
   editBar(bar: any): Observable<any> {
     return this.http.put(this.baseURL + '/' + bar.id, bar)
   }
 
   editMainBar(bar: any): Observable<any> {
     return this.http.put(`${environment.apiURL}mainBar/${bar.id}`, bar)
+  }
+
+  editBarName(bar: any): Observable<any> {
+    return this.http.put(`${environment.apiURL}barName/${bar.id}`, bar)
   }
 
   deleteBar(id: any): Observable<any> {

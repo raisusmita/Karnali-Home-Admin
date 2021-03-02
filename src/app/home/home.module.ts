@@ -102,6 +102,7 @@ import { AvailableTableComponent } from './available-table/available-table.compo
 import { AvailableRoomComponent } from './available-room/available-room.component'
 import { ChartsModule } from 'ng2-charts'
 import { RevenueGraphComponent } from '../shared/components/revenue-graph/revenue-graph.component'
+import { BarNameFormComponent } from './bar/bar-name-form/bar-name-form.component'
 import { MatStepperModule } from '@angular/material'
 
 @NgModule({
@@ -129,6 +130,7 @@ import { MatStepperModule } from '@angular/material'
     SubFoodFormComponent,
     BarFormComponent,
     MainBarFormComponent,
+    BarNameFormComponent,
     CoffeeFormComponent,
     MainCoffeeFormComponent,
     TableComponent,
@@ -213,6 +215,7 @@ import { MatStepperModule } from '@angular/material'
     SubFoodFormComponent,
     BarFormComponent,
     MainBarFormComponent,
+    BarNameFormComponent,
     CoffeeFormComponent,
     MainCoffeeFormComponent,
     ConfirmDeleteComponent,

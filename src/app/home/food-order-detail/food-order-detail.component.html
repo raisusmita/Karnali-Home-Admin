@@ -1,10 +1,5 @@
 <block-ui>
-  <div class="container" *ngIf="!openEditFoodOrder">
-    <button mat-raised-button class="button-blue" *ngIf="allowAddNewOrder">
-      <mat-icon>add</mat-icon>
-      Food Order
-    </button>
-
+  <div class="container pt-3" *ngIf="!openEditFoodOrder">
     <div class="table-container mat-elevation-z8">
       <table mat-table multiTemplateDataRows #table [dataSource]="foodItemList">
         <ng-container matColumnDef="order_no">

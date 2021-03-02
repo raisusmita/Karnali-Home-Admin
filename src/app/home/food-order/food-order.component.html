@@ -363,25 +363,54 @@
                     let i = index
                   "
                 >
-                  <div class="d-flex mb-3">
+                  <div
+                    class="mb-3"
+                    *ngIf="barItem.bar_items.length > 0"
+                    fxLayout="row"
+                    fxLayoutAlign="space-evenly center"
+                  >
                     <mat-checkbox
-                      [checked]="foodOrderList['bar'][barItem.id]"
+                      [checked]="checkBoxBarOrderList['bar'][barItem.id]"
                       color="primary"
-                      (change)="storeBarOrder($event, barItem)"
+                      (change)="toggleBarItems($event, barItem)"
+                      fxFlex="25"
                     >
-                      {{ barItem.bar_name }} ({{ barItem.quantity }})
+                      {{ barItem.bar_name }}
                     </mat-checkbox>
-                    <div class="border ml-3 p-1 w-5">
+                    <mat-form-field fxFlex="55">
+                      <mat-select
+                        [(ngModel)]="checkBoxBarOrderList['bar'][barItem.id]"
+                        name="barQuantity"
+                        required
+                        (selectionChange)="
+                          maintainBarOrderQuantity($event, barItem)
+                        "
+                      >
+                        <mat-option
+                          *ngFor="let barDetails of barItem.bar_items"
+                          [value]="barDetails.quantity"
+                        >
+                          {{ barDetails.quantity }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div class="border ml-3 p-1 w-5" fxFlex="15">
                       <input
                         matInput
                         type="number"
                         [value]="
-                          foodOrderList['bar'][barItem.id]
-                            ? foodOrderList['bar'][barItem.id]['quantity']
+                          quantityBarOrderList['bar'][barItem.id]
+                            ? quantityBarOrderList['bar'][barItem.id]
                             : '1'
                         "
                         min="1"
-                        (change)="maintainBarOrderQuantity($event, barItem)"
+                        (change)="
+                          maintainBarOrderQuantity(
+                            $event,
+                            barItem['bar_items'][0]
+                          )
+                        "
                       />
                     </div>
                   </div>

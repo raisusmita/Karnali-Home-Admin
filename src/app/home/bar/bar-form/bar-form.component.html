@@ -19,13 +19,11 @@
 
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Bar Name</mat-label>
-      <input
-        matInput
-        name="name"
-        placeholder="Enter Bar Name"
-        [(ngModel)]="bar.bar_name"
-        required
-      />
+      <mat-select [(ngModel)]="bar.bar_name_id" name="barName" required>
+        <mat-option *ngFor="let barName of barName" [value]="barName.id">
+          {{ barName.bar_name }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field class="example-full-width" appearance="outline">

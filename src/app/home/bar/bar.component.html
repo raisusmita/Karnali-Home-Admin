@@ -69,6 +69,53 @@
         </div>
       </div>
     </mat-tab>
+    <mat-tab label="Bar Name" (click)="getBarName()">
+      <div class="container">
+        <button mat-raised-button class="button-blue" (click)="addBarName()">
+          <mat-icon>add</mat-icon>
+          Add Bar Name
+        </button>
+        <div class="table-container mat-elevation-z8">
+          <table mat-table [dataSource]="barName">
+            <ng-container matColumnDef="barName">
+              <th mat-header-cell *matHeaderCellDef>Bar Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.bar_name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <mat-icon
+                  matTooltip="Edit Bar Name"
+                  class="text-secondary mr-2 pointed"
+                  (click)="editBarName(element)"
+                  >create</mat-icon
+                >
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="barNameDisplayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: barNameDisplayedColumns"
+            ></tr>
+          </table>
+        </div>
+        <div class="pagination-footer mat-elevation-z8">
+          <mat-paginator
+            [length]="mainBarTotalLength"
+            [pageSize]="pageSize"
+            [pageIndex]="pageIndex"
+            (page)="onPageChange($event)"
+            [pageSizeOptions]="pageSizeOptions"
+          >
+          </mat-paginator>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Main Bar -->
+
     <mat-tab label="Main Bar">
       <div class="container">
         <button mat-raised-button class="button-blue" (click)="addMainBar()">

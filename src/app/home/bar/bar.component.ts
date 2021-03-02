@@ -9,6 +9,7 @@ import {
   UserActionPermission,
   UserRoleManagementService
 } from 'src/app/shared/services/user-role-service/user-role-management.service'
+import { BarNameFormComponent } from './bar-name-form/bar-name-form.component'
 
 @Component({
   selector: 'app-bar',
@@ -24,9 +25,11 @@ export class BarComponent implements OnInit {
     'action'
   ]
   mainBarDisplayedColumns: string[] = ['mainBarCategory', 'action']
+  barNameDisplayedColumns: string[] = ['barName', 'action']
+
   dataSource: any[]
   mainBar: any[]
-  barHeader: any[]
+  barName: any[]
 
   pageSizeOptions = [10, 25, 50, 100]
 
@@ -34,6 +37,7 @@ export class BarComponent implements OnInit {
   pageIndex: number
   barTotalLength: number
   mainBarTotalLength: number
+  barNameTotalLength: number
 
   limit: number
   skip: number
@@ -84,6 +88,7 @@ export class BarComponent implements OnInit {
     this.tabLabel = 'Bar Items'
     this.getBar()
     this.getMainBar()
+    this.getBarName()
   }
 
   onPageChange(e: any) {
@@ -98,6 +103,8 @@ export class BarComponent implements OnInit {
       this.getBar()
     } else if (this.tabLabel == 'Main Bar') {
       this.getMainBar()
+    } else if (this.tabLabel == 'Bar Name') {
+      this.getBarName()
     }
   }
 
@@ -120,6 +127,17 @@ export class BarComponent implements OnInit {
     this.barService.getMainBarList(paginationParams).subscribe((result) => {
       this.mainBar = result.data
       this.mainBarTotalLength = result.totalCount
+    })
+  }
+
+  getBarName() {
+    const paginationParams = {
+      limit: this.limit,
+      skip: this.skip
+    }
+    this.barService.getBarNameList(paginationParams).subscribe((result) => {
+      this.barName = result.data
+      this.barNameTotalLength = result.totalCount
     })
   }
 
@@ -149,6 +167,19 @@ export class BarComponent implements OnInit {
     })
   }
 
+  addBarName() {
+    const dialogRef = this.dialog.open(BarNameFormComponent, {
+      width: '50%',
+      data: null
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getBarName()
+      }
+    })
+  }
+
   editBar(BarEditData) {
     const dialogRef = this.dialog.open(BarFormComponent, {
       width: '50%',
@@ -158,6 +189,13 @@ export class BarComponent implements OnInit {
 
   editMainBar(BarEditData) {
     const dialogRef = this.dialog.open(MainBarFormComponent, {
+      width: '50%',
+      data: BarEditData
+    })
+  }
+
+  editBarName(BarEditData) {
+    const dialogRef = this.dialog.open(BarNameFormComponent, {
       width: '50%',
       data: BarEditData
     })
