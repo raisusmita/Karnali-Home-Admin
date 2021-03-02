@@ -363,16 +363,21 @@
                     let i = index
                   "
                 >
-                  <div class="d-flex mb-3" *ngIf="barItem.bar_items.length > 0">
+                  <div
+                    class="mb-3"
+                    *ngIf="barItem.bar_items.length > 0"
+                    fxLayout="row"
+                    fxLayoutAlign="space-evenly center"
+                  >
                     <mat-checkbox
                       [checked]="checkBoxBarOrderList['bar'][barItem.id]"
                       color="primary"
                       (change)="toggleBarItems($event, barItem)"
+                      fxFlex="25"
                     >
                       {{ barItem.bar_name }}
-                      {{ barItem.id }}
                     </mat-checkbox>
-                    <mat-form-field>
+                    <mat-form-field fxFlex="55">
                       <mat-select
                         [(ngModel)]="checkBoxBarOrderList['bar'][barItem.id]"
                         name="barQuantity"
@@ -390,7 +395,7 @@
                       </mat-select>
                     </mat-form-field>
 
-                    <div class="border ml-3 p-1 w-5">
+                    <div class="border ml-3 p-1 w-5" fxFlex="15">
                       <input
                         matInput
                         type="number"
