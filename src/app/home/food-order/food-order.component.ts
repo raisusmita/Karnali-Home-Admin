@@ -107,6 +107,14 @@ export class FoodOrderComponent implements OnInit {
           ]['table_number']
         }
       } else if (this.foodOrderList['bar'].length > 0) {
+        this.foodOrderList['bar'].map((barItem) => {
+          this.checkBoxBarOrderList['bar'][
+            barItem['bar_items']['bar_name_id']
+          ] = barItem['bar_items']['quantity']
+          this.quantityBarOrderList['bar'][
+            barItem['bar_items']['bar_name_id']
+          ] = barItem.quantity
+        })
         if (this.foodOrderList['bar'][0]['room_id']) {
           this.actualRoomId = Object.values(this.foodOrderList['bar'])[0][
             'room_id'
