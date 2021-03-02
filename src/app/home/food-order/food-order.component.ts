@@ -210,62 +210,81 @@ export class FoodOrderComponent implements OnInit {
   }
 
   fetchSubFoodAndFoodItemsOfFood(mainFoodId) {
-    this.mainFoodSelectedId = mainFoodId.id
-    if (
-      !Object.keys(this.foodList).includes(this.mainFoodSelectedId.toString())
-    ) {
-      this.foodService
-        .getSubFoodAndFoodItemsById({ id: mainFoodId })
-        .subscribe((subFoodItems) => {
-          this.foodList[this.mainFoodSelectedId] = {
-            subFood: [],
-            foodItems: {}
-          }
-          this.foodList[this.mainFoodSelectedId]['subFood'].push(
-            ...subFoodItems.data['subFood']
-          )
-          this.foodList[this.mainFoodSelectedId]['foodItems'] =
-            subFoodItems.data['foodItems']
-        })
+    if (this.hideOrderDetails(mainFoodId.id, 'food')) {
+      this.mainFoodSelectedId = null
+    } else {
+      this.mainFoodSelectedId = mainFoodId.id
+      if (
+        !Object.keys(this.foodList).includes(this.mainFoodSelectedId.toString())
+      ) {
+        this.foodService
+          .getSubFoodAndFoodItemsById({ id: mainFoodId })
+          .subscribe((subFoodItems) => {
+            this.foodList[this.mainFoodSelectedId] = {
+              subFood: [],
+              foodItems: {}
+            }
+            this.foodList[this.mainFoodSelectedId]['subFood'].push(
+              ...subFoodItems.data['subFood']
+            )
+            this.foodList[this.mainFoodSelectedId]['foodItems'] =
+              subFoodItems.data['foodItems']
+          })
+      }
     }
   }
 
   fetchCoffeeItem(mainCoffeeId) {
-    this.mainCoffeeSelectedId = mainCoffeeId
-    if (
-      !Object.keys(this.coffeeList).includes(
-        this.mainCoffeeSelectedId.toString()
-      )
-    ) {
-      this.coffeeService
-        .getCoffeeItemsById({ id: mainCoffeeId })
-        .subscribe((coffeeItems) => {
-          this.coffeeList[this.mainCoffeeSelectedId] = {
-            coffeeItems: {}
-          }
-          this.coffeeList[this.mainCoffeeSelectedId]['coffeeItems'] =
-            coffeeItems.data['coffeeItems']
-        })
+    if (this.hideOrderDetails(mainCoffeeId, 'coffee')) {
+      this.mainCoffeeSelectedId = null
+    } else {
+      this.mainCoffeeSelectedId = mainCoffeeId
+      if (
+        !Object.keys(this.coffeeList).includes(
+          this.mainCoffeeSelectedId.toString()
+        )
+      ) {
+        this.coffeeService
+          .getCoffeeItemsById({ id: mainCoffeeId })
+          .subscribe((coffeeItems) => {
+            this.coffeeList[this.mainCoffeeSelectedId] = {
+              coffeeItems: {}
+            }
+            this.coffeeList[this.mainCoffeeSelectedId]['coffeeItems'] =
+              coffeeItems.data['coffeeItems']
+          })
+      }
     }
   }
 
   fetchBarItem(mainBarId) {
-    this.mainBarSelectedId = mainBarId
-    if (
-      !Object.keys(this.barList).includes(this.mainBarSelectedId.toString())
-    ) {
-      this.barService
-        .getBarItemsById({ id: mainBarId })
-        .subscribe((barItems) => {
-          this.barList[this.mainBarSelectedId] = {
-            foodItems: {}
-          }
-          this.barList[this.mainBarSelectedId]['barItems'] =
-            barItems.data['barItems']
-        })
-
-      console.log('test' + this.barList[this.mainBarSelectedId])
+    if (this.hideOrderDetails(mainBarId, 'bar')) {
+      this.mainBarSelectedId = null
+    } else {
+      this.mainBarSelectedId = mainBarId
+      if (
+        !Object.keys(this.barList).includes(this.mainBarSelectedId.toString())
+      ) {
+        this.barService
+          .getBarItemsById({ id: mainBarId })
+          .subscribe((barItems) => {
+            this.barList[this.mainBarSelectedId] = {
+              foodItems: {}
+            }
+            this.barList[this.mainBarSelectedId]['barItems'] =
+              barItems.data['barItems']
+          })
+      }
     }
+  }
+
+  hideOrderDetails(data, type = 'food') {
+    if (type == 'bar') {
+      return this.mainBarSelectedId == data ? true : false
+    } else if (type == 'coffee') {
+      return this.mainCoffeeSelectedId == data ? true : false
+    }
+    return this.mainFoodSelectedId == data ? true : false
   }
 
   selectRoom(roomNumber) {

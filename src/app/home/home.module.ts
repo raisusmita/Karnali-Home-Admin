@@ -103,6 +103,7 @@ import { AvailableRoomComponent } from './available-room/available-room.componen
 import { ChartsModule } from 'ng2-charts'
 import { RevenueGraphComponent } from '../shared/components/revenue-graph/revenue-graph.component'
 import { BarNameFormComponent } from './bar/bar-name-form/bar-name-form.component'
+import { MatStepperModule } from '@angular/material'
 
 @NgModule({
   declarations: [
@@ -193,7 +194,8 @@ import { BarNameFormComponent } from './bar/bar-name-form/bar-name-form.componen
     InvoiceReportModule,
     NgbModule,
     FlexLayoutModule,
-    ChartsModule
+    ChartsModule,
+    MatStepperModule
   ],
   providers: [
     UserAuthService,

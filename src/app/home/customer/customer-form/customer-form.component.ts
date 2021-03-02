@@ -47,6 +47,7 @@ export class CustomerFormComponent implements OnInit {
       this.editForm = true
       this.getCustomers()
     }
+    this.customer.profession = ''
   }
 
   getCustomers() {

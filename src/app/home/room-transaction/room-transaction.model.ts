@@ -18,4 +18,6 @@ export interface MvRoomTransaction {
   check_in_date: Date
   check_out_date: Date
   reservation_id: number
+  discount: number
+  service_tax: number
 }
