@@ -8,13 +8,20 @@ table.mat-table {
 }
 
 .button-blue,
+.button-orange,
 .mat-slide-toggle {
   margin: 20px 0;
-  margin-left: 10px;
+  // margin-left: 10px;
 }
+
 .button-blue {
   color: #fff;
   background-color: #1abb9c;
+}
+
+.button-orange {
+  color: #fff;
+  background-color: orange;
 }
 
 mat-cell:last-of-type,
@@ -31,7 +38,8 @@ mat-header-cell:last-of-type {
 }
 
 .mat-card {
-  height: 600px;
+  height: 100%;
+  margin-top: 76px;
 }
 
 .food-detail {

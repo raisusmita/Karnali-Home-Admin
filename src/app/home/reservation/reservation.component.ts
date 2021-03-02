@@ -148,7 +148,9 @@ export class ReservationComponent implements OnInit {
               email: x.customer.email,
               phone: x.customer.phone,
               check_in_date: x.check_in_date,
-              check_out_date: x.check_out_date
+              check_out_date: x.check_out_date,
+              number_of_adult: x.number_of_adult,
+              number_of_child: x.number_of_child
             })
           })
           this.dataSource = new MatTableDataSource(arr)

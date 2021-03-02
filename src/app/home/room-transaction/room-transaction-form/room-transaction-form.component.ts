@@ -1,9 +1,12 @@
+import { ConfirmCommonDialogService } from './../../../shared/components/confirm-common-dialog/confirm-common-dialog.service'
+import { InvoiceDataService } from 'src/app/shared/services/invoice-data-service/invoice-data.service'
+import { MatDialog } from '@angular/material/dialog'
+// import { RoomTransactionComponent } from './../room-transaction.component'
 import { ToastrService } from 'ngx-toastr'
 import { RoomTransactionService } from './../room-transaction.service'
 import { MvRoomTransaction } from './../room-transaction.model'
-import { TableService } from './../../table/table.service'
 import { RoomAvailabilityService } from 'src/app/shared/services/room-availability/room-availability.service'
-import { Component, OnInit, Inject } from '@angular/core'
+import { Component, OnInit, Inject, ViewChild } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 import { CustomerService } from '../../customer/customer.service'
 import { MatTableDataSource } from '@angular/material/table'
@@ -11,6 +14,7 @@ import { SelectionModel } from '@angular/cdk/collections'
 import { ThemePalette } from '@angular/material/core'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { animate, state, style, transition, trigger } from '@angular/animations'
+import { RoomTransactionComponent } from '../room-transaction.component'
 @Component({
   selector: 'app-room-transaction-form',
   templateUrl: './room-transaction-form.component.html',
@@ -61,16 +65,21 @@ export class RoomTransactionFormComponent implements OnInit {
   itemDetails: any[] = []
 
   food_total_amount: number
+  invoiceParams: any
 
   @BlockUI() blockUI: NgBlockUI
+  @ViewChild('roomTransactionDirectory', { static: true })
+  roomTransactionDirectory: RoomTransactionComponent
 
   constructor(
     private customerService: CustomerService,
-    private tableService: TableService,
     private toastr: ToastrService,
     private roomAvailabilityService: RoomAvailabilityService,
     private roomTransactionService: RoomTransactionService,
     private dialogRef: MatDialogRef<RoomTransactionFormComponent>,
+    private confrimCommonDialogService: ConfirmCommonDialogService,
+    private dialog: MatDialog,
+    private invoiceService: InvoiceDataService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -79,7 +88,6 @@ export class RoomTransactionFormComponent implements OnInit {
     if (this.data.formType == 'Add') {
       this.addForm = true
       this.getCustomers()
-      this.getTables()
     } else {
       this.editForm = true
       this.roomTransaction = this.data.gridData
@@ -110,23 +118,6 @@ export class RoomTransactionFormComponent implements OnInit {
     this.customerService.getCustomer().subscribe((result) => {
       this.customers = result.data
     })
-  }
-
-  getTables() {
-    this.blockUI.start('Loading...')
-    this.tableService.getTable().subscribe(
-      (result) => {
-        if (result && result.data) {
-          this.tables = result.data
-        } else {
-          this.blockUI.stop()
-        }
-        this.blockUI.stop()
-      },
-      (error) => {
-        this.blockUI.stop()
-      }
-    )
   }
 
   onCustomerSelect(customerId: any) {
@@ -226,7 +217,7 @@ export class RoomTransactionFormComponent implements OnInit {
     )
   }
 
-  submitRoomTransactionForm() {
+  submitRoomTransactionForm(): Promise<any> {
     this.blockUI.start('Loading...')
     if (this.addForm) {
       this.selectedRoom = this.selection.selected
@@ -243,15 +234,60 @@ export class RoomTransactionFormComponent implements OnInit {
         .addRoomTransaction(this.selectedRoom)
         .subscribe(
           (result) => {
-            if (result) {
-              this.blockUI.stop()
-              this.dialogRef.close(result)
+            if (result.data) {
+              const detail = result.data
+              this.confrimCommonDialogService.callFrom = 'room'
+              this.invoiceParams = []
+              detail.map((detail) => {
+                this.invoiceParams.push({
+                  address: detail.customer[0].address,
+                  amount: detail.transaction.total_amount,
+                  callFrom: 'transaction',
+                  check_in_date: detail.reservation[0].check_in_date,
+                  check_out_date: detail.reservation[0].check_out_date,
+                  customer_id: detail.customer[0].id,
+                  first_name: detail.customer[0].first_name,
+                  invoice_number: '',
+                  last_name: detail.customer[0].last_name,
+                  middle_name: detail.customer[0].middle_name,
+                  no_of_days: detail.transaction.number_of_days,
+                  phone_number: detail.customer[0].phone,
+                  rate: detail.transaction.rate,
+                  reservation_id: detail.reservation[0].id,
+                  room_category_id: detail.reservation[0].room.room_category_id,
+                  room_id: detail.reservation[0].room.id,
+                  room_number: detail.reservation[0].room.room_number,
+                  status: 'Due',
+                  transaction_id: detail.transaction.id,
+                  discount: this.roomTransaction.discount
+                    ? this.roomTransaction.discount
+                    : 0,
+                  service_tax: this.roomTransaction.service_tax
+                    ? this.roomTransaction.service_tax
+                    : 0
+                })
+              })
+
+              // tslint:disable-next-line: no-unused-expression
+              return new Promise((resolve, reject) => {
+                Promise.all([
+                  this.roomTransactionDirectory.generateInvoice(
+                    this.invoiceParams
+                  )
+                ]).then(([response]) => {
+                  this.blockUI.stop()
+                  this.dialogRef.close(response)
+                  return resolve(true)
+                }, reject)
+              })
             } else {
               this.blockUI.stop()
+              return true
             }
           },
           (error) => {
             this.blockUI.stop()
+            return true
           }
         )
     } else if (this.editForm) {
@@ -273,17 +309,21 @@ export class RoomTransactionFormComponent implements OnInit {
         rate: this.roomTransaction.rate
       }
 
-      this.roomTransactionService
-        .editRoomTransaction(editTransactionParams)
-        .subscribe(
-          (result) => {
+      // tslint:disable-next-line: no-unused-expression
+      return new Promise((resolve, reject) => {
+        Promise.all([
+          this.roomTransactionService.editRoomTransaction(editTransactionParams)
+        ]).then(([response]) => {
+          if (response) {
             this.blockUI.stop()
-            this.dialogRef.close(result)
-          },
-          (error) => {
+            this.dialogRef.close(response)
+            return resolve(true)
+          } else {
             this.blockUI.stop()
+            return true
           }
-        )
+        }, reject)
+      })
     }
   }
 }

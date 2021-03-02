@@ -196,13 +196,13 @@
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef>Action</th>
                 <td mat-cell *matCellDef="let element; let i = index">
-                  <mat-icon
+                  <!-- <mat-icon
                     *ngIf="ActionPermissions.Edit"
                     matTooltip="Edit Booking"
                     class="text-secondary mr-2 pointed"
                     (click)="editBooking(element)"
                     >create</mat-icon
-                  >
+                  > -->
                   <mat-icon
                     *ngIf="ActionPermissions.Delete"
                     matTooltip="Cancel Booking"
