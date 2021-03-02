@@ -263,8 +263,6 @@ export class FoodOrderComponent implements OnInit {
           this.barList[this.mainBarSelectedId]['barItems'] =
             barItems.data['barItems']
         })
-
-      console.log('test' + this.barList[this.mainBarSelectedId])
     }
   }
 
@@ -334,7 +332,6 @@ export class FoodOrderComponent implements OnInit {
   }
 
   storeBarOrder(event, data) {
-    console.log(data)
     if (event.checked) {
       this.saveNewBarOrder(data['bar_items'])
       //Todo: Need to handle main food id as well
@@ -397,8 +394,6 @@ export class FoodOrderComponent implements OnInit {
       const quantity = 1
       this.saveNewBarOrder(data, quantity, capacity)
     }
-
-    console.log(this.foodOrderList['bar'])
   }
 
   saveNewFoodOrder(data, quantity = 1) {
@@ -775,6 +770,21 @@ export class FoodOrderComponent implements OnInit {
   }
 
   cancelOrderEdit() {
+    let foodOrderFormat = this.foodOrderList
+    foodOrderFormat['food_order_lists'] = [
+      ...Object.values(foodOrderFormat['food'])
+    ]
+    foodOrderFormat['coffee_order_lists'] = [
+      ...Object.values(foodOrderFormat['coffee'])
+    ]
+    foodOrderFormat['bar_order_lists'] = [
+      ...Object.values(foodOrderFormat['bar'])
+    ]
+    delete foodOrderFormat['food']
+    delete foodOrderFormat['coffee']
+    delete foodOrderFormat['bar']
+    this.foodOrderList = foodOrderFormat
+
     this.closeFoodOrder.emit({ edit: false })
   }
 
