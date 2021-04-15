@@ -18,7 +18,7 @@ export class BarFormComponent implements OnInit {
   barQuantity = {
     '30ML': '30 ML',
     '60ML': '60 ML',
-    QRT: 'QRT',
+    QTR: 'QTR',
     HALF: 'Half',
     FULL: 'Full',
     GLASS: 'Glass',
