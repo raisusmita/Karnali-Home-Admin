@@ -527,11 +527,7 @@ export class RoomTransactionComponent implements OnInit {
 
   getTable() {
     this.blockUI.start('Loading...')
-    const paginationParams = {
-      limit: this.limit,
-      skip: this.skip
-    }
-    this.tableService.getTableList(paginationParams).subscribe(
+    this.tableService.getTable().subscribe(
       (result) => {
         const arr = []
         if (result && result.data) {
