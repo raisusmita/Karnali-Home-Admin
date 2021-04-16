@@ -58,7 +58,7 @@
         <ng-container matColumnDef="identity_number">
           <th mat-header-cell *matHeaderCellDef>Identity Number</th>
           <td mat-cell *matCellDef="let element">
-            {{ element.identity_number }}
+            {{ element.identity_number!='undefined'?element.identity_number:'' }}
           </td>
         </ng-container>
 
