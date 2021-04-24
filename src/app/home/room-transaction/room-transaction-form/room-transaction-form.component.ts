@@ -161,7 +161,8 @@ export class RoomTransactionFormComponent implements OnInit {
     element.isExpanded = !element.isExpanded
     const params = {
       roomId: element.room_id,
-      reservationId: element.reservation_id
+      reservationId: element.reservation_id,
+      callFrom: 'beforeProcessing'
     }
     element.isExpanded ? this.getFoodDetail(params) : ''
   }
@@ -184,7 +185,7 @@ export class RoomTransactionFormComponent implements OnInit {
               })
             } else if (item.bar_items) {
               this.itemDetails.push({
-                item_name: item.bar_items.bar_name,
+                item_name: item.bar_name,
                 price: item.bar_items.price,
                 quantity: item.quantity,
                 total_amount: item.total_amount
