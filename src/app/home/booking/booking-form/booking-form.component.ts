@@ -286,6 +286,7 @@ export class BookingFormComponent implements OnInit {
     }
 
     const today = new Date()
+    today.setHours(0,0,0,0);
     if (this.CI < today || this.CO < today) {
       this.checkCICOWithToday()
     }
