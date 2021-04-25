@@ -380,7 +380,8 @@ export class ReservationFormComponent implements OnInit {
     }
 
     const today = new Date()
-    if (this.CI < today || this.CO < today) {
+    today.setHours(0,0,0,0);
+    if ((this.CI < today || this.CO < today ) && (this.CI != today || this.CI != today)) {
       this.checkCICOWithToday()
     }
 

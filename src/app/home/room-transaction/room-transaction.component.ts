@@ -293,7 +293,7 @@ export class RoomTransactionComponent implements OnInit {
               })
             } else if (item.bar_items) {
               this.foodParams.push({
-                item_name: item.bar_items.bar_name,
+                item_name: item.bar_name,
                 price: item.bar_items.price,
                 quantity: item.quantity,
                 sub_total: parseFloat(item.price) * item.quantity
@@ -334,7 +334,7 @@ export class RoomTransactionComponent implements OnInit {
               })
             } else if (item.bar_items) {
               this.foodParams.push({
-                item_name: item.bar_items.bar_name,
+                item_name: item.bar_name,
                 price: item.bar_items.price,
                 quantity: item.quantity,
                 sub_total: parseFloat(item.price) * item.quantity
@@ -360,7 +360,8 @@ export class RoomTransactionComponent implements OnInit {
       this.data.changeTransactionType(true)
       const params = {
         roomId: this.invoiceParams[0]['room_id'],
-        reservationId: this.invoiceParams[0]['reservation_id']
+        reservationId: this.invoiceParams[0]['reservation_id'],
+        callFrom: 'beforeProcessing'
       }
       // tslint:disable-next-line: no-unused-expression
       return new Promise((resolve, reject) => {
@@ -624,7 +625,7 @@ export class RoomTransactionComponent implements OnInit {
                 })
               } else if (item.bar_items) {
                 this.itemDetails.push({
-                  item_name: item.bar_items.bar_name,
+                  item_name: item.bar_name,
                   price: item.bar_items.price,
                   quantity: item.quantity,
                   sub_total: parseFloat(item.price) * item.quantity
@@ -677,7 +678,7 @@ export class RoomTransactionComponent implements OnInit {
                 })
               } else if (item.bar_items) {
                 this.itemDetails.push({
-                  item_name: item.bar_items.bar_name,
+                  item_name: item.bar_name,
                   price: item.bar_items.price,
                   quantity: item.quantity,
                   sub_total: parseFloat(item.price) * item.quantity
@@ -714,7 +715,8 @@ export class RoomTransactionComponent implements OnInit {
       this.displaySelectedRoomDetail(row)
       const params = {
         roomId: row.room_id,
-        reservationId: row.reservation_id
+        reservationId: row.reservation_id,
+        callFrom: 'afterProcessing'
       }
 
       this.getFoodDetailForRoom(params)
